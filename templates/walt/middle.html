@@ -1,0 +1,57 @@
+{% extends "walt/boilerplate.html" %}
+{% load i18n %}
+
+
+{% block body %}
+		
+		<header>
+			{% block header %}
+
+			{% endblock %}
+		</header>
+
+		<sidebar>
+			<div class="outer">
+				<div class="inner">
+					{% block sidebar %}
+					<h2>frontcast of
+						forccast</h2>
+
+					<ul>
+					{% if user.is_authenticated %}
+						<li><i class="icon-user"></i> <a href="{% url 'walt_home' %}">{{ user.username }}</a></li>
+
+						<li><i class="icon-bolt"></i> <a href="{% url 'walt_logout' %}">logout</a></li>
+					{% else %}
+						<li><i class="icon-bolt"></i> <a href="{% url 'walt_login' %}">login</a></li>
+					{% endif %}
+
+					</ul>
+
+					{% endblock %}
+				</div>
+			</div>
+		</sidebar>
+
+		<div class="main">
+			<div class="inner">
+			
+			{% block page %}
+			
+			{% endblock %}
+
+			</div>
+		</div>
+
+		{% if user.is_authenticated %}
+		<div class="references"></div>
+		{% endif %}
+
+		<footer>
+			{% block footer %}
+
+			{% endblock %}
+		</footer>
+
+		
+{% endblock %}
