@@ -28,6 +28,16 @@
         
         <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
         
+        {% block scripts %}
+        
+        {% endblock %}
+        <script>
+            $(window).load( function(){
+                {% block onload %}
+
+                {% endblock %}
+            })
+        </script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     </body>
 </html>

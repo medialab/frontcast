@@ -58,6 +58,13 @@ def home( request ):
 	data = {}
 	return render_to_response(  "walt/index.html", RequestContext(request, data ) )
 
+#
+#	Add video metadata to biblib for reference principes
+#
+def video( request ):
+	data = {}
+	return render_to_response(  "walt/video.html", RequestContext(request, data ) )
+
 
 @login_required
 def spiff( request, username ):

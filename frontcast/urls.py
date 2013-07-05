@@ -25,4 +25,5 @@ urlpatterns = patterns('',
     #//url(r'^humans\.txt$', direct_to_template, {'template': 'frontcast/humans.txt', 'mimetype': 'text/plain'}),
    # url(r'^crossdomain\.xml$', direct_to_template, {'template': 'frontcast/crossdomain.xml', 'mimetype': 'text/xml'}),
 
+   url(r'^video/$', 'walt.views.video', name='walt_home'), # add video metadata ? provide upload features.
 )

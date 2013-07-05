@@ -1,0 +1,59 @@
+{
+  "default": {
+    "errors": {
+      "exactly_one": "Exactly one entry has to be added.",
+      "at_least_one": "At least one entry has to be added."
+    }
+  },
+  "CreatorField": {
+    "errors": {
+      "at_least_one": "At least one creator has to be specified."
+    },
+    "line": {
+      "Person": "Person",
+      "Orgunit": "Organization",
+      "Event": "Event"
+    },
+    "person": {
+      "name_family": "Family name :",
+      "name_given": "Name :",
+      "date_birth": "Birth year :",
+      "date_death": "Death year :",
+      "affiliation": "Affiliation :"
+    },
+    "orgunit": {
+      "name": "Name :"
+    },
+    "event": {
+      "title": "Title :",
+      "number": "Number :",
+      "international": "International :",
+      "place": "Place :",
+      "country": "Country :",
+      "date_start": "Start date :",
+      "date_end": "End date :"
+    }
+  },
+  "IndentifierField": {
+    "errors": {
+      "exactly_one": "Exactly one identifier has to be added.",
+      "at_least_one": "At least one creator has to be specified."
+    }
+  },
+  "LanguageValueField": {
+    "errors": {
+      "at_least_one": "At least one language has to be specified."
+    }
+  },
+  "TypeField": {
+    "errors": {
+      "at_least_one": "At least one entry has to be added."
+    }
+  },
+  "DocumentField": {
+    "errors": {
+      "exactly_one": "Exactly one entry has to be added.",
+      "at_least_one": "At least one entry has to be added."
+    }
+  }
+}
