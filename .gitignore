@@ -5,3 +5,8 @@
 *.swp
 *.sublime-workspace
 local_settings.py
+# virtualenv if activated inside the frontcast dir
+bin/
+include/
+lib/
+frontcast.wsgi
