@@ -2,6 +2,12 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
 
+class Profile( models.Model ):
+	user = models.ForeignKey( User )
+	accept_cookies = models.BooleanField( default=False )
+	language = models.CharField( max_length=2, default='EN', choices=settings.LANGUAGES ) # favourite user language
+
+
 #
 #
 #	PSEUDO FREE TAGS
@@ -53,7 +59,7 @@ class Tag(models.Model):
 		}
 
 class Document( models.Model ):
-	
+
 	PUBLIC 	= 'P' # make the document publicly available
 	SHARED 	= 'S' # editable only to authors, viewable by watchers
 	DRAFT 	= 'D'  # working draft, read and edit only to owner, shown as draft in your working platform
@@ -71,10 +77,10 @@ class Document( models.Model ):
 	MEDIA 	= 'I' # external iframe, image, audio or video
 	TEXT 	= 'T' # a note (at least originally )
 	COMMENT  = 'C' # a cpomment,
-	
+
 	TYPE_CHOICES = (
 		( LINK,  'just a link'),
-		( MEDIA, 'media'),	
+		( MEDIA, 'media'),
 		( TEXT,  'text'), # notes and other stories
 		( COMMENT, 'comment')
 
@@ -85,7 +91,7 @@ class Document( models.Model ):
 	title = models.CharField( max_length=160, default="", blank=True, null=True )
 	abstract = models.TextField( default="", blank=True, null=True )
 	content = models.TextField( default="", blank=True, null=True )
-	language =  models.CharField( max_length=2, default='EN', choices=settings.LANGUAGES ) # magic admin features: create a pin for the same language
+	language =  models.CharField( max_length=2, default='EN', choices=settings.LANGUAGES )
 	mimetype = models.CharField( max_length=255, default="", blank=True, null=True ) # according to type, if needed (like imagefile)
 
 
@@ -122,7 +128,7 @@ class Document( models.Model ):
 	# use this function if and only if the pin content is in bibtex (CLEAN) format
 	def bib( self ):
 		return bibtex( self.content )
-		
+
 	def plaintext( self ):
 		return """
 			|

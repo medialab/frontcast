@@ -3,23 +3,24 @@
 
 
 {% block body %}
-		
-		<header>
-			{% block header %}
 
+		<header>
+			<div class="inner">
+			{% block header %}
+				<h2>hey</h2>
 			{% endblock %}
+			</div>
 		</header>
 
 		<sidebar>
 			<div class="outer">
 				<div class="inner">
 					{% block sidebar %}
-					<h2>frontcast of
-						forccast</h2>
+					<a><img src="{{ STATIC_URL }}/img/forccast.svg" id="forccast-logo"/></a>
 
 					<ul>
 					{% if user.is_authenticated %}
-						<li><i class="icon-user"></i> <a href="{% url 'walt_home' %}">{{ user.username }}</a></li>
+						<li><i class="icon-user"></i> <a href="{% url 'walt_home' %}">me</a></li>
 
 						<li><i class="icon-bolt"></i> <a href="{% url 'walt_logout' %}">logout</a></li>
 					{% else %}
@@ -27,7 +28,7 @@
 					{% endif %}
 
 					</ul>
-
+					<img src="{{ STATIC_URL }}/img/sciences-po.svg" id="sciences-po-logo"/>
 					{% endblock %}
 				</div>
 			</div>
@@ -35,16 +36,18 @@
 
 		<div class="main">
 			<div class="inner">
-			
+
 			{% block page %}
-			
+
 			{% endblock %}
 
 			</div>
 		</div>
 
 		{% if user.is_authenticated %}
-		<div class="references"></div>
+		<div class="references">
+			<h2>bibliography</h2>
+		</div>
 		{% endif %}
 
 		<footer>
@@ -53,5 +56,5 @@
 			{% endblock %}
 		</footer>
 
-		
+
 {% endblock %}

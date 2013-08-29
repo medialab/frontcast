@@ -1,0 +1,27 @@
+{
+  "folders":
+    [
+        {
+            "path": "static/js",
+            "name": "js",
+            "file_exclude_patterns": ["*.min.js"]
+        },
+        {
+            "path": "static/less",
+            "name": "less"
+        },
+        {
+            "path": "frontcast",
+            "name": "frontcast"
+        },
+        {
+            "path": "templates/walt",
+            "name": "walt:templates"
+        },
+        {
+            "path": "walt",
+            "name": "walt:app"
+        }
+
+    ]
+}

@@ -1,4 +1,6 @@
 import logging
+
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -10,12 +12,13 @@ from django.utils.translation import get_language
 
 from glue.utils import Epoxy
 from walt.forms import LoginForm
+from frontcast import local_settings
 
 logger = logging.getLogger('glue')
 
 
 def login_view( request ):
-	
+
 	form = LoginForm( request.POST )
 	next = request.REQUEST.get('next', 'walt_home')
 
@@ -24,7 +27,7 @@ def login_view( request ):
 	if request.method != 'POST':
 		data = _shared_data( request, tags=[ "index" ], d=login_message )
 		return render_to_response('walt/login.html', RequestContext(request, data ) )
-	
+
 	if form.is_valid():
 		user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
 		if user is not None:
@@ -57,6 +60,19 @@ def logout_view( request ):
 def home( request ):
 	data = {}
 	return render_to_response(  "walt/index.html", RequestContext(request, data ) )
+
+@staff_member_required
+def setup( request ):
+	data = {}
+
+	for g in local_settings.WALT_AFFILIATIONS:
+		Group.objects.get_or_create( name=g[ 'name' ] )
+
+	data[ 'groups' ] = Group.objects.all()
+
+
+	return render_to_response(  "walt/setup.html", RequestContext(request, data ) )
+
 
 #
 #	Add video metadata to biblib for reference principes

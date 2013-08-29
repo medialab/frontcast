@@ -3,16 +3,19 @@
 
 @red: #cc1600;
 @black: #838383;
+@f-darkblue: #141e20;
 @f-blue: #33cccc;
+@f-red: #ee312f;
 
-@grey:#cdcdcd;
+@grey:#eaeaea;
 @grey_5: darken(@grey, 5%);
 @grey_10: darken(@grey, 10%);
+@grey-5: lighten(@grey, 5%);
 @grey-10: lighten(@grey, 10%);
 @grey-18: lighten(@grey, 18%);
 
-@header-height: 60px;
-@sidebar-width: 180px;
+@header-height: 80px;
+@sidebar-width: 110px;
 @references-width:260px;
 @padding: 24px;
 
@@ -25,44 +28,47 @@ html, body{
 }
 
 body{
-	.mono( 1em);
+	.sans-serif( 14px);
+	background: @grey-5;
 }
 
 h1, h2, h3, h4{
 	font-weight:normal;
 	margin-top:0;
+	margin-bottom: 0;
+	.sans-serif( 14px);
 }
 h2{
-	.mono(1.2em);
-
+	padding: @padding/2 @padding;
 }
 
 a{
-	color:@f-blue;
+	color:#121e20;
+	text-decoration: none;
 }
 
 
 sidebar{
-	background:@grey-18;
+	background:@grey;
 	position:fixed;
 	width:@sidebar-width;
 	height: 100%;
 	margin:0;
 	padding-top: 0;
-	border-right: 1px solid black;
+	// border-right: 1px solid black;
+
 	.outer{
 		height: 100%;
-		width: @sidebar-width - 3px;
-		border-right: 1px solid @grey;
+		width: @sidebar-width;
+		/// border-right: 1px solid @grey_5;
+		// box-shadow : inset 0px 0px 13px rgba(0,0,0,.05);
 	}
 
 	.inner{
 		padding: 0;
 	}
 
-	h2{
-		padding: @padding;
-	}
+
 
 	ul{
 		padding: 0;
@@ -71,8 +77,8 @@ sidebar{
 		li{
 			list-style-type: none;
 			border-bottom: 1px solid @grey;
-			
-			.mono( .8em);
+
+			.sans-serif();
 			padding: 12px 0 12px 12px;
 			&:hover{
 				background: white;
@@ -88,20 +94,28 @@ sidebar{
 	position:fixed;
 	height:100%;
 	width: @references-width;
-	background:@black;
-	border-left:1px solid black;
+	background:@grey_5;
 	top:0px;
 	right:0px;
 	display:block;
+	h2{
+		text-align: center;
+		background: @f-blue;
+		color: white;
+	}
 }
 
 header{
 	position:fixed;
-	display: none;
 	width:100%;
-	height: @header-height;
+	height: auto;
 	margin:0;
-	background: @grey-10;
+	background: @f-darkblue;
+	.inner{
+	color: white;
+		margin-left: @sidebar-width ;
+		margin-right: @sidebar-width ;
+	}
 }
 
 .main{
@@ -125,7 +139,7 @@ button{
 	border: 0px;
 	.border-radius(2px);
 	color: white;
-	.mono( 1em);
+	.sans-serif( 1em);
 
 	padding: 10px 24px 10px 24px;
 
@@ -138,20 +152,29 @@ input{
 	background-color: @grey-10;
 	border: 0px;
 	.border-radius(2px);
-	.mono( 1em);
+	.sans-serif( 1em);
 	display: block;
 
 }
 input[type="text"]{
-	
+
 }
 
 
 /*
-	
+
 	Override DOMINO css
 
 */
 fieldset{
 	border-width:0;
+}
+
+
+// logos
+#sciences-po-logo{
+	width:@sidebar-width - 13px;
+	margin-left: 8px;
+	position:fixed;
+	bottom: 10px;
 }

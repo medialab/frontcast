@@ -8,7 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # home
     url(r'^$', 'walt.views.home', name='walt_home'),
-    
+
     # login / logout
     url(r'^logout/$', 'walt.views.logout_view', name='walt_logout'),
     url(r'^login/$', 'walt.views.login_view', name='walt_login'),
@@ -23,7 +23,10 @@ urlpatterns = patterns('',
     url(r'^u/(?P<username>[a-z\.]+)/$', 'walt.views.spiff', name='walt_spiff'), #i.e. user page
     #url(r'^robots\.txt$',  TemplateView.as_view(direct_to_template, {'template': 'frontcast/robots.txt', 'mimetype': 'text/plain'}),
     #//url(r'^humans\.txt$', direct_to_template, {'template': 'frontcast/humans.txt', 'mimetype': 'text/plain'}),
-   # url(r'^crossdomain\.xml$', direct_to_template, {'template': 'frontcast/crossdomain.xml', 'mimetype': 'text/xml'}),
+    # url(r'^crossdomain\.xml$', direct_to_template, {'template': 'frontcast/crossdomain.xml', 'mimetype': 'text/xml'}),
 
-   url(r'^video/$', 'walt.views.video', name='walt_home'), # add video metadata ? provide upload features.
+    url(r'^video/$', 'walt.views.video', name='walt_home'), # add video metadata ? provide upload features.
+
+    # admin only pages
+    url(r'^setup/$', 'walt.views.setup', name='walt_setup'), # add video metadata ? provide upload features.
 )

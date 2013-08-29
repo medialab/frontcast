@@ -3,4 +3,5 @@
 *.pyc
 *.DS_Store
 *.swp
+*.sublime-workspace
 local_settings.py
