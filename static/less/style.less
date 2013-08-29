@@ -19,6 +19,11 @@
 @references-width:260px;
 @padding: 24px;
 
+// z-indexes
+@main-z-index: 1;
+@sidebar-z-index: 2;
+@references-z-index:3;
+@toast-z-index: 10291092;
 
 html, body{
 	height:100%;
@@ -55,6 +60,7 @@ sidebar{
 	height: 100%;
 	margin:0;
 	padding-top: 0;
+	z-index: @sidebar-z-index;
 	// border-right: 1px solid black;
 
 	.outer{
@@ -73,15 +79,18 @@ sidebar{
 	ul{
 		padding: 0;
 		margin:0;
-		margin-left:12px;
 		li{
 			list-style-type: none;
-			border-bottom: 1px solid @grey;
-
-			.sans-serif();
-			padding: 12px 0 12px 12px;
+			padding:0;
+			a{
+				display: block;
+				padding: @padding/3;
+			}
 			&:hover{
 				background: white;
+			}
+			&.active{
+				background: @grey-5;
 			}
 			i{
 				margin-right: 12px;
@@ -92,6 +101,7 @@ sidebar{
 
 .references{
 	position:fixed;
+	z-index: @references-z-index;
 	height:100%;
 	width: @references-width;
 	background:@grey_5;
@@ -124,11 +134,12 @@ header{
 	height: 100%;
 	margin:0;
 	display:block;
-	position:fized;
+	position:fixed;
+	z-index: @main-z-index;
 	.inner{
 		padding-left: @sidebar-width + @padding;
 		padding-right: @references-width + @padding;
-		padding-top:@padding;
+		padding-top: @header-height;
 	}
 }
 
@@ -178,3 +189,66 @@ fieldset{
 	position:fixed;
 	bottom: 10px;
 }
+
+
+.reference{
+	margin: @padding/2;
+	padding: @padding/2;
+	background: @grey;
+}
+
+.pins{
+	position:relative;
+
+	.pin{
+		box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 5px;
+		background: white;
+		margin-bottom: 36px;
+		width: 270px;
+	}
+}
+
+
+
+
+
+/*
+
+
+	Toast
+	---
+
+*/
+@toast-width: 280px;
+@toast-height: 60px;
+
+.toast-container {
+
+	width: @toast-width;
+	z-index: @toast-z-index;
+	pointer-events:none;
+	position: fixed;
+    left: 50%;
+    top:50%;
+
+	&.toast-position-middle-center { margin-left: -@toast-width/2; margin-top: -40px; }
+  	&.toast-position-top-left { left: 20px; top: 20px; }
+	&.toast-position-top-right { left: 100%; margin-left: -@toast-width - 20px; top: 80px; }
+	&.toast-position-bottom-center { margin-left: -@toast-width/2; margin-top: -@toast-height; top: 100%; }
+
+	.toast-item {
+		height: auto;
+		position: relative;
+		background: @red;
+		border: 0px solid transparent;
+		h1{
+			color: white;
+			text-align:center;
+			padding: 20px;
+		}
+		.toast-item-close, .toast-item-image {
+		    display:none;
+		}
+	}
+}
+
