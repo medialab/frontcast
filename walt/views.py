@@ -58,7 +58,7 @@ def logout_view( request ):
 
 
 def home( request ):
-	data = {}
+	data = _shared_data( request, tags=['home'] )
 	return render_to_response(  "walt/index.html", RequestContext(request, data ) )
 
 @staff_member_required
@@ -68,8 +68,12 @@ def setup( request ):
 	for g in local_settings.WALT_AFFILIATIONS:
 		Group.objects.get_or_create( name=g[ 'name' ] )
 
-	data[ 'groups' ] = Group.objects.all()
+	data[ 'affiliations' ] = Group.objects.all()
 
+	for g in local_settings.WALT_ROLES:
+		Group.objects.get_or_create( name=g[ 'name' ] )
+
+	data[ 'actions' ]
 
 	return render_to_response(  "walt/setup.html", RequestContext(request, data ) )
 
@@ -77,17 +81,18 @@ def setup( request ):
 #
 #	Add video metadata to biblib for reference principes
 #
-def video( request ):
-	data = {}
+def spiff_video( request ):
+	data = _shared_data( request, tags=['me'])
 	return render_to_response(  "walt/video.html", RequestContext(request, data ) )
 
 
 @login_required
 def spiff( request, username ):
-	data = {}
+	data = _shared_data( request, tags=['me'])
 	data['username'] = username
 
 	return render_to_response(  "walt/spiff.html", RequestContext(request, data ) )
+
 
 def _shared_data( request, tags=[], d={} ):
 	d['tags'] = tags

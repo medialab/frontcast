@@ -7,7 +7,7 @@
 		<header>
 			<div class="inner">
 			{% block header %}
-				<h2>hey</h2>
+				<h2>frontcast</h2>
 			{% endblock %}
 			</div>
 		</header>
@@ -19,12 +19,14 @@
 					<a><img src="{{ STATIC_URL }}/img/forccast.svg" id="forccast-logo"/></a>
 
 					<ul>
-					{% if user.is_authenticated %}
-						<li><i class="icon-user"></i> <a href="{% url 'walt_home' %}">me</a></li>
 
-						<li><i class="icon-bolt"></i> <a href="{% url 'walt_logout' %}">logout</a></li>
+						<li {% if 'home' in tags %}class="active"{% endif %}><a href="{% url 'walt_home' %}"><i class="icon-list"></i>index</a></li>
+					{% if user.is_authenticated %}
+						<li {% if 'me' in tags %}class="active"{% endif %}><a href="{% url 'walt_spiff' user.username %}"><i class="icon-user"></i> me</a></li>
+
+						<li><a href="{% url 'walt_logout' %}"><i class="icon-bolt"></i> logout</a></li>
 					{% else %}
-						<li><i class="icon-bolt"></i> <a href="{% url 'walt_login' %}">login</a></li>
+						<li><a href="{% url 'walt_login' %}"><i class="icon-bolt"></i> login</a></li>
 					{% endif %}
 
 					</ul>
@@ -47,6 +49,10 @@
 		{% if user.is_authenticated %}
 		<div class="references">
 			<h2>bibliography</h2>
+
+			<div class="reference">
+				James, H.
+			</div>
 		</div>
 		{% endif %}
 

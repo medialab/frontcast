@@ -1,6 +1,17 @@
 frontcast
 =========
 
+Fedora
+create and activate virtualenv, install dependecies
+	
+
+copy and modify local_settings according to your own django settings. Cfr. settings.py 
+	
+	mv frontcast/local_settings.sample.py frontcast/local_settings.py 
+
+
+
+
 Mac & Unix installation
 
 Note: we use '/path/to/' as base folder
