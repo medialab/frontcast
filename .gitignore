@@ -10,3 +10,5 @@ bin/
 include/
 lib/
 frontcast.wsgi
+
+sqlite/frontcast.db
