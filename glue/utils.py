@@ -156,12 +156,12 @@ class Epoxy:
 	def single( self, model, kwargs ):
 		self.response['meta']['model'] = model.__name__
 		try:
-			self.response['object'] = model.objects.get( **kwargs ).json()
+			self.response['object'] = model.objects.get( **kwargs ).json( deep=True )
 		except model.DoesNotExist, e:
 			return self.throw_error( error="%s" % e, code=API_EXCEPTION_EMPTY )
 		return self
 
-	def queryset( self, queryset, model_name=None ):
+	def queryset( self, queryset, model ):
 		if type( queryset ) == QuerySet:
 			self.response['meta']['total_count'] = queryset.filter( **self.filters ).count()
 			qs = queryset.filter( **self.filters ).order_by( *self.order_by )
@@ -171,25 +171,24 @@ class Epoxy:
 			self.response['meta']['total_count'] = sum( 1 for r in queryset )
 			qs = queryset
 		else:
-			qs = queryset.filer()
+			qs = queryset.filter()
 
 		# apply limits
 		qs = qs[ self.offset : self.offset + self.limit ]
 
-		if model_name is not None:
-			self.response['meta']['model'] = model_name # @todo: guess from queryset/rawqueryset ?
+		self.response['meta']['model'] = model.__name__ # @todo: guess from queryset/rawqueryset ?
 
 
 		# "easier to ask for forgiveness than permission" (EAFP) rather than "look before you leap" (LBYL)
 		try:
 			self.response['objects'] = [ o.json() for o in qs ]
 
-		except AttributeError:
-			kwargs = { 'format': 'python', 'queryset': qs }
+		except AttributeError, e:
+			self.warning( 'objects', "Exception: %s" % e )
 			self.response['objects'] = []#serializers.serialize(**kwargs)
 
-		except Exception, e:
-			return self.throw_error( error="Exception: %s" % e, code=API_EXCEPTION_INVALID )
+		#except Exception, e:
+		#	return self.throw_error( error="Exception: %s" % e, code=API_EXCEPTION_INVALID )
 
 		return self
 

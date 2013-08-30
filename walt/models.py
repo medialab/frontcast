@@ -75,14 +75,20 @@ class Profile(models.Model ):
 	def __unicode__(self):
 		return "%s" % self.user.username
 
-	def json(self ):
-		return{
-			'id': user.id,
+	def json(self, deep=False):
+		d = {
+			'id': self.id,
+			'user': {
+				'id':self.user.id,
+				'username': self.user.username,
+			},
 			'accept_cookies': self.accept_cookies,
-			'language':self.slug,
-			'tags':[ t.json() for t in self.tags ],
-			'tasks':[ t.json() for t in self.tasks ]
+			'language':self.language
 		}
+		if deep:
+			d['tags'] = [ t.json() for t in self.tags.all() ]
+			d['tasks'] = [ t.json() for t in self.tasks.all() ]
+		return d
 
 
 class Assignment(models.Model):

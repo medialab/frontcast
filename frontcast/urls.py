@@ -7,7 +7,8 @@ admin.autodiscover()
 
 api_urlpatterns = patterns('walt.api',
     url(r'^$', 'index'),
-    url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects')
+    url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects'),
+    url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>\d+)$', 'get_object'),
 )
 
 urlpatterns = patterns('',
