@@ -198,7 +198,7 @@ AUTH_LDAP_USER_DN_TEMPLATE = local_settings.AUTH_LDAP_USER_DN_TEMPLATE # somethi
 # Keep ModelBackend around for per-user permissions and maybe a local
 # superuser.
 AUTHENTICATION_BACKENDS = (
-    'django_auth_ldap.backend.LDAPBackend',
+    'frontcast.ldap.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 logger = logging.getLogger('django_auth_ldap')

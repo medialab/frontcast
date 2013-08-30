@@ -2,10 +2,15 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
 
-class Profile( models.Model ):
-	user = models.ForeignKey( User )
-	accept_cookies = models.BooleanField( default=False )
-	language = models.CharField( max_length=2, default='EN', choices=settings.LANGUAGES ) # favourite user language
+
+class Task(models.Model):
+	NOTE = 'Sn'
+	TYPE_CHOICES = (
+		(NOTE, 'note'),
+  )
+
+	name = models.CharField(max_length=128) # e.g. 'Controversy Course 2013 - controversy site due'
+	type = models.CharField(max_length=2, choices=TYPE_CHOICES)
 
 
 #
@@ -17,6 +22,7 @@ class Profile( models.Model ):
 class Tag(models.Model):
 
 	# feel free to add tag type to this model ... :D
+	FREE = '' # i.e, no special category at all
 	AUTHOR = 'Au'
 	KEYWORD = 'Ke'
 	INSTITUTION = 'In'
@@ -24,32 +30,32 @@ class Tag(models.Model):
 	PLACE = 'Pl'
 	DATE = 'Da'
 	GEOCOVER = 'GC'
-	FREE = '' # i.e, no special category at all
-
+	ACTION = '!A'
 
 	TYPE_CHOICES = (
-		( FREE, 'no category'),
-        ( AUTHOR, 'AUTHOR'),
-        ( KEYWORD, 'KEYWORD'),
-        ( INSTITUTION, 'Institution'),
-        ( RESEARCHER, 'Researcher'),
-        ( PLACE, 'Place'),
-        ( DATE, 'Date'),
-        ( GEOCOVER, 'Geographic coverage')
-    )
+		(FREE, 'no category'),
+    (AUTHOR, 'AUTHOR'),
+    (KEYWORD, 'KEYWORD'),
+    (INSTITUTION, 'Institution'),
+    (RESEARCHER, 'Researcher'),
+    (PLACE, 'Place'),
+    (DATE, 'Date'),
+    (GEOCOVER, 'Geographic coverage'),
+    (ACTION, 'ACTION') # cfr walt.setup to
+  )
 
 	name = models.CharField(max_length=128) # e.g. 'Mr. E. Smith'
 	slug = models.SlugField(max_length=128) # e.g. 'mr-e-smith'
-	type = models.CharField( max_length=2, choices=TYPE_CHOICES, default=FREE ) # e.g. 'author' or 'institution'
+	type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=FREE) # e.g. 'author' or 'institution'
 
 	def __unicode__(self):
-		return "%s : %s"% ( self.get_type_display(), self.name)
+		return "%s : %s"% (self.get_type_display(), self.name)
 
 	class Meta:
 		ordering = ["type", "slug" ]
 		unique_together = ("type", "slug")
 
-	def json( self ):
+	def json(self ):
 		return{
 			'id': self.id,
 			'slug':self.slug,
@@ -57,6 +63,40 @@ class Tag(models.Model):
 			'type':self.type,
 			'type_label':self.get_type_display()
 		}
+
+
+class Profile(models.Model ):
+	user = models.OneToOneField(User)
+	accept_cookies = models.BooleanField(default=False)
+	language = models.CharField(max_length=2, default='EN', choices=settings.LANGUAGES) # favourite user language
+	tasks = models.ManyToManyField(Task, null=True, blank=True)
+	tags = models.ManyToManyField(Tag, null=True, blank=True)
+
+	def __unicode__(self):
+		return "%s" % self.user.username
+
+	def json(self ):
+		return{
+			'id': user.id,
+			'accept_cookies': self.accept_cookies,
+			'language':self.slug,
+			'tags':[ t.json() for t in self.tags ],
+			'tasks':[ t.json() for t in self.tasks ]
+		}
+
+
+class Assignment(models.Model):
+  profile = models.ForeignKey(Profile)
+  task = models.ForeignKey(Task)
+  date_last_modified = models.DateField( auto_now=True ) # date last save()
+  date_due = models.DateField()
+  date_completed = models.DateField( blank=True, null=True )
+  notes = models.CharField(max_length=160, blank=True, null=True )
+
+  class Meta:
+		ordering = ["-date_due", "-task" ]
+		unique_together = ("profile", "task")
+
 
 class Document( models.Model ):
 

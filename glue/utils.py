@@ -36,7 +36,7 @@ def whosdaddy( level=2 ):
 #    BIBTEX JSON PARSER
 #    ==================
 #
-def bibtex( reference ):	
+def bibtex( reference ):
 	reference = re.sub('(\w+)\s*=\s*\{+',r'"\1":"', reference )
 	reference = re.sub('\}+(?=\s*[,\}+])','"', reference )
 	reference = re.sub('@(\w+)\s*\{([^,]*)',r'{"bibtext_key":"\2","\1": "\2"', reference )
@@ -55,11 +55,11 @@ class OffsetLimitForm( Form ):
 #
 #    EPOXY
 #    =====
-#   
+#
 #    Helper to handle json response.
-#    
+#
 #    Basic usage
-#    -----------   
+#    -----------
 #    In a django view:
 #    <code>
 #    def view_with_json_output( request ):
@@ -76,7 +76,7 @@ class Epoxy:
 	Understand requet.REQUEST meta params like django filters, limit/offset
 
 	Usage:
-	
+
 	queryset = <Model>.objects.filter( **kwargs )
 	return Epoxy( request ).get_response( queryset=queryset )
 
@@ -104,7 +104,7 @@ class Epoxy:
 		if self.method == 'GUESS':
 
 			if 'method' in self.request.REQUEST: # simulation
-				method = self.request.REQUEST.get('method') 
+				method = self.request.REQUEST.get('method')
 				if method not in API_AVAILABLE_METHODS:
 					self.warning( 'order_by', "Method: %s is not available " % self.request.REQUEST.get('method') )
 				else:
@@ -112,7 +112,7 @@ class Epoxy:
 					self.method = method
 			else:
 				self.method = self.response['meta']['method'] = self.request.method
-			
+
 
 		if self.method == 'GET' and 'filters' in self.request.REQUEST:
 			try:
@@ -127,17 +127,17 @@ class Epoxy:
 			except Exception, e:
 				self.warning( 'order_by', "Exception: %s" % e )
 
-		# limit / offset 
+		# limit / offset
 		if self.method=='GET' and ( 'offset' in self.request.REQUEST or 'limit' in self.request.REQUEST ) :
 			form = OffsetLimitForm( self.request.REQUEST )
 			if form.is_valid():
-				self.offset = form.cleaned_data['offset'] if form.cleaned_data['offset'] else self.offset 
-				self.limit	= form.cleaned_data['limit'] if form.cleaned_data['limit'] else self.limit 
+				self.offset = form.cleaned_data['offset'] if form.cleaned_data['offset'] else self.offset
+				self.limit	= form.cleaned_data['limit'] if form.cleaned_data['limit'] else self.limit
 			else:
 				self.warnings( 'offsets', form.errors )
 			self.response['meta']['offset'] = self.offset
 			self.response['meta']['limit'] = self.limit
-			
+
 			# set limit of offset
 			self.response['meta']['next'] = {
 				'offset': self.offset + self.limit,
@@ -160,7 +160,7 @@ class Epoxy:
 		except model.DoesNotExist, e:
 			return self.throw_error( error="%s" % e, code=API_EXCEPTION_EMPTY )
 		return self
-		
+
 	def queryset( self, queryset, model_name=None ):
 		if type( queryset ) == QuerySet:
 			self.response['meta']['total_count'] = queryset.filter( **self.filters ).count()
@@ -172,18 +172,18 @@ class Epoxy:
 			qs = queryset
 		else:
 			qs = queryset.filer()
-			
+
 		# apply limits
 		qs = qs[ self.offset : self.offset + self.limit ]
 
 		if model_name is not None:
 			self.response['meta']['model'] = model_name # @todo: guess from queryset/rawqueryset ?
-		
-		
+
+
 		# "easier to ask for forgiveness than permission" (EAFP) rather than "look before you leap" (LBYL)
 		try:
 			self.response['objects'] = [ o.json() for o in qs ]
-		
+
 		except AttributeError:
 			kwargs = { 'format': 'python', 'queryset': qs }
 			self.response['objects'] = []#serializers.serialize(**kwargs)
@@ -210,5 +210,14 @@ class Epoxy:
 		self.response[ 'status' ] = 'error'
 		self.response[ 'error' ] = error
 		self.response[ 'code' ] = code
-		
+
 		return self
+
+	@staticmethod
+	def error( request, message="", code=API_EXCEPTION, mimetype="application/json" ):
+		e = {
+			'status': 'error',
+			'error' : message,
+			'code'  : code
+		}
+		return HttpResponse(json.dumps(e), mimetype=mimetype)

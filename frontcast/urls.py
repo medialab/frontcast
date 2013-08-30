@@ -5,6 +5,11 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
+api_urlpatterns = patterns('walt.api',
+    url(r'^$', 'index'),
+    url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects')
+)
+
 urlpatterns = patterns('',
     # home
     url(r'^$', 'walt.views.home', name='walt_home'),
@@ -30,4 +35,7 @@ urlpatterns = patterns('',
 
     # admin only pages
     url(r'^setup/$', 'walt.views.setup', name='walt_setup'), # add video metadata ? provide upload features.
+
+    # restful api
+    url(r'^api/', include(api_urlpatterns))
 )
