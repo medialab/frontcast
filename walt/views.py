@@ -21,6 +21,8 @@ logger = logging.getLogger('glue')
 
 
 def login_view( request ):
+	if request.user.is_authenticated():
+		return home( request )
 
 	form = LoginForm( request.POST )
 	next = request.REQUEST.get('next', 'walt_home')
