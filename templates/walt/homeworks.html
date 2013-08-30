@@ -1,0 +1,17 @@
+{% extends "walt/middle.html" %}
+{% load i18n %}
+
+{% block page %}
+  <h1>...homeworks</h1>
+  {% verbatim %}
+  <div ng-controller="AssignmentListCtrl">
+    <span>{{total_count}}</span>
+    <div class="assignments">
+      <div class="assignment" ng-repeat="a in assignments">
+        <h3>{{a.task.name}}</h3>
+        {{a.date_due}}
+        <div ng-bind-html-unsafe="a.task.content"></div>
+      </div>
+    </div>
+  {% endverbatim %}
+{% endblock %}

@@ -3,7 +3,7 @@
 
 {% block page %}
 	<div>
-		<form method="POST" action="">
+		<form method="POST" action="{% url 'walt_login' %}">
 			<input type="hidden" value="{{ next }}" name="next" />
 			{% csrf_token %}
 			<h2>{% trans "login" %}<!-- to access content {{ next }} --></div>
@@ -20,6 +20,6 @@
 				<input id="id_login_password" type="password" name="password" class="span5"  maxlength="64" />
 			</p>
 			<button>{% trans "login" %}</button>
-		</form>		
+		</form>
 	</div>
 {% endblock %}

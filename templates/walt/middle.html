@@ -3,15 +3,15 @@
 
 
 {% block body %}
-
+		{% if user.is_authenticated %}
 		<header>
 			<div class="inner">
 			{% block header %}
-				<h2>frontcast</h2>
+				<h2>connected as {{ user.first_name }}( {{user.username}} )</h2>
 			{% endblock %}
 			</div>
 		</header>
-
+		{% endif %}
 		<sidebar>
 			<div class="outer">
 				<div class="inner">
