@@ -5,14 +5,15 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
+
 api_urlpatterns = patterns('walt.api',
     url(r'^$', 'index'),
+    url(r'access-denied/$', 'access_denied'),
     url(r'assignment/$', 'assignments'),
     url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects'),
     url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>\d+)$', 'get_object'),
-
-
 )
+
 
 urlpatterns = patterns('',
     # home
