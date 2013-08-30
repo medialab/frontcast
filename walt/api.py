@@ -12,6 +12,10 @@ def index(request):
 	return Epoxy( request ).json()
 
 
+def access_denied(request):
+	return Epoxy.error( request, message='access denied');
+
+
 #
 #
 #	Document objects getter

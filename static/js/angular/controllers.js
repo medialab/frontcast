@@ -40,3 +40,7 @@ function AssignmentListCtrl($scope, $http) {
   });
 
 }
+
+function ReferenceListCtrl($scope, $http) {
+
+}
