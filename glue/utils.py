@@ -161,7 +161,7 @@ class Epoxy:
 			return self.throw_error( error="%s" % e, code=API_EXCEPTION_EMPTY )
 		return self
 
-	def queryset( self, queryset, model ):
+	def queryset( self, queryset, model=None ):
 		if type( queryset ) == QuerySet:
 			self.response['meta']['total_count'] = queryset.filter( **self.filters ).count()
 			qs = queryset.filter( **self.filters ).order_by( *self.order_by )
@@ -176,7 +176,8 @@ class Epoxy:
 		# apply limits
 		qs = qs[ self.offset : self.offset + self.limit ]
 
-		self.response['meta']['model'] = model.__name__ # @todo: guess from queryset/rawqueryset ?
+		if model:
+			self.response['meta']['model'] = model.__name__ # @todo: guess from queryset/rawqueryset ?
 
 
 		# "easier to ask for forgiveness than permission" (EAFP) rather than "look before you leap" (LBYL)

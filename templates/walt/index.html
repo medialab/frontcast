@@ -2,33 +2,29 @@
 {% load i18n %}
 
 {% block page %}
-  <!-- div class="pins">
-	<div class="pin rating_0" style="position: absolute; ">
+  {% verbatim %}
+  <div ng-controller="DocumentListCtrl">
+    <span>{{documents.length}}</span>
 
-          <h2>modelisationfinance</h2>
-
-          <div class="metadata">
-            <span class="tag"></span>
-          </div>
-          <div class="metadata authors">
-                      </div>
-                    <div class="tags"><i class="icon-tags icon"></i>
-                      </div>
-
-
+    <div class="pins">
+      <div class="pin" ng-repeat="d in documents">
+        <h3>{{d.title}}</h3>
+        <div class="abstract">{{d.abstract}}</div>
+        <div ng-switch on="d.mimetype">
+            <div ng-switch-when="vimeo">
+                <!-- code to render a large video block-->
+                <iframe src="//player.vimeo.com/video/{{get_vimeo_id(d.content)}}?badge=0" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 
-
-
-          <div class="abstract">a sample excerpt</div>
-          <div class="actions">
-          <a class="button" href="/archive/modelisationfinance/manifest.php" target="_self"><i class="icon-eye-open"></i> intro</a>
-          <a class="button" href="/archive/modelisationfinance" target="_blank"><i class="icon-link"></i> view site</a>
-
-                      </div>
-
-          <div class="vimeo"></div>
-
+            </div>
+            <div ng-switch-default>
+                <!-- code to render the regular video block -->
+                AJE
+            </div>
         </div>
-  </pins -->
+      </div>
+
+    </div>
+  </div>
+  {% endverbatim %}
 {% endblock %}

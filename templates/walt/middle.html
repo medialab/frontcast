@@ -3,15 +3,15 @@
 
 
 {% block body %}
-
+		{% if user.is_authenticated %}
 		<header>
 			<div class="inner">
 			{% block header %}
-				<h2>frontcast</h2>
+				<h2>connected as {{ user.first_name }}( {{user.username}} )</h2>
 			{% endblock %}
 			</div>
 		</header>
-
+		{% endif %}
 		<sidebar>
 			<div class="outer">
 				<div class="inner">
@@ -38,14 +38,7 @@
 
 		<div class="main">
 			<div class="inner">
-				{% verbatim %}
-				<div>
-      <label>Name:</label>
-      <input type="text" ng-model="yourName" placeholder="Enter a name here">
-      <hr>
-      <h1>Hello {{yourName}}!</h1>
-    </div>
-    		{% endverbatim %}
+
 			{% block page %}
 
 			{% endblock %}

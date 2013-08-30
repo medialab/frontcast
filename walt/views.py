@@ -11,7 +11,10 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 
 from glue.utils import Epoxy
+
 from walt.forms import LoginForm
+from walt.models import Assignment
+
 from frontcast import local_settings
 
 logger = logging.getLogger('glue')
@@ -56,10 +59,20 @@ def logout_view( request ):
 	return redirect( 'walt_home' )
 
 
-
 def home( request ):
 	data = _shared_data( request, tags=['home'] )
+
+	if data['pending_tasks'] > 0:
+		return homeworks( request, data )
 	return render_to_response(  "walt/index.html", RequestContext(request, data ) )
+
+
+@login_required
+def homeworks( request, data=None ):
+	data = data if data is not None else _shared_data( request )
+	data['tags'] = ['me']
+	return render_to_response(  "walt/homeworks.html", RequestContext(request, data ) )
+
 
 @staff_member_required
 def setup( request ):
@@ -96,4 +109,10 @@ def spiff( request, username ):
 
 def _shared_data( request, tags=[], d={} ):
 	d['tags'] = tags
+	d['pending_tasks'] = 0
+
+	if request.user.is_authenticated():
+		# get pending tasks
+		d['pending_tasks'] = Assignment.objects.filter( profile__user=request.user, date_completed__isnull=True ).count()
+
 	return d
