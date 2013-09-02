@@ -60,7 +60,7 @@ def logout_view( request ):
 	logout( request )
 	return redirect( 'walt_home' )
 
-
+@login_required
 def home( request ):
 	data = _shared_data( request, tags=['home'] )
 
