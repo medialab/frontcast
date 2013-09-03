@@ -1,15 +1,19 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.conf import settings
 from django.db import models
 
 
 class Task(models.Model):
-  NOTE = 'Sn'
+  DELIVERABLE = 'de'
+  FILL_REFERENCE = 'rF'
+
   TYPE_CHOICES = (
-    (NOTE, 'note'),
+    (DELIVERABLE,'deliverable'),
+    (FILL_REFERENCE,'fill reference'),
   )
 
   name = models.CharField(max_length=128) # e.g. 'Controversy Course 2013 - controversy site due'
+  notify_to = models.ForeignKey(User)
   type = models.CharField(max_length=2, choices=TYPE_CHOICES)
   content = models.TextField( default="", blank=True, null=True )
 
@@ -80,7 +84,6 @@ class Profile(models.Model ):
   user = models.OneToOneField(User)
   accept_cookies = models.BooleanField(default=False)
   language = models.CharField(max_length=2, default='EN', choices=settings.LANGUAGES) # favourite user language
-  tasks = models.ManyToManyField(Task, null=True, blank=True)
   tags = models.ManyToManyField(Tag, null=True, blank=True)
 
   def __unicode__(self):
@@ -98,16 +101,21 @@ class Profile(models.Model ):
     }
     if deep:
       d['tags'] = [ t.json() for t in self.tags.all() ]
-      d['tasks'] = [ t.json() for t in self.tasks.all() ]
     return d
 
 
+class Course(models.Model ):
+  group = models.OneToOneField(Group)
+  tags = models.ManyToManyField(Tag, null=True, blank=True)
+
+
 class Assignment(models.Model):
-  profile = models.ForeignKey(Profile)
+  group = models.ForeignKey(Group)
   task = models.ForeignKey(Task)
   date_last_modified = models.DateField( auto_now=True ) # date last save()
   date_due = models.DateField()
-  date_completed = models.DateField( blank=True, null=True )
+  date_completed = models.DateField( blank=True, null=True ) # when assignment is completed
+  date_validated = models.DateField( blank=True, null=True ) # by staff only
   notes = models.CharField(max_length=160, blank=True, null=True )
 
   def __unicode__(self):
@@ -126,11 +134,11 @@ class Assignment(models.Model):
 
   class Meta:
     ordering = ["-date_due", "-task" ]
-    unique_together = ("profile", "task")
+    unique_together = ("group", "task")
 
 
 class Document( models.Model ):
-
+  WAITING_FOR_PUBLICATION = 'W'
   PUBLIC 	= 'P' # make the document publicly available
   SHARED   = 'S' # editable only to authors, viewable by watchers
   DRAFT   = 'D'  # working draft, read and edit only to owner, shown as draft in your working platform
@@ -138,32 +146,53 @@ class Document( models.Model ):
 
 
   STATUS_CHOICES = (
+    ( WAITING_FOR_PUBLICATION,'publish it, please!'),
     ( PUBLIC,'published'),
-    ( SHARED,'shared'),
-    ( DRAFT,'draft'),
-    ( PRIVATE,'private'),
+    ( SHARED,'shared'), # allow watchers to view it, it remains private and it is not draft
+    ( DRAFT,'draft'), # draft is viewable/editable by authors and owner only.
+    ( PRIVATE,'private'), # will not appears on drafts, but it is not published
   )
 
   LINK 	= 'B' # external link
   MEDIA   = 'I' # external iframe, image, audio or video
   TEXT   = 'T' # a note (at least originally )
   COMMENT  = 'C' # a cpomment,
+  REFERENCE_COURSE = 'rO'
+  REFERENCE_RESOURCE = 'rD'
+  REFERENCE_RIGHTS = 'rR'
+  REFERENCE_CONTROVERSY = 'rY'
+  REFERENCE_CONTROVERSY_WEB = 'rW'
+  REFERENCE_CONTROVERSY_VIDEO = 'rV'
 
   TYPE_CHOICES = (
+    ( REFERENCE_COURSE, 'ref. course'),
+    ( REFERENCE_RESOURCE, 'ref. resource'),
+    ( REFERENCE_RIGHTS, 'ref. rights'),
+    ( REFERENCE_CONTROVERSY, 'ref. global controversy object'),
+    ( REFERENCE_CONTROVERSY_WEB, 'ref. controversy site'),
+    ( REFERENCE_CONTROVERSY_VIDEO, 'ref. controversy video'),
     ( LINK,  'just a link'),
     ( MEDIA, 'media'),
     ( TEXT,  'text'), # notes and other stories
     ( COMMENT, 'comment')
-
   )
+
+  PDF = 'application/pdf'
+  STORED_VIDEO = 'video/storedvideo'
+
+  MIMETYPES_CHOICES = (
+    (PDF, 'pdf'),
+    (STORED_VIDEO, 'video - storage')
+  )
+  # storage function for filefield
 
   # the text content
   slug = models.SlugField( max_length=160 )
   title = models.CharField( max_length=160, default="", blank=True, null=True )
   abstract = models.TextField( default="", blank=True, null=True )
   content = models.TextField( default="", blank=True, null=True )
-  language =  models.CharField( max_length=2, default='EN', choices=settings.LANGUAGES )
-  mimetype = models.CharField( max_length=255, default="", blank=True, null=True ) # according to type, if needed (like imagefile)
+  language =  models.CharField( max_length=2, default='en', choices=settings.LANGUAGES )
+  mimetype = models.CharField( max_length=255, default="", choices=MIMETYPES_CHOICES, blank=True, null=True ) # according to type, if needed (like imagefile)
 
 
   # TIME
@@ -172,6 +201,8 @@ class Document( models.Model ):
 
   # URL LOCATION
   local = models.FileField( upload_to='documents/%Y-%m/',  blank=True, null=True ) # local stored file inside media folder
+  remote = models.TextField( blank=True, null=True ) # local stored file inside storage folder. IT DOES NOT ALLOW UPLOAD!
+
   permalink  = models.TextField( default="", blank=True, null=True ) # remote link
   permalink_hash  = models.CharField( max_length=32, blank=True, null=True ) # remote link
 
@@ -179,7 +210,7 @@ class Document( models.Model ):
   related = models.ManyToManyField("self", symmetrical=True, null=True, blank=True)
   parent  = models.ForeignKey("self", null=True, blank=True, related_name="children" )
   status  = models.CharField( max_length=1, choices=STATUS_CHOICES, default=DRAFT )
-  type = models.CharField( max_length=1, choices=TYPE_CHOICES, default=TEXT )
+  type = models.CharField( max_length=2, choices=TYPE_CHOICES, default=TEXT )
 
   # tags and metadata. Reference is thre Reference Manager ID field ( external resource then)
   tags = models.ManyToManyField( Tag, blank=True, null=True ) # add tags !

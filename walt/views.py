@@ -64,8 +64,6 @@ def logout_view( request ):
 def home( request ):
 	data = _shared_data( request, tags=['home'] )
 
-	if data['pending_tasks'] > 0:
-		return homeworks( request, data )
 	return render_to_response(  "walt/index.html", RequestContext(request, data ) )
 
 

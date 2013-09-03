@@ -12,3 +12,9 @@ lib/
 frontcast.wsgi
 
 sqlite/frontcast.db
+
+*.mp4
+
+*.ogv
+
+*.webm
