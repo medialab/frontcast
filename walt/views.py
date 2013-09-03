@@ -21,6 +21,8 @@ logger = logging.getLogger('glue')
 
 
 def login_view( request ):
+	if request.user.is_authenticated():
+		return home( request )
 
 	form = LoginForm( request.POST )
 	next = request.REQUEST.get('next', 'walt_home')
@@ -58,12 +60,10 @@ def logout_view( request ):
 	logout( request )
 	return redirect( 'walt_home' )
 
-
+@login_required
 def home( request ):
 	data = _shared_data( request, tags=['home'] )
 
-	if data['pending_tasks'] > 0:
-		return homeworks( request, data )
 	return render_to_response(  "walt/index.html", RequestContext(request, data ) )
 
 

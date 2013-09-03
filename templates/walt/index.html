@@ -2,7 +2,16 @@
 {% load i18n %}
 
 {% block page %}
+
   {% if user.is_authenticated %}
+  <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
+                  poster="http://video-js.zencoder.com/oceans-clip.png"
+                  data-setup="{}">
+                <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
+                <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
+                <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
+                <track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
+              </video>
   {% verbatim %}
   <div ng-controller="DocumentListCtrl">
     <span>{{documents.length}}</span>
@@ -16,6 +25,9 @@
                 <!-- code to render a large video block-->
                 <iframe src="//player.vimeo.com/video/{{get_vimeo_id(d.content)}}?badge=0" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
+
+            </div>
+            <div ng-switch-when="">
 
             </div>
             <div ng-switch-default>

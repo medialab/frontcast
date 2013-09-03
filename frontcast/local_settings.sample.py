@@ -10,7 +10,10 @@ DB_PORT	= ''
 AUTH_LDAP_SERVER_URI = ""
 AUTH_LDAP_USER_DN_TEMPLATE = ""
 
+# media and storage root differs: media is the path where uploaded stuff goes, storage allow FTP access
 MEDIA_ROOT = '/path/to/frontcast/media'
+STORAGE_ROOT = '/external/path/to/frontcast/storage'
+
 SECRET_KEY = 'secret very secret key'
 
 TEMPLATE_DIRS = (

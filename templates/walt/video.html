@@ -1,11 +1,11 @@
 {% extends "walt/middle.html" %}
 {% load i18n %}
 {% block scripts %}
-
+  {{ block.super }}
 	<script src="{{STATIC_URL}}js/blf.min.js"></script>
 	{% verbatim %}
 	<script id="override-main" type="text/x-handlebars-template">
-		
+
 
 		<div id="panels" class="container">
 			<div data-panel="create" style="display:none;">
@@ -26,14 +26,14 @@
 
 {% endblock %}
 {% block page %}
-	
+
 	<div id="layout"></div>
 
-	
+
 {% endblock %}
 
 {% block onload %}
-	
+
 	blf.templates.override(
         'main',
         Handlebars.compile($('#override-main').html())
@@ -92,5 +92,5 @@
       });
 
 
-	
+
 {% endblock %}
