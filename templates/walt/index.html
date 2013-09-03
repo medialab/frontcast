@@ -4,7 +4,7 @@
 {% block page %}
 
   {% if user.is_authenticated %}
-  <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
+  {% comment %}<video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
                   poster="http://video-js.zencoder.com/oceans-clip.png"
                   data-setup="{}">
                 <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
@@ -12,13 +12,13 @@
                 <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
                 <track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
               </video>
+  {% endcomment %}
   {% verbatim %}
   <div ng-controller="DocumentListCtrl">
-    <span>{{documents.length}}</span>
-
     <div class="pins">
       <div class="pin" ng-repeat="d in documents">
         <h3>{{d.title}}</h3>
+        <a href="{% endverbatim %}{% url 'walt_empty_document' %}{% verbatim %}{{d.slug}}">{{d.slug}}</a>
         <div class="abstract">{{d.abstract}}</div>
         <div ng-switch on="d.mimetype">
             <div ng-switch-when="vimeo">

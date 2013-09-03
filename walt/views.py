@@ -1,5 +1,6 @@
 import logging
 
+from django.db.models import Q
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -13,7 +14,8 @@ from django.utils.translation import get_language
 from glue.utils import Epoxy
 
 from walt.forms import LoginForm
-from walt.models import Assignment
+from walt.models import Assignment, Document
+from walt.utils import get_pending_assignments
 
 from frontcast import local_settings
 
@@ -30,7 +32,7 @@ def login_view( request ):
 	login_message = { 'next': next if len( next ) else 'walt_home'}
 
 	if request.method != 'POST':
-		data = _shared_data( request, tags=[ "index" ], d=login_message )
+		data = _shared_data( request, tags=[ "login" ], d=login_message )
 		return render_to_response('walt/login.html', RequestContext(request, data ) )
 
 	if form.is_valid():
@@ -51,7 +53,7 @@ def login_view( request ):
 		login_message['invalid_fields'] = form.errors
 
 
-	data = _shared_data( request, tags=[ "index" ], d=login_message )
+	data = _shared_data( request, tags=[ "login" ], d=login_message )
 
 
 	return render_to_response('walt/login.html', RequestContext(request, data ) )
@@ -72,6 +74,18 @@ def homeworks( request, data=None ):
 	data = data if data is not None else _shared_data( request )
 	data['tags'] = ['me']
 	return render_to_response(  "walt/homeworks.html", RequestContext(request, data ) )
+
+
+@login_required
+def document( request, slug='' ):
+	data = _shared_data( request, tags=['index','home'])
+	d = Document.objects.filter( slug=slug ).filter( Q(status=Document.PUBLIC) | Q(owner=request.user) )
+
+	if d.count() != 0:
+		data['document'] = d[0]
+	else:
+		return not_found( request )
+	return render_to_response(  "walt/document.html", RequestContext(request, data ) )
 
 
 @staff_member_required
@@ -109,10 +123,14 @@ def spiff( request, username ):
 
 def _shared_data( request, tags=[], d={} ):
 	d['tags'] = tags
-	d['pending_tasks'] = 0
+	d['pending_assignments'] = []
 
 	if request.user.is_authenticated():
 		# get pending tasks
-		d['pending_tasks'] = Assignment.objects.filter( profile__user=request.user, date_completed__isnull=True ).count()
+		d['pending_assignments'] = get_pending_assignments(user=request.user)
 
 	return d
+
+
+def not_found( request ):
+	return render_to_response(  "walt/404.html", RequestContext(request, {} ) )

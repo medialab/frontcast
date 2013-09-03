@@ -80,11 +80,21 @@ class Tag(models.Model):
     }
 
 
+# pedagogical unit
+class Unit(models.Model ):
+  name = models.CharField(max_length=128)
+  ldap_id = models.CharField(max_length=80)
+  tags = models.ManyToManyField(Tag, null=True, blank=True)
+
+  def __unicode__(self):
+    return "%s [%s]" % (self.ldap_id, self.name)
+
 class Profile(models.Model ):
   user = models.OneToOneField(User)
   accept_cookies = models.BooleanField(default=False)
   language = models.CharField(max_length=2, default='EN', choices=settings.LANGUAGES) # favourite user language
   tags = models.ManyToManyField(Tag, null=True, blank=True)
+  units = models.ManyToManyField(Unit, null=True, blank=True)
 
   def __unicode__(self):
     return "%s" % self.user.username
@@ -104,13 +114,8 @@ class Profile(models.Model ):
     return d
 
 
-class Course(models.Model ):
-  group = models.OneToOneField(Group)
-  tags = models.ManyToManyField(Tag, null=True, blank=True)
-
-
 class Assignment(models.Model):
-  group = models.ForeignKey(Group)
+  unit = models.ForeignKey(Unit)
   task = models.ForeignKey(Task)
   date_last_modified = models.DateField( auto_now=True ) # date last save()
   date_due = models.DateField()
@@ -119,7 +124,7 @@ class Assignment(models.Model):
   notes = models.CharField(max_length=160, blank=True, null=True )
 
   def __unicode__(self):
-    s = "%s -- %s %s" % ( self.profile.user.username, self.task.name, '@completed %s' % self.date_completed if self.date_completed is not None else '@todo' )
+    s = "%s -- %s %s" % ( self.unit.name, self.task.name, '@completed %s' % self.date_completed if self.date_completed is not None else '@todo' )
     return s
 
   def json(self, deep=False):
@@ -134,7 +139,7 @@ class Assignment(models.Model):
 
   class Meta:
     ordering = ["-date_due", "-task" ]
-    unique_together = ("group", "task")
+    unique_together = ("unit", "task")
 
 
 class Document( models.Model ):
@@ -147,7 +152,7 @@ class Document( models.Model ):
 
   STATUS_CHOICES = (
     ( WAITING_FOR_PUBLICATION,'publish it, please!'),
-    ( PUBLIC,'published'),
+    ( PUBLIC,'public'),
     ( SHARED,'shared'), # allow watchers to view it, it remains private and it is not draft
     ( DRAFT,'draft'), # draft is viewable/editable by authors and owner only.
     ( PRIVATE,'private'), # will not appears on drafts, but it is not published
@@ -165,12 +170,12 @@ class Document( models.Model ):
   REFERENCE_CONTROVERSY_VIDEO = 'rV'
 
   TYPE_CHOICES = (
-    ( REFERENCE_COURSE, 'ref. course'),
-    ( REFERENCE_RESOURCE, 'ref. resource'),
-    ( REFERENCE_RIGHTS, 'ref. rights'),
+    #( REFERENCE_COURSE, 'ref. course'),
+    #( REFERENCE_RESOURCE, 'ref. resource'),
+    #( REFERENCE_RIGHTS, 'ref. rights'),
     ( REFERENCE_CONTROVERSY, 'ref. global controversy object'),
-    ( REFERENCE_CONTROVERSY_WEB, 'ref. controversy site'),
-    ( REFERENCE_CONTROVERSY_VIDEO, 'ref. controversy video'),
+    #( REFERENCE_CONTROVERSY_WEB, 'ref. controversy site'),
+    #( REFERENCE_CONTROVERSY_VIDEO, 'ref. controversy video'),
     ( LINK,  'just a link'),
     ( MEDIA, 'media'),
     ( TEXT,  'text'), # notes and other stories
@@ -248,11 +253,13 @@ class Document( models.Model ):
     return{
       'id': self.id,
       'slug':self.slug,
+      'status': self.get_status_display(),
       'title': self.title,
       'abstract': self.abstract,
       'content': self.content,
       'language': self.language,
       'mimetype': self.mimetype,
-      'permalink': self.permalink
+      'permalink': self.permalink,
+      'owner': self.owner.username
     }
 

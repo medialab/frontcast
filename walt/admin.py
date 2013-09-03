@@ -1,5 +1,5 @@
 from django.contrib import admin
-from walt.models import Tag, Document, Profile, Assignment, Task
+from walt.models import Assignment, Document, Profile, Tag, Task, Unit
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -14,8 +14,12 @@ class DocumentAdmin(admin.ModelAdmin):
 class ProfileAdmin(admin.ModelAdmin):
   search_fields = ['language']
 
-admin.site.register( Assignment )
-admin.site.register( Task, TaskAdmin )
-admin.site.register( Tag, TagAdmin )
-admin.site.register( Document, DocumentAdmin )
-admin.site.register( Profile, ProfileAdmin )
+class UnitAdmin(admin.ModelAdmin):
+  search_fields = ['name']
+
+admin.site.register(Assignment)
+admin.site.register(Task, TaskAdmin)
+admin.site.register(Tag, TagAdmin)
+admin.site.register(Document, DocumentAdmin)
+admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Unit, UnitAdmin)

@@ -1,0 +1,10 @@
+{% extends "walt/middle.html" %}
+{% load i18n %}
+
+{% block page %}
+  <h1>{{document.title}}</h1>
+  {{ document.status}}
+  {% ifequal document.status 'D' %}
+    this is your own document and it is not visible outside!
+  {% endifequal %}
+{% endblock %}

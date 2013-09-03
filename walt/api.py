@@ -22,9 +22,9 @@ def access_denied(request):
 # ---
 #
 @login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def documents( request ):
+def user_documents( request ):
 	result = Epoxy( request ).queryset(
-		Document.objects.filter(Q(published=True) | Q(owner=request.user))
+		Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user))
 	)
 	return result.json()
 
@@ -35,9 +35,9 @@ def documents( request ):
 # ---
 #
 @login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def assignments( request ):
+def user_assignments( request ):
 	result = Epoxy( request ).queryset(
-		Assignment.objects.filter( profile__user=request.user, date_completed__isnull=True )
+		Assignment.objects.filter( unit__profile__user=request.user, date_completed__isnull=True )
 	)
 	return result.json()
 
