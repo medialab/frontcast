@@ -5,24 +5,38 @@
 
 
 */
-function DocumentListCtrl($scope, $http) {
-  $scope.total_count = 0;
-  $scope.documents = [];
+'use strict';
 
-  $http.get('/api/document').success(function(data) {
-    console.log( data );
-    if( data.status != "ok")
-      maze.toast( data.error );
-    else{
-      $scope.total_count = data.meta.total_count;
-      $scope.documents = data.objects
+/* Controllers */
+
+angular.module('walt.controllers', []).
+  controller('MyCtrl1', [function() {
+
+  }])
+  .controller('MyCtrl2', [function() {
+
+  }])
+  .controller('DocumentEditCtrl', function(){
+
+  })
+  .controller('DocumentListCtrl', function($scope, $http){
+    $scope.total_count = 0;
+    $scope.documents = [];
+
+    $http.get('/api/document').success(function(data) {
+      console.log( data );
+      if( data.status != "ok")
+        maze.toast( data.error );
+      else{
+        $scope.total_count = data.meta.total_count;
+        $scope.documents = data.objects
+      }
+    });
+
+    $scope.get_vimeo_id = function( vimeo_url ){
+      return vimeo_url.replace(/[^\d]/g,'')
     }
   });
-
-  $scope.get_vimeo_id = function( vimeo_url ){
-    return vimeo_url.replace(/[^\d]/g,'')
-  }
-}
 
 
 function AssignmentListCtrl($scope, $http) {

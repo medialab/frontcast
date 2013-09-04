@@ -6,21 +6,23 @@ from django.db import models
 class Task(models.Model):
   DELIVERABLE = 'de'
   FILL_REFERENCE = 'rF'
+  FILL_CONTROVERSY_REFERENCE = 'rC'
 
   TYPE_CHOICES = (
     (DELIVERABLE,'deliverable'),
     (FILL_REFERENCE,'fill reference'),
+    (FILL_CONTROVERSY_REFERENCE,'fill controversy reference'),
   )
 
   name = models.CharField(max_length=128) # e.g. 'Controversy Course 2013 - controversy site due'
   notify_to = models.ForeignKey(User)
   type = models.CharField(max_length=2, choices=TYPE_CHOICES)
-  content = models.TextField( default="", blank=True, null=True )
+  content = models.TextField(default="", blank=True, null=True)
 
   def __unicode__(self):
     return "%s" % self.name
 
-  def json(self ):
+  def json(self):
     return{
       'id': self.id,
       'name':self.name,
@@ -57,7 +59,7 @@ class Tag(models.Model):
     (DATE, 'Date'),
     (GEOCOVER, 'Geographic coverage'),
     (ACTION, 'ACTION') # cfr walt.setup to
-  )
+ )
 
   name = models.CharField(max_length=128) # e.g. 'Mr. E. Smith'
   slug = models.SlugField(max_length=128) # e.g. 'mr-e-smith'
@@ -70,7 +72,7 @@ class Tag(models.Model):
     ordering = ["type", "slug" ]
     unique_together = ("type", "slug")
 
-  def json(self ):
+  def json(self):
     return{
       'id': self.id,
       'slug':self.slug,
@@ -81,7 +83,7 @@ class Tag(models.Model):
 
 
 # pedagogical unit
-class Unit(models.Model ):
+class Unit(models.Model):
   name = models.CharField(max_length=128)
   ldap_id = models.CharField(max_length=80)
   tags = models.ManyToManyField(Tag, null=True, blank=True)
@@ -89,7 +91,7 @@ class Unit(models.Model ):
   def __unicode__(self):
     return "%s [%s]" % (self.ldap_id, self.name)
 
-class Profile(models.Model ):
+class Profile(models.Model):
   user = models.OneToOneField(User)
   accept_cookies = models.BooleanField(default=False)
   language = models.CharField(max_length=2, default='EN', choices=settings.LANGUAGES) # favourite user language
@@ -117,14 +119,14 @@ class Profile(models.Model ):
 class Assignment(models.Model):
   unit = models.ForeignKey(Unit)
   task = models.ForeignKey(Task)
-  date_last_modified = models.DateField( auto_now=True ) # date last save()
+  date_last_modified = models.DateField( auto_now=True) # date last save()
   date_due = models.DateField()
-  date_completed = models.DateField( blank=True, null=True ) # when assignment is completed
-  date_validated = models.DateField( blank=True, null=True ) # by staff only
-  notes = models.CharField(max_length=160, blank=True, null=True )
+  date_completed = models.DateField( blank=True, null=True) # when assignment is completed
+  date_validated = models.DateField( blank=True, null=True) # by staff only
+  notes = models.CharField(max_length=160, blank=True, null=True)
 
   def __unicode__(self):
-    s = "%s -- %s %s" % ( self.unit.name, self.task.name, '@completed %s' % self.date_completed if self.date_completed is not None else '@todo' )
+    s = "%s -- %s %s" % ( self.unit.name, self.task.name, '@completed %s' % self.date_completed if self.date_completed is not None else '@todo')
     return s
 
   def json(self, deep=False):
@@ -142,7 +144,7 @@ class Assignment(models.Model):
     unique_together = ("unit", "task")
 
 
-class Document( models.Model ):
+class Document(models.Model):
   WAITING_FOR_PUBLICATION = 'W'
   PUBLIC 	= 'P' # make the document publicly available
   SHARED   = 'S' # editable only to authors, viewable by watchers
@@ -151,16 +153,16 @@ class Document( models.Model ):
 
 
   STATUS_CHOICES = (
-    ( WAITING_FOR_PUBLICATION,'publish it, please!'),
-    ( PUBLIC,'public'),
-    ( SHARED,'shared'), # allow watchers to view it, it remains private and it is not draft
-    ( DRAFT,'draft'), # draft is viewable/editable by authors and owner only.
-    ( PRIVATE,'private'), # will not appears on drafts, but it is not published
-  )
+    (WAITING_FOR_PUBLICATION, 'publish it, please!'),
+    (PUBLIC, 'public'),
+    (SHARED, 'shared'), # allow watchers to view it, it remains private and it is not draft
+    (DRAFT, 'draft'), # draft is viewable/editable by authors and owner only.
+    (PRIVATE,'private'), # will not appears on drafts, but it is not published
+ )
 
   LINK 	= 'B' # external link
   MEDIA   = 'I' # external iframe, image, audio or video
-  TEXT   = 'T' # a note (at least originally )
+  TEXT   = 'T' # a note (at least originally)
   COMMENT  = 'C' # a cpomment,
   REFERENCE_COURSE = 'rO'
   REFERENCE_RESOURCE = 'rD'
@@ -173,13 +175,13 @@ class Document( models.Model ):
     #( REFERENCE_COURSE, 'ref. course'),
     #( REFERENCE_RESOURCE, 'ref. resource'),
     #( REFERENCE_RIGHTS, 'ref. rights'),
-    ( REFERENCE_CONTROVERSY, 'ref. global controversy object'),
-    #( REFERENCE_CONTROVERSY_WEB, 'ref. controversy site'),
-    #( REFERENCE_CONTROVERSY_VIDEO, 'ref. controversy video'),
-    ( LINK,  'just a link'),
-    ( MEDIA, 'media'),
-    ( TEXT,  'text'), # notes and other stories
-    ( COMMENT, 'comment')
+    (REFERENCE_CONTROVERSY, 'ref. global controversy object'),
+    #(REFERENCE_CONTROVERSY_WEB, 'ref. controversy site'),
+    #(REFERENCE_CONTROVERSY_VIDEO, 'ref. controversy video'),
+    (LINK,  'just a link'),
+    (MEDIA, 'media'),
+    (TEXT,  'text'), # notes and other stories
+    (COMMENT, 'comment')
   )
 
   PDF = 'application/pdf'
@@ -192,51 +194,51 @@ class Document( models.Model ):
   # storage function for filefield
 
   # the text content
-  slug = models.SlugField( max_length=160 )
-  title = models.CharField( max_length=160, default="", blank=True, null=True )
-  abstract = models.TextField( default="", blank=True, null=True )
-  content = models.TextField( default="", blank=True, null=True )
-  language =  models.CharField( max_length=2, default='en', choices=settings.LANGUAGES )
-  mimetype = models.CharField( max_length=255, default="", choices=MIMETYPES_CHOICES, blank=True, null=True ) # according to type, if needed (like imagefile)
+  slug = models.SlugField(max_length=160)
+  title = models.CharField(max_length=160, default="", blank=True, null=True)
+  abstract = models.TextField(default="", blank=True, null=True)
+  content = models.TextField(default="", blank=True, null=True)
+  language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES)
+  mimetype = models.CharField(max_length=255, default="", choices=MIMETYPES_CHOICES, blank=True, null=True) # according to type, if needed (like imagefile)
 
 
   # TIME
-  date = models.DateField( blank=True, null=True ) # main date, manually added
-  date_last_modified = models.DateField( auto_now=True ) # date last save()
+  date = models.DateField(blank=True, null=True) # main date, manually added
+  date_last_modified = models.DateField(auto_now=True) # date last save()
 
   # URL LOCATION
-  local = models.FileField( upload_to='documents/%Y-%m/',  blank=True, null=True ) # local stored file inside media folder
-  remote = models.TextField( blank=True, null=True ) # local stored file inside storage folder. IT DOES NOT ALLOW UPLOAD!
+  local = models.FileField(upload_to='documents/%Y-%m/',  blank=True, null=True) # local stored file inside media folder
+  remote = models.TextField(blank=True, null=True) # local stored file inside storage folder. IT DOES NOT ALLOW UPLOAD!
 
-  permalink  = models.TextField( default="", blank=True, null=True ) # remote link
-  permalink_hash  = models.CharField( max_length=32, blank=True, null=True ) # remote link
+  permalink  = models.TextField(default="", blank=True, null=True) # remote link
+  permalink_hash  = models.CharField(max_length=32, blank=True, null=True) # remote link
 
   # document friendship
   related = models.ManyToManyField("self", symmetrical=True, null=True, blank=True)
-  parent  = models.ForeignKey("self", null=True, blank=True, related_name="children" )
-  status  = models.CharField( max_length=1, choices=STATUS_CHOICES, default=DRAFT )
-  type = models.CharField( max_length=2, choices=TYPE_CHOICES, default=TEXT )
+  parent  = models.ForeignKey("self", null=True, blank=True, related_name="children")
+  status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DRAFT)
+  type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=TEXT)
 
-  # tags and metadata. Reference is thre Reference Manager ID field ( external resource then)
-  tags = models.ManyToManyField( Tag, blank=True, null=True ) # add tags !
-  reference = models.IntegerField( default=0 )
+  # tags and metadata. Reference is thre Reference Manager ID field (external resource then)
+  tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !
+  reference = models.IntegerField(default=0)
 
-  owner = models.ForeignKey( User ) # the original owner
-  authors = models.ManyToManyField( User, blank=True, null=True,  related_name="document_authored" ) # co-authors User.pin_authored
-  watchers = models.ManyToManyField( User, blank=True, null=True, related_name="document_watched"  ) # User.pin_watched
+  owner = models.ForeignKey(User) # the original owner
+  authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
+  watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
 
   class Meta:
-    unique_together = ( "slug", "language" )
+    unique_together = ("slug", "language")
     ordering = ['-date_last_modified']
 
   def __unicode__(self):
     return "%s (%s) a.k.a. %s" % (self.slug, self.language, self.title)
 
   # use this function if and only if the pin content is in bibtex (CLEAN) format
-  def bib( self ):
-    return bibtex( self.content )
+  def bib(self):
+    return bibtex(self.content)
 
-  def plaintext( self ):
+  def plaintext(self):
     return """
       |
 
@@ -247,9 +249,9 @@ class Document( models.Model ):
         language: %s
         mimetype: %s
 
-  		___""" %( self.title, self.id, self.slug, self.language, self.mimetype )
+  		___""" %(self.title, self.id, self.slug, self.language, self.mimetype)
 
-  def json( self ):
+  def json(self, deep=False):
     return{
       'id': self.id,
       'slug':self.slug,
@@ -260,6 +262,7 @@ class Document( models.Model ):
       'language': self.language,
       'mimetype': self.mimetype,
       'permalink': self.permalink,
-      'owner': self.owner.username
+      'owner': self.owner.username,
+      'authors': [a.username for a in self.authors.all()]
     }
 

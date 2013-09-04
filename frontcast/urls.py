@@ -11,6 +11,7 @@ api_urlpatterns = patterns('walt.api',
     url(r'access-denied/$', 'access_denied'),
     url(r'u/assignment/$', 'user_assignments'),
     url(r'u/document/$', 'user_documents'),
+    url(r'u/document/(?P<pk>\d+)$', 'user_document'),
     url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects'),
     url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>\d+)$', 'get_object'),
 )
@@ -32,9 +33,14 @@ urlpatterns = patterns('walt.views',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+
     url(r'^d/$', 'document', name='walt_empty_document'), #i.e. user page
     url(r'^d/(?P<slug>[a-z\.-]+)/$', 'document', name='walt_document'), #i.e. user page
+
+    url(r'^u/$', 'spiff', name='walt_empty_spiff'), #i.e. user page
     url(r'^u/(?P<username>[a-z\.]+)/$', 'spiff', name='walt_spiff'), #i.e. user page
+
+    url(r'^t/(?P<pk>\d+)/$', 'task', name='walt_task'), #i.e. user page
     #url(r'^robots\.txt$',  TemplateView.as_view(direct_to_template, {'template': 'frontcast/robots.txt', 'mimetype': 'text/plain'}),
     #//url(r'^humans\.txt$', direct_to_template, {'template': 'frontcast/humans.txt', 'mimetype': 'text/plain'}),
     # url(r'^crossdomain\.xml$', direct_to_template, {'template': 'frontcast/crossdomain.xml', 'mimetype': 'text/xml'}),

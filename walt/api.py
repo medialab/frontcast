@@ -6,7 +6,7 @@ from django.db.models import Q
 from glue.utils import Epoxy
 
 from walt.models import Assignment, Profile, Document, Tag, Task
-
+from walt.forms import DocumentForm
 
 def index(request):
 	return Epoxy( request ).json()
@@ -28,6 +28,23 @@ def user_documents( request ):
 	)
 	return result.json()
 
+@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+def user_document( request, pk ):
+	result = Epoxy( request )
+
+	try:
+		d = Document.objects.get(
+			Q(pk=pk),
+			Q(owner=request.user) | Q(authors=request.user)
+		)
+	except Document.DoesNotExist,e:
+		return result.throw_error( error='%s' % e ).json()
+
+	if result.is_POST():
+		form = DocumentForm(request.REQUEST, instance=d)
+		form.save()
+
+	return result.item(d).json()
 
 #
 #

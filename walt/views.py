@@ -14,7 +14,7 @@ from django.utils.translation import get_language
 from glue.utils import Epoxy
 
 from walt.forms import LoginForm
-from walt.models import Assignment, Document
+from walt.models import Assignment, Document, Task
 from walt.utils import get_pending_assignments
 
 from frontcast import local_settings
@@ -114,11 +114,33 @@ def spiff_video( request ):
 
 
 @login_required
-def spiff( request, username ):
+def spiff( request, username=None ):
 	data = _shared_data( request, tags=['me'])
 	data['username'] = username
 
 	return render_to_response(  "walt/spiff.html", RequestContext(request, data ) )
+
+@login_required
+def tasks( request ):
+	data = _shared_data( request, tags=['me'])
+	data['username'] = username
+
+	return render_to_response(  "walt/spiff.html", RequestContext(request, data ) )
+
+
+#
+# task view redirect layout according to task type and your own stuff
+#
+@login_required
+def task( request, pk ):
+	data = _shared_data( request, tags=['me'])
+
+	t = Task.objects.get( pk=pk );
+	data['task'] = t
+	# is the user assigned?
+	data['user_has_task'] = Assignment.objects.filter(unit__profile__user=request.user, task__pk=pk).count() > 0
+
+	return render_to_response(  "walt/tasks/%s.html" % t.type, RequestContext(request, data ) )
 
 
 def _shared_data( request, tags=[], d={} ):

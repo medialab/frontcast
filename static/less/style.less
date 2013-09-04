@@ -8,21 +8,23 @@
 @f-red: #ee312f;
 
 @grey:#eaeaea;
+@grey_2: darken(@grey, 2%);
 @grey_5: darken(@grey, 8%);
 @grey_10: darken(@grey, 10%);
 @grey-5: lighten(@grey, 5%);
 @grey-10: lighten(@grey, 10%);
 @grey-18: lighten(@grey, 18%);
 
-@header-height: 80px;
+@header-height: 48px;
 @sidebar-width: 110px;
 @references-width:260px;
 @padding: 24px;
 
 // z-indexes
 @main-z-index: 1;
-@sidebar-z-index: 2;
-@references-z-index:3;
+@sidebar-z-index: 3;
+@references-z-index:4;
+@header-z-index: 2;
 @toast-z-index: 10291092;
 
 html, body{
@@ -34,7 +36,7 @@ html, body{
 
 body{
 	.sans-serif(12px);
-	background: @grey-5;
+	background: white;//grey-5;
 }
 
 h1, h2, h3, h4{
@@ -45,22 +47,23 @@ h1, h2, h3, h4{
 }
 
 h1{
-	.sans-serif(32px);
+	.sans-serif(2em);
 }
 
 h2{
-	.sans-serif(12px);
+	.sans-serif(1.5em);
+	font-style: italic;
 	padding: @padding/2 @padding;
 }
 
 a{
-	color:#121e20;
-	text-decoration: none;
+	color:@f-blue;
+	text-decoration: underline;
 }
 
 
 sidebar{
-	background:@grey;
+	background:@grey-5;
 	position:fixed;
 	width:@sidebar-width;
 	height: 100%;
@@ -104,6 +107,8 @@ sidebar{
 				line-height:40px;
 				margin: @padding/2;
 				.transition( background, .2s);
+				color: black;
+				text-decoration:none;
 			}
 			&:hover a{
 				background: @f-blue;
@@ -116,6 +121,7 @@ sidebar{
 			}
 			i{
 				//margin-right: 12px;
+				font-size:14px;
 			}
 		}
 	}
@@ -140,13 +146,16 @@ sidebar{
 header{
 	position:fixed;
 	width:100%;
-	height: auto;
+	height: @header-height;
 	margin:0;
-	background: @f-darkblue;
+	z-index: @header-z-index;
+	background: white;//@grey-5;
 	.inner{
-		color: white;
-		margin-left: @sidebar-width ;
-		margin-right: @sidebar-width ;
+		height: @header-height - @padding/2;
+		padding-top: @padding/2;
+		margin-left: @sidebar-width + @padding ;
+		margin-right: @references-width + @padding;
+		border-bottom: 1px solid @grey_5;
 	}
 }
 
@@ -223,17 +232,19 @@ fieldset{
 
 .pins{
 	position:relative;
-	top:30px;
+	top:0px;
+
 	.pin{
-
-
-		box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 5px;
+		//border:1px solid @grey_2;
+		//box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 5px;
 		background: white;
-		margin-bottom: 36px;
+		margin-bottom: @padding;
 		width: 270px;
 	}
 
 	h3{
+		font-size: 1.3em;
+		line-height: 1.7em;
 		padding:@padding @padding @padding/2 @padding;
 	}
 
@@ -241,10 +252,14 @@ fieldset{
 		padding:0 @padding @padding/2 @padding;
 		font-size: 0.9em;
 	}
+
+	.authors{
+		// border-top: 1px solid @grey_2;
+		background: @grey-5;
+		padding: @padding/2 @padding;
+		font-size:.9em;
+	}
 }
-
-
-
 
 
 /*

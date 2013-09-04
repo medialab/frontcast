@@ -16,9 +16,10 @@
   {% verbatim %}
   <div ng-controller="DocumentListCtrl">
     <div class="pins">
-      <div class="pin" ng-repeat="d in documents">
+      <div class="pin {{d.status}}" ng-repeat="d in documents">
+        <div class="status"></div>
         <h3>{{d.title}}</h3>
-        <a href="{% endverbatim %}{% url 'walt_empty_document' %}{% verbatim %}{{d.slug}}">{{d.slug}}</a>
+        <!-- a href="{% endverbatim %}{% url 'walt_empty_document' %}{% verbatim %}{{d.slug}}">{{d.slug}}</a -->
         <div class="abstract">{{d.abstract}}</div>
         <div ng-switch on="d.mimetype">
             <div ng-switch-when="vimeo">
@@ -32,8 +33,10 @@
             </div>
             <div ng-switch-default>
                 <!-- code to render the regular video block -->
-                AJE
             </div>
+        </div>
+        <div class="authors">
+          by <a href="{% endverbatim %}{% url 'walt_empty_spiff' %}{% verbatim %}{{d.owner}}">{{d.owner}}</a><span ng-repeat="a in d.authors">, <a href="{% endverbatim %}{% url 'walt_empty_spiff' %}{% verbatim %}{{a}}">{{a}}</a></span>
         </div>
       </div>
 
