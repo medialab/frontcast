@@ -221,14 +221,14 @@ class Document(models.Model):
 
   # tags and metadata. Reference is thre Reference Manager ID field (external resource then)
   tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !
-  reference = models.IntegerField(default=0)
+  reference = models.CharField(max_length=60, default=0, blank=True, null=True)
 
   owner = models.ForeignKey(User) # the original owner
   authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
 
   class Meta:
-    unique_together = ("slug", "language")
+    unique_together = ("slug", "title", "reference")
     ordering = ['-date_last_modified']
 
   def __unicode__(self):

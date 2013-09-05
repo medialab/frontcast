@@ -26,8 +26,10 @@
 
 {% endblock %}
 {% block task_layout %}
-
-	<div id="layout"></div>
+  {% for r in t.references %}
+    {{r.title}}, {{r.reference}}
+  {% endfor %}
+	<div id="layout" class="biblib-form"></div>
 
 
 {% endblock %}

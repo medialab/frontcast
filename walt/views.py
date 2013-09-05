@@ -135,10 +135,24 @@ def tasks( request ):
 def task( request, pk ):
 	data = _shared_data( request, tags=['me'])
 
-	t = Task.objects.get( pk=pk );
+	t = get_object_or_404(Task, pk=pk)
+
 	data['task'] = t
+	data['t'] = {}
+
 	# is the user assigned?
 	data['user_has_task'] = Assignment.objects.filter(unit__profile__user=request.user, task__pk=pk).count() > 0
+
+	if not data['user_has_task']:
+		return render_to_response(  "walt/tasks/not-assigned.html", RequestContext(request, data ) )
+
+	# data specific task
+	if t.type == Task.FILL_CONTROVERSY_REFERENCE :
+		# get document where user is author/owner, and have a reference index
+		data['t']['references'] = Document.objects.filter(
+			Q(owner=request.user)|Q(authors=request.user)
+		).filter(
+			type=Document.REFERENCE_CONTROVERSY )
 
 	return render_to_response(  "walt/tasks/%s.html" % t.type, RequestContext(request, data ) )
 

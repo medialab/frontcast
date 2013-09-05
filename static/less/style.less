@@ -11,9 +11,18 @@
 @grey_2: darken(@grey, 2%);
 @grey_5: darken(@grey, 8%);
 @grey_10: darken(@grey, 10%);
+@grey_14: darken(@grey, 14%);
 @grey-5: lighten(@grey, 5%);
 @grey-10: lighten(@grey, 10%);
+@grey-12: lighten(@grey, 12%);
 @grey-18: lighten(@grey, 18%);
+
+.grey(@lightness) when (@lightness < 0%){
+  background-color: darken(@grey, @lightness);
+}
+.grey(@lightness){
+  background-color: lighten(@grey, @lightness);
+}
 
 @header-height: 48px;
 @sidebar-width: 110px;
@@ -136,6 +145,10 @@ sidebar{
 	top:0px;
 	right:0px;
 	display:block;
+
+	border-left: 1px solid @grey_14;
+	box-shadow : inset 0px 0px 13px rgba(0,0,0,.07);
+
 	h2{
 		text-align: center;
 		background: @f-blue;
@@ -169,7 +182,7 @@ header{
 	z-index: @main-z-index;
 	.inner{
 		margin-left: @sidebar-width + @padding;
-		margin-right: @references-width + @padding;
+		//margin-right: @references-width + @padding;
 		padding: @header-height 0;
 
 	}
@@ -302,3 +315,24 @@ fieldset{
 	}
 }
 
+
+/*
+
+
+	BibLib Forms
+
+
+*/
+.biblib-form{
+	label{
+		font-size:13px;
+	}
+	input[type=text]{
+		font-size:16px;
+		.grey(14%);
+		border: 1px solid transparent;
+		border-bottom: 1px solid @grey_10;
+		width: 50%;
+		.border-radius(0);
+	}
+}
