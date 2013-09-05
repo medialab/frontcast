@@ -14,6 +14,7 @@ API_DEFAULT_OFFSET = 0
 API_DEFAULT_LIMIT = 50
 API_AVAILABLE_METHODS = [ 'DELETE', 'POST', 'GET' ]
 API_EXCEPTION				=	'GenericException'
+API_EXCEPTION_AUTH		=	'Unauthorized'
 API_EXCEPTION_INTEGRITY		=	'IntegrityError'
 API_EXCEPTION_VALUE			=	'ValueError'
 API_EXCEPTION_DOESNOTEXIST	=	'DoesNotExist'
@@ -96,6 +97,15 @@ class Epoxy:
 			self.response['meta']['warnings'] = {}
 		self.response['meta']['warnings'][ key ] = message
 
+
+	def is_POST(self):
+		return self.method == 'POST'
+
+
+	def is_DELETE(self):
+		return self.method == 'DELETE'
+
+
 	def process( self ):
 		self.response['meta'] = {}
 		self.response['meta']['action'] = whosdaddy(3)
@@ -159,6 +169,11 @@ class Epoxy:
 			self.response['object'] = model.objects.get( **kwargs ).json( deep=True )
 		except model.DoesNotExist, e:
 			return self.throw_error( error="%s" % e, code=API_EXCEPTION_EMPTY )
+		return self
+
+	def item( self, item, deep=False):
+		self.response['meta']['model'] = '%s' % item.__class__.__name__
+		self.response['object'] = item.json( deep=deep )
 		return self
 
 	def queryset( self, queryset, model=None ):

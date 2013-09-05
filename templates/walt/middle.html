@@ -7,7 +7,7 @@
 		<header>
 			<div class="inner">
 			{% block header %}
-				<h2>connected as {{ user.first_name }}( {{user.username}} )</h2>
+				{% trans "connected as"%}: {{ user.username }}
 			{% endblock %}
 			</div>
 		</header>
@@ -17,18 +17,23 @@
 				<div class="inner">
 					{% block sidebar %}
 					<a><img src="{{ STATIC_URL }}/img/forccast.svg" id="forccast-logo"/></a>
-
 					<ul>
-
-						<li {% if 'home' in tags %}class="active"{% endif %}><a href="{% url 'walt_home' %}"><i class="icon-list"></i>index</a></li>
+						<li bs-tooltip="tooltip.title" title="home" data-placement="right" {% if 'home' in tags %}class="active"{% endif %}><a href="{% url 'walt_home' %}" ><i class="icon-home"></i></a></li>
 					{% if user.is_authenticated %}
-						<li {% if 'me' in tags %}class="active"{% endif %}><a href="{% url 'walt_spiff' user.username %}"><i class="icon-user"></i> me</a></li>
-
-						<li><a href="{% url 'walt_logout' %}"><i class="icon-bolt"></i> logout</a></li>
+						<li bs-tooltip="tooltip.title" title="{{user.first_name}}'s space" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
+							<a href="{% url 'walt_spiff' user.username %}"><i class="icon-male"></i></a>
+						</li>
+						<!--li bs-tooltip="tooltip.title" title="search (disabled)" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
+							<a href="#"><i class="icon-search"></i></a>
+						</li-->
+						<li bs-tooltip="tooltip.title" title="{% trans 'logout' %}" data-placement="right">
+							<a href="{% url 'walt_logout' %}"><i class="icon-bolt"></i></a>
+						</li>
 					{% else %}
-						<li><a href="{% url 'walt_login' %}"><i class="icon-bolt"></i> login</a></li>
+						<li bs-tooltip="tooltip.title" title="{% trans 'login' %}" data-placement="right" {% if 'login' in tags %}class="active"{% endif %}>
+							<a href="{% url 'walt_login' %}"><i class="icon-bolt"></i></a>
+						</li>
 					{% endif %}
-
 					</ul>
 					<img src="{{ STATIC_URL }}/img/sciences-po.svg" id="sciences-po-logo"/>
 					{% endblock %}
@@ -40,10 +45,10 @@
 			<div class="inner">
 			{% if user.is_authenticated %}
 			{% block notifications %}
-				<h1>notifications</h1>
-				  {% verbatim %}
-				  <div ng-controller="AssignmentListCtrl">
-				    <span><!-- {{total_count}} --></span>
+				<div class="notifications" style="display: none" ng-controller="AssignmentListCtrl">
+					<h1>assignments</h1>
+					  {% verbatim %}
+				    <span><!-- {{total_count}} -->o</span>
 				    <div class="assignments">
 				      <div class="assignment" ng-repeat="a in assignments">
 				        <h3>{{a.task.name}}</h3>
@@ -51,7 +56,8 @@
 				        <div ng-bind-html-unsafe="a.task.content"></div>
 				      </div>
 				    </div>
-				  {% endverbatim %}
+					  {% endverbatim %}
+				</div>
 
 			{% endblock %}
 			{% endif %}

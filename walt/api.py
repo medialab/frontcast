@@ -3,10 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db.models import Q
 
-from glue.utils import Epoxy
+from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
 
 from walt.models import Assignment, Profile, Document, Tag, Task
-
+from walt.forms import DocumentForm
 
 def index(request):
 	return Epoxy( request ).json()
@@ -22,12 +22,62 @@ def access_denied(request):
 # ---
 #
 @login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def documents( request ):
-	result = Epoxy( request ).queryset(
-		Document.objects.filter(Q(published=True) | Q(owner=request.user))
-	)
+def user_documents( request ):
+	result = Epoxy( request )
+
+	if result.is_POST():
+		form = DocumentForm(request.REQUEST)
+
+		if form.is_valid():
+			d = form.save(commit=False)
+			d.owner = request.user
+			d.save()
+			result.item(d)
+		elif "__all__" in form.errors:
+			try:
+				d = Document.objects.get(slug=form.cleaned_data['slug'],title=form.cleaned_data['title'])
+				result.warning(key='duplicate',message="item exists indeed")
+				result.item(d)
+			except Document.DoesNotExist, e:
+				result.throw_error(error=form.errors, code=API_EXCEPTION_DOESNOTEXIST)
+		else:
+			result.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS)
+
+	else:
+		result.queryset(
+			Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user))
+		)
+
 	return result.json()
 
+
+@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+def user_document( request, pk ):
+	result = Epoxy( request )
+
+	try:
+		d = Document.objects.get(
+			Q(pk=pk),
+			Q(owner=request.user) | Q(authors=request.user)
+		)
+	except Document.DoesNotExist,e:
+		return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
+
+	if result.is_DELETE():
+		if d.owner == request.user:
+			d.delete()
+			return result.json()
+
+		return result.throw_error(error='%s' % 'not authorized', code=API_EXCEPTION_AUTH).json()
+
+
+	if result.is_POST():
+		form = DocumentForm(request.REQUEST, instance=d)
+		form.save()
+
+	result.item(d)
+
+	return result.json()
 
 #
 #
@@ -35,9 +85,9 @@ def documents( request ):
 # ---
 #
 @login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def assignments( request ):
+def user_assignments( request ):
 	result = Epoxy( request ).queryset(
-		Assignment.objects.filter( profile__user=request.user, date_completed__isnull=True )
+		Assignment.objects.filter( unit__profile__user=request.user, date_completed__isnull=True )
 	)
 	return result.json()
 

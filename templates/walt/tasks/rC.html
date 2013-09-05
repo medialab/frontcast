@@ -1,4 +1,4 @@
-{% extends "walt/middle.html" %}
+{% extends "walt/tasks/middle.html" %}
 {% load i18n %}
 {% block scripts %}
   {{ block.super }}
@@ -25,9 +25,11 @@
 	{% endverbatim %}
 
 {% endblock %}
-{% block page %}
-
-	<div id="layout"></div>
+{% block task_layout %}
+  {% for r in t.references %}
+    {{r.title}}, {{r.reference}}
+  {% endfor %}
+	<div id="layout" class="biblib-form"></div>
 
 
 {% endblock %}

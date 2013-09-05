@@ -1,0 +1,21 @@
+{% extends "walt/middle.html" %}
+{% load i18n %}
+
+{% block page %}
+	<h1>{{ task.name }}</h1>
+	{{ task.content }}
+
+  {{ assignment }}
+    {% if user_has_task %}
+      <h2>woop let's do it!</h2>
+    {% else %}
+      <h2>Note: YOU'RE NOT ASSIGNMED</h2>
+    {% endif %}
+
+	{% block task_layout %}
+
+
+  {% endblock %}
+
+
+{% endblock %}
