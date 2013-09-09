@@ -1,27 +1,29 @@
 {
-  "folders":
-    [
-        {
-            "path": "static/js",
-            "name": "js",
-            "file_exclude_patterns": ["*.min.js"]
-        },
-        {
-            "path": "static/less",
-            "name": "less"
-        },
-        {
-            "path": "frontcast",
-            "name": "frontcast"
-        },
-        {
-            "path": "templates/walt",
-            "name": "walt:templates"
-        },
-        {
-            "path": "walt",
-            "name": "walt:app"
-        }
-
-    ]
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.min.js"
+			],
+			"name": "js",
+			"path": "static/js"
+		},
+		{
+			"name": "less",
+			"path": "static/less"
+		},
+		{
+			"name": "frontcast",
+			"path": "frontcast"
+		},
+		{
+			"name": "walt:templates",
+			"path": "templates/walt"
+		},
+		{
+			"name": "walt:app",
+			"path": "walt"
+		}
+	]
 }

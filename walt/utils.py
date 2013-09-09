@@ -1,5 +1,5 @@
 from django.conf import settings
-from walt.models import Assignment
+from walt.models import Assignment, Task
 
 #
 #
@@ -9,4 +9,3 @@ from walt.models import Assignment
 def get_pending_assignments( user ):
   assignments = Assignment.objects.filter(unit__profile__user=user)
   return assignments
-

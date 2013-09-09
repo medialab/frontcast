@@ -9,6 +9,9 @@
     "errors": {
       "at_least_one": "At least one creator has to be specified."
     },
+    "actions":{
+      "add":"add one more creator"
+    },
     "line": {
       "Person": "Person",
       "Orgunit": "Organization",
@@ -34,7 +37,13 @@
       "date_end": "End date :"
     }
   },
-  "IndentifierField": {
+  "CharField": {
+    "errors": {
+      "exactly_one": "Exactly one entry has to be added.",
+      "at_least_one": "At least one entry has to be specified."
+    }
+  },
+  "IdentifierField": {
     "errors": {
       "exactly_one": "Exactly one identifier has to be added.",
       "at_least_one": "At least one creator has to be specified."

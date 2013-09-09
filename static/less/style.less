@@ -24,6 +24,13 @@
   background-color: lighten(@grey, @lightness);
 }
 
+.greyc(@lightness) when (@lightness < 0%){
+  color: darken(@grey, @lightness);
+}
+.greyc(@lightness){
+  color: lighten(@grey, @lightness);
+}
+
 @header-height: 48px;
 @sidebar-width: 110px;
 @references-width:260px;
@@ -182,7 +189,7 @@ header{
 	z-index: @main-z-index;
 	.inner{
 		margin-left: @sidebar-width + @padding;
-		//margin-right: @references-width + @padding;
+		margin-right: @padding;
 		padding: @header-height 0;
 
 	}
@@ -320,13 +327,24 @@ fieldset{
 
 
 	BibLib Forms
-
+	============
 
 */
 .biblib-form{
+	ul{
+		padding:0;
+		margin:0;
+	}
+
+	li{
+		list-style-type:none;
+	}
+
 	label{
 		font-size:13px;
+		.greyc(-28%);
 	}
+
 	input[type=text]{
 		font-size:16px;
 		.grey(14%);
@@ -334,5 +352,11 @@ fieldset{
 		border-bottom: 1px solid @grey_10;
 		width: 50%;
 		.border-radius(0);
+	}
+
+	.action{
+		display:inline;
+		background: white;
+		color: black;
 	}
 }

@@ -10,9 +10,13 @@ admin.autodiscover()
 api_urlpatterns = patterns('walt.api',
     url(r'^$', 'index'),
     url(r'access-denied/$', 'access_denied'),
+
     url(r'u/assignment/$', 'user_assignments'),
-    url(r'u/document/$', 'user_documents'),
-    url(r'u/document/(?P<pk>\d+)$', 'user_document'),
+    url(r'u/assignment/(?P<pk>\d+)/deliver/$', 'user_assignment_deliver', name= 'walt_api_user_assignment_deliver'),
+
+    url(r'u/document/$', 'user_documents', name='walt_api_user_documents'),
+    url(r'u/document/(?P<pk>\d+)$', 'user_document', name='walt_api_user_document'),
+
     url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects'),
     url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>\d+)$', 'get_object'),
 )
@@ -46,6 +50,7 @@ urlpatterns = patterns('walt.views',
     #//url(r'^humans\.txt$', direct_to_template, {'template': 'frontcast/humans.txt', 'mimetype': 'text/plain'}),
     # url(r'^crossdomain\.xml$', direct_to_template, {'template': 'frontcast/crossdomain.xml', 'mimetype': 'text/xml'}),
 
+    url(r'^s/(?P<folder>[a-z]+)/(?P<index>[a-z\-]+)\.(?P<extension>[a-z\d]+)/$', 'storage', name='walt_storage'), #i.e. proxy to storage space
 
     url(r'^video/$', 'spiff_video', name='walt_video'), # add video metadata ? provide upload features.
 
