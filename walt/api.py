@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
@@ -45,7 +47,7 @@ def user_documents( request ):
 
 	else:
 		result.queryset(
-			Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user))
+			Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user))
 		)
 
 	return result.json()
@@ -72,10 +74,37 @@ def user_document( request, pk ):
 
 
 	if result.is_POST():
+
 		form = DocumentForm(request.REQUEST, instance=d)
-		form.save()
+		if form.is_valid():
+			form.save(commit=False)
+			d.save()
+		else:
+			result.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS)
 
 	result.item(d)
+
+	return result.json()
+
+
+@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+def user_assignment_deliver( request, pk ):
+	result = Epoxy( request )
+
+	try:
+		a = Assignment.objects.get(
+			pk = pk,
+			unit__profile__user = request.user
+		)
+	except Assignment.DoesNotExist,e:
+		return result.throw_error(error='%s'%e, code=API_EXCEPTION_DOESNOTEXIST)
+
+	if a.date_completed is not None:
+		return result.item(a).json()
+
+	a.date_completed = datetime.now()
+	a.save()
+	result.item(a)
 
 	return result.json()
 

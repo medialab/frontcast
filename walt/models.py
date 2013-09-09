@@ -116,34 +116,6 @@ class Profile(models.Model):
     return d
 
 
-class Assignment(models.Model):
-  unit = models.ForeignKey(Unit)
-  task = models.ForeignKey(Task)
-  date_last_modified = models.DateField( auto_now=True) # date last save()
-  date_due = models.DateField()
-  date_completed = models.DateField( blank=True, null=True) # when assignment is completed
-  date_validated = models.DateField( blank=True, null=True) # by staff only
-  notes = models.CharField(max_length=160, blank=True, null=True)
-
-  def __unicode__(self):
-    s = "%s -- %s %s" % ( self.unit.name, self.task.name, '@completed %s' % self.date_completed if self.date_completed is not None else '@todo')
-    return s
-
-  def json(self, deep=False):
-    d = {
-      'id': self.id,
-      'task': self.task.json(),
-      'date_last_modified':self.date_last_modified.isoformat(),
-      'date_due':self.date_due.isoformat(),
-      'notes':self.notes
-    }
-    return d
-
-  class Meta:
-    ordering = ["-date_due", "-task" ]
-    unique_together = ("unit", "task")
-
-
 class Document(models.Model):
   WAITING_FOR_PUBLICATION = 'W'
   PUBLIC 	= 'P' # make the document publicly available
@@ -227,6 +199,7 @@ class Document(models.Model):
   authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
 
+
   class Meta:
     unique_together = ("slug", "title", "reference")
     ordering = ['-date_last_modified']
@@ -266,3 +239,32 @@ class Document(models.Model):
       'authors': [a.username for a in self.authors.all()]
     }
 
+
+class Assignment(models.Model):
+  unit = models.ForeignKey(Unit)
+  task = models.ForeignKey(Task)
+  documents = models.ManyToManyField(Document, blank=True, null=True)
+  date_last_modified = models.DateField( auto_now=True) # date last save()
+  date_due = models.DateField()
+  date_completed = models.DateField( blank=True, null=True) # when assignment is completed
+  date_validated = models.DateField( blank=True, null=True) # by staff only
+  notes = models.CharField(max_length=160, blank=True, null=True)
+
+  def __unicode__(self):
+    s = "%s -- %s %s" % ( self.unit.name, self.task.name, '@completed %s' % self.date_completed if self.date_completed is not None else '@todo')
+    return s
+
+  def json(self, deep=False):
+    d = {
+      'id': self.id,
+      'task': self.task.json(),
+      'date_last_modified':self.date_last_modified.isoformat(),
+      'date_due':self.date_due.isoformat(),
+      'date_completed':self.date_completed.isoformat() if self.date_completed is not None else None,
+      'notes':self.notes
+    }
+    return d
+
+  class Meta:
+    ordering = ["-date_due", "-task" ]
+    unique_together = ("unit", "task")

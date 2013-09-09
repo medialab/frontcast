@@ -1,5 +1,7 @@
-import logging
+import logging, os, urllib
+from mimetypes import guess_type
 
+from django.conf import settings
 from django.db.models import Q
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout, authenticate
@@ -115,25 +117,25 @@ def spiff_video( request ):
 
 @login_required
 def spiff( request, username=None ):
-	data = _shared_data( request, tags=['me'])
+	data = _shared_data(request, tags=['me'])
 	data['username'] = username
 
-	return render_to_response(  "walt/spiff.html", RequestContext(request, data ) )
+	return render_to_response("walt/spiff.html", RequestContext(request, data))
 
 @login_required
 def tasks( request ):
-	data = _shared_data( request, tags=['me'])
+	data = _shared_data(request, tags=['me'])
 	data['username'] = username
 
-	return render_to_response(  "walt/spiff.html", RequestContext(request, data ) )
+	return render_to_response("walt/spiff.html", RequestContext(request, data))
 
 
 #
 # task view redirect layout according to task type and your own stuff
 #
 @login_required
-def task( request, pk ):
-	data = _shared_data( request, tags=['me'])
+def task(request, pk):
+	data = _shared_data(request, tags=['me'])
 
 	t = get_object_or_404(Task, pk=pk)
 
@@ -141,20 +143,67 @@ def task( request, pk ):
 	data['t'] = {}
 
 	# is the user assigned?
-	data['user_has_task'] = Assignment.objects.filter(unit__profile__user=request.user, task__pk=pk).count() > 0
+	assignments = Assignment.objects.filter(
+		unit__profile__user=request.user,
+		task__pk=pk,
+		date_completed__isnull=True
+	)
 
-	if not data['user_has_task']:
-		return render_to_response(  "walt/tasks/not-assigned.html", RequestContext(request, data ) )
+	if assignments.count() == 0:
+		return render_to_response("walt/tasks/not-assigned.html", RequestContext(request, data))
+
+	data['t']['assignment'] = a = assignments[0]
+
+	# @todo:check if it is too late!
+
+	# completed, waiting for staff validation
+
 
 	# data specific task
 	if t.type == Task.FILL_CONTROVERSY_REFERENCE :
-		# get document where user is author/owner, and have a reference index
-		data['t']['references'] = Document.objects.filter(
-			Q(owner=request.user)|Q(authors=request.user)
-		).filter(
-			type=Document.REFERENCE_CONTROVERSY )
+		data['t']['references'] = Document.objects.filter(assignment=a).filter(Q(authors=request.user) | Q(owner=request.user))
 
-	return render_to_response(  "walt/tasks/%s.html" % t.type, RequestContext(request, data ) )
+	return render_to_response("walt/tasks/%s.html" % t.type, RequestContext(request, data))
+
+
+#
+#
+#		Storage
+#		=======
+#
+#		Direct storage solution. You only have to login. extension are given as first arg
+#
+@login_required
+def storage( request, folder=None, index=None, extension=None ):
+	data = _shared_data(request, tags=['me'])
+
+	filepath = os.path.join( settings.STORAGE_ROOT, folder,"%s.%s" % (index,extension) );
+
+	if os.path.exists(filepath):
+		from django.core.servers.basehttp import FileWrapper
+
+		content_type = guess_type( filepath )
+
+		wrapper = FileWrapper(file(filepath))
+		response = HttpResponse(wrapper, content_type=content_type[0])
+		response['Content-Length'] = os.path.getsize(filepath)
+		response['Content-Description'] = "File Transfer";
+		response['Content-Disposition'] = "inline; filename=%s.%s" % ( index, extension )
+		return response
+
+
+	data['filepath'] = {
+		'folder':folder,
+		'index':index,
+		'extension':extension,
+		'total': filepath,
+		'content-type':  guess_type( filepath )[0],
+		'exists': os.path.exists( filepath )
+	}
+
+	#os.path.join(settings.STORAGE_ROOT, index)
+
+	return render_to_response(  "walt/404.html", RequestContext(request, data ) )
 
 
 def _shared_data( request, tags=[], d={} ):
