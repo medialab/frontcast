@@ -338,6 +338,9 @@ fieldset{
 
 	li{
 		list-style-type:none;
+		input[type=text]{
+			display:inline;
+		}
 	}
 
 	label{
@@ -346,8 +349,9 @@ fieldset{
 	}
 
 	input[type=text]{
-		font-size:16px;
-		.grey(14%);
+		font-size:18px;
+		background-color: #f7f7f7;
+		padding-left:8px;
 		border: 1px solid transparent;
 		border-bottom: 1px solid @grey_10;
 		width: 50%;
@@ -358,5 +362,23 @@ fieldset{
 		display:inline;
 		background: white;
 		color: black;
+		&:hover{
+			text-decoration: underline
+		}
+	}
+
+	.remove-creator, .moveup-creator, .movedown-creator, .remove-line{
+		background-color: transparent;
+		color: black;
+	}
+
+	.remove-line{
+
+		i:before {
+			content: "\f057";
+		}
+		i{
+			pointer-events: none;
+		}
 	}
 }

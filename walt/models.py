@@ -188,7 +188,7 @@ class Document(models.Model):
   # document friendship
   related = models.ManyToManyField("self", symmetrical=True, null=True, blank=True)
   parent  = models.ForeignKey("self", null=True, blank=True, related_name="children")
-  status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DRAFT)
+  status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DRAFT, blank=True, null=True)
   type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=TEXT)
 
   # tags and metadata. Reference is thre Reference Manager ID field (external resource then)
@@ -235,6 +235,7 @@ class Document(models.Model):
       'language': self.language,
       'mimetype': self.mimetype,
       'permalink': self.permalink,
+      'reference': self.reference,
       'owner': self.owner.username,
       'authors': [a.username for a in self.authors.all()]
     }

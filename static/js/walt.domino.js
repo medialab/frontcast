@@ -42,6 +42,24 @@
           dispatch: ['data_documents__updated']
         },
         {
+          id: 'data_assignments',
+          type: {
+            items: ['object'],
+            ids: ['string'],
+            limit: 'number',
+            offset: 'number',
+            length: 'number', // total_count of items - limit infinite loiading
+          },
+          value: {
+            items: [],
+            ids: [],
+            limit: 0,
+            offset: 0,
+            length: 0,
+          },
+          dispatch: ['data_assignments__updated']
+        },
+        {
           id: 'data_reference',
           type: {
             items: 'object',
@@ -106,7 +124,7 @@
         var d = domino.instances('maze');
         d.request('service_name',{offset:10, limit:20, query:'query search'})
 
-        service types: get, save, update, remove
+        service types: get, create, modify, remove
 
       */
       services: [
@@ -124,10 +142,38 @@
                 items: data.objects,
                 ids:[],
                 length: +data.meta.total_count,
-                limit:data.meta.limit || data.objects.length,
+                limit: +data.meta.limit || data.objects.length,
                 offset: data.meta.offset || 0
               }
             });
+          }
+        },
+        { id: 'create_document',
+          type: 'POST',
+          url: walt.urls.user_documents,
+          before: function(params, xhr){
+            xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+          },
+          dataType: 'json',
+          data: function(params) {
+            return params;
+          },
+          success: function(data, params) {
+
+          }
+        },
+        { id: 'modify_document',
+          type: 'POST',
+          url: walt.urls.user_document,
+          before: function(params, xhr){
+            xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+          },
+          dataType: 'json',
+          data: function(params) {
+            return params;
+          },
+          success: function(data, params) {
+
           }
         }
       ]

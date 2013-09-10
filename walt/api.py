@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db.models import Q
+from django.http import HttpResponse
 
 from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
 
@@ -88,6 +89,42 @@ def user_document( request, pk ):
 
 
 @login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+def user_assignment_documents( request, pk ):
+	result = Epoxy( request )
+
+	try:
+		a = Assignment.objects.get(
+			pk = pk,
+			unit__profile__user = request.user
+		)
+	except Assignment.DoesNotExist,e:
+		return result.throw_error(error='%s'%e, code=API_EXCEPTION_DOESNOTEXIST)
+
+	if result.is_POST():
+		form = DocumentForm(request.REQUEST)
+
+		if form.is_valid():
+			d = form.save(commit=False)
+			d.owner = request.user
+			d.save()
+			a.documents.add(d)
+			a.save()
+		elif "__all__" in form.errors:
+			result.throw_error(error=form.errors, code=API_EXCEPTION_DOESNOTEXIST)
+		else:
+			result.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS)
+
+	# todo
+	result.queryset(
+		Document.objects.filter(assignment=a).filter( Q(owner=request.user) | Q(authors=request.user))
+	)
+
+	result.item(a)
+
+	return result.json()
+
+
+@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
 def user_assignment_deliver( request, pk ):
 	result = Epoxy( request )
 
@@ -107,6 +144,7 @@ def user_assignment_deliver( request, pk ):
 	result.item(a)
 
 	return result.json()
+
 
 #
 #
@@ -143,6 +181,7 @@ def get_objects( request, model_name ):
 	)
 	return result.json()
 
+
 #
 #
 #	Generic single object getter
@@ -153,3 +192,29 @@ def get_object( request, model_name, pk ):
 	m = get_model( "walt", model_name )
 	result = Epoxy( request ).single( m, {'pk':pk})
 	return result.json()
+
+
+#
+#
+#	BIBLIB
+# ------
+#
+#	For POST data.
+#
+@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+def biblib_proxy(request):
+	import urllib2, json
+
+	req = urllib2.Request(settings.BIBLIB_ENDPOINT, '%s'%request.read() )
+	response = urllib2.urlopen(req)
+
+	# set the body
+	return HttpResponse(response.read())
+
+
+@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+def biblib_proxy_safe(request):
+	result = Epoxy( request )
+	return result.json()
+
+

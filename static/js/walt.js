@@ -93,7 +93,7 @@
   walt.log = walt.info = function(){
     if(walt.debug == walt.DEBUG_INFO){
       try{
-        var args = ['walt:' ].concat(Array.prototype.slice.call(arguments));
+        var args = ['\twalt:' ].concat(Array.prototype.slice.call(arguments));
         console.log.apply(console, args);
       } catch(e){}
     }
@@ -138,7 +138,14 @@
   */
   walt.init = function(debug){
     walt.debug = debug || walt.DEBUG_INFO;
-    walt.log('welcome', walt.VERSION, '\n----\n');
+    console.log('\n\t----\n','\twelcome to walt:', walt.VERSION, '\n\t----\n');
+
+    walt.CSRFTOKEN = walt.misc.get_cookie('csrftoken');
+    $.ajaxSetup({
+      crossDomain: false, // obviates need for sameOrigin test
+      beforeSend: function(xhr, settings) { if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))){ xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);}}
+    });
+    walt.log('csfrtoken updated');
 
     //walt.engine.init();
     walt.domino.init();

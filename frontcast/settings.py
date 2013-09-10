@@ -184,7 +184,7 @@ LANGUAGES = local_settings.LANGUAGES
 
 
 # BIBTEXT API
-
+BIBLIB_ENDPOINT = local_settings.BIBLIB_ENDPOINT
 
 
 # LDAP

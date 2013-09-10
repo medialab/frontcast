@@ -11,7 +11,8 @@ class LDAPBackend(_LDAPBackend):
     first_name = ' '.join(ldap_user.attrs['givenname'])
     last_name = ' '.join(ldap_user.attrs['sn'])
 
-    # logger.debug( ldap_user.attrs )
+    #@todo filter by is acttive
+    logger.debug( ldap_user.attrs )
     user, user_created = super( LDAPBackend, self ).get_or_create_user( username, ldap_user )
     user.first_name = first_name
     user.last_name = last_name
