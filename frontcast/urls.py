@@ -13,12 +13,17 @@ api_urlpatterns = patterns('walt.api',
 
     url(r'u/assignment/$', 'user_assignments'),
     url(r'u/assignment/(?P<pk>\d+)/deliver/$', 'user_assignment_deliver', name= 'walt_api_user_assignment_deliver'),
+    url(r'u/assignment/(?P<pk>\d+)/documents/$', 'user_assignment_documents', name= 'walt_api_user_assignment_documents'),
 
     url(r'u/document/$', 'user_documents', name='walt_api_user_documents'),
     url(r'u/document/(?P<pk>\d+)$', 'user_document', name='walt_api_user_document'),
 
+    url(r'biblib/$', 'biblib_proxy', name='walt_api_biblib_proxy'),
+    url(r'biblib-safe/$', 'biblib_proxy_safe', name='walt_api_biblib_proxy_safe'), # user is not logged in! but requests are safe enough
+
     url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects'),
     url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>\d+)$', 'get_object'),
+
 )
 
 

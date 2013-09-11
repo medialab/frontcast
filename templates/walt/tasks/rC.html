@@ -43,11 +43,7 @@
 
 
 
-  walt.CSRFTOKEN = walt.misc.get_cookie('csrftoken');
-  $.ajaxSetup({
-    crossDomain: false, // obviates need for sameOrigin test
-    beforeSend: function(xhr, settings) { if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))){ xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);}}
-  });
+
 
   /*
     Some
@@ -65,7 +61,12 @@
           lang: 'fr',
           url:'{{ STATIC_URL }}/locales/__lng__/__ns__.json'
         },
-        baseURL: 'http://localhost:8080',
+        rpc:{
+          before: function(params, xhr){
+            xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+          }
+        },
+        baseURL: '{% url "walt_api_biblib_proxy" %}',//http://localhost:8080',
         baseDOM: $('#layout'),
         callbacks:{
           save: function(data){
@@ -95,16 +96,12 @@
 
             } else {
               // brand new stuff
-              $.ajax({
-                url:walt.urls.user_documents,
-                method:'POST',
-                data:{
-                  title:data.params.entry.title,
-                  reference:data.result.rec_id,
-                  status:'P'
-                }
-              }).success(function(data){console.log(data)}).error( function(data){console.log(data)})
-
+              debugger
+              walt.domino.controller.request('create_document',{
+                title:data.params.entry.title,
+                reference:data.result.rec_id,
+                status:'P'
+              });
             }
           },
           get_entry:function(data){

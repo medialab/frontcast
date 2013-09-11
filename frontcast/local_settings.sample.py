@@ -65,3 +65,5 @@ WALT_ROLES = [
     'name': 'Professor'
   }
 ]
+
+BIBLIB_ENDPOINT = "http://localhost:8080/"
