@@ -58,8 +58,10 @@
         <script src="{{ STATIC_URL }}/js/domino.min.js" type="text/javascript"></script>
         <script src="{{ STATIC_URL }}/js/walt.js" type="text/javascript"></script>
         <script src="{{ STATIC_URL }}/js/walt.engine.js" type="text/javascript"></script>
+
         <script src="{{ STATIC_URL }}/js/walt.domino.js" type="text/javascript"></script>
-        <script src="{{ STATIC_URL }}/js/modules/Layout.js" type="text/javascript"></script>
+        <script src="{{ STATIC_URL }}/js/modules/layout.js" type="text/javascript"></script>
+        <script src="{{ STATIC_URL }}/js/modules/list.js" type="text/javascript"></script>
 
         {% endblock %}
         <script>
@@ -68,6 +70,10 @@
                 api endpoint . Override
             */
             walt.urls = {
+                user_assignments: '{% url "walt_api_user_assignments" %}',
+                user_assignment: '{% url "walt_api_user_assignment" 0 %}',
+                user_assignment_deliver: '{% url "walt_api_user_assignment_deliver" 0 %}',
+                user_assignment_documents: '{% url "walt_api_user_assignment" 0 %}',
                 user_documents: '{% url "walt_api_user_documents" %}',
                 user_document: '{% url "walt_api_user_document" 0 %}'
             };
