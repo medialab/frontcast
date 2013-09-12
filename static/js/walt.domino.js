@@ -60,7 +60,7 @@
           dispatch: ['data_assignments__updated']
         },
         {
-          id: 'data_reference',
+          id: 'data_references',
           type: {
             items: 'object',
             ids: ['string']
@@ -80,6 +80,13 @@
           Any other changement make only local changements.
 
         */
+        {
+          id: 'scene',
+          description: 'basic app view',
+          type: 'string',
+          value: 'init',
+          dispatch: ['scene__updated']
+        },
       ],
       shortcuts: [],
       hacks: [
@@ -175,7 +182,39 @@
           success: function(data, params) {
 
           }
-        }
+        },
+        { id: 'get_assignments',
+          type: 'GET',
+          url: walt.urls.user_documents,
+          dataType: 'json',
+          data: function(params) {
+            return params;
+          },
+          success: function(data, params) {
+
+            this.update({
+              data_documents: {
+                items: data.objects,
+                ids:[],
+                length: +data.meta.total_count,
+                limit: +data.meta.limit || data.objects.length,
+                offset: data.meta.offset || 0
+              }
+            });
+          }
+        },
+        { id: 'complete_assignments',
+          type: 'GET',
+          url: walt.urls.user_documents,
+          dataType: 'json',
+          data: function(params) {
+            return params;
+          },
+          success: function(data, params) {
+
+
+          }
+        },
       ]
     });
 
@@ -184,7 +223,9 @@
         instantiate Domino modules
         ---
     */
-    // maze.domino.controller.addModule( maze.domino.modules.__Notebook,null, {id:'notebook'});
+    walt.domino.controller.addModule( walt.domino.modules.Layout, [walt.domino.controller], {id:'layout'});
+    walt.domino.controller.addModule( walt.domino.modules.List, null, {id:'list'});
+    walt.domino.controller.addModule( walt.domino.modules.Route, null, {id:'route'});
 
     /*
 

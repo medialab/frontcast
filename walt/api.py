@@ -159,6 +159,14 @@ def user_assignments( request ):
 	return result.json()
 
 
+@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+def user_assignment( request, pk ):
+	result = Epoxy( request ).queryset(
+		Assignment.objects.filter( unit__profile__user=request.user, date_completed__isnull=True )
+	)
+	return result.json()
+
+
 #
 #
 #	Generic objects getter
