@@ -44,22 +44,12 @@
 		<div class="main">
 			<div class="inner">
 			{% if user.is_authenticated %}
-			{% block notifications %}
-				<div class="notifications" style="display: none" ng-controller="AssignmentListCtrl">
-					<h1>assignments</h1>
-					  {% verbatim %}
-				    <span><!-- {{total_count}} -->o</span>
-				    <div class="assignments">
-				      <div class="assignment" ng-repeat="a in assignments">
-				        <h3>{{a.task.name}}</h3>
-				        {{a.date_due}}
-				        <div ng-bind-html-unsafe="a.task.content"></div>
-				      </div>
-				    </div>
-					  {% endverbatim %}
+				{% block assignments %}
+				<div class="assignments">
+					<h1>{%trans "you have something to do"%}</h1>
+					<div class="assignments" id="list-of-assignments"></div>
 				</div>
-
-			{% endblock %}
+				{% endblock %}
 			{% endif %}
 
 			{% block page %}

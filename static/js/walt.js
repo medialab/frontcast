@@ -22,6 +22,45 @@
 
   walt.debug = walt.DEBUG_INFO;
 
+  walt.SCENE_STARTUP = 'startup';
+  walt.SCENE_VIEW_DOCUMENT = 'document';
+  walt.SCENES = [
+    walt.SCENE_STARTUP,
+    walt.SCENE_VIEW_DOCUMENT
+  ]
+
+  walt.UI_STATUS_LOCKED = 'locked';
+  walt.UI_STATUS_UNLOCKED = 'unlocked';
+  walt.UI_STATUSES = [
+    walt.UI_STATUS_LOCKED,
+    walt.UI_STATUS_UNLOCKED
+  ]
+  
+
+  /*
+
+      JSONRPC configuration
+      =====================
+
+  */
+  walt.rpc = {
+    type: 'POST',
+    contentType: 'application/x-www-form-urlencoded',
+    expect: function(data) {
+      return data !== null && typeof data === 'object' && !('error' in data);
+    },
+    error: function(data) {
+      walt.error('Error:' + data);
+    },
+    buildData: function(method, params) {
+      return JSON.stringify({
+        id: 1,
+        jsonrpc: '2.0',
+        method: method,
+        params: params
+      });
+    }
+  };
 
   /*
 

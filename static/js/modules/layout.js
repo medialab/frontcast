@@ -11,6 +11,10 @@
           assignments: controller.addModule(walt.domino.modules.ListAssignments),
           references: controller.addModule(walt.domino.modules.ListReferences)
         };
+
+    this.triggers.events.scene__synced = function(controller, event) {
+
+    };
   };
 
 })();

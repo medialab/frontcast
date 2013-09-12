@@ -13,9 +13,25 @@
     clone: false
   });
 
+  if (!domino.struct.isValid('walt.scene'))
+    domino.struct.add({
+      id: 'walt.scene',
+      struct: function(v) {
+        return !!~walt.SCENES.indexOf(v);
+      }
+    });
+
+  if (!domino.struct.isValid('walt.ui_status'))
+    domino.struct.add({
+      id: 'walt.ui_status',
+      struct: function(v) {
+        return !!~walt.UI_STATUSES.indexOf(v);
+      }
+    });
+
   walt.domino.init = function(){
     walt.domino.controller = new domino({
-      name: 'maze',
+      name: 'walt',
       properties: [
         /*
 
@@ -83,12 +99,37 @@
         {
           id: 'scene',
           description: 'basic app view',
-          type: 'string',
-          value: 'init',
+          type: 'walt.scene',
+          value: walt.SCENE_STARTUP,
+          triggers: 'scene__update',
           dispatch: ['scene__updated']
         },
+        /*
+
+          Ui status
+          =========
+        
+          This proerty implements a status mechanism to prevent data overload
+
+        */
+        {
+          id: 'ui_status',
+          description: 'true or false lock mechanism to preserve data loading from overload',
+          type: 'walt.ui_status',
+          value: walt.UI_STATUS_UNLOCKED,
+          triggers: 'lock__update',
+          dispatch: ['lock__updated']
+        },
       ],
-      shortcuts: [],
+      shortcuts: [
+        {
+          id: 'is_locked',
+          description: 'Returns true if ui_status allows ui events to be performed',
+          method: function() {
+            return this.get('ui_status') == walt.UI_STATUS_UNLOCKED;
+          }
+        }
+      ],
       hacks: [
         /*
 
@@ -101,25 +142,62 @@
         {
           triggers: 'data_document__changed',
           description: 'documents items collection changed',
-          method: function() {
+          method: function(){
 
           }
         },
         /*
 
-          Modules Hacks
-          =============
-
-          Note Module name must be specified as prefix mod_
+          SCENE Hacks
+          ===========
 
         */
         {
-          triggers: 'mod_location_changed',
-          description: 'location changed',
-          method: function() {
+          triggers: 'scene__updated',
+          description: 'according to the scene to perrform, it loads related data through services',
+          method: function(event) {
+            var scene = this.get('scene'),
+                services = [];
+
+            this.log( scene );
+            walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
+
+            switch(scene){
+              case walt.SCENE_STARTUP:
+                services = [
+                  {
+                    service: 'get_documents',
+                    limit: 10,
+                    offset:0
+                  },
+                  {
+                    service: 'get_assignments',
+                    limit: 10,
+                    offset:0
+                  }
+                ];
+                break;
+            }; // end of switch scene
+
+            this.request(services, {
+              success: function() {
+                walt.domino.controller.update('ui_status', walt.UI_STATUS_UNLOCKED);
+                walt.domino.controller.dispatchEvent('scene__synced');
+              }
+            });
+
+          }
+        },
+        {
+          triggers: 'scene__synced',
+          description: 'data loading completed, proceed according to the scene to perrform!',
+          method: function(event) {
+            walt.log('scene synced, ui status:', this.get('ui_status') )
 
           }
         }
+        
+        
       ],
 
       /*
@@ -185,17 +263,21 @@
         },
         { id: 'get_assignments',
           type: 'GET',
-          url: walt.urls.user_documents,
+          url: walt.urls.user_assignments,
           dataType: 'json',
           data: function(params) {
             return params;
           },
           success: function(data, params) {
+            var ids = [];
 
+            for ( var i in data.objects)
+              ids.push(''+data.objects[i].id);
+            
             this.update({
-              data_documents: {
+              data_assignments: {
                 items: data.objects,
-                ids:[],
+                ids:ids,
                 length: +data.meta.total_count,
                 limit: +data.meta.limit || data.objects.length,
                 offset: data.meta.offset || 0
@@ -215,6 +297,23 @@
 
           }
         },
+        {
+          id: 'get_references',
+          url: walt.urls.references, 
+          type: walt.rpc.type,
+          error: walt.rpc.error,
+          expect: walt.rpc.expect,
+          contentType: walt.rpc.contentType,
+          before: function(params, xhr){
+            xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+          },
+          async: true,
+          data: function( input ) { // input={action:'citation_by_rec_ids', params:{} )
+             return walt.rpc.buildData( input.action, input.params);
+          },
+          success: function(data, params) {
+          }
+        }
       ]
     });
 
@@ -227,6 +326,8 @@
     walt.domino.controller.addModule( walt.domino.modules.List, null, {id:'list'});
     walt.domino.controller.addModule( walt.domino.modules.Route, null, {id:'route'});
 
+    walt.domino.controller.log('module instantiated');
+    walt.domino.controller.dispatchEvent('init');
     /*
 
         Start!

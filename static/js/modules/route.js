@@ -11,7 +11,7 @@
         _dry = {
           scene: {
             shortcut: 's',
-            defaultValue: 't'
+            defaultValue: walt.SCENE_STARTUP
           }
         },
         _expand = Object.keys(_dry).reduce(function(res, k) {
@@ -64,6 +64,7 @@
     }
 
     function evaluate_hash() {
+      walt.log('evaluate_hash')
       // Check that this update is not actually caused by the same Location
       // module:
       if (window.location.hash.substr(1) === _last_hash)

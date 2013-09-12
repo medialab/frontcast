@@ -55,7 +55,7 @@
 
 
       for( var i in data.ids ){
-          item = $( settings.prefix + ids[i] );
+          item = $( settings.prefix + data.ids[i] );
 
           if( item.length == 0 ){
             if( previous_item == null )
@@ -63,7 +63,7 @@
             else
               $( previous_item ).after( settings.template(data.items[i]) );
 
-            item = $( settings.prefix + ids[i] );
+            item = $( settings.prefix + data.ids[i] );
 
             var args = {
               delay: settings.delay
@@ -74,7 +74,7 @@
             $( previous_item ).after( item );
           }
 
-          previous_item = settings.prefix + ids[i]; // maze.log(i, contents[ ids[i] ].name, ids[i] );
+          previous_item = settings.prefix + data.ids[i]; // maze.log(i, contents[ ids[i] ].name, ids[i] );
           settings.delay += 70;
       }
     }
@@ -86,7 +86,7 @@
     walt.domino.modules.List.call(this, $('#list-of-documents') );
     var _self = this;
 
-    this.trigger.event.data_documents__updated = function(controller){
+    this.triggers.events.data_documents__updated = function(controller){
       _self.listof(controller, {
         namespace:'documents'
       });
@@ -101,7 +101,16 @@
 
 
   walt.domino.modules.ListAssignments = function(controller){
-    walt.domino.modules.List.call(this, $('#list-of-references') );
+    walt.domino.modules.List.call(this, $('#list-of-assignments') );
     var _self = this;
+
+    this.triggers.events.data_assignments__updated = function(controller){
+      _self.listof(controller, {
+        selector:'.assignment', // css selector for the given item
+        prefix: '#as-', // id prefix for the given stuff
+        namespace:'assignments',
+        template: Handlebars.templates.assignment
+      });
+    }
   };
 })();

@@ -54,6 +54,7 @@
         <script src="{{ STATIC_URL }}/js/handlebars.templates.js" type="text/javascript"></script>
 
         <script src="{{ STATIC_URL }}/js/jquery.toastmessage.js" type="text/javascript"></script>
+        <script src="{{ STATIC_URL }}/js/jquery.ba-bbq.js" type="text/javascript"></script>
         {{ DEBUG }}
         <script src="{{ STATIC_URL }}/js/domino.min.js" type="text/javascript"></script>
         <script src="{{ STATIC_URL }}/js/walt.js" type="text/javascript"></script>
@@ -62,6 +63,7 @@
         <script src="{{ STATIC_URL }}/js/walt.domino.js" type="text/javascript"></script>
         <script src="{{ STATIC_URL }}/js/modules/layout.js" type="text/javascript"></script>
         <script src="{{ STATIC_URL }}/js/modules/list.js" type="text/javascript"></script>
+        <script src="{{ STATIC_URL }}/js/modules/route.js" type="text/javascript"></script>
 
         {% endblock %}
         <script>
@@ -75,7 +77,8 @@
                 user_assignment_deliver: '{% url "walt_api_user_assignment_deliver" 0 %}',
                 user_assignment_documents: '{% url "walt_api_user_assignment" 0 %}',
                 user_documents: '{% url "walt_api_user_documents" %}',
-                user_document: '{% url "walt_api_user_document" 0 %}'
+                user_document: '{% url "walt_api_user_document" 0 %}',
+                references: '{% url "walt_api_biblib_proxy" %}'
             };
 
             $(window).load( function(){
