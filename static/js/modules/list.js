@@ -8,8 +8,6 @@
     var _self = this;
     this.box = box;
 
-
-
     this.listof = function( controller, options ){
       var previous_item = null,
           item = null,
@@ -79,6 +77,8 @@
       }
     }
 
+
+
   };
 
 
@@ -86,11 +86,93 @@
     walt.domino.modules.List.call(this, $('#list-of-documents') );
     var _self = this;
 
+    this.create_document = function(d){
+      _self.editor = $("#document-editor").remove();
+
+      _self.editor = _self.box.prepend(Handlebars.templates.document_editor(d));
+      _self.editor.find('textarea')
+        .autosize()
+        .first()
+        .focus();
+    };
+
+    this.create_text_document = function(event){
+      _self.create_document({
+        type:'text'
+      });
+    }
+    
+    this.create_video_document = function(event){
+      _self.create_document({
+        type:'video'
+      });
+    }
+    
+    this.create_picture_document = function(event){
+      _self.create_document({
+        type:'picture'
+      });
+    }
+
+    this.create_sound_document = function(event){
+      _self.create_document({
+        type:'sound'
+      });
+    }
+
+    this.evaluate_permalink = function(event){
+      if( !_self.editor )
+        return;
+
+      var field = $(event.currentTarget),
+          url = field.val();
+
+      if( walt.misc.is_vimeo(url) ){
+        _self.dispatchEvent('fill_document_with_oembed',{
+          url: url,
+          provider: 'vimeo'
+        });
+      } else if( walt.misc.is_youtube(url) ){
+        _self.dispatchEvent('fill_document_with_oembed',{
+          url: url,
+          provider: 'youtube'
+        });
+      }
+
+    }
+
+    $(document).on('click', '.actions .add-text', _self.create_text_document );
+    $(document).on('click', '.actions .add-video', _self.create_video_document );
+    $(document).on('click', '.actions .add-picture', _self.create_picture_document );
+    $(document).on('click', '.actions .add-sound', _self.create_sound_document );
+    $(document).on('change', '.video .permalink textarea', _self.evaluate_permalink );
+    
+    /*
+    
+        Triggers
+        ========
+
+    */
+    this.triggers.events.filled_document_with_oembed = function(controller, event){
+      walt.log('filled_document_with_oembed', event.data);
+      var result = event.data;
+
+      _self.editor.find('textarea[name="document-title"]')
+        .html(result.data.title)
+        .trigger('autosize.resize');
+
+      if( event.data.params.provider == 'vimeo'){
+        _self.editor.find('.content')
+          .html('<iframe src="//player.vimeo.com/video/'+ result.data.video_id + '" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+      }
+    }
+
     this.triggers.events.data_documents__updated = function(controller){
       _self.listof(controller, {
         namespace:'documents'
       });
-    }
+      _self.create_video_document();
+    };
   };
 
 
@@ -104,6 +186,11 @@
     walt.domino.modules.List.call(this, $('#list-of-assignments') );
     var _self = this;
 
+    /*
+    
+        Triggers
+        ========
+    */
     this.triggers.events.data_assignments__updated = function(controller){
       _self.listof(controller, {
         selector:'.assignment', // css selector for the given item

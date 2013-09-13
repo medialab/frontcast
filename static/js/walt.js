@@ -156,7 +156,7 @@
       ====
 
   */
-  walt.misc.slug = function( sluggable ){
+  walt.misc.slug = function(sluggable){
     return sluggable.replace(/[^a-zA-Z 0-9-]+/g,'').toLowerCase().replace(/\s/g,'-');
   };
 
@@ -164,10 +164,18 @@
     var t=null;if(document.cookie&&document.cookie!=""){var n=document.cookie.split(";");for(var r=0;r<n.length;r++){var i=jQuery.trim(n[r]);if(i.substring(0,e.length+1)==e+"="){t=decodeURIComponent(i.substring(e.length+1));break}}}return t
   };
 
-  walt.misc.is_array = function( variable ){
+  walt.misc.is_array = function(variable){
     return Object.prototype.toString.call( variable ) === '[object Array]';
   }
 
+  walt.misc.is_vimeo = function(url){
+    return (/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/).test(url);
+  }
+
+  walt.misc.is_youtube = function(url){
+    return (/^(http\:\/\/|https\:\/\/)?(www\.)?(youtube\.com\/watch\?v=)([A-Za-z0-9]+)$/).test(url);
+  }
+  // http://www.youtube.com/watch?v=axZTv5YJssA
 
   /*
 

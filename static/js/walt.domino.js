@@ -195,9 +195,37 @@
             walt.log('scene synced, ui status:', this.get('ui_status') )
 
           }
+        },
+        /*
+
+          content related hacks
+          =====================
+
+          fill_*_with__* load and complete related document field
+        */
+        {
+          triggers: 'fill_document_with_oembed',
+          description: 'execute the get_<event.data.provider>_oembed service and try to fill all fields given',
+          method: function(event){
+            walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
+
+            this.request('get_'+ event.data.provider +'_oembed',{
+              url:event.data.url,
+              success: function(data, params) {
+                walt.log(':success,','get_vimeo_oembed', data, params);
+                params.provider = params.service.match('_([a-z]+)_').pop()
+                walt.domino.controller.update('ui_status', walt.UI_STATUS_UNLOCKED);
+                walt.domino.controller.dispatchEvent('filled_document_with_oembed',{
+                  data:data,
+                  params:params
+                });
+              }
+            });
+          }
+        },
+        {
+          triggers: 'filled_document_with_oembed'
         }
-        
-        
       ],
 
       /*
@@ -297,6 +325,14 @@
 
           }
         },
+        /*
+          
+          Non WALTY endpoints
+          ===================
+
+          BIBLIB references, vimeo oembed endpoint etc...
+
+        */
         {
           id: 'get_references',
           url: walt.urls.references, 
@@ -312,6 +348,33 @@
              return walt.rpc.buildData( input.action, input.params);
           },
           success: function(data, params) {
+          }
+        },
+        {
+          id: 'get_vimeo_oembed',
+          url: 'http://vimeo.com/api/oembed.json',
+          data: function(params) {
+            var p = {
+              url: params.url
+            };
+            return p;
+          },
+          success:function(data, params){
+            this.log('get_vimeo_oembed', 'get_vimeo_oembed service success function');
+          }
+        },
+        {
+          id: 'get_youtube_oembed',
+          url: 'http://www.youtube.com/oembed',
+          data: function(params) {
+            var p = {
+              url: params.url,
+              format: 'json'
+            };
+            return p;
+          },
+          success:function(data, params){
+            this.log('get_youtube_oembed', 'get_youtube_oembed service success function');
           }
         }
       ]

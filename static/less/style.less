@@ -12,7 +12,9 @@
 @grey_5: darken(@grey, 8%);
 @grey_10: darken(@grey, 10%);
 @grey_14: darken(@grey, 14%);
+@grey-2: lighten(@grey, 2%);
 @grey-5: lighten(@grey, 5%);
+@grey-7: lighten(@grey, 7%);
 @grey-10: lighten(@grey, 10%);
 @grey-12: lighten(@grey, 12%);
 @grey-18: lighten(@grey, 18%);
@@ -52,7 +54,7 @@ html, body{
 
 body{
 	.sans-serif(12px);
-	background: white;//grey-5;
+	background: white;
 }
 
 h1, h2, h3, h4{
@@ -224,7 +226,25 @@ input[type="text"]{
 	line-height: 1.67em;
 }
 
-
+textarea{
+	color: @black;
+	padding:@padding/4 ;
+	padding-top: @padding/3;
+	border-width: 0px;
+	border-bottom: 1px solid @grey_5;
+	font-family: 'Source Sans Pro', sans-serif;
+	line-height:1.2em;
+	width: 100%;
+	height:@padding;
+	&:focus {
+		color: black;
+		border-bottom: 1px solid @f-red;
+		//background: fade(@f-blue, 10%);
+	}
+}
+*:focus {
+	outline: none;
+}
 /*
 
 	Override DOMINO css
@@ -250,9 +270,32 @@ fieldset{
 	background: @grey;
 }
 
+.assignment{
+	border-bottom: 1px solid @grey;
+	height: @padding + @padding/2 + @padding;
+	.navigate-to-task{
+		float:right;
+		margin: @padding/2;
+	}
+	.status{
+		padding: 0 @padding;
+		height:100%;
+		line-height: @padding + @padding/2 + @padding;
+		display:block;
+		//background:@grey_5;
+		float:left;
+	}
+	.title{
+		padding: @padding/2;
+		font-size: 1.2em;
+		line-height: @padding + @padding/2;
+		vertical-align:middle;
+	}
+}
+
 .pins{
 	position:relative;
-	top:0px;
+	top:@padding;
 
 	.pin{
 		//border:1px solid @grey_2;
@@ -260,17 +303,25 @@ fieldset{
 		background: white;
 		margin-bottom: @padding;
 		width: 270px;
+		
+		&.editor{
+			//background: gold;
+		}
+	}
+
+	.pusher{
+		display:block;
+		height:@padding;
+		width:100%
+	}
+
+	h3, .abstract, .permalink{
+		padding:0 @padding @padding/2 @padding;
 	}
 
 	h3{
 		font-size: 1.3em;
 		line-height: 1.7em;
-		padding:@padding @padding @padding/2 @padding;
-	}
-
-	.abstract{
-		padding:0 @padding @padding/2 @padding;
-		font-size: 0.9em;
 	}
 
 	.authors{
@@ -279,8 +330,35 @@ fieldset{
 		padding: @padding/2 @padding;
 		font-size:.9em;
 	}
+
+
+
+
 }
 
+
+
+.actions{
+	text-align:center;
+
+	.action{
+		float:left;
+		text-align:center;
+		padding: @padding;
+		.icon{
+			display:block;
+			text-align:center;
+		}
+	}
+	border-bottom: 1px solid @grey;
+}
+.clear{
+	clear:both;
+}
+
+.documents{
+
+}
 
 /*
 
