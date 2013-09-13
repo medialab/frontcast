@@ -1,0 +1,27 @@
+<div class="pin editor {{type}}" id="document-editor">
+  <div class="pusher"></div>
+  <div class="status"></div>
+  
+  {{#if_eq type compare='text'}}
+  	<h3><textarea name="document-title" placeholder="Describe yourself with 4 words...">{{title}}</textarea></h3>
+  	<div class="abstract"><textarea name="document-abstract" placeholder="Describe yourself with max 160 chars">{{abstract}}</textarea></div>
+  {{/if_eq}}
+
+  {{#if_eq type compare='video'}}
+  	<div class="permalink">
+  		Copy and Paste a
+  		<textarea name="document-permalink" placeholder="http://vimeo.com/">{{permalink}}</textarea>
+  	</div>
+  	<h3>
+		<textarea name="document-title" placeholder="Describe yourself with 4 words...">{{title}}</textarea>
+	</h3>
+	<div class="abstract">
+		<textarea name="document-abstract" placeholder="Describe yourself with max 160 chars">{{abstract}}</textarea>
+	</div>
+	<div class="content">{{content}}</div>
+  {{/if_eq}}
+  
+  <div class="authors">
+    <button class="save-{{type}}">save</button>
+  </div>
+</div>

@@ -365,7 +365,7 @@
         },
         {
           id: 'get_youtube_oembed',
-          url: 'http://www.youtube.com/oembed',
+          url: 'https://www.youtube.com/oembed',
           data: function(params) {
             var p = {
               url: params.url,
