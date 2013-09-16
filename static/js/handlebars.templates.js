@@ -35,30 +35,34 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  	<h3><textarea name=\"document-title\" placeholder=\"Describe yourself with 4 words...\">";
+  buffer += "\n  	<h3><textarea name=\"title\" placeholder=\"Describe yourself with 4 words...\">";
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea></h3>\n  	<div class=\"abstract\"><textarea name=\"document-abstract\" placeholder=\"Describe yourself with max 160 chars\">";
+    + "</textarea></h3>\n  	<div class=\"abstract\"><textarea name=\"abstract\" placeholder=\"Describe yourself with max 160 chars\">";
   if (stack1 = helpers['abstract']) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0['abstract']; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea></div>\n  ";
+    + "</textarea></div>\n    <div class=\"content\">\n      <textarea name=\"content\" placeholder=\"Describe yourself with some basic html\">";
+  if (stack1 = helpers.content) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.content; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</textarea>\n    </div>\n  ";
   return buffer;
   }
 
 function program3(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  	<div class=\"permalink\">\n  		Copy and Paste a\n  		<textarea name=\"document-permalink\" placeholder=\"http://vimeo.com/\">";
+  buffer += "\n  	<div class=\"permalink\">\n  		Copy and Paste a\n  		<textarea name=\"permalink\" placeholder=\"http://vimeo.com/\">";
   if (stack1 = helpers.permalink) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.permalink; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea>\n  	</div>\n  	<h3>\n		<textarea name=\"document-title\" placeholder=\"Describe yourself with 4 words...\">";
+    + "</textarea>\n  	</div>\n  	<h3>\n		<textarea name=\"title\" placeholder=\"Describe yourself with 4 words...\">";
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea>\n	</h3>\n	<div class=\"abstract\">\n		<textarea name=\"document-abstract\" placeholder=\"Describe the video with max 160 chars\">";
+    + "</textarea>\n	</h3>\n	<div class=\"abstract\">\n		<textarea name=\"abstract\" placeholder=\"Describe the video with max 160 chars\">";
   if (stack1 = helpers['abstract']) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0['abstract']; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -73,15 +77,15 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <div class=\"permalink\">\n      Copy and Paste a flickr link\n      <textarea name=\"document-permalink\" placeholder=\"http://vimeo.com/\">";
+  buffer += "\n    <div class=\"permalink\">\n      Copy and Paste a flickr link\n      <textarea name=\"permalink\" placeholder=\"http://vimeo.com/\">";
   if (stack1 = helpers.permalink) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.permalink; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea>\n    </div>\n    <h3>\n      <textarea name=\"document-title\" placeholder=\"picture title (will be automatically filled)\">";
+    + "</textarea>\n    </div>\n    <h3>\n      <textarea name=\"title\" placeholder=\"picture title (will be automatically filled)\">";
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea>\n    </h3>\n  <div class=\"abstract\">\n    <textarea name=\"document-abstract\" placeholder=\"Describe the picture with max 160 chars\">";
+    + "</textarea>\n    </h3>\n  <div class=\"abstract\">\n    <textarea name=\"abstract\" placeholder=\"Describe the picture with max 160 chars\">";
   if (stack1 = helpers['abstract']) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0['abstract']; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -124,18 +128,38 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"pin "
-    + escapeExpression(((stack1 = ((stack1 = depth0['d']),stack1 == null || stack1 === false ? stack1 : stack1.status)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n  <div class=\"status\"></div>\n  <h3>"
-    + escapeExpression(((stack1 = ((stack1 = depth0['d']),stack1 == null || stack1 === false ? stack1 : stack1.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n  <div class=\"abstract\">"
-    + escapeExpression(((stack1 = ((stack1 = depth0['d']),stack1 == null || stack1 === false ? stack1 : stack1['abstract'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " - "
-    + escapeExpression(((stack1 = ((stack1 = depth0['d']),stack1 == null || stack1 === false ? stack1 : stack1.mimetype)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n\n  <div class=\"authors\">\n    by <a href=\"/u/"
-    + escapeExpression(((stack1 = ((stack1 = depth0['d']),stack1 == null || stack1 === false ? stack1 : stack1.owner)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">"
-    + escapeExpression(((stack1 = ((stack1 = depth0['d']),stack1 == null || stack1 === false ? stack1 : stack1.owner)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+  buffer += "<div class=\"document pin ";
+  if (stack1 = helpers.status) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.status; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" id=\"d-";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">\n  <div class=\"status\">";
+  if (stack1 = helpers.status) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.status; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</div>\n  <h3>";
+  if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</h3>\n  <div class=\"abstract\">";
+  if (stack1 = helpers['abstract']) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0['abstract']; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</div>\n  <div class=\"abstract\">";
+  if (stack1 = helpers.content) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.content; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</div>\n  <div class=\"authors\">\n    by <a href=\"/u/";
+  if (stack1 = helpers.owner) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.owner; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">";
+  if (stack1 = helpers.owner) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.owner; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
     + "</a>\n  </div>\n</div>\n";
   return buffer;
   });

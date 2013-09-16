@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db.models import Q
 from django.http import HttpResponse
+from django.utils.text import slugify
 
 from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
 
@@ -34,6 +35,7 @@ def user_documents( request ):
 		if form.is_valid():
 			d = form.save(commit=False)
 			d.owner = request.user
+			d.slug = slugify(d.title)
 			d.save()
 			result.item(d)
 		elif "__all__" in form.errors:

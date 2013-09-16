@@ -1,6 +1,10 @@
+import re
+from datetime import datetime
+
 from django.contrib.auth.models import User, Group
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 
 
 class Task(models.Model):
@@ -166,8 +170,8 @@ class Document(models.Model):
   # storage function for filefield
 
   # the text content
-  slug = models.SlugField(max_length=160)
-  title = models.CharField(max_length=160, default="", blank=True, null=True)
+  slug = models.SlugField(max_length=160, unique=True)
+  title = models.CharField(max_length=160, default="")
   abstract = models.TextField(default="", blank=True, null=True)
   content = models.TextField(default="", blank=True, null=True)
   language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES)
@@ -176,7 +180,7 @@ class Document(models.Model):
 
   # TIME
   date = models.DateField(blank=True, null=True) # main date, manually added
-  date_last_modified = models.DateField(auto_now=True) # date last save()
+  date_last_modified = models.DateTimeField(blank=True, null=True) #cfr save() method
 
   # URL LOCATION
   local = models.FileField(upload_to='documents/%Y-%m/',  blank=True, null=True) # local stored file inside media folder
@@ -199,10 +203,32 @@ class Document(models.Model):
   authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
 
+  def save(self, **kwargs):
+    self.date_last_modified = datetime.now()  
+    #
+    #  slug
+    #  ----
+    max_length = 160 # associate it with slug field max length above
+    slug = slugify(self.title)[:max_length] # safe autolimiting
+    slug_base = slug
+    i = 1;
+
+    while self.__class__._default_manager.filter(slug=slug).count():
+      candidate = '%s-%s' % (slug_base, i)
+
+      if len(candidate) > max_length:
+        slug = slug[:max_length-len('-%s' % i)]
+
+      slug = re.sub('\-+','-',candidate)
+      i += 1
+
+    self.slug = slug
+
+    super(Document, self).save()
 
   class Meta:
-    unique_together = ("slug", "title", "reference")
-    ordering = ['-date_last_modified']
+    unique_together = ("slug", "reference")
+    ordering = ['-id']
 
   def __unicode__(self):
     return "%s (%s) a.k.a. %s" % (self.slug, self.language, self.title)
@@ -237,6 +263,7 @@ class Document(models.Model):
       'permalink': self.permalink,
       'reference': self.reference,
       'owner': self.owner.username,
+      'date_last_modified': self.date_last_modified.isoformat() if self.date_last_modified is not None else None,
       'authors': [a.username for a in self.authors.all()]
     }
 

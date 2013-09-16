@@ -3,20 +3,23 @@
   <div class="status"></div>
   
   {{#if_eq type compare='text'}}
-  	<h3><textarea name="document-title" placeholder="Describe yourself with 4 words...">{{title}}</textarea></h3>
-  	<div class="abstract"><textarea name="document-abstract" placeholder="Describe yourself with max 160 chars">{{abstract}}</textarea></div>
+  	<h3><textarea name="title" placeholder="Describe yourself with 4 words...">{{title}}</textarea></h3>
+  	<div class="abstract"><textarea name="abstract" placeholder="Describe yourself with max 160 chars">{{abstract}}</textarea></div>
+    <div class="content">
+      <textarea name="content" placeholder="Describe yourself with some basic html">{{content}}</textarea>
+    </div>
   {{/if_eq}}
 
   {{#if_eq type compare='video'}}
   	<div class="permalink">
   		Copy and Paste a
-  		<textarea name="document-permalink" placeholder="http://vimeo.com/">{{permalink}}</textarea>
+  		<textarea name="permalink" placeholder="http://vimeo.com/">{{permalink}}</textarea>
   	</div>
   	<h3>
-		<textarea name="document-title" placeholder="Describe yourself with 4 words...">{{title}}</textarea>
+		<textarea name="title" placeholder="Describe yourself with 4 words...">{{title}}</textarea>
 	</h3>
 	<div class="abstract">
-		<textarea name="document-abstract" placeholder="Describe the video with max 160 chars">{{abstract}}</textarea>
+		<textarea name="abstract" placeholder="Describe the video with max 160 chars">{{abstract}}</textarea>
 	</div>
 	<div class="content">{{content}}</div>
   {{/if_eq}}
@@ -24,13 +27,13 @@
   {{#if_eq type compare='picture'}}
     <div class="permalink">
       Copy and Paste a flickr link
-      <textarea name="document-permalink" placeholder="http://vimeo.com/">{{permalink}}</textarea>
+      <textarea name="permalink" placeholder="http://vimeo.com/">{{permalink}}</textarea>
     </div>
     <h3>
-      <textarea name="document-title" placeholder="picture title (will be automatically filled)">{{title}}</textarea>
+      <textarea name="title" placeholder="picture title (will be automatically filled)">{{title}}</textarea>
     </h3>
   <div class="abstract">
-    <textarea name="document-abstract" placeholder="Describe the picture with max 160 chars">{{abstract}}</textarea>
+    <textarea name="abstract" placeholder="Describe the picture with max 160 chars">{{abstract}}</textarea>
   </div>
   <div class="content">{{content}}</div>
   {{/if_eq}}

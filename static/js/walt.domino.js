@@ -243,11 +243,11 @@
           triggers: 'call_service',
           method: function(event){
             walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
-
+            walt.log('call_service', event.data);
             var service = event.data.service || "untitled",
-                params = event.data.params || {};
+                params = event.data || {};
             
-            this.request([$.extend({service: service}, params)],{
+            this.request([{service: service, params:params}],{
               success:  function() {
                 walt.domino.controller.update('ui_status',walt.UI_STATUS_UNLOCKED);
               }
@@ -269,19 +269,20 @@
 
       */
       services: [
-        { id: 'get_documents',
+        { 
+          id: 'get_documents',
           type: 'GET',
           url: walt.urls.user_documents,
           dataType: 'json',
-          data: function(params) {
-            return params;
+          data: function(input) {
+            return input.params;
           },
-          success: function(data, params) {
-
+          success: function(data) {
+            // todo infinite adding not replacing items.
             this.update({
               data_documents: {
                 items: data.objects,
-                ids:[],
+                ids:$.map(data.objects, function(e){return ''+e.id;}),
                 length: +data.meta.total_count,
                 limit: +data.meta.limit || data.objects.length,
                 offset: data.meta.offset || 0
@@ -289,21 +290,23 @@
             });
           }
         },
-        { id: 'create_document',
+        { 
+          id: 'create_document',
           type: 'POST',
           url: walt.urls.user_documents,
           before: function(params, xhr){
             xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
           },
           dataType: 'json',
-          data: function(params) {
-            return params;
+          data: function(input) {
+            return input.params;
           },
-          success: function(data, params) {
-            alert('my function');
+          success: function(data) {
+            
           }
         },
-        { id: 'modify_document',
+        { 
+          id: 'modify_document',
           type: 'POST',
           url: walt.urls.user_document,
           before: function(params, xhr){
@@ -317,7 +320,8 @@
 
           }
         },
-        { id: 'get_assignments',
+        { 
+          id: 'get_assignments',
           type: 'GET',
           url: walt.urls.user_assignments,
           dataType: 'json',
@@ -341,7 +345,8 @@
             });
           }
         },
-        { id: 'complete_assignments',
+        { 
+          id: 'complete_assignments',
           type: 'GET',
           url: walt.urls.user_documents,
           dataType: 'json',

@@ -26,7 +26,7 @@
           _omissis = {},
           data = controller.get('data_' + settings.namespace );
 
-      _self.log('listof:',data.length, settings.selector );
+      walt.log('listof:',data.length, 'items, selector:',settings.selector );
       //_self.unsticky();
 
       /*
@@ -54,8 +54,9 @@
 
       for( var i in data.ids ){
           item = $( settings.prefix + data.ids[i] );
-
+          
           if( item.length == 0 ){
+            walt.log( settings.prefix + data.ids[i], 'not found, populating', settings.template(data.items[i]) );
             if( previous_item == null )
               _self.box.prepend( settings.template(data.items[i]) );
             else
@@ -99,13 +100,22 @@
     };
 
     this.save_document = function(){
-      alert('save');
+      var params = {};
+
       if( _self.item.id ){ // update known item
 
       } else {
-        _self.dispatchEvent('call_service',{
-          service:'create_document'
+
+        _self.editor.find('textarea').each(function(i, e){
+          var el = $(e);
+          params[el.attr('name')] = el.val();
         });
+
+        _self.dispatchEvent('call_service', $.extend( params, {
+          service: 'create_document',
+          language: 'en',
+          type: walt.DOCUMENT_TYPES[_self.item.type.toUpperCase()]
+        }));
       }
     };
 
@@ -186,7 +196,7 @@
     }
 
     $(document).on('click', '.actions .add-text', _self.create_text_document );
-    $(document).on('click', '.actions .save-document', _self.save_document );
+    $(document).on('click', '.save-document', _self.save_document );
     $(document).on('click', '.actions .add-media', _self.create_media_document );
     $(document).on('change', '.video .permalink textarea', _self.evaluate_permalink );
     

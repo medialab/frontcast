@@ -29,6 +29,13 @@
     walt.SCENE_VIEW_DOCUMENT
   ]
 
+  walt.DOCUMENT_TYPES = {
+    MEDIA: 'I', // external iframe, image, audio or video
+    TEXT: 'T', // a note (at least originally)
+    COMMENT: 'C',
+    REFERENCE_CONTROVERSY: 'rY'
+  };
+
   walt.UI_STATUS_LOCKED = 'locked';
   walt.UI_STATUS_UNLOCKED = 'unlocked';
   walt.UI_STATUSES = [
