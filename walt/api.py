@@ -211,6 +211,7 @@ def get_object( request, model_name, pk ):
 #
 @login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
 def biblib_proxy(request):
+	# it *should'nt* allow save/edit requests. User proxy_safe instead
 	import urllib2, json
 
 	req = urllib2.Request(settings.BIBLIB_ENDPOINT, '%s'%request.read() )
@@ -225,4 +226,30 @@ def biblib_proxy_safe(request):
 	result = Epoxy( request )
 	return result.json()
 
+
+@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+def oembed_proxy(request, provider):
+	# handle oembed requests not supporting remote domains (isntead of using jsonp)
+	import urllib2, json
+	import urllib
+
+	providers = {
+		'flickr': 'http://www.flickr.com/services/oembed',
+		'youtube': 'http://www.youtube.com/oembed'
+	}
+
+	if provider not in providers:
+		result = Epoxy( request )
+		result.meta('known_providers',providers)
+		result.throw_error(error="not a known embed provider")
+		return result.json()
+	
+	req = urllib2.Request("%s?%s" % (providers[provider], urllib.urlencode({
+		'url': request.REQUEST.get('url',''),
+		'format': 'json'
+	})))
+	response = urllib2.urlopen(req)
+
+	# set the body
+	return HttpResponse(response.read())
 

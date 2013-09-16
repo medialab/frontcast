@@ -225,6 +225,34 @@
         },
         {
           triggers: 'filled_document_with_oembed'
+        },
+        /*
+
+          Services hacks
+          ==============
+          
+          Lock and unlock UI fopr every request provided.
+          usage: walt.domino.controller.dispatchEvent('call_service',{
+            service: get_documents,
+            params: {
+              limit:2, offset:2
+            }
+          })
+        */
+        {
+          triggers: 'call_service',
+          method: function(event){
+            walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
+
+            var service = event.data.service || "untitled",
+                params = event.data.params || {};
+            
+            this.request([$.extend({service: service}, params)],{
+              success:  function() {
+                walt.domino.controller.update('ui_status',walt.UI_STATUS_UNLOCKED);
+              }
+            });
+          }
         }
       ],
 
@@ -272,7 +300,7 @@
             return params;
           },
           success: function(data, params) {
-
+            alert('my function');
           }
         },
         { id: 'modify_document',
@@ -365,7 +393,7 @@
         },
         {
           id: 'get_youtube_oembed',
-          url: 'https://www.youtube.com/oembed',
+          url: walt.urls.oembed_youtube,
           data: function(params) {
             var p = {
               url: params.url,
@@ -375,6 +403,20 @@
           },
           success:function(data, params){
             this.log('get_youtube_oembed', 'get_youtube_oembed service success function');
+          }
+        },
+        {
+          id: 'get_flickr_oembed',
+          url: walt.urls.oembed_flickr,
+          data: function(params) {
+            var p = {
+              url: params.url,
+              format: 'json'
+            };
+            return p;
+          },
+          success:function(data, params){
+            this.log('get_flickr_oembed', 'get_flickr_oembed service success function');
           }
         }
       ]

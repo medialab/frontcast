@@ -81,7 +81,9 @@
                 user_assignment_documents: '{% url "walt_api_user_assignment" 0 %}',
                 user_documents: '{% url "walt_api_user_documents" %}',
                 user_document: '{% url "walt_api_user_document" 0 %}',
-                references: '{% url "walt_api_biblib_proxy" %}'
+                references: '{% url "walt_api_biblib_proxy" %}',
+                oembed_youtube: '{% url "walt_api_oembed_proxy" "youtube" %}',
+                oembed_flickr: '{% url "walt_api_oembed_proxy" "flickr" %}'
             };
 
             $(window).load( function(){

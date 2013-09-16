@@ -144,7 +144,6 @@
         var args = ['   /\\  \n  /  \\\n / !! \\ ERROR walt:' ].concat(Array.prototype.slice.call(arguments));
         args.push('\n/______\\');
         console.log.apply(console, args);
-        debugger;
       } catch(e){}
     }
   };
@@ -172,10 +171,15 @@
     return (/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/).test(url);
   }
 
-  walt.misc.is_youtube = function(url){
+  walt.misc.is_youtube = function(url){   // http://www.youtube.com/watch?v=axZTv5YJssA
     return (/^(http\:\/\/|https\:\/\/)?(www\.)?(youtube\.com\/watch\?v=)([A-Za-z0-9]+)$/).test(url);
   }
-  // http://www.youtube.com/watch?v=axZTv5YJssA
+
+  walt.misc.is_flickr = function(url){ // http://www.flickr.com/photos/99902797@N03/9736909194
+    return (/^(http\:\/\/|https\:\/\/)?(www\.)?(flickr\.com\/photos\/)([0-9A-Za-z\/@]+)$/).test(url);
+  }
+
+
 
   /*
 
