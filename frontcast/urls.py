@@ -11,6 +11,9 @@ api_urlpatterns = patterns('walt.api',
     url(r'^$', 'index'),
     url(r'access-denied/$', 'access_denied'),
 
+    url(r'document/$', 'documents', name='walt_api_documents'),
+    url(r'document/(?P<pk>\d+)/$', 'document', name='walt_api_document'),
+
     url(r'u/assignment/$', 'user_assignments', name='walt_api_user_assignments'),
     url(r'u/assignment/(?P<pk>\d+)/$', 'user_assignment', name='walt_api_user_assignment'),
     url(r'u/assignment/(?P<pk>\d+)/deliver/$', 'user_assignment_deliver', name='walt_api_user_assignment_deliver'),

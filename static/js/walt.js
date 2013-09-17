@@ -24,9 +24,11 @@
 
   walt.SCENE_STARTUP = 'startup';
   walt.SCENE_VIEW_DOCUMENT = 'document';
+  walt.SCENE_MANAGE_REFERENCES = 'edit-references';
   walt.SCENES = [
     walt.SCENE_STARTUP,
-    walt.SCENE_VIEW_DOCUMENT
+    walt.SCENE_VIEW_DOCUMENT,
+    walt.SCENE_MANAGE_REFERENCES
   ]
 
   walt.DOCUMENT_TYPES = {

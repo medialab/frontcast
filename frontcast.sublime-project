@@ -24,6 +24,14 @@
 		{
 			"name": "walt:app",
 			"path": "walt"
+		},
+		{
+			"name": "glue:app",
+			"path": "glue"
 		}
-	]
+	],
+	"settings":
+    {
+        "tab_size": 2
+    }
 }

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db.models import Q
@@ -12,22 +13,44 @@ from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_
 from walt.models import Assignment, Profile, Document, Tag, Task
 from walt.forms import DocumentForm
 
+
 def index(request):
-	return Epoxy( request ).json()
+	return Epoxy(request).json()
 
 
 def access_denied(request):
-	return Epoxy.error( request, message='access denied');
+	return Epoxy.error(request, message='access denied');
 
+#
+#
+#	Public domain Document objects getter
+# ---
+#
+def documents(request):
+	result = Epoxy(request).queryset(
+		Document.objects.filter(status=Document.PUBLIC)
+	)
+	return result.json()
+
+
+def document(request, pk):
+	result = Epoxy(request)
+
+	try:
+		d = Document.objects.get(pk=pk, status=Document.PUBLIC)
+	except Document.DoesNotExist,e:
+		return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
+
+	return result.item(d).json()
 
 #
 #
 #	Document objects getter
 # ---
 #
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def user_documents( request ):
-	result = Epoxy( request )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def user_documents(request):
+	result = Epoxy(request)
 
 	if result.is_POST():
 		form = DocumentForm(request.REQUEST)
@@ -56,9 +79,9 @@ def user_documents( request ):
 	return result.json()
 
 
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def user_document( request, pk ):
-	result = Epoxy( request )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def user_document(request, pk):
+	result = Epoxy(request)
 
 	try:
 		d = Document.objects.get(
@@ -90,9 +113,9 @@ def user_document( request, pk ):
 	return result.json()
 
 
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def user_assignment_documents( request, pk ):
-	result = Epoxy( request )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def user_assignment_documents(request, pk):
+	result = Epoxy(request)
 
 	try:
 		a = Assignment.objects.get(
@@ -118,7 +141,7 @@ def user_assignment_documents( request, pk ):
 
 	# todo
 	result.queryset(
-		Document.objects.filter(assignment=a).filter( Q(owner=request.user) | Q(authors=request.user))
+		Document.objects.filter(assignment=a).filter(Q(owner=request.user) | Q(authors=request.user))
 	)
 
 	result.item(a)
@@ -126,9 +149,9 @@ def user_assignment_documents( request, pk ):
 	return result.json()
 
 
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def user_assignment_deliver( request, pk ):
-	result = Epoxy( request )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def user_assignment_deliver(request, pk):
+	result = Epoxy(request)
 
 	try:
 		a = Assignment.objects.get(
@@ -153,18 +176,18 @@ def user_assignment_deliver( request, pk ):
 #	Assignment objects getter
 # ---
 #
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def user_assignments( request ):
-	result = Epoxy( request ).queryset(
-		Assignment.objects.filter( unit__profile__user=request.user, date_completed__isnull=True )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def user_assignments(request):
+	result = Epoxy(request).queryset(
+		Assignment.objects.filter(unit__profile__user=request.user, date_completed__isnull=True)
 	)
 	return result.json()
 
 
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def user_assignment( request, pk ):
-	result = Epoxy( request ).queryset(
-		Assignment.objects.filter( unit__profile__user=request.user, date_completed__isnull=True )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def user_assignment(request, pk):
+	result = Epoxy(request).queryset(
+		Assignment.objects.filter(unit__profile__user=request.user, date_completed__isnull=True)
 	)
 	return result.json()
 
@@ -174,18 +197,15 @@ def user_assignment( request, pk ):
 #	Generic objects getter
 # ---
 #
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def get_objects( request, model_name ):
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def get_objects(request, model_name):
 	try:
-		m = get_model( "walt", model_name )
-
+		m = get_model("walt", model_name)
+		queryset = m.objects.filter()
 	except AttributeError, e:
-		return Epoxy.error( request, message='model %s not found' % model_name, code='AttributeError')
-
-	# to be filtered according to user
-	queryset = m.objects.filter()
-
-	result = Epoxy( request ).queryset(
+		return Epoxy.error(request, message='model "%s" not found' % model_name, code='AttributeError')
+	
+	result = Epoxy(request).queryset(
 		queryset,
 		model=m
 	)
@@ -197,10 +217,10 @@ def get_objects( request, model_name ):
 #	Generic single object getter
 # ---
 #
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
-def get_object( request, model_name, pk ):
-	m = get_model( "walt", model_name )
-	result = Epoxy( request ).single( m, {'pk':pk})
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def get_object(request, model_name, pk):
+	m = get_model("walt", model_name)
+	result = Epoxy(request).single(m, {'pk':pk})
 	return result.json()
 
 
@@ -211,25 +231,25 @@ def get_object( request, model_name, pk ):
 #
 #	For POST data.
 #
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def biblib_proxy(request):
 	# it *should'nt* allow save/edit requests. User proxy_safe instead
 	import urllib2, json
 
-	req = urllib2.Request(settings.BIBLIB_ENDPOINT, '%s'%request.read() )
+	req = urllib2.Request(settings.BIBLIB_ENDPOINT, '%s'%request.read())
 	response = urllib2.urlopen(req)
 
 	# set the body
 	return HttpResponse(response.read())
 
 
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def biblib_proxy_safe(request):
-	result = Epoxy( request )
+	result = Epoxy(request)
 	return result.json()
 
 
-@login_required( login_url=settings.GLUE_ACCESS_DENIED_URL )
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def oembed_proxy(request, provider):
 	# handle oembed requests not supporting remote domains (isntead of using jsonp)
 	import urllib2, json
@@ -241,7 +261,7 @@ def oembed_proxy(request, provider):
 	}
 
 	if provider not in providers:
-		result = Epoxy( request )
+		result = Epoxy(request)
 		result.meta('known_providers',providers)
 		result.throw_error(error="not a known embed provider")
 		return result.json()
