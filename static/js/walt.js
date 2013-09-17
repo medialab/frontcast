@@ -175,7 +175,7 @@
   }
 
   walt.misc.is_vimeo = function(url){
-    return (/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/).test(url);
+    return (/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([a-zA-Z0-9\/]+)$/).test(url);
   }
 
   walt.misc.is_youtube = function(url){   // http://www.youtube.com/watch?v=axZTv5YJssA
