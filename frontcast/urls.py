@@ -56,7 +56,7 @@ urlpatterns = patterns('walt.views',
     url(r'^u/$', 'spiff', name='walt_empty_spiff'), #i.e. user page
     url(r'^u/(?P<username>[a-z\.]+)/$', 'spiff', name='walt_spiff'), #i.e. user page
 
-    url(r'^t/(?P<pk>\d+)/$', 'task', name='walt_task'), #i.e. user page
+    url(r'^t/(?P<pk>\d+)/$', 'task', name='walt_task'), #i.e. specific task assigned to a pedagogical unit via assignment
     #url(r'^robots\.txt$',  TemplateView.as_view(direct_to_template, {'template': 'frontcast/robots.txt', 'mimetype': 'text/plain'}),
     #//url(r'^humans\.txt$', direct_to_template, {'template': 'frontcast/humans.txt', 'mimetype': 'text/plain'}),
     # url(r'^crossdomain\.xml$', direct_to_template, {'template': 'frontcast/crossdomain.xml', 'mimetype': 'text/xml'}),
@@ -67,6 +67,7 @@ urlpatterns = patterns('walt.views',
 
     # admin only pages
     url(r'^setup/$', 'setup', name='walt_setup'), # add video metadata ? provide upload features.
+
 
     # restful api
     url(r'^api/', include(api_urlpatterns))

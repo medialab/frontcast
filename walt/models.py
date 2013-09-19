@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, Group
 from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
+from django.utils.timezone import utc
 
 
 class Task(models.Model):
@@ -204,7 +205,7 @@ class Document(models.Model):
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
 
   def save(self, **kwargs):
-    self.date_last_modified = datetime.now()  
+    self.date_last_modified = datetime.utcnow().replace(tzinfo=utc)  
     #
     #  slug
     #  ----
