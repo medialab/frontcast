@@ -37,7 +37,7 @@ class Command(BaseCommand):
 
         # owner will be used as default owner; you can change it later
         owner = User.objects.get(username=options['owner'])
-        self.stdout.write("    using %s as owner" % owner.username)
+        self.stdout.write("    using <user:%s> as owner\n\n" % owner.username)
 
         for counter,row in enumerate(c):
             self.stdout.write("    (line %s)" % counter)
