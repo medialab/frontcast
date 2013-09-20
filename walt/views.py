@@ -64,6 +64,7 @@ def logout_view( request ):
 	logout( request )
 	return redirect( 'walt_home' )
 
+
 @login_required
 def home( request ):
 	data = _shared_data( request, tags=['home'] )
@@ -92,6 +93,22 @@ def document( request, slug='' ):
 	else:
 		return not_found( request )
 	return render_to_response(  "walt/document.html", RequestContext(request, data ) )
+
+
+@login_required
+def document_edit( request, slug='' ):
+	data = _shared_data( request, tags=['index','home'])
+
+	if request.user.is_staff:
+		d = data['document'] = Document.objects.get( slug=slug )
+	else:
+		d = Document.objects.filter( slug=slug ).filter( Q(status=Document.PUBLIC) | Q(owner=request.user) )
+		if d.count() != 0:
+			data['document'] = d[0]
+		else:
+			return not_found( request )
+
+	return render_to_response(  "walt/document_edit.html", RequestContext(request, data ) )
 
 
 @staff_member_required

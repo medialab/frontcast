@@ -1,12 +1,14 @@
-import os, csv, codecs
+import os, csv
+from optparse import make_option
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand, CommandError
-from optparse import make_option
+from django.utils.text import slugify
 
-from walt.models import Document
+from walt.models import Document, Tag
 from walt.utils import unicode_dict_reader
+
 
 class Command(BaseCommand):
     args = '<csv absolute path>'
@@ -27,9 +29,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # set default owner if ldap is not
         self.stdout.write("\n------------------------------------------\n\n    welcome to import_reference script\n    ==================================\n\n\n\n")
-            
+        
+        self.stdout.write("    loading file %s" % options['csv'])
         if not os.path.exists( options['csv']):
-            self.stdout.write("file loaded correctly")
+            self.stdout.write("    file %s not found" % options['csv'])
             return
 
         f = open(options['csv'], 'rb')
@@ -47,6 +50,10 @@ class Command(BaseCommand):
             # cfr Document Model
             document_title = row['document_title']
             document_reference = row['document_reference']
+            
+            tag_year = row['document_tag_year']
+            tag_affiliation = row['affiliation']
+            
 
             # check for already exhisting stuffs
             documents = Document.objects.filter(reference=document_reference)
@@ -61,7 +68,6 @@ class Command(BaseCommand):
                     language='en',
                     owner=owner
                 )
-
                 d.save()
 
                 self.stdout.write("        - id    :  %s (created)" % d.id)
@@ -74,10 +80,21 @@ class Command(BaseCommand):
                 self.stdout.write("        - title : %s" % d.title)
                 self.stdout.write("        - slug  : %s" % d.slug)
 
-                
+            # create institution Tag
+            t_institution, created = Tag.objects.get_or_create(slug=slugify(tag_affiliation), type=Tag.INSTITUTION, defaults={
+                'name': tag_affiliation
+            })
+            self.stdout.write("        - inst. : %s" % tag_affiliation)
+
+            # create year Tag
+            t_year, created = Tag.objects.get_or_create(slug=slugify(tag_year), type=Tag.DATE, defaults={
+                'name': tag_year
+            })
+            self.stdout.write("        - year  : %s" % tag_year)
+
+            d.tags.add(t_institution, t_year)
             
 
-            
             self.stdout.write("\n")
     
         

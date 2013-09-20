@@ -1,0 +1,147 @@
+{% extends "walt/middle.html" %}
+{% load i18n %}
+
+
+{% block scripts %}
+  {% if document.reference %}
+  	<script src="{{STATIC_URL}}js/blf.min.js"></script>
+  	<script id="override-main" type="text/x-handlebars-template">
+			<div id="panels" class="container">
+				<div data-panel="create" style="display:none;">
+			<div class="create-form"></div>
+			</div>
+				<div data-panel="fields" style="display:none;">
+			<div class="select-field"></div>
+			</div>
+			<div data-panel="advancedSearch" style="display:none;">
+				<div class="advanced-search"></div>
+			</div>
+			<div data-panel="list" style="display:none;">
+				<ul class="entries-list"></ul>
+			</div>
+		</script>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
+ 
+
+{% block page %}
+  <h1>{{document.title}}</h1>
+  {% ifequal document.status 'D' %}
+    this is a <i>draft</i> document and it is not visible outside.
+  {% endifequal %}
+
+
+  {% if document.reference %}
+  <h2>{{ document.reference }}</h2>
+		<div id="layout" class="biblib-form"></div>
+	{% endif %}
+
+{% endblock %}
+
+
+<script>
+{% block onload %}
+	{{ block.super }}
+	{% if document.reference %}
+
+	blf.templates.override(
+    'main',
+    Handlebars.compile($('#override-main').html())
+  );
+
+	blf.init({
+        i18n:{
+          lang: 'fr',
+          url:'{{ STATIC_URL }}/locales/__lng__/__ns__.json'
+        },
+        rpc:{
+          before: function(params, xhr){
+            xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+          }
+        },
+        baseURL: '{% url "walt_api_biblib_proxy" %}',//http://localhost:8080',
+        baseDOM: $('#layout'),
+        callbacks:{
+          save: function(data){
+            var reference_to_update = {
+                id:'{{d.id}}',
+                language:'{{d.language}}',
+                status:'{{d.status}}',
+                type:'{{d.type}}',
+                reference: '{{d.reference}}'
+              }
+
+            if( reference_to_update.reference ==  data.params.entry.rec_id){
+
+              reference_to_update.title = data.params.entry.title;
+              reference_to_update.slug = walt.misc.slug(data.params.entry.title);
+
+              $.ajax({
+                url: walt.urls.api.user_document.replace('/0','/'+ reference_to_update.id),
+                method: 'POST',
+                data: reference_to_update
+              })
+                .success(function(data){console.log(data)})
+                .error( function(data){console.log(data)})
+
+            } else {
+              // !!!!!!!!!!!alert, the document is not sync with biblib
+            }
+          },
+          get_entry:function(data){
+            data.result && blf.control.dispatchEvent('editEntry', { entry: data.result.pop() });
+          }
+        },
+        onComplete: function() {
+          var reference = '{{d.reference}}';
+					blf.control.request('get_entry', { rec_id: reference });
+        },
+        advancedSearchPanel: {
+          index: {
+            property_source_index: 'search_index',
+            property_source_operator: 'search_operator',
+            default_operator: 'and',
+            default_index: [
+              'title',
+              'author',
+              'keyword'
+            ]
+          },
+          filters: [
+            {
+              labels: {
+                en: 'Publication year',
+                fr: 'Année de publication'
+              },
+              property_start: 'filter_date_start',
+              property_end: 'filter_date_end',
+              type_ui: 'YearRangeField'
+            },
+            {
+              labels: {
+                en: 'Document types',
+                fr: 'Types de document'
+              },
+              multiple: true,
+              property: 'filter_types',
+              type_source: 'document_type',
+              type_ui: 'CheckboxField'
+            },
+            {
+              labels: {
+                en: 'Languages',
+                fr: 'Langues'
+              },
+              multiple: true,
+              property: 'filter_languages',
+              type_source: 'language',
+              type_ui: 'CheckboxField'
+            }
+          ]
+        }
+      });
+
+	{% endif %}
+{% endblock %}
+</script>

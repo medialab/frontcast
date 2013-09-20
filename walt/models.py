@@ -64,7 +64,7 @@ class Tag(models.Model):
     (DATE, 'Date'),
     (GEOCOVER, 'Geographic coverage'),
     (ACTION, 'ACTION') # cfr walt.setup to
- )
+  )
 
   name = models.CharField(max_length=128) # e.g. 'Mr. E. Smith'
   slug = models.SlugField(max_length=128) # e.g. 'mr-e-smith'
@@ -95,6 +95,7 @@ class Unit(models.Model):
 
   def __unicode__(self):
     return "%s [%s]" % (self.ldap_id, self.name)
+
 
 class Profile(models.Model):
   user = models.OneToOneField(User)
