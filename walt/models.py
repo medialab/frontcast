@@ -253,6 +253,15 @@ class Document(models.Model):
   		___""" %(self.title, self.id, self.slug, self.language, self.mimetype)
 
   def json(self, deep=False):
+    # divide tags according to type
+    tags = {}
+
+    for t in self.tags.all():
+      t_type = '%s'%t.type
+      if t_type not in tags:
+        tags[t_type] = []
+      tags[t_type].append(t.json())
+    
     return{
       'id': self.id,
       'slug':self.slug,
@@ -265,8 +274,10 @@ class Document(models.Model):
       'permalink': self.permalink,
       'reference': self.reference,
       'owner': self.owner.username,
+      'tags': tags,
       'date_last_modified': self.date_last_modified.isoformat() if self.date_last_modified is not None else None,
       'authors': [a.username for a in self.authors.all()]
+
     }
 
 

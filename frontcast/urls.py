@@ -11,9 +11,7 @@ api_urlpatterns = patterns('walt.api',
     url(r'^$', 'index'),
     url(r'access-denied/$', 'access_denied'),
 
-    url(r'document/$', 'documents', name='walt_api_documents'),
-    url(r'document/(?P<pk>\d+)/$', 'document', name='walt_api_document'),
-
+    
     url(r'u/assignment/$', 'user_assignments', name='walt_api_user_assignments'),
     url(r'u/assignment/(?P<pk>\d+)/$', 'user_assignment', name='walt_api_user_assignment'),
     url(r'u/assignment/(?P<pk>\d+)/deliver/$', 'user_assignment_deliver', name='walt_api_user_assignment_deliver'),
@@ -21,6 +19,10 @@ api_urlpatterns = patterns('walt.api',
 
     url(r'u/document/$', 'user_documents', name='walt_api_user_documents'),
     url(r'u/document/(?P<pk>\d+)$', 'user_document', name='walt_api_user_document'),
+
+    url(r'document/$', 'documents', name='walt_api_documents'),
+    url(r'document/(?P<pk>\d+)/$', 'document', name='walt_api_document'),
+
 
     url(r'biblib/$', 'biblib_proxy', name='walt_api_biblib_proxy'),
     url(r'biblib-safe/$', 'biblib_proxy_safe', name='walt_api_biblib_proxy_safe'), # user is not logged in! but requests are safe enough
@@ -53,6 +55,7 @@ urlpatterns = patterns('walt.views',
     url(r'^d/$', 'document', name='walt_empty_document'), #i.e. user page
     url(r'^d/(?P<slug>[a-z\.-]+)/$', 'document', name='walt_document'), #i.e. user page
     url(r'^d/(?P<slug>[a-z\.-]+)/edit/$', 'document_edit', name='walt_document_edit'), #i.e. user page
+
 
     url(r'^u/$', 'spiff', name='walt_empty_spiff'), #i.e. user page
     url(r'^u/(?P<username>[a-z\.]+)/$', 'spiff', name='walt_spiff'), #i.e. user page

@@ -1,9 +1,16 @@
 <div class="document pin {{status}}" id="d-{{id}}">
   <div class="status">{{status}}</div>
   <h3>{{title}}</h3>
+  <div class="tags">
+  	{{#each tags}}
+  		{{#foreach this}}
+				{{this.name}}
+			{{/foreach}}
+		{{/each}}
+  </div>
   <div class="abstract">{{abstract}}</div>
   <div class="abstract">{{content}}</div>
   <div class="authors">
-    by <a href="/u/{{owner}}">{{owner}}</a>
+    by <a href="{{settings.base_url}}/u/{{owner}}">{{owner}}</a> <a href="{{settings.base_url}}/d/{{slug}}/edit/">edit</a>
   </div>
 </div>

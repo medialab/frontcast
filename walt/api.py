@@ -43,6 +43,15 @@ def document(request, pk):
 
 	return result.item(d).json()
 
+
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def user_drafts(request):
+	result = Epoxy(request).queryset(
+		Document.objects.filter(owner=request.user, status=Document.DRAFT)
+	)
+	return result.json()
+
+
 #
 #
 #	Document objects getter
@@ -72,6 +81,7 @@ def user_documents(request):
 			result.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS)
 
 	else:
+		result.meta('o','e')
 		result.queryset(
 			Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user))
 		)

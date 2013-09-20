@@ -142,4 +142,18 @@
         return new Handlebars.SafeString(nl2br);
     });
 
+
+    Handlebars.registerHelper("foreach",function(arr,options) {
+        if(options.inverse && !arr.length)
+        return options.inverse(this);
+
+        return arr.map(function(item,index) {
+            item.$index = index;
+            item.$width = 100/arr.length;
+            item.$left = index * item.$width;
+            item.$first = index === 0;
+            item.$last  = index === arr.length-1;
+            return options.fn(item);
+        }).join('');
+    });
 }));
