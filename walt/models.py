@@ -53,6 +53,7 @@ class Tag(models.Model):
   DATE = 'Da'
   GEOCOVER = 'GC'
   ACTION = '!A'
+  RATING = 'Ra'
 
   TYPE_CHOICES = (
     (FREE, 'no category'),
@@ -63,7 +64,8 @@ class Tag(models.Model):
     (PLACE, 'Place'),
     (DATE, 'Date'),
     (GEOCOVER, 'Geographic coverage'),
-    (ACTION, 'ACTION') # cfr walt.setup to
+    (ACTION, 'ACTION'),
+    (RATING, 'RATING'),
   )
 
   name = models.CharField(max_length=128) # e.g. 'Mr. E. Smith'
@@ -210,21 +212,22 @@ class Document(models.Model):
     #
     #  slug
     #  ----
-    max_length = 160 # associate it with slug field max length above
-    slug = slugify(self.title)[:max_length] # safe autolimiting
-    slug_base = slug
-    i = 1;
+    if not self.slug:
+      max_length = 160 # associate it with slug field max length above
+      slug = slugify(self.title)[:max_length] # safe autolimiting
+      slug_base = slug
+      i = 1;
 
-    while self.__class__._default_manager.filter(slug=slug).count():
-      candidate = '%s-%s' % (slug_base, i)
+      while self.__class__._default_manager.filter(slug=slug).count():
+        candidate = '%s-%s' % (slug_base, i)
 
-      if len(candidate) > max_length:
-        slug = slug[:max_length-len('-%s' % i)]
+        if len(candidate) > max_length:
+          slug = slug[:max_length-len('-%s' % i)]
 
-      slug = re.sub('\-+','-',candidate)
-      i += 1
+        slug = re.sub('\-+','-',candidate)
+        i += 1
 
-    self.slug = slug
+      self.slug = slug
 
     super(Document, self).save()
 
@@ -257,7 +260,7 @@ class Document(models.Model):
     tags = {}
 
     for t in self.tags.all():
-      t_type = '%s'%t.type
+      t_type = '%s'%t.get_type_display()
       if t_type not in tags:
         tags[t_type] = []
       tags[t_type].append(t.json())

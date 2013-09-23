@@ -12,6 +12,7 @@
 @grey_5: darken(@grey, 8%);
 @grey_10: darken(@grey, 10%);
 @grey_14: darken(@grey, 14%);
+@grey_24: darken(@grey, 24%);
 @grey-2: lighten(@grey, 2%);
 @grey-5: lighten(@grey, 5%);
 @grey-7: lighten(@grey, 7%);
@@ -55,7 +56,7 @@ html, body{
 
 body{
 	.sans-serif(12px);
-	background: white;
+	background: @grey_5;
 }
 
 h1, h2, h3, h4{
@@ -82,28 +83,30 @@ a{
 
 
 sidebar{
-	background:@grey-5;
+	background:@grey;
 	position:fixed;
 	width:@sidebar-width;
 	height: @sidebar-height;
+	overflow:hidden;
 	left: @padding;
 	top: @padding;
 	margin:0;
 	padding-top: 0;
-
+	.border-radius(5px);
 	z-index: @sidebar-z-index;
 	// border-right: 1px solid black;
 	.transition(width, .35s);
 	.outer{
 		height: 100%;
-		border: 1px solid @grey_5;
-		box-shadow : inset 0px 0px 13px rgba(0,0,0,.07);
+		// border: 1px solid @grey_5;
+		// box-shadow : inset 0px 0px 13px rgba(0,0,0,.07);
 	}
 
 	.inner{
 		position:absolute;
 		right:0;
 		padding: 0;
+		width:100%;
 	}
 
 
@@ -112,35 +115,42 @@ sidebar{
 		padding: 0;
 		margin:0;
 		li{
-			&:first-child{
-				border-top:1px solid @grey_5;
-			}
+			//&:first-child{
+			//	border-top:1px solid @grey_5;
+			//}
 			list-style-type: none;
-			margin: 0 @padding;
-			padding: @padding/2 0;
-			border-bottom: 1px solid @grey_5;
+			margin:0;//margin: 0 @padding;
+			padding:0;//padding: @padding/2 0;
+			//border-bottom: 1px solid @grey_5;
 			a{
-				text-align: center;
+				text-align: left;
 				display: block;
-				width:40px;
+				
 				height:40px;
 				font-size:14px;
 				line-height:40px;
-				margin: @padding/2;
+				margin: 0;//@padding/2;
 				.transition( background, .2s);
 				color: black;
 				text-decoration:none;
+
+				div{
+					float:left;
+					width:40px;
+					text-align:center;
+				}
 			}
-			&:hover a{
+			&:hover a div {
 				background: @f-blue;
 				color: white;
 			}
-			&.active a{
+			&.active a div {
 				background: @f-red;
 				color: white;
 
 			}
 			i{
+				
 				//margin-right: 12px;
 				font-size:14px;
 			}
@@ -170,6 +180,7 @@ sidebar{
 
 header{
 	position:fixed;
+	display:none;
 	width:100%;
 	height: @header-height;
 	margin:0;
@@ -193,9 +204,9 @@ header{
 	display:block;
 	z-index: @main-z-index;
 	.inner{
-		margin-left: @sidebar-width + @padding;
+		margin-left: @sidebar-width + @padding*2;
 		margin-right: @padding;
-		padding: @header-height 0;
+		padding: 0;
 
 	}
 }
@@ -259,11 +270,14 @@ fieldset{
 
 
 // logos
+#forccast-logo{
+	background: @grey-5;
+	display: block;
+}
 #sciences-po-logo{
 	width:@sidebar-width - 13px;
 	margin-left: 8px;
-	position:fixed;
-	bottom: 10px;
+	
 }
 
 
@@ -300,16 +314,26 @@ fieldset{
 	position:relative;
 	top:@padding;
 
+	
 	.pin{
 		//border:1px solid @grey_2;
-		//box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 5px;
+		.border-radius(3px);
+		box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 5px;
 		background: white;
-		margin-bottom: @padding;
+		margin-bottom: @padding/2;
 		width: 270px;
-		
+		overflow:hidden;
+
 		&.editor{
-			//background: gold;
+			width: 100%;
 		}
+
+		&.A_grade, &.B_grade{
+			width: 540px + @padding/2;
+		}
+	}
+	.status{
+		display:none;
 	}
 
 	.pusher{
@@ -334,14 +358,18 @@ fieldset{
 		font-size:.9em;
 	}
 
+	.tags{
+		padding: @padding/2 @padding;
+	}
 
-
+	
 
 }
 
 
 
 .actions{
+	display:none;
 	text-align:center;
 
 	.action{

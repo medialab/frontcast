@@ -26,7 +26,10 @@
  
 
 {% block page %}
-  <h1>{{document.title}}</h1>
+<div class="pins">
+  <div class="document pin editor">
+    <div class="pusher"></div>
+  <h3>{{document.title}}</h3>
   {% ifequal document.status 'D' %}
     this is a <i>draft</i> document and it is not visible outside.
   {% endifequal %}
@@ -36,7 +39,8 @@
   <h2>{{ document.reference }}</h2>
 		<div id="layout" class="biblib-form"></div>
 	{% endif %}
-
+  </div>
+</div>
 {% endblock %}
 
 

@@ -16,9 +16,10 @@
 			<div class="outer">
 				<div class="inner">
 					{% block sidebar %}
-					<a><img src="{{ STATIC_URL }}/img/forccast.svg" id="forccast-logo"/></a>
+					<a href="{% url 'walt_home'%}" id="forccast-logo"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 					<ul>
-						<li bs-tooltip="tooltip.title" title="home" data-placement="right" {% if 'home' in tags %}class="active"{% endif %}><a href="{% url 'walt_home' %}" ><i class="icon-home"></i></a></li>
+						<li bs-tooltip="tooltip.title" title="home" data-placement="right" {% if 'home' in tags %}class="active"{% endif %}>
+							<a href="{% url 'walt_home' %}" ><div><i class="icon-home"></i></div>{% trans "home"%}</a></li>
 					{% if user.is_authenticated %}
 						<li bs-tooltip="tooltip.title" title="{{user.first_name}}'s space" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
 							<a href="{% url 'walt_spiff' user.username %}"><i class="icon-male"></i></a>

@@ -1,12 +1,14 @@
-<div class="document pin {{status}}" id="d-{{id}}">
+<div class="document pin {{status}} {{#each tags.RATING}}{{this.name}}_grade {{/each}}" id="d-{{id}}">
+  <div class="pusher"></div>
   <div class="status">{{status}}</div>
   <h3>{{title}}</h3>
   <div class="tags">
-  	{{#each tags}}
-  		{{#foreach this}}
-				{{this.name}}
-			{{/foreach}}
+  	{{#each tags.Institution}}
+  		{{this.name}}
 		{{/each}}
+    {{#each tags.Date}}
+      {{this.name}}
+    {{/each}}
   </div>
   <div class="abstract">{{abstract}}</div>
   <div class="abstract">{{content}}</div>

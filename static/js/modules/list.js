@@ -8,6 +8,8 @@
     var _self = this;
     this.box = box;
 
+
+
     this.listof = function( controller, options ){
       var previous_item = null,
           item = null,
@@ -27,6 +29,7 @@
           data = controller.get('data_' + settings.namespace );
 
       walt.log('listof:',data.length, 'items, selector:',settings.selector );
+      
       //_self.unsticky();
 
       /*
@@ -56,7 +59,7 @@
           item = $( settings.prefix + data.ids[i] );
           
           if( item.length == 0 ){
-            walt.log( settings.prefix + data.ids[i], 'not found, populating', settings.template(data.items[i]) );
+            walt.log( settings.prefix + data.ids[i], 'not found, populating');//, settings.template(data.items[i]) );
             if( previous_item == null )
               _self.box.prepend( settings.template(data.items[i]) );
             else
@@ -76,9 +79,12 @@
           previous_item = settings.prefix + data.ids[i]; // maze.log(i, contents[ ids[i] ].name, ids[i] );
           settings.delay += 70;
       }
+
+      _self.box.masonry({gutter:12, columnWidth:270});
+
     }
 
-
+    
 
   };
 
