@@ -19,24 +19,57 @@
 					<a href="{% url 'walt_home'%}" id="forccast-logo"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 					<ul>
 						<li bs-tooltip="tooltip.title" title="home" data-placement="right" {% if 'home' in tags %}class="active"{% endif %}>
-							<a href="{% url 'walt_home' %}" ><div><i class="icon-home"></i></div>{% trans "home"%}</a></li>
+							<a href="{% url 'walt_home' %}" >
+								<div class="icon">
+									<i class="icon-home"></i>
+								</div>
+								<div class="label">{% trans "home"%}</div>
+							</a>
+						</li>
 					{% if user.is_authenticated %}
 						<li bs-tooltip="tooltip.title" title="{{user.first_name}}'s space" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
-							<a href="{% url 'walt_spiff' user.username %}"><i class="icon-male"></i></a>
+							<a href="{% url 'walt_spiff' user.username %}">
+								<div class="icon">
+									<i class="icon-male"></i>
+								</div>
+								<div class="label">{% trans "worksp."%}</div>
+							</a>
 						</li>
 						<!--li bs-tooltip="tooltip.title" title="search (disabled)" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
 							<a href="#"><i class="icon-search"></i></a>
 						</li-->
 						<li bs-tooltip="tooltip.title" title="{% trans 'logout' %}" data-placement="right">
-							<a href="{% url 'walt_logout' %}"><i class="icon-bolt"></i></a>
+							<a href="{% url 'walt_logout' %}">
+								<div class="icon">
+									<i class="icon-bolt"></i>
+								</div>
+								<div class="label">{% trans "logout"%}</div>
+							</a>
 						</li>
+
+						{% if user.is_staff %}
+						<li bs-tooltip="tooltip.title" title="{% trans 'view all drafts' %}" data-placement="right">
+							<a class="staff" href="{% url 'walt_home' %}#s=drafts">
+								<div class="icon">
+									<i class="icon-bolt"></i>
+								</div>
+								<div class="label">{% trans "logout"%}</div>
+							</a>
+						</li>
+						{% endif %}
 					{% else %}
 						<li bs-tooltip="tooltip.title" title="{% trans 'login' %}" data-placement="right" {% if 'login' in tags %}class="active"{% endif %}>
-							<a href="{% url 'walt_login' %}"><i class="icon-bolt"></i></a>
+							<a href="{% url 'walt_login' %}">
+								<div class="icon">
+									<i class="icon-bolt"></i>
+								</div>
+								<div class="label">{% trans "worksp."%}</div>
+							</a>
 						</li>
 					{% endif %}
+
 					</ul>
-					<img src="{{ STATIC_URL }}/img/sciences-po.svg" id="sciences-po-logo"/>
+					<a href="{% url 'walt_home'%}" id="sciences-po-logo"><img src="{{ STATIC_URL }}/img/sciences-po.svg" /></a>
 					{% endblock %}
 				</div>
 			</div>

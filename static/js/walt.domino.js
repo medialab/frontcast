@@ -2,7 +2,7 @@
   'use strict';
 
   window.walt = window.walt || {};
-  walt.domino ={};
+  walt.domino = {};
 
   // Domino global settings:
   domino.settings({
@@ -46,14 +46,14 @@
             ids: ['string'],
             limit: 'number',
             offset: 'number',
-            length: 'number', // total_count of items - limit infinite loiading
+            length: 'number' // total_count of items - limit infinite loiading
           },
           value: {
             items: [],
             ids: [],
             limit: 0,
             offset: 0,
-            length: 0,
+            length: 0
           },
           dispatch: ['data_documents__updated']
         },
@@ -64,14 +64,14 @@
             ids: ['string'],
             limit: 'number',
             offset: 'number',
-            length: 'number', // total_count of items - limit infinite loiading
+            length: 'number' // total_count of items - limit infinite loiading
           },
           value: {
             items: [],
             ids: [],
             limit: 0,
             offset: 0,
-            length: 0,
+            length: 0
           },
           dispatch: ['data_assignments__updated']
         },
@@ -177,6 +177,16 @@
                   }
                 ];
                 break;
+              case walt.SCENE_WORLD_DRAFTS:
+                services = [
+                  {
+                    service: 'get_world_documents',
+                    limit: 20,
+                    offset:0,
+                    filters: '{"status":"D"}'
+                  }
+                ];
+                break;
             }; // end of switch scene
 
             this.request(services, {
@@ -206,7 +216,7 @@
         {
           triggers: 'fill_document_with_oembed',
           description: 'execute the get_<event.data.provider>_oembed service and try to fill all fields given',
-          method: function(event){
+          method: function(event) {
             walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
 
             this.request('get_'+ event.data.provider +'_oembed',{
@@ -242,14 +252,14 @@
         {
           triggers: 'call_service',
           method: function(event){
-            walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
+            walt.domino.controller.update('ui_status', walt.UI_STATUS_LOCKED);
             walt.log('call_service', event.data);
             var service = event.data.service || "untitled",
                 params = event.data || {};
             
             this.request([{service: service, params:params}],{
               success:  function() {
-                walt.domino.controller.update('ui_status',walt.UI_STATUS_UNLOCKED);
+                walt.domino.controller.update('ui_status', walt.UI_STATUS_UNLOCKED);
               }
             });
           }
@@ -273,6 +283,27 @@
           id: 'get_documents',
           type: 'GET',
           url: walt.urls.user_documents,
+          dataType: 'json',
+          data: function(input) {
+            return input.params;
+          },
+          success: function(data) {
+            // todo infinite adding not replacing items.
+            this.update({
+              data_documents: {
+                items: data.objects,
+                ids:$.map(data.objects, function(e){return ''+e.id;}),
+                length: +data.meta.total_count,
+                limit: +data.meta.limit || data.objects.length,
+                offset: data.meta.offset || 0
+              }
+            });
+          }
+        },
+        { 
+          id: 'get_world_documents',
+          type: 'GET',
+          url: walt.urls.world_documents,
           dataType: 'json',
           data: function(input) {
             return input.params;

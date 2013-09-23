@@ -81,7 +81,7 @@
       }
 
       _self.box.masonry({gutter:12, columnWidth:270});
-
+      
     }
 
     

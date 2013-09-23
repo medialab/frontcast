@@ -64,7 +64,7 @@
             xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
           }
         },
-        baseURL: '{% url "walt_api_biblib_proxy" %}',//http://localhost:8080',
+        baseURL: '{% url "walt_api_biblib_proxy_safe" %}',//http://localhost:8080',
         baseDOM: $('#layout'),
         callbacks:{
           save: function(data){
@@ -77,12 +77,10 @@
               }
 
             if( reference_to_update.reference ==  data.params.entry.rec_id){
-
               reference_to_update.title = data.params.entry.title;
-              reference_to_update.slug = walt.misc.slug(data.params.entry.title);
-
+              
               $.ajax({
-                url: walt.urls.api.user_document.replace('/0','/'+ reference_to_update.id),
+                url: walt.urls.user_document.replace('/0','/'+ reference_to_update.id),
                 method: 'POST',
                 data: reference_to_update
               })

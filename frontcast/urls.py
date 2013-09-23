@@ -20,6 +20,9 @@ api_urlpatterns = patterns('walt.api',
     url(r'u/document/$', 'user_documents', name='walt_api_user_documents'),
     url(r'u/document/(?P<pk>\d+)$', 'user_document', name='walt_api_user_document'),
 
+    # staff only: view all possible documents
+    url(r'w/document/$', 'world_documents', name='walt_api_world_documents'),
+
     url(r'document/$', 'documents', name='walt_api_documents'),
     url(r'document/(?P<pk>\d+)/$', 'document', name='walt_api_document'),
 

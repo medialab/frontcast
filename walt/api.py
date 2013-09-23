@@ -54,6 +54,23 @@ def user_drafts(request):
 
 #
 #
+#	Get all draft published recently
+# ---
+#
+@staff_member_required
+def world_documents(request):
+	result = Epoxy(request)
+
+	result.queryset(
+		Document.objects.filter()
+	)
+
+	return result.json()
+
+
+
+#
+#
 #	Document objects getter
 # ---
 #
@@ -243,7 +260,7 @@ def get_object(request, model_name, pk):
 #
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def biblib_proxy(request):
-	# it *should'nt* allow save/edit requests. User proxy_safe instead
+	# it *should'nt* allow save/edit requests. is admin only omni hyper power. User proxy_safe instead
 	import urllib2, json
 
 	req = urllib2.Request(settings.BIBLIB_ENDPOINT, '%s'%request.read())
@@ -255,8 +272,34 @@ def biblib_proxy(request):
 
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def biblib_proxy_safe(request):
-	result = Epoxy(request)
-	return result.json()
+	# it *should'nt* allow save/edit requests. User proxy_safe instead
+	import urllib2, json
+
+	# filter uifiled, requests action according to role
+	#result = Epoxy(request)
+
+	# get request as an arbitrary object
+	r = '%s'%request.read()
+	data = json.loads(r)
+	
+	# inject role in request
+	if data['method'] in ["uifields", "uifield", "save"]:
+		if request.user.is_staff:
+			data['params'].append('teacher')
+		else:
+			data['params'].append('student')
+
+	if data['method'] == "save":
+			# todo: check if user has access
+			pass
+
+	# return result.json()
+
+	req = urllib2.Request(settings.BIBLIB_ENDPOINT, json.dumps(data))
+	response = urllib2.urlopen(req)
+
+	# set the body
+	return HttpResponse(response.read())
 
 
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)

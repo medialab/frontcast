@@ -9,7 +9,8 @@
 
 @grey:#eaeaea;
 @grey_2: darken(@grey, 2%);
-@grey_5: darken(@grey, 8%);
+@grey_5: darken(@grey, 5%);
+@grey_8: darken(@grey, 8%);
 @grey_10: darken(@grey, 10%);
 @grey_14: darken(@grey, 14%);
 @grey_24: darken(@grey, 24%);
@@ -36,7 +37,7 @@
 
 @header-height: 48px;
 @sidebar-width: 110px;
-@sidebar-height: 500px;
+@sidebar-height: 334px;
 @references-width:260px;
 @padding: 24px;
 
@@ -107,6 +108,7 @@ sidebar{
 		right:0;
 		padding: 0;
 		width:100%;
+		height:100%;
 	}
 
 
@@ -121,6 +123,7 @@ sidebar{
 			list-style-type: none;
 			margin:0;//margin: 0 @padding;
 			padding:0;//padding: @padding/2 0;
+			position:relative;
 			//border-bottom: 1px solid @grey_5;
 			a{
 				text-align: left;
@@ -134,26 +137,65 @@ sidebar{
 				color: black;
 				text-decoration:none;
 
-				div{
-					float:left;
+				.icon{
+					display:block;
+					position:absolute;
 					width:40px;
+					text-align:center;
+					//margin-right: 12px;
+					font-size:14px;
+					.transition( left, .3s, ease-in-out);	
+				}
+
+				&.staff{
+					background-color: @grey_5;
+
+					.icon{
+						background-color: @grey_14;
+						left: @sidebar-width - 40px;
+					}
+				}
+
+				.label{
+					display:none;
+					padding-left: 40px;
+					text-transform: uppercase;
 					text-align:center;
 				}
 			}
-			&:hover a div {
-				background: @f-blue;
-				color: white;
+
+
+			&:hover a{
+
+				.icon{
+					color: white;
+				}
+
+				&:not(.staff){
+					background-color: @grey_10;
+					
+					.icon{
+						left: @sidebar-width - 40px;
+						background: @f-blue;
+					}
+				}
+
+				&.staff{
+					background-color: #888;
+					
+					.icon{
+						left: 0;
+						background: black;
+					}
+				}
 			}
-			&.active a div {
+
+			&.active a .icon{
 				background: @f-red;
 				color: white;
 
 			}
-			i{
-				
-				//margin-right: 12px;
-				font-size:14px;
-			}
+			
 		}
 	}
 }
@@ -275,9 +317,15 @@ fieldset{
 	display: block;
 }
 #sciences-po-logo{
-	width:@sidebar-width - 13px;
-	margin-left: 8px;
-	
+	display: block;
+	position: absolute;
+	bottom: 0px;
+	width:100%;
+	background-color:  @grey-5;
+	img{
+		width:@sidebar-width - 13px;
+		margin-left: 8px;
+	}
 }
 
 

@@ -102,7 +102,7 @@ def document_edit( request, slug='' ):
 	if request.user.is_staff:
 		d = data['document'] = Document.objects.get( slug=slug )
 	else:
-		d = Document.objects.filter( slug=slug ).filter( Q(status=Document.PUBLIC) | Q(owner=request.user) )
+		d = Document.objects.filter( slug=slug ).filter( Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user) )
 		if d.count() != 0:
 			data['document'] = d[0]
 		else:
