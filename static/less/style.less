@@ -35,6 +35,7 @@
 
 @header-height: 48px;
 @sidebar-width: 110px;
+@sidebar-height: 500px;
 @references-width:260px;
 @padding: 24px;
 
@@ -84,7 +85,9 @@ sidebar{
 	background:@grey-5;
 	position:fixed;
 	width:@sidebar-width;
-	height: 100%;
+	height: @sidebar-height;
+	left: @padding;
+	top: @padding;
 	margin:0;
 	padding-top: 0;
 
@@ -93,7 +96,7 @@ sidebar{
 	.transition(width, .35s);
 	.outer{
 		height: 100%;
-		border-right: 1px solid @grey_5;
+		border: 1px solid @grey_5;
 		box-shadow : inset 0px 0px 13px rgba(0,0,0,.07);
 	}
 
@@ -387,12 +390,19 @@ fieldset{
 	.toast-item {
 		height: auto;
 		position: relative;
-		background: @red;
+		background: @f-blue;
 		border: 0px solid transparent;
 		h1{
-			color: white;
 			text-align:center;
-			padding: 20px;
+			margin: 0 @padding;
+			padding: @padding/2 0;
+			border-bottom: 1px solid white;
+			font-size: 1.2em;
+			line-height: 1.7em;
+			text-transform: uppercase;
+		}
+		p{
+			padding: 0 @padding;
 		}
 		.toast-item-close, .toast-item-image {
 		    display:none;

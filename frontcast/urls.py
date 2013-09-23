@@ -54,7 +54,7 @@ urlpatterns = patterns('walt.views',
 
     url(r'^d/$', 'document', name='walt_empty_document'), #i.e. user page
     url(r'^d/(?P<slug>[a-z\.-]+)/$', 'document', name='walt_document'), #i.e. user page
-    url(r'^d/(?P<slug>[a-z\.-]+)/edit/$', 'document_edit', name='walt_document_edit'), #i.e. user page
+    url(r'^d/(?P<slug>[a-z\.\-\d]+)/edit/$', 'document_edit', name='walt_document_edit'), #i.e. user page
 
 
     url(r'^u/$', 'spiff', name='walt_empty_spiff'), #i.e. user page

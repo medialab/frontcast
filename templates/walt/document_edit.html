@@ -65,11 +65,11 @@
         callbacks:{
           save: function(data){
             var reference_to_update = {
-                id:'{{d.id}}',
-                language:'{{d.language}}',
-                status:'{{d.status}}',
-                type:'{{d.type}}',
-                reference: '{{d.reference}}'
+                id:'{{document.id}}',
+                language:'{{document.language}}',
+                status:'{{document.status}}',
+                type:'{{document.type}}',
+                reference: '{{document.reference}}'
               }
 
             if( reference_to_update.reference ==  data.params.entry.rec_id){
@@ -90,11 +90,21 @@
             }
           },
           get_entry:function(data){
-            data.result && blf.control.dispatchEvent('editEntry', { entry: data.result.pop() });
+            if( !data.result || !data.result.length){
+              blf.control.dispatchEvent('displayForm', {
+                entry: {
+                  rec_type: 'ControversyVideo',
+                  rec_id: '{{document.reference}}',
+                  title:'{{document.title}}'
+                },
+                field: 'ControversyVideo'
+              }).update('mode', 'create');
+            } else
+              blf.control.dispatchEvent('editEntry', { entry: data.result.pop() });
           }
         },
         onComplete: function() {
-          var reference = '{{d.reference}}';
+          var reference = '{{document.reference}}';
 					blf.control.request('get_entry', { rec_id: reference });
         },
         advancedSearchPanel: {
