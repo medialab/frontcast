@@ -3,11 +3,17 @@
   <div class="status">{{status}}</div>
   <h3>{{title}}</h3>
   <div class="tags">
-  	{{#each tags.Institution}}
-  		{{this.name}}
-		{{/each}}
     {{#each tags.Date}}
       {{this.name}}
+    {{/each}}
+    <br/>
+  	{{#each tags.Institution}}
+  		{{this.name}} /
+		{{/each}}
+    <br/>
+    <br/>
+    {{#each tags.AUTHOR}}
+      {{this.name}} -
     {{/each}}
   </div>
   <div class="abstract">{{abstract}}</div>

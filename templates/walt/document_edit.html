@@ -30,10 +30,19 @@
   <div class="document pin editor">
     <div class="pusher"></div>
   <h3>{{document.title}}</h3>
-  {% ifequal document.status 'D' %}
-    this is a <i>draft</i> document and it is not visible outside.
-  {% endifequal %}
-
+  <div class="tags">
+    {% ifequal document.status 'D' %}
+      this is a <i>draft</i> document and it is not visible outside.
+    {% endifequal %}
+    {% with tags=document.get_organized_tags %}
+    {% for category_name, category in tags.items %}
+      <p>
+        {% for tag in category %}
+        {{ tag.name }} {% for r in tag.related.all%}| {{r.name}}{%endfor%}{% if not forloop.last %} <br/>{%endif%} {% endfor %}
+      </p>
+    {% endfor %}
+    {% endwith %}
+  </div>
 
   {% if document.reference %}
   <h2>{{ document.reference }}</h2>

@@ -44,8 +44,11 @@ class Command(BaseCommand):
 
         for counter,row in enumerate(c):
             self.stdout.write("    (line %s)" % counter)
-            user_fullname = row['user_fullname']
             
+            # author
+            first_name = row['first_name']
+            last_name = row['last_name']
+            tag_author = "%s, %s" % (last_name, first_name)
 
             # cfr Document Model
             document_title = row['document_title']
@@ -53,6 +56,7 @@ class Command(BaseCommand):
             
             tag_year = row['document_tag_year']
             tag_affiliation = row['affiliation']
+            tag_course = row['course_code']
             
 
             # check for already exhisting stuffs
@@ -92,7 +96,26 @@ class Command(BaseCommand):
             })
             self.stdout.write("        - year  : %s" % tag_year)
 
-            d.tags.add(t_institution, t_year)
+            # create course Tag
+            t_course, created = Tag.objects.get_or_create(slug=slugify(tag_course), type=Tag.COURSE, defaults={
+                'name': tag_course
+            })
+            self.stdout.write("        - cour. : %s" % tag_course)
+
+            # create tag author (if any) @todo: OMONIMS
+            t_author, created = Tag.objects.get_or_create(slug=slugify(tag_author), type=Tag.AUTHOR, defaults={
+                'name': tag_author
+            })
+
+            # attach affiliation to authors
+            t_author.related.add(t_institution)
+
+            self.stdout.write("        - auth. : %s" % t_author)
+
+
+
+
+            d.tags.add(t_institution, t_year, t_author, t_course)
             
 
             self.stdout.write("\n")

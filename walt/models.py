@@ -54,6 +54,7 @@ class Tag(models.Model):
   GEOCOVER = 'GC'
   ACTION = '!A'
   RATING = 'Ra'
+  COURSE = 'Co'
 
   TYPE_CHOICES = (
     (FREE, 'no category'),
@@ -66,11 +67,16 @@ class Tag(models.Model):
     (GEOCOVER, 'Geographic coverage'),
     (ACTION, 'ACTION'),
     (RATING, 'RATING'),
+    (COURSE, 'course code')
   )
 
   name = models.CharField(max_length=128) # e.g. 'Mr. E. Smith'
   slug = models.SlugField(max_length=128) # e.g. 'mr-e-smith'
   type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=FREE) # e.g. 'author' or 'institution'
+
+  # tag specification e.g. we want to specify an institution for a given author
+  related = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
+
 
   def __unicode__(self):
     return "%s : %s"% (self.get_type_display(), self.name)
@@ -88,6 +94,7 @@ class Tag(models.Model):
       'type_label':self.get_type_display()
     }
 
+    
 
 # pedagogical unit
 class Unit(models.Model):
@@ -255,6 +262,16 @@ class Document(models.Model):
 
   		___""" %(self.title, self.id, self.slug, self.language, self.mimetype)
 
+  def get_organized_tags(self):
+    tags = {}
+
+    for t in self.tags.all():
+      t_type = '%s'%t.get_type_display()
+      if t_type not in tags:
+        tags[t_type] = []
+      tags[t_type].append(t)
+    return tags
+  
   def json(self, deep=False):
     # divide tags according to type
     tags = {}
