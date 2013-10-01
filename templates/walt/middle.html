@@ -18,27 +18,35 @@
 					{% block sidebar %}
 					<a href="{% url 'walt_home'%}" id="forccast-logo"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 					<ul>
-						<li bs-tooltip="tooltip.title" title="home" data-placement="right" {% if 'home' in tags %}class="active"{% endif %}>
+						<li data-tooltip="tooltip.title" title="home" data-placement="right" {% if 'intro' in tags %}class="active"{% endif %}>
 							<a href="{% url 'walt_home' %}" >
 								<div class="icon">
-									<i class="icon-home"></i>
+									<i class="icon-camera-retro"></i>
 								</div>
-								<div class="label">{% trans "home"%}</div>
+								<div class="label">{% trans "intro"%}</div>
+							</a>
+						</li>
+						<li data-tooltip="tooltip.title" title="home" data-placement="right" {% if 'home' in tags %}class="active"{% endif %}>
+							<a href="{% url 'walt_home' %}" >
+								<div class="icon">
+									<i class="icon-globe"></i>
+								</div>
+								<div class="label">{% trans "public"%}</div>
 							</a>
 						</li>
 					{% if user.is_authenticated %}
-						<li bs-tooltip="tooltip.title" title="{{user.first_name}}'s space" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
-							<a href="{% url 'walt_home' %}#s=my-workspace">
+						<li data-tooltip="tooltip.title" title="{{user.first_name}}'s space" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
+							<a href="{% url 'walt_home' %}#/me">
 								<div class="icon">
 									<i class="icon-male"></i>
 								</div>
 								<div class="label">{% trans "worksp."%}</div>
 							</a>
 						</li>
-						<!--li bs-tooltip="tooltip.title" title="search (disabled)" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
+						<!--li data-tooltip="tooltip.title" title="search (disabled)" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
 							<a href="#"><i class="icon-search"></i></a>
 						</li-->
-						<li bs-tooltip="tooltip.title" title="{% trans 'logout' %}" data-placement="right">
+						<li data-tooltip="tooltip.title" title="{% trans 'logout' %}" data-placement="right">
 							<a href="{% url 'walt_logout' %}">
 								<div class="icon">
 									<i class="icon-unlock"></i>
@@ -48,7 +56,7 @@
 						</li>
 
 						{% if user.is_staff %}
-						<li bs-tooltip="tooltip.title" title="{% trans 'view all drafts' %}" data-placement="right">
+						<li data-tooltip="tooltip.title" title="{% trans 'view all drafts' %}" data-placement="right">
 							<a class="staff" href="{% url 'walt_home' %}#s=drafts">
 								<div class="icon">
 									<i class="icon-tint"></i>
@@ -58,7 +66,7 @@
 						</li>
 						{% endif %}
 					{% else %}
-						<li bs-tooltip="tooltip.title" title="{% trans 'login' %}" data-placement="right" {% if 'login' in tags %}class="active"{% endif %}>
+						<li data-tooltip="tooltip.title" title="{% trans 'login' %}" data-placement="right" {% if 'login' in tags %}class="active"{% endif %}>
 							<a href="{% url 'walt_login' %}">
 								<div class="icon">
 									<i class="icon-lock"></i>

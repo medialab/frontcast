@@ -92,7 +92,8 @@
           Routing mechanism
           =================
 
-          Note: the layout actually change only when scene action is updated.
+          Note: the layout actually change only when scene is updated.
+          It involves routing mechanism, cfr Route module.
           Any other changement make only local changements.
 
         */
@@ -103,6 +104,14 @@
           value: walt.SCENE_STARTUP,
           triggers: 'scene__update',
           dispatch: ['scene__updated']
+        },
+        {
+          id: 'scene_args',
+          description: 'basic app view arguments',
+          type: {},
+          value: {},
+          triggers: 'scene_args__update',
+          dispatch: ['scene_args__updated']
         },
         /*
 

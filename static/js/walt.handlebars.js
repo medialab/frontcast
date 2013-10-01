@@ -30,7 +30,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 templates['document'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
   
@@ -64,6 +64,12 @@ function program7(depth0,data) {
   buffer += "\n      "
     + escapeExpression(((stack1 = depth0.name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " -\n    ";
+  return buffer;
+  }
+
+function program9(depth0,data) {
+  
+  var buffer = "";
   return buffer;
   }
 
@@ -103,7 +109,11 @@ function program7(depth0,data) {
   if (stack2 = helpers.content) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.content; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</div>\n  <div class=\"authors\">\n    by <a href=\""
+    + "</div>\n  <div class=\"authors\">\n    ";
+  options = {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data};
+  stack2 = ((stack1 = helpers.url || depth0.url),stack1 ? stack1.call(depth0, "u", "slug", depth0.owner, options) : helperMissing.call(depth0, "url", "u", "slug", depth0.owner, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n    by <a href=\""
     + escapeExpression(((stack1 = ((stack1 = depth0.settings),stack1 == null || stack1 === false ? stack1 : stack1.base_url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/u/";
   if (stack2 = helpers.owner) { stack2 = stack2.call(depth0, {hash:{},data:data}); }

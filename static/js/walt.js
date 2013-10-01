@@ -22,14 +22,41 @@
 
   walt.debug = walt.DEBUG_INFO;
 
+  walt.SCENES = [];
   walt.SCENE_STARTUP = 'startup';
+  walt.SCENE_ARCHIVE = 'archive';
+  walt.SCENE_ME = 'me';
+  walt.SCENE_USER = 'u';
   walt.SCENE_VIEW_DOCUMENT = 'document';
   walt.SCENE_MANAGE_REFERENCES = 'edit-references';
   walt.SCENE_WORLD_DRAFTS = 'drafts'; // show all drafts available to staff memers only (via api)
-  walt.SCENES = [
-    walt.SCENE_STARTUP,
-    walt.SCENE_WORLD_DRAFTS
+
+  walt.ROUTES = [
+    {
+      path: '/',
+      scene: walt.SCENE_STARTUP
+    },
+    {
+      path: '/archive',
+      scene: walt.SCENE_ARCHIVE
+    },
+    {
+      path: '/me',
+      scene: walt.SCENE_ME
+    },
+    {
+      path: '/admin',
+      scene: walt.SCENE_ADMIN
+    },
+    {
+      path: '/u/{slug}',
+      scene: walt.SCENE_USER
+    }
   ]
+
+  for(var i in walt.ROUTES)
+    walt.SCENES.push(walt.ROUTES[i].scene);
+  
 
   walt.DOCUMENT_TYPES = {
     MEDIA: 'I', // external iframe, image, audio or video

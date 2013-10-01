@@ -1,3 +1,9 @@
+/*
+  depede
+  
+  This module depends on crossroads.min.js and hasher.min.js
+  to interprete the navigation hash.
+*/
 ;(function() {
   'use strict';
 
@@ -5,82 +11,65 @@
   walt.domino.modules.Route = function() {
     domino.module.call(this);
 
+    var _self = this,
+        _routes = [];
 
-    var _last_hash,
-        _self = this,
-        _dry = {
-          scene: {
-            shortcut: 's',
-            defaultValue: walt.SCENE_STARTUP
-          }
-        },
-        _expand = Object.keys(_dry).reduce(function(res, k) {
-          res[_dry[k].shortcut] = k;
-          return res;
-        }, {});
 
-    // Just a small tool to identify whether
-    function isDisplayable(v) {
-      switch (domino.struct.get(v)) {
-        case 'object':
-          return Object.keys(v).length > 0;
-        case 'array':
-          return v.length > 0;
-        default:
-          return !!v;
-      }
-    }
+    function bind(route, scene) {
+      _routes[ scene ] = route;
 
-    function encode(o) {
-      var k,
-          o2 = {};
-
-      o = o || {};
-      for (k in o)
-        if (isDisplayable(o[k]))
-          o2[_dry[k] ? _dry[k].shortcut : k] = o[k];
-
-      return decodeURIComponent($.param(o2));
-    }
-
-    function decode(s) {
-      var k,
-          o = $.deparam.fragment(),
-          o2 = {};
-      for (k in o)
-        o2[_expand[k] || k] = o[k];
-
-      for (k in _dry)
-        o2[k] = (k in o2) ? o2[k] : _dry[k].defaultValue;
-
-      return o2;
-    }
-
-    function change_hash(controller) {
-      _last_hash = encode({
-        scene: controller.get('scene')
+      route.matched.add(function(){
+        walt.log('>>> Route.bind: scene:"', scene,'"');
+        _self.dispatchEvent('scene__update', {
+          scene: scene
+        });
       });
-      window.location.hash = _last_hash;
+    };
+
+    function parse_hash(h, previous) {
+      walt.log('>>> Route.parse_hash: ', h);
+      crossroads.parse(h);
+    };
+
+
+    /* 
+
+      Module Init.
+      ------------
+
+      Add browser hash listener, start hasher with the current value.
+      An handlebar helper integrates the crossroads.interpolate() interpolation function with the stored walt routes.
+      
+      handlebars usage:
+      {{#url <walt.SCENE> param param2 ... paramN}}{{/url}}
+
+    */
+    Handlebars.registerHelper("url", function(scene) {
+      var params = {};
+
+      for( var i=1; i<arguments.length-1; i+=2){
+        params[arguments[i]] = arguments[i+1];
+      };
+      return _routes[scene].interpolate(params);
+    });
+
+    this.triggers.events.init = function(controller) {
+      walt.log('>>> Route listen to init');
+      for(var i in walt.ROUTES){
+        var route = crossroads.addRoute(walt.ROUTES[i].path),
+            scene = walt.ROUTES[i].scene;
+        
+        bind(route, scene);
+      }
+
+      hasher.initialized.add(parse_hash); //parse initial hash
+      hasher.changed.add(parse_hash); //parse hash changes
+      hasher.init();
     }
 
-    function evaluate_hash() {
-      walt.log('evaluate_hash')
-      // Check that this update is not actually caused by the same Location
-      // module:
-      if (window.location.hash.substr(1) === _last_hash)
-        return;
-
-      var hash = decode(window.location.hash.substr(1));
-      _self.log('Hash update:', hash);
-      _self.dispatchEvent('scene__update', hash);
-    }
-
-
-    this.triggers.events.scene__stored = change_hash;
-    this.triggers.events.scene__updated = change_hash;
-    this.triggers.events.init = evaluate_hash;
-
-    $(window).on('hashchange', evaluate_hash);
+    this.triggers.events.scene__update = function(controller) {
+      walt.log('>>> Route listen to scene__update');
+    };
   };
 
 })();

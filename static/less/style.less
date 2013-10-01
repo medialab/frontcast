@@ -4,6 +4,7 @@
 @red: #cc1600;
 @black: #838383;
 @f-darkblue: #141e20;
+@f-grey: #bbbbbc;
 @f-blue: #33cccc;
 @f-red: #ee312f;
 
@@ -37,7 +38,7 @@
 
 @header-height: 48px;
 @sidebar-width: 110px;
-@sidebar-height: 334px;
+@sidebar-height: 374px;
 @references-width:260px;
 @padding: 24px;
 
@@ -145,14 +146,15 @@ sidebar{
 					//margin-right: 12px;
 					font-size:14px;
 					.transition( left, .3s, ease-in-out);	
+					background-color: @grey_10;
 				}
 
 				&.staff{
-					background-color: @grey_5;
+					background-color: @grey_2;
 
 					.icon{
 						background-color: @grey_14;
-						left: @sidebar-width - 40px;
+						
 					}
 				}
 
@@ -181,21 +183,24 @@ sidebar{
 				}
 
 				&.staff{
-					background-color: #888;
+					background-color:  @grey_10;
 					
 					.icon{
-						left: 0;
-						background: black;
+						left: @sidebar-width - 40px;
+						background: @f-blue;
 					}
 				}
 			}
 
-			&.active a .icon{
-				background: @f-red;
-				color: white;
+			&.active{
+				background-color: @f-grey;
 
+				a .icon{
+					background: @f-red;
+					color: white;
+					left: @sidebar-width - 40px;
+				}
 			}
-			
 		}
 	}
 }
@@ -518,7 +523,7 @@ fieldset{
 		padding-left:8px;
 		border: 1px solid transparent;
 		border-bottom: 1px solid @grey_10;
-		width: 50%;
+		width: 90%;
 		.border-radius(0);
 	}
 

@@ -80,7 +80,6 @@
           settings.delay += 70;
       }
 
-      _self.box.masonry({gutter:12, columnWidth:270});
       
     }
 

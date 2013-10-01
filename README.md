@@ -35,7 +35,7 @@ Frontcast makes use of handlebars templates.
 So, firstly install all handlebars requirement for _precompilation. Cfr http://handlebarsjs.com/precompilation.html
 
 	$ cd frontcast
-	$ handlebars static/js/templates/* -f static/js/handlebars.templates.js
+	$ handlebars static/js/templates/* -f static/js/walt.handlebars.js
 
 
 How to override Domino Handlebars Templates
