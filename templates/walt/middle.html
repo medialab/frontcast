@@ -7,7 +7,14 @@
 		<header>
 			<div class="inner">
 			{% block header %}
-				{% trans "connected as"%}: {{ user.username }}
+				<div class="action add-media">
+					<i class="icon icon-plus"></i>
+				</div>
+				<div class="action search">
+					<i class="icon icon-search"></i>
+					<input type="text" placeholder="search documents"/>
+				</div>
+				<div class="clear"></div>
 			{% endblock %}
 			</div>
 		</header>
@@ -18,7 +25,7 @@
 					{% block sidebar %}
 					<a href="{% url 'walt_home'%}" id="forccast-logo"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 					<ul>
-						<li data-tooltip="tooltip.title" title="home" data-placement="right" {% if 'intro' in tags %}class="active"{% endif %}>
+						<li data-scene="startup" data-tooltip="tooltip.title" title="home" data-placement="right" >
 							<a href="{% url 'walt_home' %}" >
 								<div class="icon">
 									<i class="icon-camera-retro"></i>
@@ -26,8 +33,8 @@
 								<div class="label">{% trans "intro"%}</div>
 							</a>
 						</li>
-						<li data-tooltip="tooltip.title" title="home" data-placement="right" {% if 'home' in tags %}class="active"{% endif %}>
-							<a href="{% url 'walt_home' %}" >
+						<li data-scene="startup" data-tooltip="tooltip.title" title="home" data-placement="right" >
+							<a href="{% url 'walt_home' %}#/" >
 								<div class="icon">
 									<i class="icon-globe"></i>
 								</div>
@@ -35,7 +42,7 @@
 							</a>
 						</li>
 					{% if user.is_authenticated %}
-						<li data-tooltip="tooltip.title" title="{{user.first_name}}'s space" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
+						<li data-scene="me" data-tooltip="tooltip.title" title="{{user.username}}'s space" data-placement="right"  >
 							<a href="{% url 'walt_home' %}#/me">
 								<div class="icon">
 									<i class="icon-male"></i>
@@ -43,10 +50,10 @@
 								<div class="label">{% trans "worksp."%}</div>
 							</a>
 						</li>
-						<!--li data-tooltip="tooltip.title" title="search (disabled)" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
+						<!--li data-scene="" data-tooltip="tooltip.title" title="search (disabled)" data-placement="right"  {% if 'me' in tags %}class="active"{% endif %}>
 							<a href="#"><i class="icon-search"></i></a>
 						</li-->
-						<li data-tooltip="tooltip.title" title="{% trans 'logout' %}" data-placement="right">
+						<li data-scene="" data-tooltip="tooltip.title" title="{% trans 'logout' %}" data-placement="right">
 							<a href="{% url 'walt_logout' %}">
 								<div class="icon">
 									<i class="icon-unlock"></i>
@@ -56,7 +63,7 @@
 						</li>
 
 						{% if user.is_staff %}
-						<li data-tooltip="tooltip.title" title="{% trans 'view all drafts' %}" data-placement="right">
+						<li data-scene="" data-tooltip="tooltip.title" title="{% trans 'view all drafts' %}" data-placement="right">
 							<a class="staff" href="{% url 'walt_home' %}#s=drafts">
 								<div class="icon">
 									<i class="icon-tint"></i>
@@ -66,7 +73,7 @@
 						</li>
 						{% endif %}
 					{% else %}
-						<li data-tooltip="tooltip.title" title="{% trans 'login' %}" data-placement="right" {% if 'login' in tags %}class="active"{% endif %}>
+						<li data-scene="" data-tooltip="tooltip.title" title="{% trans 'login' %}" data-placement="right" {% if 'login' in tags %}class="active"{% endif %}>
 							<a href="{% url 'walt_login' %}">
 								<div class="icon">
 									<i class="icon-lock"></i>
@@ -75,7 +82,11 @@
 							</a>
 						</li>
 					{% endif %}
-
+					{% if debug %}
+						<li data-scene="" data-tooltip="tooltip.title" title="{% trans 'debug' %}" data-placement="right">
+							DEBUG
+						</li>
+					{% endif %}
 					</ul>
 					<a href="{% url 'walt_home'%}" id="sciences-po-logo"><img src="{{ STATIC_URL }}/img/sciences-po.svg" /></a>
 					{% endblock %}

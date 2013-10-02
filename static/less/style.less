@@ -36,8 +36,8 @@
   color: lighten(@grey, @lightness);
 }
 
-@header-height: 48px;
-@sidebar-width: 110px;
+@header-height: 40px;
+@sidebar-width: 80px;
 @sidebar-height: 374px;
 @references-width:260px;
 @padding: 24px;
@@ -227,18 +227,55 @@ sidebar{
 
 header{
 	position:fixed;
-	display:none;
-	width:100%;
+	left: @sidebar-width + @padding*2;
 	height: @header-height;
 	margin:0;
 	z-index: @header-z-index;
-	background: white;//@grey-5;
+	background: @grey-5;
 	.inner{
-		height: @header-height - @padding/2;
-		padding-top: @padding/2;
-		margin-left: @sidebar-width + @padding ;
-		margin-right: @references-width + @padding;
-		border-bottom: 1px solid @grey_5;
+		height: @header-height;
+		
+		.action{
+			float:left;
+			display:block;
+			width:40px;
+			height:40px;
+			
+			.icon{
+				display:block;
+				width: 40px;
+				height: 40px;
+				line-height: 40px;
+				text-align: center;
+			}
+			
+			&.search{
+				width: 230px;
+				color: #838383;
+				position:relative;
+
+				input{
+					position:absolute;
+					left:40px;
+					top:0px;
+					padding: 6px;
+					padding-top: 8px;
+
+					border-width: 0px;
+					border-bottom: 0px solid #dddddd;
+					font-family: 'Source Sans Pro', sans-serif;
+					line-height: 1.2em;
+					width: 130px;
+					height: 24px;
+
+				}
+			}
+
+			&:hover{
+				background-color: @f-red;
+				color: white;
+			}
+		}
 	}
 }
 
@@ -253,6 +290,7 @@ header{
 	.inner{
 		margin-left: @sidebar-width + @padding*2;
 		margin-right: @padding;
+		margin-top: @padding;
 		padding: 0;
 
 	}
@@ -283,8 +321,17 @@ input{
 	width:150px;
 
 }
-input[type="text"]{
+input[type="text"], input[type="password"]{
 	line-height: 1.67em;
+	color: #838383;
+	padding: 6px;
+	padding-top: 8px;
+	border-width: 0px;
+	border-bottom: 1px solid #dddddd;
+	font-family: 'Source Sans Pro', sans-serif;
+	line-height: 1.2em;
+	width: 200px;
+	height: 24px;
 }
 
 textarea{
@@ -320,7 +367,11 @@ fieldset{
 #forccast-logo{
 	background: @grey-5;
 	display: block;
+	img{
+		margin: -14px 0 -14px -14px;
+	}
 }
+
 #sciences-po-logo{
 	display: block;
 	position: absolute;
@@ -421,21 +472,7 @@ fieldset{
 
 
 
-.actions{
-	display:none;
-	text-align:center;
 
-	.action{
-		float:left;
-		text-align:center;
-		padding: @padding;
-		.icon{
-			display:block;
-			text-align:center;
-		}
-	}
-	border-bottom: 1px solid @grey;
-}
 .clear{
 	clear:both;
 }

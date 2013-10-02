@@ -16,9 +16,10 @@
 
   walt.CSRFTOKEN = 'django crfr token';
 
-  walt.DEBUG_NONE = 'N';
-  walt.DEBUG_INFO = 'I'; // will show log and info
-  walt.DEBUG_ERROR = 'E'; // will show error only
+  walt.DEBUG_NONE = 0;
+  walt.DEBUG_VERBOSE = 2; // will show walt.log() stuff and walt.verbose() stuff
+  walt.DEBUG_INFO = 3; // will show walt.log() stuff
+  walt.DEBUG_ERROR = 4; // will show error only
 
   walt.debug = walt.DEBUG_INFO;
 
@@ -165,23 +166,35 @@
       ====
 
   */
-  walt.log = walt.info = function(){
-    if(walt.debug == walt.DEBUG_INFO){
+  walt.log = function(){
+    if(walt.debug >= walt.DEBUG_INFO){
       try{
-        var args = ['\twalt:' ].concat(Array.prototype.slice.call(arguments));
+        var args = ['\t'].concat(Array.prototype.slice.call(arguments));
+        console.log.apply(console, args);
+      } catch(e){}
+    }
+  };
+
+  walt.verbose = function(){
+    if(walt.debug >= walt.DEBUG_VERBOSE){
+      var index = '          ';
+      walt.debug_index = walt.debug_index || 0;
+      walt.debug_index++;
+      index = index + walt.debug_index;
+
+      try{
+        var args = ['\t', index.substr(-6)].concat(Array.prototype.slice.call(arguments));
         console.log.apply(console, args);
       } catch(e){}
     }
   };
 
   walt.error = function(){
-    if(walt.debug == walt.DEBUG_ERROR || walt.debug == walt.DEBUG_INFO){
-      try{
-        var args = ['   /\\  \n  /  \\\n / !! \\ ERROR walt:' ].concat(Array.prototype.slice.call(arguments));
+    try{
+        var args = ['   /\\  \n  /  \\\n / !! \\ ERROR walt:'].concat(Array.prototype.slice.call(arguments));
         args.push('\n/______\\');
         console.log.apply(console, args);
-      } catch(e){}
-    }
+    } catch(e){}
   };
 
 

@@ -8,7 +8,7 @@
   domino.settings({
     shortcutPrefix: '::',
     displayTime: true,
-    verbose: true,
+    verbose:false,
     strict: true,
     clone: false
   });
@@ -149,10 +149,22 @@
 
         */
         {
-          triggers: 'data_document__changed',
-          description: 'documents items collection changed',
-          method: function(){
+          triggers: 'data__update',
+          description: 'it updates data propertties only if needed',
+          method: function(e) {
+            for(var i in e.data){
+              var data_property = e.data[i],
+                  data_hash = {};
 
+              /* check for re*/
+              for(var j in data_property){
+
+              }
+
+              data_hash[i] = data_property;
+              this.update(data_hash);
+            }
+            walt.log('(domino) on data__update', e.data);
           }
         },
         /*
@@ -168,7 +180,7 @@
             var scene = this.get('scene'),
                 services = [];
 
-            this.log( scene );
+            walt.log('(domino) on scene__updated', scene);
             walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
 
             switch(scene){
@@ -176,6 +188,20 @@
                 services = [
                   {
                     service: 'get_documents',
+                    limit: 10,
+                    offset:0
+                  },
+                  {
+                    service: 'get_assignments',
+                    limit: 10,
+                    offset:0
+                  }
+                ];
+                break;
+              case walt.SCENE_ME:
+                services = [
+                  {
+                    service: 'get_user_documents',
                     limit: 10,
                     offset:0
                   },
@@ -211,7 +237,7 @@
           triggers: 'scene__synced',
           description: 'data loading completed, proceed according to the scene to perrform!',
           method: function(event) {
-            walt.log('scene synced, ui status:', this.get('ui_status') )
+            walt.log('(domino) on scene__synced, ui status:', this.get('ui_status') )
 
           }
         },
@@ -291,6 +317,27 @@
         { 
           id: 'get_documents',
           type: 'GET',
+          url: walt.urls.documents,
+          dataType: 'json',
+          data: function(input) {
+            return input.params;
+          },
+          success: function(data) {
+            // todo infinite adding not replacing items.
+            this.dispatchEvent('data__update', {
+              data_documents: {
+                items: data.objects,
+                ids:$.map(data.objects, function(e){return ''+e.id;}),
+                length: +data.meta.total_count,
+                limit: +data.meta.limit || data.objects.length,
+                offset: data.meta.offset || 0
+              }
+            });
+          }
+        },
+        { 
+          id: 'get_user_documents',
+          type: 'GET',
           url: walt.urls.user_documents,
           dataType: 'json',
           data: function(input) {
@@ -298,7 +345,7 @@
           },
           success: function(data) {
             // todo infinite adding not replacing items.
-            this.update({
+           this.dispatchEvent('data__update', {
               data_documents: {
                 items: data.objects,
                 ids:$.map(data.objects, function(e){return ''+e.id;}),
@@ -319,7 +366,7 @@
           },
           success: function(data) {
             // todo infinite adding not replacing items.
-            this.update({
+            this.dispatchEvent('data__update', {
               data_documents: {
                 items: data.objects,
                 ids:$.map(data.objects, function(e){return ''+e.id;}),
@@ -474,6 +521,7 @@
     */
     walt.domino.controller.addModule( walt.domino.modules.Layout, [walt.domino.controller], {id:'layout'});
     walt.domino.controller.addModule( walt.domino.modules.List, null, {id:'list'});
+    walt.domino.controller.addModule( walt.domino.modules.Menu, null, {id:'menu'});
     walt.domino.controller.addModule( walt.domino.modules.Route, null, {id:'route'});
 
     walt.domino.controller.log('module instantiated');

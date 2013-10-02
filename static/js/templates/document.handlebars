@@ -16,10 +16,13 @@
       {{this.name}} -
     {{/each}}
   </div>
-  <div class="abstract">{{abstract}}</div>
+  <div class="abstract">{{abstract}} {{type}}</div>
   <div class="abstract">{{content}}</div>
   <div class="authors">
-    {{#url "u" "slug" owner}}{{/url}}
-    by <a href="{{settings.base_url}}/u/{{owner}}">{{owner}}</a> <a href="{{settings.base_url}}/d/{{slug}}/edit/">edit</a>
+    
+    by <a href="/#{{#url "u" "slug" owner}}{{/url}}">{{owner}}</a>
+    {{#each authors}}
+      <a href="/#{{#url "u" "slug" this}}{{/url}}">{{this}}</a>
+    {{/each}} <a href="{{settings.base_url}}/d/{{slug}}/edit/">edit</a>
   </div>
 </div>

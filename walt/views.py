@@ -230,6 +230,7 @@ def storage( request, folder=None, index=None, extension=None ):
 def _shared_data( request, tags=[], d={} ):
 	d['tags'] = tags
 	d['pending_assignments'] = []
+	d['debug'] = settings.DEBUG
 
 	if request.user.is_authenticated():
 		# get pending tasks

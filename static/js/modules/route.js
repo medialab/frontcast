@@ -19,7 +19,7 @@
       _routes[ scene ] = route;
 
       route.matched.add(function(){
-        walt.log('>>> Route.bind: scene:"', scene,'"');
+        walt.verbose('(Route) bind scene: [', scene,']');
         _self.dispatchEvent('scene__update', {
           scene: scene
         });
@@ -27,7 +27,7 @@
     };
 
     function parse_hash(h, previous) {
-      walt.log('>>> Route.parse_hash: ', h);
+      walt.verbose('(Route) parse_hash: ', h);
       crossroads.parse(h);
     };
 
@@ -54,7 +54,7 @@
     });
 
     this.triggers.events.init = function(controller) {
-      walt.log('>>> Route listen to init');
+      walt.verbose('(Route) listen to init');
       for(var i in walt.ROUTES){
         var route = crossroads.addRoute(walt.ROUTES[i].path),
             scene = walt.ROUTES[i].scene;
@@ -68,7 +68,7 @@
     }
 
     this.triggers.events.scene__update = function(controller) {
-      walt.log('>>> Route listen to scene__update');
+      walt.verbose('(Route) listen to scene__update');
     };
   };
 

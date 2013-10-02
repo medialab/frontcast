@@ -28,7 +28,7 @@
           _omissis = {},
           data = controller.get('data_' + settings.namespace );
 
-      walt.log('listof:',data.length, 'items, selector:',settings.selector );
+      walt.verbose('listof:',data.length, 'items, selector:',settings.selector );
       
       //_self.unsticky();
 
@@ -59,7 +59,7 @@
           item = $( settings.prefix + data.ids[i] );
           
           if( item.length == 0 ){
-            walt.log( settings.prefix + data.ids[i], 'not found, populating');//, settings.template(data.items[i]) );
+            //walt.log( settings.prefix + data.ids[i], 'not found, populating');//, settings.template(data.items[i]) );
             if( previous_item == null )
               _self.box.prepend( settings.template(data.items[i]) );
             else
@@ -200,9 +200,9 @@
       return tags;
     }
 
-    $(document).on('click', '.actions .add-text', _self.create_text_document );
+    $(document).on('click', '.action.add-text', _self.create_text_document );
     $(document).on('click', '.save-document', _self.save_document );
-    $(document).on('click', '.actions .add-media', _self.create_media_document );
+    $(document).on('click', '.action.add-media', _self.create_media_document );
     $(document).on('change', '.video .permalink textarea', _self.evaluate_permalink );
     
     /*

@@ -163,8 +163,8 @@ class Document(models.Model):
     #( REFERENCE_RESOURCE, 'ref. resource'),
     #( REFERENCE_RIGHTS, 'ref. rights'),
     (REFERENCE_CONTROVERSY, 'ref. global controversy object'),
-    #(REFERENCE_CONTROVERSY_WEB, 'ref. controversy site'),
-    #(REFERENCE_CONTROVERSY_VIDEO, 'ref. controversy video'),
+    (REFERENCE_CONTROVERSY_WEB, 'ref. controversy site'),
+    (REFERENCE_CONTROVERSY_VIDEO, 'ref. controversy video'),
     (LINK,  'just a link'),
     (MEDIA, 'media'),
     (TEXT,  'text'), # notes and other stories
@@ -295,6 +295,7 @@ class Document(models.Model):
       'reference': self.reference,
       'owner': self.owner.username,
       'tags': tags,
+      'type': self.type,
       'date_last_modified': self.date_last_modified.isoformat() if self.date_last_modified is not None else None,
       'authors': [a.username for a in self.authors.all()]
 

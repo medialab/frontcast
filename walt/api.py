@@ -100,7 +100,7 @@ def user_documents(request):
 	else:
 		result.meta('o','e')
 		result.queryset(
-			Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user))
+			Document.objects.filter(Q(owner=request.user) | Q(authors=request.user))
 		)
 
 	return result.json()
