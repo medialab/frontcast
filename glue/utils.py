@@ -126,7 +126,7 @@ class Epoxy:
 
 		if self.method == 'GET' and 'filters' in self.request.REQUEST:
 			try:
-				self.filters = json.loads( self.request.REQUEST.get('filters') )
+				self.filters = self.meta('filters', json.loads( self.request.REQUEST.get('filters')))
 			except Exception, e:
 				self.warning( 'filters', "Exception: %s" % e )
 

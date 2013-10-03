@@ -208,6 +208,36 @@ def storage( request, folder=None, index=None, extension=None ):
 		wrapper = FileWrapper(file(filepath))
 		response = HttpResponse(wrapper, content_type=content_type[0])
 		response['Content-Length'] = os.path.getsize(filepath)
+		return response
+
+
+	data['filepath'] = {
+		'folder':folder,
+		'index':index,
+		'extension':extension,
+		'total': filepath,
+		'content-type':  guess_type( filepath )[0],
+		'exists': os.path.exists( filepath )
+	}
+
+	#os.path.join(settings.STORAGE_ROOT, index)
+
+	return render_to_response(  "walt/404.html", RequestContext(request, data ) )
+
+@login_required
+def storage_transfer( request, folder=None, index=None, extension=None ):
+	data = _shared_data(request, tags=['me'])
+
+	filepath = os.path.join( settings.STORAGE_ROOT, folder,"%s.%s" % (index,extension) );
+
+	if os.path.exists(filepath):
+		from django.core.servers.basehttp import FileWrapper
+
+		content_type = guess_type( filepath )
+
+		wrapper = FileWrapper(file(filepath))
+		response = HttpResponse(wrapper, content_type=content_type[0])
+		response['Content-Length'] = os.path.getsize(filepath)
 		response['Content-Description'] = "File Transfer";
 		response['Content-Disposition'] = "inline; filename=%s.%s" % ( index, extension )
 		return response

@@ -25,16 +25,16 @@
 					{% block sidebar %}
 					<a href="{% url 'walt_home'%}" id="forccast-logo"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 					<ul>
-						<li data-scene="startup" data-tooltip="tooltip.title" title="home" data-placement="right" >
-							<a href="{% url 'walt_home' %}" >
+						<li data-scene="splash page" data-tooltip="tooltip.title" title="home" data-placement="right" >
+							<a href="{% url 'walt_home' %}#/" >
 								<div class="icon">
 									<i class="icon-camera-retro"></i>
 								</div>
 								<div class="label">{% trans "intro"%}</div>
 							</a>
 						</li>
-						<li data-scene="startup" data-tooltip="tooltip.title" title="home" data-placement="right" >
-							<a href="{% url 'walt_home' %}#/" >
+						<li data-scene="public" data-tooltip="tooltip.title" title="home" data-placement="right" >
+							<a href="{% url 'walt_home' %}#/public" >
 								<div class="icon">
 									<i class="icon-globe"></i>
 								</div>
@@ -96,6 +96,7 @@
 
 		<div class="main">
 			<div class="inner">
+				
 			{% if user.is_authenticated %}
 				{% block assignments %}
 				<div class="assignments">
@@ -112,13 +113,13 @@
 		</div>
 
 		{% if user.is_authenticated %}
-		<div class="references" ng-controller="ReferenceListCtrl">
+		<!-- div class="references" ng-controller="ReferenceListCtrl">
 			<h2>bibliography</h2>
 
 			<div class="reference">
 				James, H.
 			</div>
-		</div>
+		</div -->
 		{% endif %}
 
 		<footer>

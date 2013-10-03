@@ -101,7 +101,7 @@
           id: 'scene',
           description: 'basic app view',
           type: 'walt.scene',
-          value: walt.SCENE_STARTUP,
+          value: walt.SCENE_SPLASH,
           triggers: 'scene__update',
           dispatch: ['scene__updated']
         },
@@ -156,7 +156,7 @@
               var data_property = e.data[i],
                   data_hash = {};
 
-              /* check for re*/
+              /* collect references */
               for(var j in data_property){
 
               }
@@ -164,6 +164,7 @@
               data_hash[i] = data_property;
               this.update(data_hash);
             }
+
             walt.log('(domino) on data__update', e.data);
           }
         },
@@ -184,7 +185,19 @@
             walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
 
             switch(scene){
-              case walt.SCENE_STARTUP:
+              case walt.SCENE_SPLASH:
+                services = [
+                  {
+                    service: 'get_documents',
+                    limit: 10,
+                    offset:0,
+                    filters: JSON.stringify({
+                      type__in: [walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY]
+                    })
+                  }
+                ];
+                break;
+              case walt.SCENE_PUBLIC:
                 services = [
                   {
                     service: 'get_documents',
@@ -520,7 +533,6 @@
         ---
     */
     walt.domino.controller.addModule( walt.domino.modules.Layout, [walt.domino.controller], {id:'layout'});
-    walt.domino.controller.addModule( walt.domino.modules.List, null, {id:'list'});
     walt.domino.controller.addModule( walt.domino.modules.Menu, null, {id:'menu'});
     walt.domino.controller.addModule( walt.domino.modules.Route, null, {id:'route'});
 

@@ -24,7 +24,9 @@
   walt.debug = walt.DEBUG_INFO;
 
   walt.SCENES = [];
-  walt.SCENE_STARTUP = 'startup';
+  walt.SCENE_SPLASH = 'splash page';
+  walt.SCENE_PUBLIC = 'public'; // public documents
+
   walt.SCENE_ARCHIVE = 'archive';
   walt.SCENE_ME = 'me';
   walt.SCENE_USER = 'u';
@@ -35,7 +37,11 @@
   walt.ROUTES = [
     {
       path: '/',
-      scene: walt.SCENE_STARTUP
+      scene: walt.SCENE_SPLASH
+    },
+    {
+      path: '/public',
+      scene: walt.SCENE_PUBLIC
     },
     {
       path: '/archive',
@@ -63,7 +69,8 @@
     MEDIA: 'I', // external iframe, image, audio or video
     TEXT: 'T', // a note (at least originally)
     COMMENT: 'C',
-    REFERENCE_CONTROVERSY: 'rY'
+    REFERENCE_CONTROVERSY: 'rY',
+    REFERENCE_CONTROVERSY_VIDEO: 'rV'
   };
 
   walt.UI_STATUS_LOCKED = 'locked';

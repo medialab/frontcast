@@ -2,15 +2,15 @@
   'use strict';
 
   walt.domino.modules = walt.domino.modules || {};
-  walt.domino.modules.List = function(box) {
+  walt.domino.modules.List = function(selector) {
     domino.module.call(this);
 
     var _self = this;
-    this.box = box;
+    this.box = $(selector);
+    this.selector = selector;
 
 
-
-    this.listof = function( controller, options ){
+    this.listof = function(controller, options) {
       var previous_item = null,
           item = null,
           settings = $.extend({
@@ -40,8 +40,10 @@
       */
       $( settings.selector, _self.box ).each(function() {
         var item = $(this);
-        if( data.ids.indexOf( item.attr('data-int-id') ) == -1 ){
-          item.remove();
+        if( data.ids.indexOf( item.attr('data-id') ) == -1 ){
+          walt.move.destroy(item, {
+            delay:settings.delay
+          });
           /*maze.move.swipeout( item,{
             delay:settings.delay,
             callback:function(){
@@ -75,21 +77,40 @@
           } else {
             $( previous_item ).after( item );
           }
-
+          walt.move.fadein(item, {
+            delay: settings.delay
+          });
+          
           previous_item = settings.prefix + data.ids[i]; // maze.log(i, contents[ ids[i] ].name, ids[i] );
-          settings.delay += 70;
+          settings.delay += 370;
       }
 
+      // refresh masonry layout after settings.delay has passed
+      if(_self.container){
+        var collection = new Masonry(_self.container, {
+          gutter: 12,
+          columnWidth:270,
+          selector:'.pin'
+        });
+
+        setTimeout(function(){
+          if(_self.container)
+            collection.layout();
+        }, settings.delay);
+      };
+    };
+
+    this.triggers.events.init = function(controller, event) {
+      walt.verbose('(List) listen to init, selector:', _self.selector);
+      _self.container = document.querySelector(_self.selector);
+
       
-    }
-
-    
-
+    };
   };
 
 
-  walt.domino.modules.ListDocuments = function(controller){
-    walt.domino.modules.List.call(this, $('#list-of-documents') );
+  walt.domino.modules.ListDocuments = function(controller) {
+    walt.domino.modules.List.call(this, '#list-of-documents');
     var _self = this,
         item = {};
 
@@ -262,14 +283,14 @@
   };
 
 
-  walt.domino.modules.ListReferences = function(controller){
-    walt.domino.modules.List.call(this, $('#list-of-references') );
+  walt.domino.modules.ListReferences = function(controller) {
+    walt.domino.modules.List.call(this, '#list-of-references');
     var _self = this;
   };
 
 
-  walt.domino.modules.ListAssignments = function(controller){
-    walt.domino.modules.List.call(this, $('#list-of-assignments') );
+  walt.domino.modules.ListAssignments = function(controller) {
+    walt.domino.modules.List.call(this, '#list-of-assignments');
     var _self = this;
 
     /*
@@ -277,7 +298,7 @@
         Triggers
         ========
     */
-    this.triggers.events.data_assignments__updated = function(controller){
+    this.triggers.events.data_assignments__updated = function(controller) {
       _self.listof(controller, {
         selector:'.assignment', // css selector for the given item
         prefix: '#as-', // id prefix for the given stuff

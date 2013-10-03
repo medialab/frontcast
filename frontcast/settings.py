@@ -207,6 +207,8 @@ logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
 
 
+EMAIL_HOST = local_settings.EMAIL_HOST
+EMAIL_PORT = local_settings.EMAIL_PORT
 
 
 

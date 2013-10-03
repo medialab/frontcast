@@ -8,7 +8,7 @@
 @f-blue: #33cccc;
 @f-red: #ee312f;
 
-@grey:#eaeaea;
+@grey:#eaeae8;
 @grey_2: darken(@grey, 2%);
 @grey_5: darken(@grey, 5%);
 @grey_8: darken(@grey, 8%);
@@ -193,7 +193,7 @@ sidebar{
 			}
 
 			&.active{
-				background-color: @f-grey;
+				background-color: @grey_14;
 
 				a .icon{
 					background: @f-red;
@@ -427,6 +427,7 @@ fieldset{
 		margin-bottom: @padding/2;
 		width: 270px;
 		overflow:hidden;
+		opacity:0;
 
 		&.editor{
 			width: 567px;
@@ -447,7 +448,12 @@ fieldset{
 	}
 
 	h3, .abstract, .permalink{
+		position:relative;
 		padding:0 @padding @padding/2 @padding;
+		.inner{
+			margin:0;
+			passing:0;
+		}
 	}
 
 	h3{

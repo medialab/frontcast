@@ -67,3 +67,6 @@ WALT_ROLES = [
 ]
 
 BIBLIB_ENDPOINT = "http://localhost:8080/"
+
+EMAIL_HOST = 'smtp.domain.com'
+EMAIL_PORT = 25
