@@ -7,6 +7,9 @@
 		<header>
 			<div class="inner">
 			{% block header %}
+				<div class="action title">
+					Hello world!
+				</div>
 				<div class="action add-media">
 					<i class="icon icon-plus"></i>
 				</div>
@@ -19,7 +22,7 @@
 			</div>
 		</header>
 		{% endif %}
-		<sidebar>
+		<sidebar {%if user.is_staff %}class="staff"{%endif%}>
 			<div class="outer">
 				<div class="inner">
 					{% block sidebar %}
@@ -83,12 +86,9 @@
 						</li>
 					{% endif %}
 					{% if debug %}
-						<li data-scene="" data-tooltip="tooltip.title" title="{% trans 'debug' %}" data-placement="right">
-							DEBUG
-						</li>
 					{% endif %}
 					</ul>
-					<a href="{% url 'walt_home'%}" id="sciences-po-logo"><img src="{{ STATIC_URL }}/img/sciences-po.svg" /></a>
+					<!-- a href="{% url 'walt_home'%}" id="sciences-po-logo"><img src="{{ STATIC_URL }}/img/sciences-po.svg" /></a -->
 					{% endblock %}
 				</div>
 			</div>
@@ -112,7 +112,41 @@
 			</div>
 		</div>
 
-		{% if user.is_authenticated %}
+		<div class="filters">
+			<h2>filters</h2>
+
+			<div class="filter">
+				<h3>institutions</h3>
+				<div class="fields">
+					<div>Video</div><div><span>5</span></div>
+				</div>
+				<div>
+					<div>Websites</div><div><span>5</span></div>
+
+				</div>
+				<div>
+					<div>Dossiers</div><div><span>5</span></div>
+
+				</div>
+			</div>
+
+			<div class="filter">
+				<h3>types</h3>
+				<div>
+					Video
+
+				</div>
+				<div>
+					Website
+
+				</div>
+				<div>
+					Dossiers
+
+				</div>
+			</div>
+			
+		</div>
 		<!-- div class="references" ng-controller="ReferenceListCtrl">
 			<h2>bibliography</h2>
 
@@ -120,7 +154,7 @@
 				James, H.
 			</div>
 		</div -->
-		{% endif %}
+		
 
 		<footer>
 			{% block footer %}

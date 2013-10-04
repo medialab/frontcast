@@ -36,9 +36,10 @@
   color: lighten(@grey, @lightness);
 }
 
-@header-height: 40px;
+@header-height: 40px + 24px;
 @sidebar-width: 80px;
-@sidebar-height: 374px;
+@sidebar-height: 270px;
+@sidebar-staff-height: 414px;
 @references-width:260px;
 @padding: 24px;
 
@@ -58,7 +59,8 @@ html, body{
 
 body{
 	.sans-serif(13px);
-	background: @grey_5;
+	background: #e7e4de;
+
 }
 
 h1, h2, h3, h4{
@@ -114,6 +116,10 @@ sidebar{
 		height: 100%;
 		// border: 1px solid @grey_5;
 		// box-shadow : inset 0px 0px 13px rgba(0,0,0,.07);
+	}
+
+	&.staff{
+		height: @sidebar-staff-height;
 	}
 
 	.inner{
@@ -217,18 +223,18 @@ sidebar{
 	}
 }
 
-.references{
+.filters{
 	position:fixed;
 	z-index: @references-z-index;
 	height:100%;
 	width: @references-width;
-	background:@grey_5;
+	background:@grey_24;
 	top:0px;
 	right:0px;
 	display:block;
 
-	border-left: 1px solid @grey_14;
-	box-shadow : inset 0px 0px 13px rgba(0,0,0,.07);
+	//border-left: 1px solid @grey_14;
+	//box-shadow : inset 0px 0px 13px rgba(0,0,0,.07);
 
 	h2{
 		text-align: center;
@@ -239,14 +245,21 @@ sidebar{
 
 header{
 	position:fixed;
-	left: @sidebar-width + @padding*2;
+	left: 0;
 	height: @header-height;
+	width:100%;
 	margin:0;
 	z-index: @header-z-index;
-	background: @grey-5;
+	background:  #e7e4de;
+	
 	.inner{
-		height: @header-height;
-		
+		margin-top: 0;
+		margin-left: @sidebar-width + @padding*2;
+		padding-left: @padding;
+		padding-bottom: @padding/2;
+		padding-top: @padding/2;
+		border-bottom: 1px solid darken( #e7e4de, 8%);
+
 		.action{
 			float:left;
 			display:block;
@@ -254,16 +267,24 @@ header{
 			height:40px;
 			
 			.icon{
+				color: #ae1917;
 				display:block;
 				width: 40px;
 				height: 40px;
 				line-height: 40px;
 				text-align: center;
+				background: fade(white, 6%);
 			}
 			
+			&.title{
+				width:auto;
+				color: #ae1917;
+				font-size: 24px;
+				line-height: 40px;
+			}
 			&.search{
 				width: 230px;
-				color: #838383;
+				
 				position:relative;
 
 				input{
@@ -272,7 +293,8 @@ header{
 					top:0px;
 					padding: 6px;
 					padding-top: 8px;
-
+					background-color: transparent;
+					color: white;
 					border-width: 0px;
 					border-bottom: 0px solid #dddddd;
 					font-family: 'Source Sans Pro', sans-serif;
@@ -283,10 +305,10 @@ header{
 				}
 			}
 
-			&:hover{
-				background-color: @f-red;
-				color: white;
-			}
+			//&:hover{
+			//	background-color: @f-red;
+			//	color: white;
+			//}
 		}
 	}
 }
@@ -299,12 +321,12 @@ header{
 	margin-right: @references-width;
 	display:block;
 	z-index: @main-z-index;
+
 	.inner{
 		margin-left: @sidebar-width + @padding*2;
 		margin-right: @padding;
-		margin-top: @padding;
-		padding: 0;
-
+		padding-top: @header-height + @padding/2;
+		
 	}
 }
 
@@ -428,13 +450,12 @@ fieldset{
 
 .pins{
 	position:relative;
-	top:@padding;
 
 	
 	.pin{
 		//border:1px solid @grey_2;
 		.border-radius(3px);
-		//box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 5px;
+		//box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px;
 		background: white;
 		margin-bottom: @padding/2;
 		width: 270px;
