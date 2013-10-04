@@ -19,12 +19,25 @@
       _routes[ scene ] = route;
 
       route.matched.add(function(){
-        walt.verbose('(Route) bind scene: [', scene,']');
+        var scene_args = {};
+
+        // a delicate pairing! We trust the routing lib so much...
+        for(var i=0; i<arguments.length; i++){
+          scene_args[route._paramsIds[i]] = arguments[i];
+        }
+
+        walt.verbose('(Route) bind scene: [', scene,']', scene_args);
+
+        _self.dispatchEvent('scene_args__update', {
+          scene_args: scene_args
+        });
+
         _self.dispatchEvent('scene__update', {
           scene: scene
         });
       });
     };
+
 
     function parse_hash(h, previous) {
       walt.verbose('(Route) parse_hash: ', h);
@@ -53,6 +66,7 @@
       return _routes[scene].interpolate(params);
     });
 
+
     this.triggers.events.init = function(controller) {
       walt.verbose('(Route) listen to init');
       for(var i in walt.ROUTES){
@@ -67,9 +81,9 @@
       hasher.init();
     }
 
+
     this.triggers.events.scene__update = function(controller) {
       walt.verbose('(Route) listen to scene__update');
     };
   };
-
 })();

@@ -12,7 +12,8 @@ AUTH_LDAP_USER_DN_TEMPLATE = ""
 
 # media and storage root differs: media is the path where uploaded stuff goes, storage allow FTP access
 MEDIA_ROOT = '/path/to/frontcast/media'
-STORAGE_ROOT = '/external/path/to/frontcast/storage'
+STORAGE_ROOT = '/external/path/to/frontcast/storage/public'
+STORAGE_ROOT_PROTECTED = '/external/path/to/frontcast/storage/protected' # available only for logged in sessions
 
 SECRET_KEY = 'secret very secret key'
 

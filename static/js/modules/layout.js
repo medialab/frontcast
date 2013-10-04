@@ -13,6 +13,16 @@
         };
 
     this.triggers.events.scene__synced = function(controller, event) {
+      var scene = controller.get('scene');
+
+      switch(scene){
+        case walt.SCENE_SPLASH:
+          $('header').hide();
+          break;
+        case walt.SCENE_ME:
+          $('header').show();
+          break;
+      }
 
     };
   };

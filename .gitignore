@@ -17,3 +17,4 @@ sqlite/frontcast.db
 *.ogv
 *.webm
 ._*
+node_modules/

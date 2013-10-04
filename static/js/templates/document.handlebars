@@ -1,4 +1,4 @@
-<div class="document pin {{status}} {{#each tags.RATING}}{{this.name}}_grade {{/each}}" data-id="{{id}}" id="d-{{id}}">
+<div class="document pin {{status}} {{#each tags.RATING}}{{this.name}}_grade {{/each}}" data-href="/#{{#url "d" "slug" slug}}{{/url}}" data-id="{{id}}" id="d-{{id}}">
 
   <div class="pusher"></div>
   <div class="status">{{status}}</div>
@@ -17,8 +17,21 @@
       {{this.name}} -
     {{/each}}
   </div>
-  <div class="abstract">{{abstract}} {{type}}</div>
-  <div class="abstract">{{content}}</div>
+  <div class="actions">
+    {{#each attachments}}
+      {{#if_in this.ext compare="pdf"}}
+        <a class="button" href="mais_dossier.pdf"><i class="icon-download"></i> download print version</a>
+      {{/if_in}}
+    {{/each}}
+  </div>
+  <div class="content">
+    {{#each attachments}}
+      {{#if_in this.ext compare="jpg|png|gif"}}
+        <img src="{{this.src}}"/>
+      {{/if_in}}
+    {{/each}}
+  </div>
+  <div class="abstract">{{abstract}}<!--{{type}}--></div>
   <div class="authors">
     
     by <a href="/#{{#url "u" "slug" owner}}{{/url}}">{{owner}}</a>

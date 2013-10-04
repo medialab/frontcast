@@ -65,7 +65,6 @@ def logout_view( request ):
 	return redirect( 'walt_home' )
 
 
-@login_required
 def home( request ):
 	data = _shared_data( request, tags=['home'] )
 	#a = Assignment.objects.filter(unit__profile__user=request.user, date_completed__isnull=True)
@@ -194,11 +193,12 @@ def task(request, pk):
 #
 #		Direct storage solution. You only have to login. extension are given as first arg
 #
-@login_required
 def storage( request, folder=None, index=None, extension=None ):
 	data = _shared_data(request, tags=['me'])
 
-	filepath = os.path.join( settings.STORAGE_ROOT, folder,"%s.%s" % (index,extension) );
+	storage_path = settings.STORAGE_ROOT_PROTECTED if request.user.is_authenticated() else settings.STORAGE_ROOT_PUBLIC 
+
+	filepath = os.path.join( storage_path, folder,"%s.%s" % (index,extension) );
 
 	if os.path.exists(filepath):
 		from django.core.servers.basehttp import FileWrapper
@@ -228,7 +228,7 @@ def storage( request, folder=None, index=None, extension=None ):
 def storage_transfer( request, folder=None, index=None, extension=None ):
 	data = _shared_data(request, tags=['me'])
 
-	filepath = os.path.join( settings.STORAGE_ROOT, folder,"%s.%s" % (index,extension) );
+	filepath = os.path.join( settings.STORAGE_ROOT_PROTECTED, folder,"%s.%s" % (index,extension) );
 
 	if os.path.exists(filepath):
 		from django.core.servers.basehttp import FileWrapper

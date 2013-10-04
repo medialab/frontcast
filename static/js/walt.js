@@ -25,10 +25,13 @@
 
   walt.SCENES = [];
   walt.SCENE_SPLASH = 'splash page';
+  walt.SCENE_SPLASH_SINGLE = 'd';
   walt.SCENE_PUBLIC = 'public'; // public documents
+  walt.SCENE_ME = 'me';
+
 
   walt.SCENE_ARCHIVE = 'archive';
-  walt.SCENE_ME = 'me';
+
   walt.SCENE_USER = 'u';
   walt.SCENE_VIEW_DOCUMENT = 'document';
   walt.SCENE_MANAGE_REFERENCES = 'edit-references';
@@ -37,7 +40,13 @@
   walt.ROUTES = [
     {
       path: '/',
-      scene: walt.SCENE_SPLASH
+      scene: walt.SCENE_SPLASH,
+      description: ''
+    },
+    {
+      path: '/d/{slug}',
+      scene: walt.SCENE_SPLASH_SINGLE,
+      description: ''
     },
     {
       path: '/public',
@@ -70,7 +79,8 @@
     TEXT: 'T', // a note (at least originally)
     COMMENT: 'C',
     REFERENCE_CONTROVERSY: 'rY',
-    REFERENCE_CONTROVERSY_VIDEO: 'rV'
+    REFERENCE_CONTROVERSY_VIDEO: 'rV',
+    REFERENCE_CONTROVERSY_WEB: 'rW'
   };
 
   walt.UI_STATUS_LOCKED = 'locked';

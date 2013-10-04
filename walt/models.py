@@ -1,7 +1,8 @@
-import re
+import re, os
 from datetime import datetime
 
 from django.contrib.auth.models import User, Group
+from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
@@ -194,8 +195,8 @@ class Document(models.Model):
   date_last_modified = models.DateTimeField(blank=True, null=True) #cfr save() method
 
   # URL LOCATION
-  local = models.FileField(upload_to='documents/%Y-%m/',  blank=True, null=True) # local stored file inside media folder
-  remote = models.TextField(blank=True, null=True) # local stored file inside storage folder. IT DOES NOT ALLOW UPLOAD!
+  local = models.FileField(upload_to='documents/%Y-%m/',  blank=True, null=True) # local stored file inside media folder (aka upload)
+  remote = models.TextField(blank=True, null=True) # local stored file inside storage folder. IT DOES NOT ALLOW UPLOAD! format: either http:/// or 
 
   permalink  = models.TextField(default="", blank=True, null=True) # remote link
   permalink_hash  = models.CharField(max_length=32, blank=True, null=True) # remote link
@@ -262,6 +263,21 @@ class Document(models.Model):
 
   		___""" %(self.title, self.id, self.slug, self.language, self.mimetype)
 
+  def get_attachments(self):
+    attachments = []
+    if self.remote is not None and len(self.remote):
+      # pseudo Yaml
+      filepaths = self.remote.strip(' \t\n\r').split('\n') # split multilines (i.e for video)
+      
+      for f in filepaths:
+        # todo external file resolver e.g. if not http://
+        parts = re.split('[/.]',f.strip('/'))
+        attachments.append({
+          'ext': parts[-1],
+          'src': reverse('walt_storage', args=parts)
+        })
+    return attachments
+
   def get_organized_tags(self):
     tags = {}
 
@@ -281,6 +297,10 @@ class Document(models.Model):
       if t_type not in tags:
         tags[t_type] = []
       tags[t_type].append(t.json())
+
+    # undesratnd remote/ locales file
+    attachments = self.get_attachments();
+
     
     return{
       'id': self.id,
@@ -296,6 +316,7 @@ class Document(models.Model):
       'owner': self.owner.username,
       'tags': tags,
       'type': self.type,
+      'attachments':attachments,
       'date_last_modified': self.date_last_modified.isoformat() if self.date_last_modified is not None else None,
       'authors': [a.username for a in self.authors.all()]
 

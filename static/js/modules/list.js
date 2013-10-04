@@ -44,14 +44,6 @@
           walt.move.destroy(item, {
             delay:settings.delay
           });
-          /*maze.move.swipeout( item,{
-            delay:settings.delay,
-            callback:function(){
-              item.remove();
-              //_self.dispatchEvent('scrolling_voc');
-            }
-          });
-          */
           settings.delay += 70;
         }
       });
@@ -87,15 +79,20 @@
 
       // refresh masonry layout after settings.delay has passed
       if(_self.container){
-        var collection = new Masonry(_self.container, {
+        _self.collection = new Masonry(_self.container, {
           gutter: 12,
           columnWidth:270,
-          selector:'.pin'
+          selector:'.pin',
+          transitionDuration: 0
+        });
+
+        imagesLoaded(_self.container,function() {
+          _self.collection.layout();
         });
 
         setTimeout(function(){
           if(_self.container)
-            collection.layout();
+            _self.collection.layout();
         }, settings.delay);
       };
     };
@@ -221,6 +218,15 @@
       return tags;
     }
 
+    this.pin = null;
+
+    this.set_leader = function(event) {
+      var pin = $(event.currentTarget).closest('.pin'),
+          href = pin.attr('data-href');
+      window.location = href;
+    }
+
+    $(document).on('click', '.document h3', _self.set_leader );
     $(document).on('click', '.action.add-text', _self.create_text_document );
     $(document).on('click', '.save-document', _self.save_document );
     $(document).on('click', '.action.add-media', _self.create_media_document );

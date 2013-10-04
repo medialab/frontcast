@@ -39,6 +39,16 @@
     });
 
     /**
+     * If In that is a pipe | separated string
+     * if_in this compare=that
+     */
+    Handlebars.registerHelper('if_in', function(context, options) {
+        if (options.hash.compare.split('|').indexOf(context) != -1)
+            return options.fn(this);
+        return options.inverse(this);
+    });
+
+    /**
      * Unless Equals
      * unless_eq this compare=that
      */

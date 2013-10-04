@@ -46,3 +46,9 @@ Domino Handlebars templates can be overridden by changing the CustomTemplateUrl 
 How to override CSS templates
 ---
 custom.css
+
+Remote storage
+---
+
+Use the `settings.STORAGE_ROOT` and `settings.STORAGE_ROOT_PROTECTED` to set root path of files that are not available from outside.
+This allows you to check for django user permission to access protected files.

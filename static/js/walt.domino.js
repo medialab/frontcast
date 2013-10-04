@@ -108,7 +108,7 @@
         {
           id: 'scene_args',
           description: 'basic app view arguments',
-          type: {},
+          type: 'object',
           value: {},
           triggers: 'scene_args__update',
           dispatch: ['scene_args__updated']
@@ -179,21 +179,40 @@
           description: 'according to the scene to perrform, it loads related data through services',
           method: function(event) {
             var scene = this.get('scene'),
+                scene_args = this.get('scene_args'),
                 services = [];
 
-            walt.log('(domino) on scene__updated', scene);
-            walt.domino.controller.update('ui_status',walt.UI_STATUS_LOCKED);
+            walt.log('(domino) on scene__updated, scene:', scene);
+            walt.log('... scene_args:', scene_args);
+            
+            this.update('ui_status',walt.UI_STATUS_LOCKED);
 
             switch(scene){
               case walt.SCENE_SPLASH:
                 services = [
                   {
                     service: 'get_documents',
-                    limit: 10,
-                    offset:0,
-                    filters: JSON.stringify({
-                      type__in: [walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY]
-                    })
+                    params:{
+                      limit: 10,
+                      offset:0,
+                      filters: JSON.stringify({
+                        type__in: [walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_WEB, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY]
+                      })
+                    }
+                  }
+                ];
+                break;
+              case  walt.SCENE_SPLASH_SINGLE:
+                services = [
+                  {
+                    service: 'get_documents',
+                    params:{
+                      limit: 1,
+                      offset:0,
+                      filters: JSON.stringify({
+                        slug: scene_args.slug
+                      })
+                    }
                   }
                 ];
                 break;
@@ -333,6 +352,7 @@
           url: walt.urls.documents,
           dataType: 'json',
           data: function(input) {
+            walt.log('(Service) launch "get_documents"', input);
             return input.params;
           },
           success: function(data) {

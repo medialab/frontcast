@@ -57,7 +57,7 @@ html, body{
 }
 
 body{
-	.sans-serif(12px);
+	.sans-serif(13px);
 	background: @grey_5;
 }
 
@@ -69,7 +69,7 @@ h1, h2, h3, h4{
 }
 
 h1{
-	.sans-serif(2em);
+	.sans-serif(4em, 'normal', .3em);
 }
 
 h2{
@@ -79,8 +79,20 @@ h2{
 }
 
 a{
-	color:@f-blue;
+	color:darken(@f-blue,3%);
 	text-decoration: underline;
+
+	&.button{
+		text-decoration:none;
+		color: @black;
+		border-bottom: 1px solid @black;
+
+		&:hover{
+			background:@f-blue;
+			border-bottom: 1px solid transparent;
+			color:white;
+		}
+	}
 }
 
 
@@ -428,9 +440,14 @@ fieldset{
 		width: 270px;
 		overflow:hidden;
 		opacity:0;
+		.transition( left, .3s);
 
 		&.editor{
 			width: 567px;
+		}
+
+		&.leader{
+			width: 540px + @padding/2;
 		}
 
 		&.A_grade, &.B_grade{
@@ -456,6 +473,12 @@ fieldset{
 		}
 	}
 
+	.content{
+		img{
+			max-width:100%;
+		}
+	}
+
 	h3{
 		font-size: 1.3em;
 		line-height: 1.7em;
@@ -472,7 +495,9 @@ fieldset{
 		padding: @padding/2 @padding;
 	}
 
-	
+	.actions{
+		padding: @padding/2 @padding;
+	}
 
 }
 

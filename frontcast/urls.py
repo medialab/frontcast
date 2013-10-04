@@ -68,7 +68,7 @@ urlpatterns = patterns('walt.views',
     #//url(r'^humans\.txt$', direct_to_template, {'template': 'frontcast/humans.txt', 'mimetype': 'text/plain'}),
     # url(r'^crossdomain\.xml$', direct_to_template, {'template': 'frontcast/crossdomain.xml', 'mimetype': 'text/xml'}),
 
-    url(r'^s/(?P<folder>[a-z]+)/(?P<index>[a-z\-]+)\.(?P<extension>[a-z\d]+)/$', 'storage', name='walt_storage'), #i.e. proxy to storage space
+    url(r'^s/(?P<folder>[a-zA-Z\d\-]+)/(?P<index>[a-z\-_]+)\.(?P<extension>[a-z\d]+)/$', 'storage', name='walt_storage'), #i.e. proxy to storage space
 
     url(r'^video/$', 'spiff_video', name='walt_video'), # add video metadata ? provide upload features.
 

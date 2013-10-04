@@ -19,10 +19,10 @@
 
       walt.verbose('(Menu) listen to scene__updated');
 
-      if(previous_scene)
+      if(previous_scene && entries[previous_scene])
         entries[previous_scene].removeClass('active');
       
-      if(previous_scene != scene )
+      if(previous_scene != scene && entries[scene])
         entries[scene].addClass('active');
 
       previous_scene = scene;

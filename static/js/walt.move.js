@@ -4,7 +4,7 @@
   var walt = w.walt || {};
   
   walt.move = {
-		duration: 1250,
+		duration: 250,
 		calculate_duration: function(distance) {
 			return Math.min( 750, Math.max( 350, distance / 0.6))
 		},
@@ -52,14 +52,14 @@
 
 	walt.move.fadein = walt.move.factory(function(el, options, complete) {
 		el.data('status', walt.move.FADEIN);
-		walt.log(options.delay);
+		walt.log(options.delay)
 		el.stop().delay(options.delay || 0).animate({
 			opacity: 1
 		},{
-			easing:walt.move.easing,
-			duration: walt.move.dutration,
-			complete:complete,
-			queue:false
+			easing: walt.move.easing,
+			duration: walt.move.duration,
+			complete: complete,
+			queue: false
 		});
 	});
 
