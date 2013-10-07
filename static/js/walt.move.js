@@ -52,7 +52,6 @@
 
 	walt.move.fadein = walt.move.factory(function(el, options, complete) {
 		el.data('status', walt.move.FADEIN);
-		walt.log(options.delay)
 		el.stop().delay(options.delay || 0).animate({
 			opacity: 1
 		},{

@@ -39,33 +39,33 @@
 
   walt.ROUTES = [
     {
-      path: '/',
+      path: '/:?filters:',
       scene: walt.SCENE_SPLASH,
       description: ''
     },
     {
-      path: '/d/{slug}',
+      path: '/d/{slug}:?filters:',
       scene: walt.SCENE_SPLASH_SINGLE,
       description: ''
     },
     {
-      path: '/public',
+      path: '/public:?filters:',
       scene: walt.SCENE_PUBLIC
     },
     {
-      path: '/archive',
+      path: '/archive:?filters:',
       scene: walt.SCENE_ARCHIVE
     },
     {
-      path: '/me',
+      path: '/me:?filters:',
       scene: walt.SCENE_ME
     },
     {
-      path: '/admin',
+      path: '/admin:?filters:',
       scene: walt.SCENE_ADMIN
     },
     {
-      path: '/u/{slug}',
+      path: '/u/{slug}:?filters:',
       scene: walt.SCENE_USER
     }
   ]

@@ -113,6 +113,30 @@
           triggers: 'scene_args__update',
           dispatch: ['scene_args__updated']
         },
+        {
+          id: 'scene_filters',
+          description: 'the filter object as given by route mechanism',
+          type: 'object',
+          value: {},
+          triggers: 'scene_filters__update',
+          dispatch: ['scene_filters__updated']
+        },
+        /*
+
+          Filtering mechanism
+          ===================
+
+          Data filters in place.
+
+        */
+        {
+          id: 'data_documents_filters',
+          description: 'the django-compatible documents filter object',
+          type: ['object'],
+          value: [],
+          triggers: 'data_documents_filters__update',
+          dispatch: ['data_documents_filters__updated']
+        },
         /*
 
           Ui status
@@ -199,6 +223,15 @@
                         type__in: [walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_WEB, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY]
                       })
                     }
+                  },
+                  {
+                    service: 'get_documents_filters',
+                    params:{
+                      limit: -1,
+                      filters: JSON.stringify({
+                        document__type__in: [walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_WEB, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY]
+                      })
+                    }
                   }
                 ];
                 break;
@@ -238,6 +271,12 @@
                     offset:0
                   },
                   {
+                    service: 'get_user_documents_filters',
+                    params:{
+                      limit: -1
+                    }
+                  },
+                  {
                     service: 'get_assignments',
                     limit: 10,
                     offset:0
@@ -270,7 +309,6 @@
           description: 'data loading completed, proceed according to the scene to perrform!',
           method: function(event) {
             walt.log('(domino) on scene__synced, ui status:', this.get('ui_status') )
-
           }
         },
         /*
@@ -366,6 +404,19 @@
                 offset: data.meta.offset || 0
               }
             });
+          }
+        },
+        { 
+          id: 'get_documents_filters',
+          type: 'GET',
+          url: walt.urls.documents_filters,
+          dataType: 'json',
+          data: function(input) {
+            walt.log('(Service) launch "get_documents_filters"', input);
+            return input.params;
+          },
+          success: function(data, params) {
+            this.update('data_documents_filters', data.objects);
           }
         },
         { 
@@ -478,6 +529,19 @@
 
           }
         },
+        { 
+          id: 'get_user_documents_filters',
+          type: 'GET',
+          url: walt.urls.user_documents_filters,
+          dataType: 'json',
+          data: function(params) {
+            return params;
+          },
+          success: function(data, params) {
+
+
+          }
+        },
         /*
           
           Non WALTY endpoints
@@ -555,6 +619,7 @@
     walt.domino.controller.addModule( walt.domino.modules.Layout, [walt.domino.controller], {id:'layout'});
     walt.domino.controller.addModule( walt.domino.modules.Menu, null, {id:'menu'});
     walt.domino.controller.addModule( walt.domino.modules.Route, null, {id:'route'});
+    walt.domino.controller.addModule( walt.domino.modules.Filters, null, {id:'filters'});
 
     walt.domino.controller.log('module instantiated');
     walt.domino.controller.dispatchEvent('init');

@@ -139,25 +139,28 @@ class Epoxy:
 
 		# limit / offset
 		if self.method=='GET' and ( 'offset' in self.request.REQUEST or 'limit' in self.request.REQUEST ) :
-			form = OffsetLimitForm( self.request.REQUEST )
-			if form.is_valid():
-				self.offset = form.cleaned_data['offset'] if form.cleaned_data['offset'] else self.offset
-				self.limit	= form.cleaned_data['limit'] if form.cleaned_data['limit'] else self.limit
+			
+			if '%s' % self.request.REQUEST.get('limit', 0) == '-1':
+				self.offset = 0
+				self.limit = -1
 			else:
-				self.warnings( 'offsets', form.errors )
-			self.response['meta']['offset'] = self.offset
-			self.response['meta']['limit'] = self.limit
-
-			# set limit of offset
-			self.response['meta']['next'] = {
-				'offset': self.offset + self.limit,
-				'limit': self.limit
-			}
-
-			# next / previous
-			if self.offset > 0:
-				self.response['meta']['previous'] = {
-					'offset': max( self.offset - self.limit, 0 ),
+				form = OffsetLimitForm( self.request.REQUEST )
+				if form.is_valid():
+					self.offset = form.cleaned_data['offset'] if form.cleaned_data['offset'] else self.offset
+					self.limit	= form.cleaned_data['limit'] if form.cleaned_data['limit'] else self.limit
+				else:
+					self.warning( 'offsets', form.errors )
+					self.response['meta']['offset'] = self.offset
+					self.response['meta']['limit'] = self.limit
+					# next / previous
+					if self.offset > 0:
+						self.response['meta']['previous'] = {
+							'offset': max( self.offset - self.limit, 0 ),
+							'limit': self.limit
+						}
+				# set limit of offset
+				self.response['meta']['next'] = {
+					'offset': self.offset + self.limit,
 					'limit': self.limit
 				}
 
@@ -189,7 +192,8 @@ class Epoxy:
 			qs = queryset.filter()
 
 		# apply limits
-		qs = qs[ self.offset : self.offset + self.limit ]
+		if self.limit > -1:
+			qs = qs[ self.offset : self.offset + self.limit ]
 
 		if model:
 			self.response['meta']['model'] = model.__name__ # @todo: guess from queryset/rawqueryset ?

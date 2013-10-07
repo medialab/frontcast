@@ -228,46 +228,92 @@ sidebar{
 	z-index: @references-z-index;
 	height:100%;
 	width: @references-width;
-	background:@grey_24;
+	//background:@grey_24;
 	top:0px;
-	right:0px;
+	right:@padding/2;
 	display:block;
 
 	//border-left: 1px solid @grey_14;
 	//box-shadow : inset 0px 0px 13px rgba(0,0,0,.07);
 
+	.search{
+		width: @references-width - @padding;
+		height: 40px;
+		margin: @padding/2;
+		background:  @grey_14;
+
+		position:relative;
+
+		.icon{
+			color: white;
+			display:block;
+			width: 40px;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			background: black;
+		}
+
+		input{
+			position:absolute;
+			left:40px;
+			top:0px;
+			padding: 6px;
+			padding-top: 8px;
+			background-color: transparent;
+			color: black;
+			border-width: 0px;
+			border-bottom: 0px solid #dddddd;
+			font-family: 'Source Sans Pro', sans-serif;
+			line-height: 1.2em;
+			width: 130px;
+			height: 24px;
+
+		}
+
+		::-webkit-input-placeholder { /* WebKit browsers */
+		  color:    #888;
+		}
+
+		:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		  color:    #888;
+		}
+
+		::-moz-placeholder { /* Mozilla Firefox 19+ */
+		  color:    #888;
+		}
+
+		:-ms-input-placeholder { /* Internet Explorer 10+ */
+		  color:    #888;
+		}
+	}
+
 	h2{
 		text-align: center;
-		background: @f-blue;
-		color: white;
+		border-top: 1px solid @grey_14;
 	}
 }
 
 header{
 	position:fixed;
-	left: 0;
+	left: 50%;
 	height: @header-height;
-	width:100%;
-	margin:0;
+	margin:0 0 0 -32px;
 	z-index: @header-z-index;
-	background:  #e7e4de;
+	background: fade( #e7e4de, 40%);
 	
 	.inner{
-		margin-top: 0;
-		margin-left: @sidebar-width + @padding*2;
-		padding-left: @padding;
-		padding-bottom: @padding/2;
-		padding-top: @padding/2;
-		border-bottom: 1px solid darken( #e7e4de, 8%);
-
+		padding: @padding/2;
+		
 		.action{
 			float:left;
 			display:block;
 			width:40px;
 			height:40px;
-			
+			background: black;
+
 			.icon{
-				color: #ae1917;
+				color: white;
 				display:block;
 				width: 40px;
 				height: 40px;
@@ -282,33 +328,11 @@ header{
 				font-size: 24px;
 				line-height: 40px;
 			}
-			&.search{
-				width: 230px;
-				
-				position:relative;
 
-				input{
-					position:absolute;
-					left:40px;
-					top:0px;
-					padding: 6px;
-					padding-top: 8px;
-					background-color: transparent;
-					color: white;
-					border-width: 0px;
-					border-bottom: 0px solid #dddddd;
-					font-family: 'Source Sans Pro', sans-serif;
-					line-height: 1.2em;
-					width: 130px;
-					height: 24px;
-
-				}
+			&:hover{
+			  background-color: @f-blue;
+				color: white;
 			}
-
-			//&:hover{
-			//	background-color: @f-red;
-			//	color: white;
-			//}
 		}
 	}
 }
@@ -318,15 +342,14 @@ header{
 	height: 100%;
 	overflow:scroll;
 	margin:0;
-	margin-right: @references-width;
 	display:block;
 	z-index: @main-z-index;
 
 	.inner{
+
+		margin-right: @references-width + @padding;
 		margin-left: @sidebar-width + @padding*2;
-		margin-right: @padding;
-		padding-top: @header-height + @padding/2;
-		
+		margin-top: @padding/2;
 	}
 }
 

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
-from django.db.models import Q
+from django.db.models import Q,Count
 from django.http import HttpResponse
 from django.utils.text import slugify
 
@@ -31,6 +31,58 @@ def documents(request):
 		Document.objects.filter(status=Document.PUBLIC)
 	)
 	return result.json()
+
+
+def documents_filters(request):
+	'''
+	Get every tag associated with global collection in order to provide filtering features.
+	Sql query performed:
+
+	SELECT "walt_tag"."id", "walt_tag"."name", "walt_tag"."slug", "walt_tag"."type"
+	FROM "walt_tag"
+		INNER JOIN "walt_document_tags" ON ("walt_tag"."id" = "walt_document_tags"."tag_id")
+		INNER JOIN "walt_document" ON ("walt_document_tags"."document_id" = "walt_document"."id")
+	WHERE
+		"walt_document"."status" = P 
+	ORDER BY
+		"walt_tag"."type" ASC,
+		"walt_tag"."slug" ASC
+	'''
+	epoxy = Epoxy(request)
+	filters = {'type': {}, 'tags':{}}
+	tag_filters = {}
+	qs = Document.objects.filter(status=Document.PUBLIC).filter(**epoxy.filters)
+	epoxy.meta('total_count', qs.count())
+
+	for f in epoxy.filters:
+		tag_filters['document__%s' % f] = epoxy.filters[f]
+
+	# 1. get document types
+	for t in qs.order_by().values('type').annotate(count=Count('id')):
+		filters['type']['%s'%t['type']] = {
+			'count': t['count']
+		}
+
+	# 2. get tags
+	for t in Tag.objects.filter(document__status=Document.PUBLIC).filter(**tag_filters):
+		_type = '%s' % t.type
+		_slug = '%s' % t.slug
+
+		if _type not in filters['tags']:
+			filters['tags'][_type] = {}
+
+		if _slug not in filters['tags'][_type]:
+			filters['tags'][_type][_slug] = {
+				'name': t.name,
+				'slug': t.slug,
+				'count': 0
+			}
+			
+		filters['tags'][_type][_slug]['count'] += 1
+
+	epoxy.add('objects', filters);
+	# 2. get document year tag
+	return epoxy.json()
 
 
 def document(request, pk):
@@ -105,6 +157,26 @@ def user_documents(request):
 
 	return result.json()
 
+
+def user_documents_filters(request):
+	'''
+	Get every tag associated with user collection in order to provide filtering features.
+	Sql query performed:
+
+	SELECT "walt_tag"."id", "walt_tag"."name", "walt_tag"."slug", "walt_tag"."type"
+	FROM "walt_tag"
+		INNER JOIN "walt_document_tags" ON ("walt_tag"."id" = "walt_document_tags"."tag_id")
+		INNER JOIN "walt_document" ON ("walt_document_tags"."document_id" = "walt_document"."id")
+		LEFT OUTER JOIN "walt_document_authors" ON ("walt_document"."id" = "walt_document_authors"."document_id")
+	WHERE
+		("walt_document"."owner_id" = 1  OR "walt_document_authors"."user_id" = 1 )
+	ORDER BY
+		"walt_tag"."type" ASC, "walt_tag"."slug" ASC
+	'''
+	result = Epoxy(request).queryset(
+		Tag.objects.filter(Q(document__owner=request.user) | Q(document__authors=request.user))
+	)
+	return result.json()
 
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def user_document(request, pk):
