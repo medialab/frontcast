@@ -103,7 +103,6 @@ sidebar{
 	position:fixed;
 	width:@sidebar-width;
 	height: @sidebar-height;
-	overflow:hidden;
 	left: @padding;
 	top: @padding;
 	margin:0;
@@ -302,7 +301,7 @@ header{
 	z-index: @header-z-index;
 	background: fade( #e7e4de, 40%);
 	
-	.inner{
+	>.inner{
 		padding: @padding/2;
 		
 		.action{
@@ -345,7 +344,7 @@ header{
 	display:block;
 	z-index: @main-z-index;
 
-	.inner{
+	&>.inner{
 
 		margin-right: @references-width + @padding;
 		margin-left: @sidebar-width + @padding*2;
@@ -376,20 +375,28 @@ input{
 	.sans-serif( 1em);
 	display: block;
 	width:150px;
-
 }
+
+
 input[type="text"], input[type="password"]{
 	line-height: 1.67em;
-	color: #838383;
-	padding: 6px;
-	padding-top: 8px;
-	border-width: 0px;
-	border-bottom: 1px solid #dddddd;
+	color: @black;
+	padding: @padding/4 ;
+  padding-top: @padding/3;
+  border-width: 0px;
+  border-bottom: 1px solid @grey_5;
 	font-family: 'Source Sans Pro', sans-serif;
 	line-height: 1.2em;
 	width: 200px;
-	height: 24px;
+	height: @padding;
+  
+  &:focus {
+    color: black;
+    border-bottom: 1px solid @f-red;
+    //background: fade(@f-blue, 10%);
+  }
 }
+
 
 textarea{
 	color: @black;
@@ -401,22 +408,17 @@ textarea{
 	line-height:1.2em;
 	width: 100%;
 	height:@padding;
+
 	&:focus {
 		color: black;
 		border-bottom: 1px solid @f-red;
 		//background: fade(@f-blue, 10%);
 	}
 }
+
+
 *:focus {
 	outline: none;
-}
-/*
-
-	Override DOMINO css
-
-*/
-fieldset{
-	border-width:0;
 }
 
 
@@ -442,11 +444,7 @@ fieldset{
 }
 
 
-.reference{
-	margin: @padding/2;
-	padding: @padding/2;
-	background: @grey;
-}
+
 
 .assignment{
 	border-bottom: 1px solid @grey;
@@ -476,15 +474,15 @@ fieldset{
 
 	
 	.pin{
-		//border:1px solid @grey_2;
-		.border-radius(3px);
-		//box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px;
+		border:1px solid @grey_10;
+		//.border-radius(3px);
+		//box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 1px;
 		background: white;
 		margin-bottom: @padding/2;
 		width: 270px;
 		overflow:hidden;
-		opacity:0;
-		.transition( left, .3s);
+
+		.transition(top, .3s, ease-in-out);
 
 		&.editor{
 			width: 567px;
@@ -495,7 +493,7 @@ fieldset{
 		}
 
 		&.A_grade, &.B_grade{
-			width: 540px + @padding/2;
+			//width: 540px + @padding/2;
 		}
 	}
 	.status{
@@ -508,7 +506,7 @@ fieldset{
 		width:100%
 	}
 
-	h3, .abstract, .permalink{
+	h3, h4, .abstract, .permalink, .reference, .content{
 		position:relative;
 		padding:0 @padding @padding/2 @padding;
 		.inner{
@@ -527,6 +525,11 @@ fieldset{
 		font-size: 1.3em;
 		line-height: 1.7em;
 	}
+
+  h4{
+    font-size: 1.1em;
+    line-height: 1.7em;
+  }
 
 	.authors{
 		// border-top: 1px solid @grey_2;
@@ -555,6 +558,22 @@ fieldset{
 .documents{
 
 }
+
+
+#reference-editor{
+  width: 100%;
+  height: 100%;
+  position:absolute;
+  overflow-y: scroll;
+  top:0px;
+  left:100%;
+  background:white;
+
+  input[type=text]{
+    color: black;
+  }
+}
+
 
 /*
 
@@ -617,27 +636,38 @@ fieldset{
 		margin:0;
 	}
 
+  fieldset{
+    border-width:0;
+    margin:0;
+    padding:0;
+
+    &.invalid{
+      border-left: 1px solid #ee312f;
+      padding: 10px;
+      margin: 10px 0;
+      
+      .message{
+        color: @f-red;
+      }
+    }
+  }
+
 	li{
 		list-style-type:none;
-		input[type=text]{
-			display:inline;
-		}
+
 	}
 
 	label{
 		font-size:13px;
 		.greyc(-28%);
+    display:block;
 	}
 
-	input[type=text]{
-		font-size:18px;
-		background-color: #f7f7f7;
-		padding-left:8px;
-		border: 1px solid transparent;
-		border-bottom: 1px solid @grey_10;
-		width: 90%;
-		.border-radius(0);
-	}
+	
+
+  input[type=text], textarea{
+    width: 97%;
+  }
 
 	.action{
 		display:inline;
@@ -663,3 +693,35 @@ fieldset{
 		}
 	}
 }
+
+
+/*
+
+  Scrollbars
+  ==========
+*/
+::-webkit-scrollbar{
+  width: 8px;
+}
+
+::-webkit-scrollbar-button{
+  background-color: @grey_10;
+  
+}
+::-webkit-scrollbar-track:vertical{
+  background:@grey-5;
+  border:1px solid white;
+}
+::-webkit-scrollbar-track-piece  { }
+::-webkit-scrollbar-thumb{ 
+  border-radius: 6px;
+  margin:2px;
+  background-color:@grey_5;
+  .transition(background-color, .3s);
+  &:hover{
+    background-color: @black;
+  
+  }
+}
+::-webkit-scrollbar-corner       { /* 6 */ }
+::-webkit-resizer                { /* 7 */ }

@@ -11,7 +11,7 @@ api_urlpatterns = patterns('walt.api',
     url(r'^$', 'index'),
     url(r'access-denied/$', 'access_denied'),
 
-    
+
     url(r'u/assignment/$', 'user_assignments', name='walt_api_user_assignments'),
     url(r'u/assignment/(?P<pk>\d+)/$', 'user_assignment', name='walt_api_user_assignment'),
     url(r'u/assignment/(?P<pk>\d+)/deliver/$', 'user_assignment_deliver', name='walt_api_user_assignment_deliver'),
@@ -20,6 +20,9 @@ api_urlpatterns = patterns('walt.api',
     url(r'u/document/$', 'user_documents', name='walt_api_user_documents'),
     url(r'u/document/filters/$', 'user_documents_filters', name='walt_api_user_documents_filters'),
     url(r'u/document/(?P<pk>\d+)$', 'user_document', name='walt_api_user_document'),
+
+    url(r'r/document/$', 'reference_documents', name='walt_api_reference_documents'),
+    url(r'r/document/(?P<pk>\d+)$', 'reference_document', name='walt_api_reference_document'),
 
     # staff only: view all possible documents
     url(r'w/document/$', 'world_documents', name='walt_api_world_documents'),
@@ -33,7 +36,7 @@ api_urlpatterns = patterns('walt.api',
     url(r'biblib-safe/$', 'biblib_proxy_safe', name='walt_api_biblib_proxy_safe'), # user is not logged in! but requests are safe enough
 
     url(r'oembed/(?P<provider>[a-z]+)/$', 'oembed_proxy', name='walt_api_oembed_proxy'),
-    
+
     url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects'),
     url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>\d+)$', 'get_object'),
 

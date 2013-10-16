@@ -23,16 +23,16 @@
 					{% block sidebar %}
 					<a href="{% url 'walt_home'%}" id="forccast-logo"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 					<ul>
-						<li data-scene="splash page" data-tooltip="tooltip.title" title="home" data-placement="right" >
-							<a href="{% url 'walt_home' %}#/" >
+						<li data-scene="splash page">
+							<a href="{% url 'walt_home' %}#/" data-toggle="tooltip" title="introduction" data-placement="right">
 								<div class="icon">
 									<i class="icon-camera-retro"></i>
 								</div>
 								<div class="label">{% trans "intro"%}</div>
 							</a>
 						</li>
-						<li data-scene="public" data-tooltip="tooltip.title" title="home" data-placement="right" >
-							<a href="{% url 'walt_home' %}#/public" >
+						<li data-scene="public">
+							<a href="{% url 'walt_home' %}#/public" data-toggle="tooltip" title="view public documents" data-placement="right">
 								<div class="icon">
 									<i class="icon-globe"></i>
 								</div>
@@ -40,8 +40,8 @@
 							</a>
 						</li>
 					{% if user.is_authenticated %}
-						<li data-scene="me" data-tooltip="tooltip.title" title="{{user.username}}'s space" data-placement="right"  >
-							<a href="{% url 'walt_home' %}#/me">
+						<li data-scene="me">
+							<a href="{% url 'walt_home' %}#/me" data-toggle="tooltip" title="{{user.username}}'s documents" data-placement="right">
 								<div class="icon">
 									<i class="icon-male"></i>
 								</div>
@@ -61,8 +61,8 @@
 						</li>
 
 						{% if user.is_staff %}
-						<li data-scene="" data-tooltip="tooltip.title" title="{% trans 'view all drafts' %}" data-placement="right">
-							<a class="staff" href="{% url 'walt_home' %}#s=drafts">
+						<li data-scene="r" data-tooltip="tooltip.title" title="{% trans 'view all drafts' %}" data-placement="right">
+							<a class="staff" href="{% url 'walt_home' %}#/r">
 								<div class="icon">
 									<i class="icon-tint"></i>
 								</div>

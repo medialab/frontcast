@@ -317,6 +317,7 @@ class Document(models.Model):
       'tags': tags,
       'type': self.type,
       'attachments':attachments,
+      'remote': self.remote,
       'date_last_modified': self.date_last_modified.isoformat() if self.date_last_modified is not None else None,
       'authors': [a.username for a in self.authors.all()]
 

@@ -2,7 +2,11 @@
   'use strict';
 
   w.walt = w.walt || {
-    misc: {}
+    misc: {},
+    user: {
+      username: '',
+      is_staff: false
+    }
   };
 
 
@@ -15,7 +19,7 @@
   walt.VERSION = '0.0.0';
 
   walt.CSRFTOKEN = 'django crfr token';
-
+  walt.static_url = 'django static url for assets';
   walt.DEBUG_NONE = 0;
   walt.DEBUG_VERBOSE = 2; // will show walt.log() stuff and walt.verbose() stuff
   walt.DEBUG_INFO = 3; // will show walt.log() stuff
@@ -23,9 +27,16 @@
 
   walt.debug = walt.DEBUG_INFO;
 
+  walt.PERMISSION_CAN_EDIT = 'CAN_EDIT'; // !WARNING this variable is actually used inside handlebar templates files. 
+
   walt.SCENES = [];
   walt.SCENE_SPLASH = 'splash page';
-  walt.SCENE_SPLASH_SINGLE = 'd';
+  
+  walt.SCENE_DOCUMENT_VIEW = 'd';
+  walt.SCENE_DOCUMENT_EDIT = 'de';
+  walt.SCENE_REFERENCES = 'r';
+  walt.SCENE_REFERENCE_EDIT = 're';
+
   walt.SCENE_PUBLIC = 'public'; // public documents
   walt.SCENE_ME = 'me';
 
@@ -43,11 +54,35 @@
       scene: walt.SCENE_SPLASH,
       description: ''
     },
+
     {
       path: '/d/{slug}:?filters:',
-      scene: walt.SCENE_SPLASH_SINGLE,
+      scene: walt.SCENE_DOCUMENT_VIEW,
+      description: '',
+      rules: {
+        slug: /[0-9a-zA-Z\-]+/
+      }
+    },
+    {
+      path: '/d/{slug}/edit',
+      scene: walt.SCENE_DOCUMENT_EDIT,
       description: ''
     },
+    {
+      path: '/r/',
+      scene: walt.SCENE_REFERENCES,
+      description: ''
+    },
+    {
+      path: '/reference/{slug}/edit',
+      scene: walt.SCENE_REFERENCE_EDIT, 
+      description: ''
+    },
+    {
+      path: '/archive:?filters:',
+      scene: walt.SCENE_ARCHIVE
+    },
+
     {
       path: '/public:?filters:',
       scene: walt.SCENE_PUBLIC
@@ -245,7 +280,14 @@
     return (/^(http\:\/\/|https\:\/\/)?(www\.)?(flickr\.com\/photos\/)([0-9A-Za-z\/@]+)$/).test(url);
   }
 
-
+  /*
+    return the first element of a javascript dict.
+    To be improved.
+  */
+  walt.misc.first = function(dict) {
+    for(var i in dict)
+      return dict[i];
+  };
 
   /*
 

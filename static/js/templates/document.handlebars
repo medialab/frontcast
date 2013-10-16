@@ -1,42 +1,53 @@
 <div class="document pin {{status}} {{#each tags.RATING}}{{this.name}}_grade {{/each}}" data-href="/#{{#url "d" "slug" slug}}{{/url}}" data-id="{{id}}" id="d-{{id}}">
+  <div class="inner">
+    <div class="pusher"></div>
+    <div class="status">{{status}}</div>
+    <h3>{{title}}</h3>
+    <div class="tags">
+      {{#each tags.Date}}
+        {{this.name}}
+      {{/each}}
+      <br/>
+    	{{#each tags.Institution}}
+    		{{this.name}} /
+  		{{/each}}
+      <br/>
+      <br/>
+      {{#each tags.AUTHOR}}
+        {{this.name}} -
+      {{/each}}
+    </div>
+    <div class="actions">
+      {{#each attachments}}
+        {{#if_in this.ext compare="pdf"}}
+          <a class="button" href="mais_dossier.pdf"><i class="icon-download"></i> download print version</a>
+        {{/if_in}}
+      {{/each}}
+    </div>
+    <div class="content">
+      {{#each attachments}}
+        {{#if_in this.ext compare="jpg|png|gif"}}
+          <img src="{{this.src}}"/>
+        {{/if_in}}
+      {{/each}}
+    </div>
+    <div class="abstract">{{abstract}}<!--{{type}}--></div>
+    <div class="authors">
+      
+      by <a href="{{settings.base_url}}/#{{#url "u" "slug" owner}}{{/url}}">{{owner}}</a>
+      {{#each authors}}
+        <a href="{{settings.base_url}}/#{{#url "u" "slug" this}}{{/url}}">{{this}}</a>
+      {{/each}}
+      {{#if permissions}}
+        {{#if_eq permissions compare="CAN_EDIT"}}
+          <a href="{{settings.base_url}}/#{{#url "de" "slug" this.slug}}{{/url}}">edit</a>
+          {{#if_eq reference compare=""}}
 
-  <div class="pusher"></div>
-  <div class="status">{{status}}</div>
-  <h3>{{title}}</h3>
-  <div class="tags">
-    {{#each tags.Date}}
-      {{this.name}}
-    {{/each}}
-    <br/>
-  	{{#each tags.Institution}}
-  		{{this.name}} /
-		{{/each}}
-    <br/>
-    <br/>
-    {{#each tags.AUTHOR}}
-      {{this.name}} -
-    {{/each}}
-  </div>
-  <div class="actions">
-    {{#each attachments}}
-      {{#if_in this.ext compare="pdf"}}
-        <a class="button" href="mais_dossier.pdf"><i class="icon-download"></i> download print version</a>
-      {{/if_in}}
-    {{/each}}
-  </div>
-  <div class="content">
-    {{#each attachments}}
-      {{#if_in this.ext compare="jpg|png|gif"}}
-        <img src="{{this.src}}"/>
-      {{/if_in}}
-    {{/each}}
-  </div>
-  <div class="abstract">{{abstract}}<!--{{type}}--></div>
-  <div class="authors">
-    
-    by <a href="/#{{#url "u" "slug" owner}}{{/url}}">{{owner}}</a>
-    {{#each authors}}
-      <a href="/#{{#url "u" "slug" this}}{{/url}}">{{this}}</a>
-    {{/each}} <a href="{{settings.base_url}}/d/{{slug}}/edit/">edit</a>
+          {{else}}
+            <a href="{{settings.base_url}}/#{{#url "re" "slug" this.slug}}{{/url}}">edit bibliographic reference</a>
+          {{/if_eq}}
+        {{/if_eq}}
+      {{/if}}
+    </div>
   </div>
 </div>

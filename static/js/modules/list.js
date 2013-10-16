@@ -26,9 +26,9 @@
             }
           }, options ),
           _omissis = {},
-          data = controller.get('data_' + settings.namespace );
+          data = controller.get('data_' + settings.namespace);
 
-      walt.verbose('listof:',data.length, 'items, selector:',settings.selector );
+      walt.verbose('(List) listof:',data.length, 'items, selector:',settings.selector);
       
       //_self.unsticky();
 
@@ -38,9 +38,9 @@
         So, (1) let's remove what should be removed, (2) let's add what have to be added
         according to ids sorting order.
       */
-      $( settings.selector, _self.box ).each(function() {
+      $(settings.selector, _self.box).each(function() {
         var item = $(this);
-        if( data.ids.indexOf( item.attr('data-id') ) == -1 ){
+        if(data.ids.indexOf(item.attr('data-id')) == -1) {
           walt.move.destroy(item, {
             delay:settings.delay
           });
@@ -48,33 +48,38 @@
         }
       });
 
-
-      for( var i in data.ids ){
-          item = $( settings.prefix + data.ids[i] );
+      for(var i in data.ids) {
+          item = $(settings.prefix + data.ids[i]);
           
-          if( item.length == 0 ){
+          if(item.attr('data-override')) {
+            // cfr. editor module or Layout.js module. Element exists, has been modified and needs to be replaced.
+            item.replaceWith(settings.template(data.items[i]));
+            item.css('opacity',0);
+            walt.verbose('... force override for:', settings.prefix + data.ids[i], item);
+            
+          } else if(item.length == 0) {
             //walt.log( settings.prefix + data.ids[i], 'not found, populating');//, settings.template(data.items[i]) );
-            if( previous_item == null )
-              _self.box.prepend( settings.template(data.items[i]) );
+            if(previous_item == null)
+              _self.box.prepend(settings.template(data.items[i]));
             else
-              $( previous_item ).after( settings.template(data.items[i]) );
+              $(previous_item).after(settings.template(data.items[i]));
 
-            item = $( settings.prefix + data.ids[i] );
-
+            item = $(settings.prefix + data.ids[i]);
+            item.css('opacity',0);
             var args = {
               delay: settings.delay
             };
-          } else if( previous_item == null ){
-            //_self.box.prepend( item );
+          } else if(previous_item == null){
+            //_self.box.prepend(item);
           } else {
-            $( previous_item ).after( item );
+            $(previous_item).after(item);
           }
           walt.move.fadein(item, {
             delay: settings.delay
           });
           
           previous_item = settings.prefix + data.ids[i]; // maze.log(i, contents[ ids[i] ].name, ids[i] );
-          settings.delay += 370;
+          settings.delay += 170;
       }
 
       // refresh masonry layout after settings.delay has passed
@@ -226,7 +231,7 @@
       window.location = href;
     }
 
-    $(document).on('click', '.document h3', _self.set_leader );
+    //$(document).on('click', '.document h3', _self.set_leader );
     $(document).on('click', '.action.add-text', _self.create_text_document );
     $(document).on('click', '.save-document', _self.save_document );
     $(document).on('click', '.action.add-media', _self.create_media_document );

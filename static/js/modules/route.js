@@ -82,8 +82,8 @@
     }
 
 
-    this.triggers.events.scene__update = function(controller) {
-      walt.verbose('(Route) listen to scene__update');
+    this.triggers.events.scene__updated = function(controller) {
+      walt.verbose('(Route) listen to scene__updated');
     };
   };
 })();

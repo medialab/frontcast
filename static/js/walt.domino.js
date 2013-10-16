@@ -35,6 +35,26 @@
       properties: [
         /*
 
+          user Models
+          ===========
+
+        */
+        {
+          id: 'user',
+          description: 'the frontcast user',
+          type: {
+            username: 'string',
+            is_staff: 'boolean'
+          },
+          value: {
+            username: walt.user.username, // default, cfr. middel.html template
+            is_staff: walt.user.is_staff
+          },
+          triggers: 'user__update',
+          dispatch: ['user__updated']
+        },
+        /*
+
           data Models
           ===========
 
@@ -176,14 +196,20 @@
           triggers: 'data__update',
           description: 'it updates data propertties only if needed',
           method: function(e) {
+            var user = this.get('user');
+
             for(var i in e.data){
               var data_property = e.data[i],
-                  data_hash = {};
+                  data_hash = {},
+                  item;
 
               /* collect references */
-              for(var j in data_property){
+              for(var j in data_property.items){
+                item = data_property.items[j];
 
-              }
+                if(item.owner && (user.is_staff || item.owner == user.username || item.authors.indexOf(user.username)!= -1 ))
+                  data_property.items[j].permissions = walt.PERMISSION_CAN_EDIT;
+              };
 
               data_hash[i] = data_property;
               this.update(data_hash);
@@ -229,13 +255,13 @@
                     params:{
                       limit: -1,
                       filters: JSON.stringify({
-                        document__type__in: [walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_WEB, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY]
+                        type__in: [walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_WEB, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY]
                       })
                     }
                   }
                 ];
                 break;
-              case  walt.SCENE_SPLASH_SINGLE:
+              case  walt.SCENE_DOCUMENT_VIEW:
                 services = [
                   {
                     service: 'get_documents',
@@ -245,6 +271,32 @@
                       filters: JSON.stringify({
                         slug: scene_args.slug
                       })
+                    }
+                  }
+                ];
+                break;
+              case  walt.SCENE_DOCUMENT_EDIT:
+              case  walt.SCENE_REFERENCE_EDIT:
+                services = [
+                  {
+                    service: 'get_user_documents',
+                    params:{
+                      limit: 1,
+                      offset:0,
+                      filters: JSON.stringify({
+                        slug: scene_args.slug
+                      })
+                    }
+                  }
+                ];
+                break;
+              case walt.SCENE_REFERENCES:
+                services = [
+                  {
+                    service: 'get_reference_documents',
+                    params:{
+                      limit: -1,
+                      offset:0
                     }
                   }
                 ];
@@ -421,6 +473,27 @@
         },
         { 
           id: 'get_user_documents',
+          type: 'GET',
+          url: walt.urls.user_documents,
+          dataType: 'json',
+          data: function(input) {
+            return input.params;
+          },
+          success: function(data) {
+            // todo infinite adding not replacing items.
+           this.dispatchEvent('data__update', {
+              data_documents: {
+                items: data.objects,
+                ids:$.map(data.objects, function(e){return ''+e.id;}),
+                length: +data.meta.total_count,
+                limit: +data.meta.limit || data.objects.length,
+                offset: data.meta.offset || 0
+              }
+            });
+          }
+        },
+        { 
+          id: 'get_reference_documents',
           type: 'GET',
           url: walt.urls.user_documents,
           dataType: 'json',

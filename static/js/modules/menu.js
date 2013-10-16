@@ -10,6 +10,7 @@
     domino.module.call(this);
 
     var _self = this,
+        sidebar,
         entries = {},
         previous_scene;
 
@@ -30,13 +31,21 @@
 
     this.triggers.events.init = function(controller) {
       walt.verbose('(Menu) listen to init');
-      $('sidebar li[data-scene]').each(function(i){
+      sidebar = $('sidebar').first();
+
+      sidebar.find('li[data-scene]').each(function(i){
         var entry = $(this),
             scene = entry.attr('data-scene');
         walt.verbose('... entry:',scene);
         entries[scene] = entry;
       });
+
+      sidebar.find('a[data-toggle="tooltip"]').tooltip();
     };
+
+
+    
+
   };
 
 })();

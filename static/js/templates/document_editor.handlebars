@@ -1,14 +1,37 @@
-<div class="pin editor {{type}}" id="document-editor">
+<div id="document-editor">
   <div class="pusher"></div>
   <div class="status"></div>
   
-  {{#if_eq type compare='text'}}
-  	<h3><textarea name="title" placeholder="Describe yourself with 4 words...">{{title}}</textarea></h3>
-  	<div class="abstract"><textarea name="abstract" placeholder="Describe yourself with max 160 chars">{{abstract}}</textarea></div>
-    <div class="content">
-      <textarea name="content" placeholder="Describe yourself with some basic html">{{content}}</textarea>
+  <h3><textarea name="title" placeholder="Describe yourself with 4 words...">{{title}}</textarea></h3>
+	<div class="abstract"><textarea name="abstract" placeholder="Describe yourself with max 160 chars">{{abstract}}</textarea></div>
+  <div class="content">
+    <textarea name="content" placeholder="Describe yourself with some basic html">{{content}}</textarea>
+  </div>
+  <div class="permalink">
+    Copy and Paste a
+    <textarea name="permalink" placeholder="http://vimeo.com/">{{permalink}}</textarea>
+  </div>
+
+
+  {{#if_eq reference compare=''}}
+
+  {{else}}
+    <div class="reference">
+      <textarea name="reference" readonly placeholder="forccast reference identifier">{{reference}}</textarea>
     </div>
   {{/if_eq}}
+
+  {{#foreach attachments}}
+  <div class="attachments">
+    Attached files
+    <div class='attachment'>
+    {{#if_in ext compare='jpg|gif'}}
+      <img src='{{src}}' style='width:100%'/>
+    {{/if_in}}
+    </div>
+    {{src}}
+  </div>
+  {{/foreach}}
 
   {{#if_eq type compare='video'}}
   	<div class="permalink">
