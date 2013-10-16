@@ -1,5 +1,6 @@
 import re, os
 from datetime import datetime
+from markdown import markdown
 
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
@@ -307,8 +308,8 @@ class Document(models.Model):
       'slug':self.slug,
       'status': self.get_status_display(),
       'title': self.title,
-      'abstract': self.abstract,
-      'content': self.content,
+      'abstract': markdown(self.abstract),
+      'content': markdown(self.content),
       'language': self.language,
       'mimetype': self.mimetype,
       'permalink': self.permalink,

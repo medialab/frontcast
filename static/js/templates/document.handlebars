@@ -7,12 +7,11 @@
       {{#each tags.Date}}
         {{this.name}}
       {{/each}}
-      <br/>
+      
     	{{#each tags.Institution}}
     		{{this.name}} /
   		{{/each}}
-      <br/>
-      <br/>
+      
       {{#each tags.AUTHOR}}
         {{this.name}} -
       {{/each}}
@@ -31,7 +30,7 @@
         {{/if_in}}
       {{/each}}
     </div>
-    <div class="abstract">{{abstract}}<!--{{type}}--></div>
+    <div class="abstract">{{{abstract}}}<!--{{type}}--></div>
     <div class="authors">
       
       by <a href="{{settings.base_url}}/#{{#url "u" "slug" owner}}{{/url}}">{{owner}}</a>

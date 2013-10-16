@@ -1,5 +1,4 @@
 from datetime import datetime
-from markdown import markdown
 
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required

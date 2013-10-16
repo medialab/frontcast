@@ -214,10 +214,10 @@ function program23(depth0,data) {
     + "</h3>\n    <div class=\"tags\">\n      ";
   stack2 = helpers.each.call(depth0, ((stack1 = depth0.tags),stack1 == null || stack1 === false ? stack1 : stack1.Date), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n      <br/>\n    	";
+  buffer += "\n      \n    	";
   stack2 = helpers.each.call(depth0, ((stack1 = depth0.tags),stack1 == null || stack1 === false ? stack1 : stack1.Institution), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n      <br/>\n      <br/>\n      ";
+  buffer += "\n      \n      ";
   stack2 = helpers.each.call(depth0, ((stack1 = depth0.tags),stack1 == null || stack1 === false ? stack1 : stack1.AUTHOR), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n    </div>\n    <div class=\"actions\">\n      ";
@@ -229,8 +229,8 @@ function program23(depth0,data) {
   buffer += "\n    </div>\n    <div class=\"abstract\">";
   if (stack2 = helpers['abstract']) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0['abstract']; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
-    + "<!--";
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "<!--";
   if (stack2 = helpers.type) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.type; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
