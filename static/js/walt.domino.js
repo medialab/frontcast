@@ -159,6 +159,13 @@
         },
         /*
 
+          Creation/Editing mechanism
+          ==========================
+
+
+        */
+        /*
+
           Ui status
           =========
         
@@ -393,6 +400,9 @@
         {
           triggers: 'filled_document_with_oembed'
         },
+        {
+          triggers: 'editor__start'
+        },
         /*
 
           Services hacks
@@ -410,11 +420,13 @@
           triggers: 'call_service',
           method: function(event){
             walt.domino.controller.update('ui_status', walt.UI_STATUS_LOCKED);
-            walt.log('call_service', event.data);
-            var service = event.data.service || "untitled",
-                params = event.data || {};
+            walt.log('(domino) call_service', event.data.service);
             
-            this.request([{service: service, params:params}],{
+            this.request([{
+              service: event.data.service || "untitled",
+              shortcuts: event.data.shortcuts || {},
+              params: event.data.params || {}
+            }],{
               success:  function() {
                 walt.domino.controller.update('ui_status', walt.UI_STATUS_UNLOCKED);
               }
@@ -552,16 +564,17 @@
         { 
           id: 'modify_document',
           type: 'POST',
-          url: walt.urls.user_document,
+          url: '/api/u/document/::id',
           before: function(params, xhr){
             xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
           },
           dataType: 'json',
-          data: function(params) {
-            return params;
+          data: function(input) {
+            return input.params;
           },
           success: function(data, params) {
-
+            // walt.log('(domino) 
+              walt.log('(domino) service:modify_document', data, params);
           }
         },
         { 

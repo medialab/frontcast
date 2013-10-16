@@ -278,27 +278,23 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = "", stack1, stack2, options;
-  buffer += "\n  <div class=\"attachments\">\n    Attached files\n    <div class='attachment'>\n    ";
+  buffer += "\n        <li>\n          ";
   options = {hash:{
     'compare': ("jpg|gif")
   },inverse:self.noop,fn:self.program(6, program6, data),data:data};
   stack2 = ((stack1 = helpers.if_in || depth0.if_in),stack1 ? stack1.call(depth0, depth0.ext, options) : helperMissing.call(depth0, "if_in", depth0.ext, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n    </div>\n    ";
-  if (stack2 = helpers.src) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.src; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
-    + "\n  </div>\n  ";
+  buffer += "\n        </li>\n      ";
   return buffer;
   }
 function program6(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n      <img src='";
+  buffer += "\n            <img src='";
   if (stack1 = helpers.src) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.src; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "' style='width:100%'/>\n    ";
+    + "' style='width:100%'/>\n          ";
   return buffer;
   }
 
@@ -348,33 +344,45 @@ function program10(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div id=\"document-editor\">\n  <div class=\"pusher\"></div>\n  <div class=\"status\"></div>\n  \n  <h3><textarea name=\"title\" placeholder=\"Describe yourself with 4 words...\">";
+  buffer += "<div id=\"document-editor\">\n  <div class=\"pusher\"></div>\n  <div class=\"status\"></div>\n  <input type=\"hidden\" name=\"type\" value=\"";
+  if (stack1 = helpers.type) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.type; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\"/>\n  <input type=\"hidden\" name=\"language\" value=\"";
+  if (stack1 = helpers.language) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.language; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\"/>\n  \n  <h3><textarea name=\"title\" placeholder=\"Describe yourself with 4 words...\">";
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</textarea></h3>\n	<div class=\"abstract\"><textarea name=\"abstract\" placeholder=\"Describe yourself with max 160 chars\">";
-  if (stack1 = helpers['abstract']) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0['abstract']; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (stack1 = helpers.abstract_raw) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.abstract_raw; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea></div>\n  <div class=\"content\">\n    <textarea name=\"content\" placeholder=\"Describe yourself with some basic html\">";
-  if (stack1 = helpers.content) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.content; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+    + "</textarea></div>\n  <div class=\"content\">\n    <div class=\"inner\">\n      Full text\n      <textarea name=\"content\" placeholder=\"Describe yourself with some basic html\">";
+  if (stack1 = helpers.content_raw) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.content_raw; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea>\n  </div>\n  <div class=\"permalink\">\n    Copy and Paste a\n    <textarea name=\"permalink\" placeholder=\"http://vimeo.com/\">";
+    + "</textarea>\n    </div>\n  </div>\n  <div class=\"permalink\">\n    <div class=\"inner\">\n      Copy and Paste a\n      <textarea name=\"permalink\" placeholder=\"http://vimeo.com/\">";
   if (stack1 = helpers.permalink) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.permalink; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</textarea>\n  </div>\n\n\n  ";
+    + "</textarea>\n    </div>\n  </div>\n\n\n  ";
   options = {hash:{
     'compare': ("")
   },inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data};
   stack2 = ((stack1 = helpers.if_eq || depth0.if_eq),stack1 ? stack1.call(depth0, depth0.reference, options) : helperMissing.call(depth0, "if_eq", depth0.reference, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n  ";
+  buffer += "\n\n  <div class=\"attachments\">\n    <div class=\"inner\">\n      Remote media (one per line);\n      <textarea name=\"remote\">";
+  if (stack2 = helpers.remote) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.remote; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "</textarea>\n    </div>\n    <div class=\"slider\" data-plugin=\"unslider\">\n      <ul>\n      ";
   options = {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data};
   stack2 = ((stack1 = helpers.foreach || depth0.foreach),stack1 ? stack1.call(depth0, depth0.attachments, options) : helperMissing.call(depth0, "foreach", depth0.attachments, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n  ";
+  buffer += "\n      </ul>\n      <div style=\"clear:left\"></div>\n    </div>\n  </div>\n\n  ";
   options = {hash:{
     'compare': ("video")
   },inverse:self.noop,fn:self.program(8, program8, data),data:data};

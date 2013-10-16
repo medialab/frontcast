@@ -1,15 +1,22 @@
 <div id="document-editor">
   <div class="pusher"></div>
   <div class="status"></div>
+  <input type="hidden" name="type" value="{{type}}"/>
+  <input type="hidden" name="language" value="{{language}}"/>
   
   <h3><textarea name="title" placeholder="Describe yourself with 4 words...">{{title}}</textarea></h3>
-	<div class="abstract"><textarea name="abstract" placeholder="Describe yourself with max 160 chars">{{abstract}}</textarea></div>
+	<div class="abstract"><textarea name="abstract" placeholder="Describe yourself with max 160 chars">{{abstract_raw}}</textarea></div>
   <div class="content">
-    <textarea name="content" placeholder="Describe yourself with some basic html">{{content}}</textarea>
+    <div class="inner">
+      Full text
+      <textarea name="content" placeholder="Describe yourself with some basic html">{{content_raw}}</textarea>
+    </div>
   </div>
   <div class="permalink">
-    Copy and Paste a
-    <textarea name="permalink" placeholder="http://vimeo.com/">{{permalink}}</textarea>
+    <div class="inner">
+      Copy and Paste a
+      <textarea name="permalink" placeholder="http://vimeo.com/">{{permalink}}</textarea>
+    </div>
   </div>
 
 
@@ -21,17 +28,24 @@
     </div>
   {{/if_eq}}
 
-  {{#foreach attachments}}
   <div class="attachments">
-    Attached files
-    <div class='attachment'>
-    {{#if_in ext compare='jpg|gif'}}
-      <img src='{{src}}' style='width:100%'/>
-    {{/if_in}}
+    <div class="inner">
+      Remote media (one per line);
+      <textarea name="remote">{{remote}}</textarea>
     </div>
-    {{src}}
+    <div class="slider" data-plugin="unslider">
+      <ul>
+      {{#foreach attachments}}
+        <li>
+          {{#if_in ext compare='jpg|gif'}}
+            <img src='{{src}}' style='width:100%'/>
+          {{/if_in}}
+        </li>
+      {{/foreach}}
+      </ul>
+      <div style="clear:left"></div>
+    </div>
   </div>
-  {{/foreach}}
 
   {{#if_eq type compare='video'}}
   	<div class="permalink">

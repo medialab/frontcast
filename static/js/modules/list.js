@@ -127,8 +127,35 @@
         .focus();
     };
 
-    this.save_document = function(){
-      var params = {};
+    this.save_document = function(event){
+      var params = {},
+          doc = $(event.currentTarget).closest('.document'),
+          doc_id = doc.attr('data-id');
+
+      walt.verbose('(ListDocuments) save_document: ', doc.attr('id'));
+
+      doc.find('textarea').each(function(i, e){
+        var el = $(e);
+        params[el.attr('name')] = el.val();
+      });
+      
+      doc.find('input[type="hidden"]').each(function(i, e){
+        var el = $(e);
+        params[el.attr('name')] = el.val();
+      });
+
+
+      walt.verbose('...', params);
+
+      _self.dispatchEvent('call_service', {
+        service: 'modify_document',
+        params: params,
+        shortcuts: {
+          id: doc_id
+        }
+      });
+
+      return;
 
       if( _self.item.id ){ // update known item
 
@@ -286,7 +313,11 @@
 
     }
 
-    this.triggers.events.data_documents__updated = function(controller){
+    this.triggers.events.editor__start = function(controller) {
+
+    };
+
+    this.triggers.events.data_documents__updated = function(controller) {
       _self.listof(controller, {
         namespace:'documents'
       });

@@ -147,6 +147,7 @@
         .html( Handlebars.templates.document_editor(item));
 
       el.find('textarea').autosize();   
+      el.find('.slider').unslider();
     }
 
     this.disable_editor = function(item) {

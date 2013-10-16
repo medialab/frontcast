@@ -506,7 +506,7 @@ textarea{
 		width:100%
 	}
 
-	h3, h4, .abstract, .permalink, .reference, .content{
+	h3, h4, .abstract,  .reference{
 		position:relative;
 		padding:0 @padding @padding/2 @padding;
 		.inner{
@@ -514,6 +514,13 @@ textarea{
 			passing:0;
 		}
 	}
+
+  .attachments, .permalink, .content{
+    position:relative;
+    .inner{
+      padding:0 @padding @padding/2 @padding;
+    }
+  }
 
 	.content{
 		img{
@@ -546,6 +553,19 @@ textarea{
 		padding: @padding/2 @padding;
 	}
 
+  .slider {
+    position: relative;
+    overflow: auto;
+
+    li{
+      list-style: none;
+      float: left;
+    }
+    
+    ul{
+      padding: 0;
+    }
+  }
 }
 
 
