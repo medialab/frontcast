@@ -204,25 +204,38 @@
           description: 'it updates data propertties only if needed',
           method: function(e) {
             var user = this.get('user');
-
+            walt.log('(domino) on data__update', e.data);
+            
             for(var i in e.data){
               var data_property = e.data[i],
                   data_hash = {},
-                  item;
+                  item,
+                  references = [];
 
-              /* collect references */
+              /* set permission UI and collect references */
               for(var j in data_property.items){
                 item = data_property.items[j];
 
                 if(item.owner && (user.is_staff || item.owner == user.username || item.authors.indexOf(user.username)!= -1 ))
                   data_property.items[j].permissions = walt.PERMISSION_CAN_EDIT;
+
+                item.reference != '' && references.push(item.reference);
               };
 
               data_hash[i] = data_property;
               this.update(data_hash);
             }
 
-            walt.log('(domino) on data__update', e.data);
+            if( references.length )
+              this.dispatchEvent('call_service', {
+                service: 'get_references',
+                params:{
+                  method:'citation_by_rec_ids',
+                  params:[ 'forccast', references, 'mla', 'html']
+                }
+              });
+            
+            
           }
         },
         /*
@@ -647,10 +660,25 @@
             xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
           },
           async: true,
-          data: function( input ) { // input={action:'citation_by_rec_ids', params:{} )
-             return walt.rpc.buildData( input.action, input.params);
+          data: function( input ) { // input={params:{method:'citation_by_rec_ids', params:[]}}
+             return walt.rpc.buildData( input.params.method, input.params.params);
           },
           success: function(data, params) {
+            var ids = data.result.map(function(i){return i.rec_id}),
+                items = {};
+
+            if(ids.length) {
+              for(var i in data.result) {
+                items[data.result[i].rec_id] = data.result[i];
+              };
+
+              this.update({
+                data_references: {
+                  items: items,
+                  ids: ids
+                }
+              });
+            };
           }
         },
         {

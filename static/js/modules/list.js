@@ -86,7 +86,7 @@
       if(_self.container){
         _self.collection = new Masonry(_self.container, {
           gutter: 12,
-          columnWidth:270,
+          columnWidth:370,
           selector:'.pin',
           transitionDuration: 0
         });
@@ -258,7 +258,7 @@
       window.location = href;
     }
 
-    //$(document).on('click', '.document h3', _self.set_leader );
+    $(document).on('click', '.document h3', _self.set_leader );
     $(document).on('click', '.action.add-text', _self.create_text_document );
     $(document).on('click', '.save-document', _self.save_document );
     $(document).on('click', '.action.add-media', _self.create_media_document );
@@ -328,6 +328,24 @@
   walt.domino.modules.ListReferences = function(controller) {
     walt.domino.modules.List.call(this, '#list-of-references');
     var _self = this;
+
+    this.triggers.events.data_references__updated = function(controller) {
+      var references = controller.get('data_references');
+
+      walt.verbose('(ListReferences) listen to data_references__updated');
+
+      $('#list-of-documents').find('[data-reference-id]').each(function(i, e) {
+        var el = $(this),
+            reference_id = el.attr('data-reference-id');
+
+        if( references.ids.indexOf(reference_id) != -1){
+          walt.verbose('...', el,reference_id, references.items[reference_id].mla);
+          el.html(references.items[reference_id].mla);
+        }
+
+        
+      })
+    };
   };
 
 

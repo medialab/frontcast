@@ -23,14 +23,31 @@
         {{/if_in}}
       {{/each}}
     </div>
-    <div class="content">
+    <div class="attachments">
+      <ul>
       {{#each attachments}}
         {{#if_in this.ext compare="jpg|png|gif"}}
-          <img src="{{this.src}}"/>
+          <li><img src="{{this.src}}"/></li>
         {{/if_in}}
       {{/each}}
+      </ul>
     </div>
     <div class="abstract">{{{abstract}}}<!--{{type}}--></div>
+
+    <hr/>
+
+    {{#unless_eq reference compare=""}}
+    <div class="mla">
+      <span data-reference-id="{{reference}}">[ ... ]</span>
+      {{#if permissions}}
+        {{#if_eq permissions compare="CAN_EDIT"}}
+          <a href="{{settings.base_url}}/#{{#url "re" "slug" this.slug}}{{/url}}" title="edit bibliographic reference"><i class="icon-pencil"></i></a>
+        {{/if_eq}}
+      {{/if}}
+    </div>
+    <hr/>
+    {{/unless_eq}}
+    
     <div class="authors">
       
       by <a href="{{settings.base_url}}/#{{#url "u" "slug" owner}}{{/url}}">{{owner}}</a>
@@ -40,11 +57,6 @@
       {{#if permissions}}
         {{#if_eq permissions compare="CAN_EDIT"}}
           <a href="{{settings.base_url}}/#{{#url "de" "slug" this.slug}}{{/url}}">edit</a>
-          {{#if_eq reference compare=""}}
-
-          {{else}}
-            <a href="{{settings.base_url}}/#{{#url "re" "slug" this.slug}}{{/url}}">edit bibliographic reference</a>
-          {{/if_eq}}
         {{/if_eq}}
       {{/if}}
     </div>
