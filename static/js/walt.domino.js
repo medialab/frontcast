@@ -587,7 +587,16 @@
           },
           success: function(data, params) {
             // walt.log('(domino) 
-              walt.log('(domino) service:modify_document', data, params);
+            walt.log('(domino) service:modify_document', data, params);
+
+            this.dispatchEvent('scene_args__update',{
+              scene_args: {
+                slug: data.object.slug
+              }
+            });
+            this.dispatchEvent('scene__update', {
+              scene: walt.SCENE_DOCUMENT_VIEW
+            });
           }
         },
         { 

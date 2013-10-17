@@ -40,8 +40,11 @@
 
 
     function parse_hash(h, previous) {
-      walt.verbose('(Route) parse_hash: ', h);
-      crossroads.parse(h);
+      walt.verbose('(Route) parse_hash: ', h, previous);
+      if(h != previous)
+        crossroads.parse(h);
+      else
+        walt.verbose('... hash already in place, skipping');
     };
 
 
@@ -83,7 +86,15 @@
 
 
     this.triggers.events.scene__updated = function(controller) {
+      var scene = controller.get('scene'),
+          scene_args = controller.get('scene_args'),
+          hash = _routes[scene].interpolate(scene_args).replace(/^[\/]+/,'');
+
       walt.verbose('(Route) listen to scene__updated');
+      walt.verbose('... setting hash:', hash);
+      
+      hasher.setHash(hash);
+      
     };
   };
 })();
