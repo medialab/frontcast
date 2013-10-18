@@ -185,7 +185,7 @@ def user_documents(request, username):
   return result.json()
 
 
-def user_documents_filters(request):
+def user_documents_filters(request, username):
   '''
   Get every tag associated with user collection in order to provide filtering features.
   Sql query performed:
@@ -201,7 +201,7 @@ def user_documents_filters(request):
     "walt_tag"."type" ASC, "walt_tag"."slug" ASC
   '''
   result = Epoxy(request).queryset(
-    Tag.objects.filter(Q(document__owner=request.user) | Q(document__authors=request.user))
+    Tag.objects.filter(Q(document__owner__username=username) | Q(document__authors__username=username))
   )
   return result.json()
 
