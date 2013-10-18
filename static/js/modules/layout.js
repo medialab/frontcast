@@ -24,7 +24,7 @@
       var el = $("#d-" + item.id)
         .addClass('editor')
         .attr('data-override',true)
-        .append( Handlebars.templates.reference_editor(item));
+        .html( Handlebars.templates.reference_editor(item));
 
       blf.init({
         i18n:{
@@ -41,7 +41,7 @@
         baseDOM: el.find('#layout'),
         callbacks:{
           save: function(data) {
-            walt.toast('saving...');
+            walt.toast('saved.');
             _self.dispatchEvent('scene__update',{
               scene: walt.SCENE_DOCUMENT_VIEW,
               scene_args: {
@@ -61,7 +61,7 @@
               }});
             }
             // resize 
-            el.height(el[0].scrollHeight);
+            //el.height(el[0].scrollHeight);
           }
         },
         onComplete: function() {
@@ -70,9 +70,7 @@
           else
             blf.control.dispatchEvent('openField', { field: 'ControversyVideo' });
           
-          $('#reference-editor').animate({
-            left:0,
-          });
+          
         },
         advancedSearchPanel: {
           index: {
@@ -144,18 +142,24 @@
       var el = $("#d-" + item.id)
         .addClass('editor')
         .attr('data-override', true)
-        .html( Handlebars.templates.document_editor(item));
+        .html( Handlebars.templates.document_editor(item)),
+        slidey;
 
       el.find('textarea').autosize();   
       el.find('.slider').unslider();
+      slidey = slidey.data('unslider');
+      slidey.start();
+      slidey.dots();
     }
 
     this.disable_editor = function(item) {
 
     }
 
-    this.triggers.events.scene__synced = function(controller, event) {
-      var scene = controller.get('scene'),
+    this.listeners = {};
+
+    this.listeners.LIST__LISTOF_COMPLETED = function(event) {
+      var scene = walt.domino.controller.get('scene'),
           collection,
           item;
 
@@ -168,13 +172,14 @@
           break;
         case walt.SCENE_ME:
           _self.enable_header();
-          break;
 
+          break;
         case walt.SCENE_REFERENCE_EDIT:
           collection = controller.get('data_documents')
           item = walt.misc.first(collection.items);
           _self.disable_header();
           _self.enable_blf_editor(item);
+
           break;
         case walt.SCENE_DOCUMENT_EDIT:
           collection = controller.get('data_documents'),
@@ -182,9 +187,17 @@
           _self.enable_editor(item);
           // enable blf editor the editor
           _self.disable_header();
+
+          break;
+        case walt.SCENE_DOCUMENT_EDIT:
+
           break;
       }
 
+    };
+
+    this.triggers.events.init = function(controller) {
+      walt.on(walt.events.LIST__LISTOF_COMPLETED, _self.listeners.LIST__LISTOF_COMPLETED);
     };
 
   };

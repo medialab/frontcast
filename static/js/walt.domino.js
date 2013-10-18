@@ -299,7 +299,11 @@
               case  walt.SCENE_REFERENCE_EDIT:
                 services = [
                   {
-                    service: 'get_user_documents',
+                    service: 'get_user_document',
+                    shortcuts: {
+                      username: walt.user.username,
+                      slug: scene_args.slug 
+                    },
                     params:{
                       limit: 1,
                       offset:0,
@@ -325,7 +329,7 @@
                 services = [
                   {
                     service: 'get_documents',
-                    limit: 10,
+                    limit: -1,
                     offset:0
                   },
                   {
@@ -334,13 +338,16 @@
                     offset:0
                   }
                 ];
+
                 break;
               case walt.SCENE_ME:
                 services = [
                   {
                     service: 'get_user_documents',
-                    limit: 10,
-                    offset:0
+                    shortcuts: {
+                      username: walt.user.username
+                    },
+                    limit: -1
                   },
                   {
                     service: 'get_user_documents_filters',
@@ -352,6 +359,21 @@
                     service: 'get_assignments',
                     limit: 10,
                     offset:0
+                  }
+                ];
+
+                break;
+              case walt.SCENE_USER:
+                services = [
+                  {
+                    service: 'get_user_documents',
+                    shortcuts: {
+                        username: scene_args.username
+                      },
+                    params:{
+                      limit: -1,
+                      
+                    }
                   }
                 ];
                 break;
@@ -413,8 +435,18 @@
         {
           triggers: 'filled_document_with_oembed'
         },
+        /*
+
+          Modules hacks: Signals
+          ======================
+          
+          Event type starts with uppercase letter.
+          They usually intercepts modules interactions
+          They are DOM events basically!!
+        */
         {
-          triggers: 'editor__start'
+          triggers: 'List__completed',
+          description: 'list module just stopped moving...'
         },
         /*
 
@@ -518,6 +550,28 @@
           }
         },
         { 
+          id: 'get_user_document',
+          type: 'GET',
+          url: walt.urls.user_document,
+          dataType: 'json',
+          data: function(input) {
+            return input.params;
+          },
+          success: function(data) {
+            var items = {};
+            
+            this.dispatchEvent('data__update', {
+              data_documents: {
+                items: [data.object],
+                ids: [''+data.object.id],
+                length: 1,
+                limit: 1,
+                offset: 0
+              }
+            });
+          }
+        },
+        { 
           id: 'get_reference_documents',
           type: 'GET',
           url: walt.urls.user_documents,
@@ -577,7 +631,7 @@
         { 
           id: 'modify_document',
           type: 'POST',
-          url: '/api/u/document/::id',
+          url: walt.urls.user_document,
           before: function(params, xhr){
             xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
           },
@@ -586,7 +640,11 @@
             return input.params;
           },
           success: function(data, params) {
-            // walt.log('(domino) 
+            // walt.log('(domino)
+            walt.toast('modifications saved', {
+              cleanup: true
+            });
+
             walt.log('(domino) service:modify_document', data, params);
 
             this.dispatchEvent('scene_args__update',{

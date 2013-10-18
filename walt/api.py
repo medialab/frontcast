@@ -152,7 +152,7 @@ def world_documents(request):
 # ---
 #
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
-def user_documents(request):
+def user_documents(request, username):
   result = Epoxy(request)
 
   if result.is_POST():
@@ -176,9 +176,11 @@ def user_documents(request):
 
   else:
     result.meta('o','e')
-    result.queryset(
-      Document.objects.filter(Q(owner=request.user) | Q(authors=request.user))
-    )
+    if request.user.username == username:
+      queryset =  Document.objects.filter(Q(owner=request.user) | Q(authors=request.user))
+    else:
+      queryset =  Document.objects.filter(status=Document.PUBLIC).filter(Q(owner__username=username) | Q(authors__username=username))
+    result.queryset(queryset)
 
   return result.json()
 
@@ -203,15 +205,22 @@ def user_documents_filters(request):
   )
   return result.json()
 
+
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
-def user_document(request, pk):
+def user_document(request, username, slug):
   result = Epoxy(request)
 
   try:
-    d = Document.objects.get(
-      Q(pk=pk),
-      Q(owner=request.user) | Q(authors=request.user)
-    )
+    if request.user.username == username:
+      d = Document.objects.get(
+        Q(slug=slug),
+        Q(owner=request.user) | Q(authors=request.user)
+      )
+    else:
+      d = Document.objects.get(
+        Q(slug=slug),
+        Q(owner__username=username) | Q(authors__username=username)
+      )
   except Document.DoesNotExist,e:
     return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
 
@@ -224,13 +233,15 @@ def user_document(request, pk):
 
 
   if result.is_POST():
-
-    form = DocumentForm(request.REQUEST, instance=d)
-    if form.is_valid():
-      form.save(commit=False)
-      d.save()
-    else:
-      result.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS)
+    #if d.owner == request.user OR user in d.authors:
+      form = DocumentForm(request.REQUEST, instance=d)
+      if form.is_valid():
+        form.save(commit=False)
+        d.save()
+      else:
+        result.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS)
+    #else:
+    #  return result.throw_error(error='%s' % 'not authorized', code=API_EXCEPTION_AUTH).json()
 
   result.item(d)
 

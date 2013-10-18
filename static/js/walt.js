@@ -100,7 +100,7 @@
       scene: walt.SCENE_ADMIN
     },
     {
-      path: '/u/{slug}:?filters:',
+      path: '/u/{username}:?filters:',
       scene: walt.SCENE_USER
     }
   ]
@@ -125,6 +125,30 @@
     walt.UI_STATUS_UNLOCKED
   ]
   
+  /*
+     events for module interactions.
+     Cfr module
+  */
+  walt.events = {};
+  walt.timers = {}; // a collection of timers id for the cleartimeout functions
+
+  walt.on = function(type, handler) {
+    $(window).on(type, handler);
+  };
+
+  walt.trigger = function(type, data, options) {
+    var d = data || {},
+        o = options || {};
+
+    if(o.delay > 0) {
+      clearTimeout(walt.timers[type]);
+      walt.timers[type] = setTimeout(function() {
+        $(window).trigger(type, d);
+      }, o.delay);
+    } else {
+      $(window).trigger(type, data);
+    };
+  };
 
   /*
 

@@ -40,7 +40,7 @@
 
 
     function parse_hash(h, previous) {
-      walt.verbose('(Route) parse_hash: ', h, previous);
+      walt.verbose('(Route) parse_hash: ', h, previous || '[no previous hash set]');
       if(h != previous)
         crossroads.parse(h);
       else

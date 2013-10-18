@@ -17,9 +17,9 @@ api_urlpatterns = patterns('walt.api',
     url(r'u/assignment/(?P<pk>\d+)/deliver/$', 'user_assignment_deliver', name='walt_api_user_assignment_deliver'),
     url(r'u/assignment/(?P<pk>\d+)/documents/$', 'user_assignment_documents', name='walt_api_user_assignment_documents'),
 
-    url(r'u/document/$', 'user_documents', name='walt_api_user_documents'),
-    url(r'u/document/filters/$', 'user_documents_filters', name='walt_api_user_documents_filters'),
-    url(r'u/document/(?P<pk>\d+)$', 'user_document', name='walt_api_user_document'),
+    url(r'u/(?P<username>[:a-zA-Z\.\-\d]+)/document/$', 'user_documents', name='walt_api_user_documents'),
+    url(r'u/(?P<username>[:a-zA-Z\.\-\d]+)/document/filters/$', 'user_documents_filters', name='walt_api_user_documents_filters'),
+    url(r'u/(?P<username>[:a-zA-Z\.\-\d]+)/document/(?P<slug>[:a-zA-Z_\-\d]+)$', 'user_document', name='walt_api_user_document'),
 
     url(r'r/document/$', 'reference_documents', name='walt_api_reference_documents'),
     url(r'r/document/(?P<pk>\d+)$', 'reference_document', name='walt_api_reference_document'),

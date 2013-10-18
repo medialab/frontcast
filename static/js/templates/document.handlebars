@@ -1,4 +1,4 @@
-<div class="document pin {{status}} {{#each tags.RATING}}{{this.name}}_grade {{/each}}" data-href="/#{{#url "d" "slug" slug}}{{/url}}" data-id="{{id}}" id="d-{{id}}">
+<div class="document pin {{status}} {{#each tags.RATING}}{{this.name}}_grade {{/each}}" data-slug="{{slug}}" data-type="{{type}}" data-href="/#{{#url "d" "slug" slug}}{{/url}}" data-id="{{id}}" id="d-{{id}}">
   <div class="inner">
     <div class="pusher"></div>
     <div class="status">{{status}}</div>
@@ -48,17 +48,26 @@
     <hr/>
     {{/unless_eq}}
     
+    
+    <div class="actions">
+      <ul>
+        {{#if permissions}}
+        {{#if_eq permissions compare="CAN_EDIT"}}
+          <li><a href="{{settings.base_url}}/#{{#url "de" "slug" this.slug}}{{/url}}">edit</a></li>
+          {{#unless_eq status compare="public"}}
+          <li>publish</li>
+          {{/unless_eq}}
+        {{/if_eq}}
+        {{/if}}
+      </ul>
+    </div>
+    
     <div class="authors">
       
-      by <a href="{{settings.base_url}}/#{{#url "u" "slug" owner}}{{/url}}">{{owner}}</a>
+      by <a href="{{settings.base_url}}/#{{#url "u" "username" owner}}{{/url}}">{{owner}}</a>
       {{#each authors}}
-        <a href="{{settings.base_url}}/#{{#url "u" "slug" this}}{{/url}}">{{this}}</a>
+        <a href="{{settings.base_url}}/#{{#url "u" "username" this}}{{/url}}">{{this}}</a>
       {{/each}}
-      {{#if permissions}}
-        {{#if_eq permissions compare="CAN_EDIT"}}
-          <a href="{{settings.base_url}}/#{{#url "de" "slug" this.slug}}{{/url}}">edit</a>
-        {{/if_eq}}
-      {{/if}}
     </div>
   </div>
 </div>

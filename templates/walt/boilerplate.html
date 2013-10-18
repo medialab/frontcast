@@ -99,9 +99,9 @@
                 document: '{% url "walt_api_document" 0 %}',
                 documents_filters: '{% url "walt_api_documents_filters" %}', // filters for public available documents
 
-                user_documents: '{% url "walt_api_user_documents" %}',
-                user_document: '{% url "walt_api_user_document" 0 %}',
-                user_documents_filters: '{% url "walt_api_user_documents_filters" %}', // filters for public available documents
+                user_documents: '{% url "walt_api_user_documents" "::username" %}',
+                user_document: '{% url "walt_api_user_document" "::username" "::slug" %}',
+                user_documents_filters: '{% url "walt_api_user_documents_filters" 0 %}', // filters for public available documents
 
                 reference_documents: '{% url "walt_api_reference_documents" %}',
                 reference_document: '{% url "walt_api_reference_document" 0 %}',

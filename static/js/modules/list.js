@@ -9,6 +9,8 @@
     this.box = $(selector);
     this.selector = selector;
 
+    walt.events.LIST__LISTOF_COMPLETED = 'LISTOF_COMPLETED';
+
 
     this.listof = function(controller, options) {
       var previous_item = null,
@@ -96,8 +98,11 @@
         });
 
         setTimeout(function(){
-          if(_self.container)
+          if(_self.container){
             _self.collection.layout();
+            // launch event layout completed !
+            walt.trigger(walt.events.LIST__LISTOF_COMPLETED);
+          }
         }, settings.delay);
       };
     };
@@ -130,9 +135,10 @@
     this.save_document = function(event){
       var params = {},
           doc = $(event.currentTarget).closest('.document'),
-          doc_id = doc.attr('data-id');
+          doc_id = doc.attr('data-id'),
+          doc_slug = doc.attr('data-slug');
 
-      walt.verbose('(ListDocuments) save_document: ', doc.attr('id'));
+      walt.verbose('(ListDocuments) save_document: ', doc_slug);
 
       doc.find('textarea').each(function(i, e){
         var el = $(e);
@@ -146,12 +152,14 @@
 
 
       walt.verbose('...', params);
+      walt.toast('saving modifications...');
 
       _self.dispatchEvent('call_service', {
         service: 'modify_document',
         params: params,
         shortcuts: {
-          id: doc_id
+          slug: doc_slug,
+          username: walt.user.username
         }
       });
 
@@ -258,7 +266,7 @@
       window.location = href;
     }
 
-    $(document).on('click', '.document h3', _self.set_leader );
+    $(document).on('click', '.document:not(.editor) h3', _self.set_leader );
     $(document).on('click', '.action.add-text', _self.create_text_document );
     $(document).on('click', '.save-document', _self.save_document );
     $(document).on('click', '.action.add-media', _self.create_media_document );
@@ -339,7 +347,7 @@
             reference_id = el.attr('data-reference-id');
 
         if( references.ids.indexOf(reference_id) != -1){
-          walt.verbose('...', el,reference_id, references.items[reference_id].mla);
+          walt.verbose('...', el,reference_id);
           el.html(references.items[reference_id].mla);
         }
 
