@@ -76,6 +76,10 @@
           } else {
             $(previous_item).after(item);
           }
+          item.find('.slider').unslider({
+            placeholders: true
+
+          });
           walt.move.fadein(item, {
             delay: settings.delay
           });
@@ -83,6 +87,9 @@
           previous_item = settings.prefix + data.ids[i]; // maze.log(i, contents[ ids[i] ].name, ids[i] );
           settings.delay += 170;
       }
+
+      // setup sliders
+
 
       // refresh masonry layout after settings.delay has passed
       if(_self.container){
@@ -105,6 +112,8 @@
           }
         }, settings.delay);
       };
+
+
     };
 
     this.triggers.events.init = function(controller, event) {

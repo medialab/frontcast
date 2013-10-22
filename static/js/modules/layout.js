@@ -146,10 +146,10 @@
         slidey;
 
       el.find('textarea').autosize();   
-      el.find('.slider').unslider();
-      slidey = slidey.data('unslider');
-      slidey.start();
-      slidey.dots();
+      //el.find('.slider').unslider();
+      //slidey = slidey.data('unslider');
+      //slidey.start();
+      //slidey.dots();
     }
 
     this.disable_editor = function(item) {
@@ -189,7 +189,12 @@
           _self.disable_header();
 
           break;
-        case walt.SCENE_DOCUMENT_EDIT:
+        case walt.SCENE_DOCUMENT_VIEW:
+          collection = controller.get('data_documents')
+          item = walt.misc.first(collection.items);
+
+
+          $('#d-' + item.id).addClass('leader');
 
           break;
       }

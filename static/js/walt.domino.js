@@ -152,8 +152,8 @@
         {
           id: 'data_documents_filters',
           description: 'the django-compatible documents filter object',
-          type: ['object'],
-          value: [],
+          type: 'object',
+          value: {},
           triggers: 'data_documents_filters__update',
           dispatch: ['data_documents_filters__updated']
         },
@@ -525,6 +525,7 @@
             return input.params;
           },
           success: function(data, params) {
+            walt.log(data);
             this.update('data_documents_filters', data.objects);
           }
         },

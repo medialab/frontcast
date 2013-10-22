@@ -51,20 +51,32 @@ def documents_filters(request):
   epoxy = Epoxy(request)
   filters = {'type': {}, 'tags':{}}
   tag_filters = {}
-  qs = Document.objects.filter(status=Document.PUBLIC).filter(**epoxy.filters)
+  qs = Document.objects.filter(status=Document.PUBLIC, **epoxy.filters)
   epoxy.meta('total_count', qs.count())
 
-  for f in epoxy.filters:
-    tag_filters['document__%s' % f] = epoxy.filters[f]
-
+  # maybe @todo: not documents in but this instead
+  #for f in epoxy.filters:
+  #  if f.startswith(u'tags__'):
+  #    tag_filters['%s' % f[6:]] = epoxy.filters[f]
+  #  else:
+  #    tag_filters['document__%s' % f] = epoxy.filters[f]
+  
   # 1. get document types
   for t in qs.order_by().values('type').annotate(count=Count('id')):
     filters['type']['%s'%t['type']] = {
       'count': t['count']
     }
 
-  # 2. get tags
-  for t in Tag.objects.filter(document__status=Document.PUBLIC).filter(**tag_filters):
+  ids = []
+  #2. get document ids involved
+  for d in qs:
+    ids.append(d.id)
+
+  # 2. get document tags
+  
+  qs = Tag.objects.filter(document__status=Document.PUBLIC, document__id__in=ids).extra(select={'doc_id':'walt_document.id'})
+  epoxy.meta('tag_query', '%s' % qs.query)
+  for t in qs:
     _type = '%s' % t.type
     _slug = '%s' % t.slug
 
@@ -75,9 +87,11 @@ def documents_filters(request):
       filters['tags'][_type][_slug] = {
         'name': t.name,
         'slug': t.slug,
+        'ids':[],
         'count': 0
       }
-      
+    
+    # for debug purpose only, normally document-tag relationships are unique for each type and slug. filters['tags'][_type][_slug]['ids'].append(t.doc_id)
     filters['tags'][_type][_slug]['count'] += 1
 
   epoxy.add('objects', filters);

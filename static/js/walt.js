@@ -54,7 +54,6 @@
       scene: walt.SCENE_SPLASH,
       description: ''
     },
-
     {
       path: '/d/{slug}:?filters:',
       scene: walt.SCENE_DOCUMENT_VIEW,

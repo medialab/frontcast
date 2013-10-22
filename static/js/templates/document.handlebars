@@ -16,14 +16,16 @@
         {{this.name}} -
       {{/each}}
     </div>
-    <div class="actions">
+    
       {{#each attachments}}
         {{#if_in this.ext compare="pdf"}}
+        <div class="actions">
           <a class="button" href="mais_dossier.pdf"><i class="icon-download"></i> download print version</a>
+        </div>
         {{/if_in}}
       {{/each}}
-    </div>
-    <div class="attachments">
+    
+    <div class="attachments slider" style="max-height:150px; height:150px">
       <ul>
       {{#each attachments}}
         {{#if_in this.ext compare="jpg|png|gif"}}
@@ -48,20 +50,20 @@
     <hr/>
     {{/unless_eq}}
     
-    
+    {{#if permissions}}
     <div class="actions">
       <ul>
-        {{#if permissions}}
+        
         {{#if_eq permissions compare="CAN_EDIT"}}
           <li><a href="{{settings.base_url}}/#{{#url "de" "slug" this.slug}}{{/url}}">edit</a></li>
           {{#unless_eq status compare="public"}}
           <li>publish</li>
           {{/unless_eq}}
         {{/if_eq}}
-        {{/if}}
+        
       </ul>
     </div>
-    
+    {{/if}}
     <div class="authors">
       
       by <a href="{{settings.base_url}}/#{{#url "u" "username" owner}}{{/url}}">{{owner}}</a>

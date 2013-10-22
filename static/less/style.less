@@ -497,6 +497,10 @@ textarea{
 			.attachments ul{
         display:block;
       }
+
+      .slider{
+        display: block;
+      }
 		}
 
     &:hover{
@@ -525,7 +529,7 @@ textarea{
 	h3, h4, .abstract,  .reference{
 		position:relative;
 		padding:0 @padding @padding/2 @padding;
-		.inner{
+		>.inner{
 			margin:0;
 			passing:0;
 		}
@@ -533,7 +537,7 @@ textarea{
 
   .attachments, .permalink, .content{
     position:relative;
-    .inner{
+    >.inner{
       padding:0 @padding @padding/2 @padding;
     }
 
@@ -552,7 +556,9 @@ textarea{
     }
   }
 
-
+  .slider{
+    display: none;
+  }
 
 	.content{
 		img{
@@ -593,6 +599,62 @@ textarea{
   .slider {
     position: relative;
     overflow: auto;
+    min-height: 240px;
+    max-height: 240px;
+    height: 240px;
+
+    .placeholders{
+      position: absolute;
+      width: 100%;
+      bottom: 0px;
+      height: 20px; 
+      margin: 0;
+      padding: 0;
+      background-color: fade(@grey, 90%);
+      
+      ol{
+        position: relative;
+        margin: 0 @padding;
+        height: 20px;
+      }
+      
+      li.placeholder{
+        position: absolute;
+        text-align: center;
+        height: 12px;
+        
+        &:active >.inner{
+          background-color: red;
+        }
+
+        >.inner{
+          margin: 6px 2px 0 2px;
+          background: white;
+          height: 8px;
+        }
+      }
+    }
+
+    .rail{
+      position:relative;
+      height: 1px;
+      margin:0 @padding;
+
+      .cursor{
+        position:absolute;
+        height:1px;
+        top: -20px;
+
+        >.inner{
+          margin: 6px 2px 0 2px;
+          background: @f-blue;
+          height: 8px;
+        
+        }
+        text-align:center; 
+      }
+    
+    }
 
     li{
       list-style: none;
