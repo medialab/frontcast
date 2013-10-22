@@ -351,8 +351,12 @@
                   },
                   {
                     service: 'get_user_documents_filters',
+                    shortcuts: {
+                      username: walt.user.username
+                    },
                     params:{
                       limit: -1
+
                     }
                   },
                   {
@@ -525,7 +529,6 @@
             return input.params;
           },
           success: function(data, params) {
-            walt.log(data);
             this.update('data_documents_filters', data.objects);
           }
         },
@@ -705,8 +708,7 @@
             return params;
           },
           success: function(data, params) {
-
-
+            this.update('data_documents_filters', data.objects);
           }
         },
         /*
@@ -804,7 +806,7 @@
     walt.domino.controller.addModule( walt.domino.modules.Filters, null, {id:'filters'});
 
     walt.domino.controller.log('module instantiated');
-    walt.domino.controller.dispatchEvent('init');
+    //walt.domino.controller.dispatchEvent('init');
     /*
 
         Start!

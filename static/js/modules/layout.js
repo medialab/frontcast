@@ -194,7 +194,7 @@
           item = walt.misc.first(collection.items);
 
 
-          $('#d-' + item.id).addClass('leader');
+          //$('#d-' + item.id).addClass('leader');
 
           break;
       }

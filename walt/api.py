@@ -12,6 +12,7 @@ from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_
 
 from walt.models import Assignment, Profile, Document, Tag, Task
 from walt.forms import DocumentForm
+from walt.utils import get_document_filters
 
 
 def index(request):
@@ -36,66 +37,14 @@ def documents(request):
 def documents_filters(request):
   '''
   Get every tag associated with global collection in order to provide filtering features.
-  Sql query performed:
-
-  SELECT "walt_tag"."id", "walt_tag"."name", "walt_tag"."slug", "walt_tag"."type"
-  FROM "walt_tag"
-    INNER JOIN "walt_document_tags" ON ("walt_tag"."id" = "walt_document_tags"."tag_id")
-    INNER JOIN "walt_document" ON ("walt_document_tags"."document_id" = "walt_document"."id")
-  WHERE
-    "walt_document"."status" = P 
-  ORDER BY
-    "walt_tag"."type" ASC,
-    "walt_tag"."slug" ASC
   '''
   epoxy = Epoxy(request)
-  filters = {'type': {}, 'tags':{}}
-  tag_filters = {}
-  qs = Document.objects.filter(status=Document.PUBLIC, **epoxy.filters)
-  epoxy.meta('total_count', qs.count())
+ 
+  queryset= Document.objects.filter(status=Document.PUBLIC, **epoxy.filters)
+  epoxy.meta('total_count', queryset.count())
 
-  # maybe @todo: not documents in but this instead
-  #for f in epoxy.filters:
-  #  if f.startswith(u'tags__'):
-  #    tag_filters['%s' % f[6:]] = epoxy.filters[f]
-  #  else:
-  #    tag_filters['document__%s' % f] = epoxy.filters[f]
-  
-  # 1. get document types
-  for t in qs.order_by().values('type').annotate(count=Count('id')):
-    filters['type']['%s'%t['type']] = {
-      'count': t['count']
-    }
-
-  ids = []
-  #2. get document ids involved
-  for d in qs:
-    ids.append(d.id)
-
-  # 2. get document tags
-  
-  qs = Tag.objects.filter(document__status=Document.PUBLIC, document__id__in=ids).extra(select={'doc_id':'walt_document.id'})
-  epoxy.meta('tag_query', '%s' % qs.query)
-  for t in qs:
-    _type = '%s' % t.type
-    _slug = '%s' % t.slug
-
-    if _type not in filters['tags']:
-      filters['tags'][_type] = {}
-
-    if _slug not in filters['tags'][_type]:
-      filters['tags'][_type][_slug] = {
-        'name': t.name,
-        'slug': t.slug,
-        'ids':[],
-        'count': 0
-      }
-    
-    # for debug purpose only, normally document-tag relationships are unique for each type and slug. filters['tags'][_type][_slug]['ids'].append(t.doc_id)
-    filters['tags'][_type][_slug]['count'] += 1
-
+  filters = get_document_filters(queryset=queryset)
   epoxy.add('objects', filters);
-  # 2. get document year tag
   return epoxy.json()
 
 
@@ -202,23 +151,17 @@ def user_documents(request, username):
 def user_documents_filters(request, username):
   '''
   Get every tag associated with user collection in order to provide filtering features.
-  Sql query performed:
-
-  SELECT "walt_tag"."id", "walt_tag"."name", "walt_tag"."slug", "walt_tag"."type"
-  FROM "walt_tag"
-    INNER JOIN "walt_document_tags" ON ("walt_tag"."id" = "walt_document_tags"."tag_id")
-    INNER JOIN "walt_document" ON ("walt_document_tags"."document_id" = "walt_document"."id")
-    LEFT OUTER JOIN "walt_document_authors" ON ("walt_document"."id" = "walt_document_authors"."document_id")
-  WHERE
-    ("walt_document"."owner_id" = 1  OR "walt_document_authors"."user_id" = 1 )
-  ORDER BY
-    "walt_tag"."type" ASC, "walt_tag"."slug" ASC
+  
   '''
-  result = Epoxy(request).queryset(
-    Tag.objects.filter(Q(document__owner__username=username) | Q(document__authors__username=username))
-  )
-  return result.json()
+  epoxy = Epoxy(request)
+ 
+  queryset= Document.objects.filter(Q(owner__username=username) | Q(authors__username=username), **epoxy.filters)
+  epoxy.meta('total_count', queryset.count())
 
+  filters = get_document_filters(queryset=queryset)
+  epoxy.add('objects', filters);
+  return epoxy.json()
+  
 
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def user_document(request, username, slug):
