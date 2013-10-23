@@ -7,14 +7,15 @@
       {{#each tags.Date}}
         {{this.name}}
       {{/each}}
-      
+      <br/>
     	{{#each tags.Institution}}
     		{{this.name}} /
   		{{/each}}
-      
+      <!--
       {{#each tags.AUTHOR}}
         {{this.name}} -
       {{/each}}
+    -->
     </div>
     
       {{#each attachments}}
@@ -25,7 +26,7 @@
         {{/if_in}}
       {{/each}}
     
-    <div class="attachments slider" style="max-height:150px; height:150px">
+    <div class="attachments slider">
       <ul>
       {{#each attachments}}
         {{#if_in this.ext compare="jpg|png|gif"}}

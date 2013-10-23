@@ -28,9 +28,12 @@ def access_denied(request):
 # ---
 #
 def documents(request):
-  result = Epoxy(request).queryset(
-    Document.objects.filter(status=Document.PUBLIC)
-  )
+  if request.user.is_authenticated():
+    queryset =   Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user))
+  else:
+    queryset = Document.objects.filter(status=Document.PUBLIC)
+ 
+  result = Epoxy(request).queryset(queryset)
   return result.json()
 
 

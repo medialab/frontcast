@@ -119,12 +119,27 @@
 
     }
     
+
     this.disable_blf_editor = function() {
       if(!blf_editor_is_enabled)
         return;
       blf.control.kill();
       blf_editor_is_enabled = false;
 
+    }
+
+
+    this.enable_leader = function(item) {
+      if(_self.leader && _self.leader != item.id)
+        _self.leader.removeClass('leader');
+      _self.leader = $('#d-' + item.id).addClass('leader');
+    }
+
+
+    this.disable_leader = function(item) {
+      if(_self.leader)
+        _self.leader.removeClass('leader');
+      _self.leader = null;
     }
 
 
@@ -168,34 +183,39 @@
 
       switch(scene){
         case walt.SCENE_SPLASH:
-          
+          _self.disable_leader();
+          _self.disable_editor();
+
           break;
         case walt.SCENE_ME:
           _self.enable_header();
-
+          _self.disable_leader();
+          
           break;
         case walt.SCENE_REFERENCE_EDIT:
           collection = controller.get('data_documents')
           item = walt.misc.first(collection.items);
+
           _self.disable_header();
           _self.enable_blf_editor(item);
-
+          _self.disable_leader();
+          
           break;
         case walt.SCENE_DOCUMENT_EDIT:
           collection = controller.get('data_documents'),
           item = walt.misc.first(collection.items);
           _self.enable_editor(item);
-          // enable blf editor the editor
+
+          _self.disable_leader();
           _self.disable_header();
 
           break;
         case walt.SCENE_DOCUMENT_VIEW:
           collection = controller.get('data_documents')
           item = walt.misc.first(collection.items);
-
-
-          //$('#d-' + item.id).addClass('leader');
-
+          
+          _self.enable_leader(item);
+          _self.disable_header();
           break;
       }
 

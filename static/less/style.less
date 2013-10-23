@@ -485,12 +485,22 @@ textarea{
 		.transition(all, .3s, ease-in-out);
 
 		&.editor{
-			//width: 567px;
+			width: 540px + @padding/2;
       background: white;
+      .actions{
+        display: block;
+      }
 		}
 
 		&.leader{
 			width: 540px + @padding/2;
+      .actions{
+        display: block;
+      }
+      .slider{
+        min-height: 380px;
+        max-height: 380px;
+      }
 		}
 
 		&.A_grade, &.editor{
@@ -556,7 +566,7 @@ textarea{
     }
   }
 
-  .slider{
+  .slider, .actions{
     display: none;
   }
 
