@@ -23,10 +23,10 @@
 
         // a delicate pairing! We trust the routing lib so much...
         for(var i=0; i<arguments.length; i++){
-          scene_args[route._paramsIds[i]] = arguments[i];
+          scene_args[route._paramsIds[i].substring(1)] = arguments[i];
         }
 
-        walt.verbose('(Route) bind scene: [', scene,']', scene_args);
+        walt.verbose('(Route) matched: [', scene,']', scene_args);
 
         _self.dispatchEvent('scene_args__update', {
           scene_args: scene_args
@@ -40,8 +40,9 @@
 
 
     function parse_hash(h, previous) {
-      walt.verbose('(Route) parse_hash: ', h, previous || '[no previous hash set]');
-      if(h != previous)
+      previous = previous || '[no previous hash set]';
+      walt.verbose('(Route) parse_hash: ', h, '(previous:', previous, ')');
+      if(h.split(/[\?&]/).sort().join('') != previous.split(/[\?&]/).sort().join(''))
         crossroads.parse(h);
       else
         walt.verbose('... hash already in place, skipping');

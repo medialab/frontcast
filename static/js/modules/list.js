@@ -95,7 +95,7 @@
       if(_self.container){
         _self.collection = new Masonry(_self.container, {
           gutter: 12,
-          columnWidth:370,
+          columnWidth:240,
           selector:'.pin',
           transitionDuration: 0
         });

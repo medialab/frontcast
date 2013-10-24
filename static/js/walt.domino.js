@@ -250,25 +250,46 @@
           method: function(event) {
             var scene = this.get('scene'),
                 scene_args = this.get('scene_args'),
-                services = [];
+                services = [],
+                params = {};
 
             walt.log('(domino) on scene__updated, scene:', scene);
             walt.log('... scene_args:', scene_args);
             
             this.update('ui_status',walt.UI_STATUS_LOCKED);
 
+            if(scene_args.params) {
+              for(var i in scene_args.params) {
+                if(i == "filters") {
+                  try{
+                    params[i] = JSON.parse(scene_args.params.filters);
+                  } catch(e){
+                    walt.error(e);
+                  }
+                } else {
+                  params[i] = scene_args.params[i];
+                }
+              }
+            };
+
+            debugger
             switch(scene){
               case walt.SCENE_SPLASH:
+                params = $.extend(true, params, {
+                  filters: {
+                    type__in: [
+                      walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO,
+                      walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_WEB,
+                      walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY
+                    ]
+                  }
+                });
+                params.filters = JSON.stringify(params.filters);
+                
                 services = [
                   {
                     service: 'get_documents',
-                    params:{
-                      limit: 10,
-                      offset:0,
-                      filters: JSON.stringify({
-                        type__in: [walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_VIDEO, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY_WEB, walt.DOCUMENT_TYPES.REFERENCE_CONTROVERSY]
-                      })
-                    }
+                    params: params
                   },
                   {
                     service: 'get_documents_filters',

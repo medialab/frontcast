@@ -50,12 +50,12 @@
 
   walt.ROUTES = [
     {
-      path: '/:?filters:',
+      path: '/:?params:',
       scene: walt.SCENE_SPLASH,
       description: ''
     },
     {
-      path: '/d/{slug}:?filters:',
+      path: '/d/{slug}:?params:',
       scene: walt.SCENE_DOCUMENT_VIEW,
       description: '',
       rules: {
@@ -78,28 +78,28 @@
       description: ''
     },
     {
-      path: '/archive:?filters:',
+      path: '/archive:?params:',
       scene: walt.SCENE_ARCHIVE
     },
 
     {
-      path: '/public:?filters:',
+      path: '/public:?params:',
       scene: walt.SCENE_PUBLIC
     },
     {
-      path: '/archive:?filters:',
+      path: '/archive:?params:',
       scene: walt.SCENE_ARCHIVE
     },
     {
-      path: '/me:?filters:',
+      path: '/me:?params:',
       scene: walt.SCENE_ME
     },
     {
-      path: '/admin:?filters:',
+      path: '/admin:?params:',
       scene: walt.SCENE_ADMIN
     },
     {
-      path: '/u/{username}:?filters:',
+      path: '/u/{username}:?params:',
       scene: walt.SCENE_USER
     }
   ]

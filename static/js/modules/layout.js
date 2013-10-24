@@ -183,9 +183,11 @@
 
       switch(scene){
         case walt.SCENE_SPLASH:
+        case walt.SCENE_PUBLIC:
+          _self.disable_header();
           _self.disable_leader();
           _self.disable_editor();
-
+          _self.disable_blf_editor();
           break;
         case walt.SCENE_ME:
           _self.enable_header();
