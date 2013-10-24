@@ -127,19 +127,19 @@
         },
         {
           id: 'scene_args',
-          description: 'basic app view arguments',
+          description: 'basic app view arguments as given by route mechanism',
           type: 'object',
           value: {},
           triggers: 'scene_args__update',
           dispatch: ['scene_args__updated']
         },
         {
-          id: 'scene_filters',
-          description: 'the filter object as given by route mechanism',
+          id: 'scene_params',
+          description: 'scene_args having filters are thus transformed into an editable dictionary',
           type: 'object',
           value: {},
-          triggers: 'scene_filters__update',
-          dispatch: ['scene_filters__updated']
+          triggers: 'scene_params__update',
+          dispatch: ['scene_params__updated']
         },
         /*
 
@@ -272,7 +272,7 @@
               }
             };
 
-            debugger
+            
             switch(scene){
               case walt.SCENE_SPLASH:
                 params = $.extend(true, params, {
@@ -301,6 +301,17 @@
                     }
                   }
                 ];
+
+                break;
+              case walt.SCENE_SEARCH:
+                params.filters = JSON.stringify(params.filters);
+                services = [
+                  {
+                    service: 'get_documents',
+                    params: params
+                  }
+                ];
+
                 break;
               case  walt.SCENE_DOCUMENT_VIEW:
                 services = [
@@ -428,6 +439,32 @@
           description: 'data loading completed, proceed according to the scene to perrform!',
           method: function(event) {
             walt.log('(domino) on scene__synced, ui status:', this.get('ui_status') )
+          }
+        },
+        {
+          triggers: 'scene_args__updated',
+          description: 'transform the JSON strings into scene args and fill scene_params object accordingly',
+          method: function(event) {
+            var scene_args = this.get('scene_args'),
+                params = {};
+
+            walt.log('(domino) on scene_args__updated', scene_args);
+            
+            if(scene_args.params) {
+              for(var i in scene_args.params) {
+                if(i == "filters") {
+                  try{
+                    params[i] = JSON.parse(scene_args.params.filters);
+                  } catch(e){
+                    walt.error(e);
+                  }
+                } else {
+                  params[i] = scene_args.params[i];
+                }
+              }
+            };
+
+            this.update('scene_params', params);
           }
         },
         /*
@@ -752,23 +789,27 @@
           },
           async: true,
           data: function( input ) { // input={params:{method:'citation_by_rec_ids', params:[]}}
+            walt.log('(Service) launch "get_references"', input);
              return walt.rpc.buildData( input.params.method, input.params.params);
           },
           success: function(data, params) {
-            var ids = data.result.map(function(i){return i.rec_id}),
-                items = {};
+            walt.log('(Service) success "get_references"', data);
+            if(data.result) {
+              var ids = data.result.map(function(i){return i.rec_id}),
+                  items = {};
 
-            if(ids.length) {
-              for(var i in data.result) {
-                items[data.result[i].rec_id] = data.result[i];
+              if(ids.length) {
+                for(var i in data.result) {
+                  items[data.result[i].rec_id] = data.result[i];
+                };
+
+                this.update({
+                  data_references: {
+                    items: items,
+                    ids: ids
+                  }
+                });
               };
-
-              this.update({
-                data_references: {
-                  items: items,
-                  ids: ids
-                }
-              });
             };
           }
         },
@@ -825,6 +866,7 @@
     walt.domino.controller.addModule( walt.domino.modules.Menu, null, {id:'menu'});
     walt.domino.controller.addModule( walt.domino.modules.Route, null, {id:'route'});
     walt.domino.controller.addModule( walt.domino.modules.Filters, null, {id:'filters'});
+    walt.domino.controller.addModule( walt.domino.modules.Search, null, {id:'search'});
 
     walt.domino.controller.log('module instantiated');
     //walt.domino.controller.dispatchEvent('init');

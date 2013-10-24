@@ -184,6 +184,7 @@
       switch(scene){
         case walt.SCENE_SPLASH:
         case walt.SCENE_PUBLIC:
+        case walt.SCENE_SEARCH:
           _self.disable_header();
           _self.disable_leader();
           _self.disable_editor();

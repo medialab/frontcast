@@ -23,7 +23,7 @@
 
         // a delicate pairing! We trust the routing lib so much...
         for(var i=0; i<arguments.length; i++){
-          scene_args[route._paramsIds[i].substring(1)] = arguments[i];
+          scene_args[route._paramsIds[i][0] == '?'? route._paramsIds[i].substring(1):route._paramsIds[i]] = arguments[i];
         }
 
         walt.verbose('(Route) matched: [', scene,']', scene_args);

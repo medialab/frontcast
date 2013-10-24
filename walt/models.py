@@ -1,4 +1,4 @@
-import re, os
+import re, os, operator
 from datetime import datetime
 from markdown import markdown
 
@@ -6,6 +6,7 @@ from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.utils.text import slugify
 from django.utils.timezone import utc
 
@@ -215,6 +216,14 @@ class Document(models.Model):
   owner = models.ForeignKey(User) # the original owner
   authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
+
+  @staticmethod
+  def search(query):
+    argument_list =[
+      Q(title__icontains=query),
+      Q(abstract__icontains=query)
+    ]
+    return reduce(operator.or_, argument_list)
 
   def save(self, **kwargs):
     self.date_last_modified = datetime.utcnow().replace(tzinfo=utc)  
