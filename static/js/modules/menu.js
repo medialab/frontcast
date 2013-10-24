@@ -11,20 +11,25 @@
 
     var _self = this,
         sidebar,
-        entries = {},
+        entries,
         previous_scene;
 
-    this.triggers.events.scene__updated = function(controller) {
+    this.triggers.events.scene__synced = function(controller) {
       var scene = controller.get('scene');
-
 
       walt.verbose('(Menu) listen to scene__updated');
 
-      if(previous_scene && entries[previous_scene])
-        entries[previous_scene].removeClass('active');
-      
-      if(previous_scene != scene && entries[scene])
-        entries[scene].addClass('active');
+      if(scene != previous_scene) {
+        entries.each(function(i) {
+          var el = $(this),
+              scenes = el.attr('data-scene').trim().split('|');
+          walt.log(scenes, scene);
+          if(scenes.indexOf(scene) != -1 )
+            el.addClass('active');
+          if(scenes.indexOf(previous_scene) != -1)
+            el.removeClass('active');
+        });
+      }
 
       previous_scene = scene;
     };
@@ -32,13 +37,7 @@
     this.triggers.events.init = function(controller) {
       walt.verbose('(Menu) listen to init');
       sidebar = $('sidebar').first();
-
-      sidebar.find('li[data-scene]').each(function(i){
-        var entry = $(this),
-            scene = entry.attr('data-scene');
-        walt.verbose('... entry:',scene);
-        entries[scene] = entry;
-      });
+      entries = sidebar.find('li[data-scene]');
 
       sidebar.find('a[data-toggle="tooltip"]').tooltip();
     };

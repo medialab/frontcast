@@ -14,7 +14,8 @@
     this.send_query = function(event) {
       var scene_args = walt.domino.controller.get('scene_args'),      
           query = input.val();
-      
+          
+      scene_args.params = scene_args.params || {};
       scene_args.params.search = query;
 
       _self.dispatchEvent('scene_args__update', {

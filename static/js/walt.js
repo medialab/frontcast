@@ -31,7 +31,7 @@
 
   walt.SCENES = [];
   walt.SCENE_SPLASH = 'splash page';
-  walt.SCENE_SEARCH = 's';
+  walt.SCENE_SEARCH = 'search';
   walt.SCENE_DOCUMENT_VIEW = 'd';
   walt.SCENE_DOCUMENT_EDIT = 'de';
   walt.SCENE_REFERENCES = 'r';
