@@ -54,7 +54,7 @@
               blf.control.dispatchEvent('editEntry', { entry: data.result.pop() });
             else{
               // brand new reference (with a GIVEN rec_id)
-              blf.control.dispatchEvent('openField', {field: 'ControversyVideo', entry: {
+              blf.control.dispatchEvent('openField', {field: item.type, entry: {
                 title: item.title,
                 rec_type: 'ControversyVideo',
                 rec_id: item.reference
@@ -68,7 +68,7 @@
           if(item)
             blf.control.request('get_entry', { rec_id: item.reference });
           else
-            blf.control.dispatchEvent('openField', { field: 'ControversyVideo' });
+            blf.control.dispatchEvent('openField', { field: item.type });
           
           
         },

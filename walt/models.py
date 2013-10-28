@@ -158,8 +158,8 @@ class Document(models.Model):
   REFERENCE_RESOURCE = 'rD'
   REFERENCE_RIGHTS = 'rR'
   REFERENCE_CONTROVERSY = 'rY'
-  REFERENCE_CONTROVERSY_WEB = 'rW'
-  REFERENCE_CONTROVERSY_VIDEO = 'rV'
+  REFERENCE_CONTROVERSY_WEB = 'ControversyWeb'
+  REFERENCE_CONTROVERSY_VIDEO = 'ControversyVideo'
 
   TYPE_CHOICES = (
     #( REFERENCE_COURSE, 'ref. course'),
@@ -207,7 +207,7 @@ class Document(models.Model):
   related = models.ManyToManyField("self", symmetrical=True, null=True, blank=True)
   parent  = models.ForeignKey("self", null=True, blank=True, related_name="children")
   status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DRAFT, blank=True, null=True)
-  type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=TEXT)
+  type = models.CharField(max_length=32, choices=TYPE_CHOICES, default=TEXT)
 
   # tags and metadata. Reference is thre Reference Manager ID field (external resource then)
   tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !

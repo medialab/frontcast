@@ -118,9 +118,10 @@
     TEXT: 'T', // a note (at least originally)
     COMMENT: 'C',
     REFERENCE_CONTROVERSY: 'rY',
-    REFERENCE_CONTROVERSY_VIDEO: 'rV',
-    REFERENCE_CONTROVERSY_WEB: 'rW'
+    REFERENCE_CONTROVERSY_VIDEO: 'ControversyVideo',
+    REFERENCE_CONTROVERSY_WEB: 'ControversyWeb'
   };
+
 
   walt.UI_STATUS_LOCKED = 'locked';
   walt.UI_STATUS_UNLOCKED = 'unlocked';
