@@ -40,7 +40,7 @@
               </a>
             </li>
           {% if user.is_authenticated %}
-            <li data-scene="me">
+            <li data-scene="me|re">
               <a href="{% url 'walt_home' %}#/me" data-toggle="tooltip" title="{{user.username}}'s documents" data-placement="right">
                 <div class="icon">
                   <i class="icon-male"></i>

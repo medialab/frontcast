@@ -53,11 +53,55 @@
             if(data.result && data.result.length)
               blf.control.dispatchEvent('editEntry', { entry: data.result.pop() });
             else{
+              var creators = [],
+                  person = {},
+                  affiliation = {},
+                  name_family,
+                  name_given,
+                  institution;
+
+              if(item.tags.AUTHOR) // BIBBLIB MADNESS :D
+                for(var i in item.tags.AUTHOR){
+                  name_family = item.tags.AUTHOR[i].name.match(/([^,]+),/);
+                  if(!name_family) // skip useless tags
+                    continue;
+                  name_family = name_family.pop().trim();
+                  name_given = item.tags.AUTHOR[i].name.match(/,([^\(]+)\(?/).pop().trim();
+
+                  person = {
+                    rec_metajson: 1,
+                    rec_class: 'Person',
+                    name_given: name_given,
+                    name_family: name_family
+                  };
+
+                  institution = item.tags.AUTHOR[i].name.match(/\(([^\)]+)\)?/);
+                  if(institution)
+                    creators.push({
+                      role: 'aut',
+                      agent: person,
+                      affiliation: {
+                        agent:{
+                          name: institution.pop().trim(),
+                          rec_class: "Orgunit",
+                          rec_metajson: 1
+                        },
+                        role: 'undetermined'
+                      }
+                    });
+                  else
+                    creators.push({
+                      role: 'aut',
+                      agent: person
+                    });
+                };
+              //debugger
               // brand new reference (with a GIVEN rec_id)
               blf.control.dispatchEvent('openField', {field: item.type, entry: {
                 title: item.title,
-                rec_type: 'ControversyVideo',
-                rec_id: item.reference
+                rec_type: item.type,
+                rec_id: item.reference,
+                creators: creators
               }});
             }
             // resize 

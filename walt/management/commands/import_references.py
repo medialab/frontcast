@@ -46,16 +46,16 @@ class Command(BaseCommand):
             self.stdout.write("    (line %s)" % counter)
             
             # author
-            first_name = row['first_name']
-            last_name = row['last_name']
-            tag_author = "%s, %s" % (last_name, first_name)
+            first_name = row['first_name'].strip()
+            last_name = row['last_name'].strip()
+            affiliation = row['affiliation'].strip()
+            tag_author = "%s, %s (%s)" % (last_name, first_name, affiliation)
 
             # cfr Document Model
             document_title = row['document_title']
             document_reference = row['document_reference']
             
             tag_year = row['document_tag_year']
-            tag_affiliation = row['affiliation']
             tag_course = row['course_code']
             
 
@@ -85,10 +85,10 @@ class Command(BaseCommand):
                 self.stdout.write("        - slug  : %s" % d.slug)
 
             # create institution Tag
-            t_institution, created = Tag.objects.get_or_create(slug=slugify(tag_affiliation), type=Tag.INSTITUTION, defaults={
-                'name': tag_affiliation
+            t_institution, created = Tag.objects.get_or_create(slug=slugify(affiliation), type=Tag.INSTITUTION, defaults={
+                'name': affiliation
             })
-            self.stdout.write("        - inst. : %s" % tag_affiliation)
+            self.stdout.write("        - inst. : %s" % affiliation)
 
             # create year Tag
             t_year, created = Tag.objects.get_or_create(slug=slugify(tag_year), type=Tag.DATE, defaults={
