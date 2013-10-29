@@ -1,3 +1,5 @@
+import logging
+
 from datetime import datetime
 
 from django.conf import settings
@@ -14,6 +16,7 @@ from walt.models import Assignment, Profile, Document, Tag, Task
 from walt.forms import DocumentForm
 from walt.utils import get_document_filters
 
+logger = logging.getLogger('glue')
 
 def index(request):
   return Epoxy(request).json()
@@ -338,18 +341,17 @@ def biblib_proxy(request):
   return HttpResponse(response.read())
 
 
-@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def biblib_proxy_safe(request):
   # it *should'nt* allow save/edit requests. User proxy_safe instead
   import urllib2, json
 
   # filter uifiled, requests action according to role
   #result = Epoxy(request)
-
+  logger.info('proxy biblib')
   # get request as an arbitrary object
   r = '%s'%request.read()
   data = json.loads(r)
-  
+  logger.info('... to be sent %s' % r)
   # inject role in request
   if data['method'] in ["save", "field", "fields", "set_metadata_property"]:
     if request.user.is_staff:
@@ -365,9 +367,10 @@ def biblib_proxy_safe(request):
 
   req = urllib2.Request(settings.BIBLIB_ENDPOINT, json.dumps(data))
   response = urllib2.urlopen(req)
-
+  rs = '%s'%response.read()
+  logger.info('... received %s' % rs[:64])
   # set the body
-  return HttpResponse(response.read())
+  return HttpResponse(rs)
 
 
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
