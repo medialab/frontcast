@@ -13,6 +13,9 @@ frontcast.wsgi
 
 sqlite/frontcast.db
 
+uwsgi_command_line.sh
+frontcast_nginx.conf
+
 *.mp4
 *.ogv
 *.webm
