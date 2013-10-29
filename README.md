@@ -19,7 +19,7 @@ Note: we use '/path/to/' as base folder
 Create your frontcast virtualenv:
 
 	$ mkvirtualenv frontcast
-	$ cd frontcast
+	$ cd path/to/frontcast
 	$ pip install -r requirements.txt
 
 … and create the lacking folders (change permissions according to your system configuration)
@@ -28,6 +28,24 @@ Create your frontcast virtualenv:
 	
 
 We added sqlite folder because we will use a sqlite db. Make sure that apache user has the right to write the .db parent folder.
+
+
+Import Controverses with their references from a csv file
+---
+Let's assume you have a csv file named `frontcast-integral-2013.csv` containing the datas of a list of authors and a reference to a document (existing or not); let's also assume that this document is a *well structured* CSV file like this below, where the *document_reference* assures the uniqueness of the document across the rows while the other rows referring to the same document_reference value are the different authors involved:
+
+	first_name,last_name,affiliation,affilition_acronym,user_ldap,course_name,course_code,document_title,document_reference,task,user_tag_role,document_tag_year
+	Rossi,Piercarlo,Sciences Po,scpo,,cartographie de la controverse,XXXXXXXX,Les bonnes addresses ,rec_id_XXX,video,auteur,2013
+	Verdi,Giancarlo Michele,MIT,mit,,cartographie de la controverse,XXXXXXXX,Les bonnes addresses ,rec_id_XXX,video,auteur,2013
+	
+	
+We created a management command import_references to facilitate this task
+	$ cd /path/to/frontcast
+	$ workon frontcast
+ 	$ python manage.py import_references --csv=frontcast-integral-2013.csv --owner=daniele.guido
+ 	
+ 
+
 
 How to compile handlebars templates
 ---
