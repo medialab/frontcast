@@ -222,7 +222,8 @@ class Document(models.Model):
     argument_list =[
       Q(title__icontains=query),
       Q(abstract__icontains=query),
-      Q(reference__icontains=query)
+      Q(reference__icontains=query),
+      Q(tags__name__icontains=query)
     ]
     return reduce(operator.or_, argument_list)
 
