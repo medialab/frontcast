@@ -41,6 +41,11 @@ class Command(BaseCommand):
         # owner will be used as default owner; you can change it later
         owner = User.objects.get(username=options['owner'])
         self.stdout.write("    using <user:%s> as owner\n\n" % owner.username)
+        document_translate_types = {
+          'video': 'ControversyVideo'
+        }
+
+        raw_input("press any key to continue");
 
         for counter,row in enumerate(c):
             self.stdout.write("    (line %s)" % counter)
@@ -54,7 +59,8 @@ class Command(BaseCommand):
             # cfr Document Model
             document_title = row['document_title']
             document_reference = row['document_reference']
-            
+            document_type = document_translate_types[row['task'].strip()]
+
             tag_year = row['document_tag_year']
             tag_course = row['course_code']
             
@@ -69,6 +75,7 @@ class Command(BaseCommand):
                 d = Document(
                     title=document_title,
                     reference=document_reference,
+                    type=document_type,
                     language='en',
                     owner=owner
                 )
@@ -79,10 +86,23 @@ class Command(BaseCommand):
             else:
                 d = documents[0]
                 self.stdout.write("        Document reference %s already stored" % document_reference)
+                if d.type != document_type:
+                  while True:
+                    allow_changes = raw_input("        ====> Change the document type from '%s' to '%s'? [y/n]" % (d.type, document_type));
+                    if allow_changes.lower() not in ['y','n']:
+                      continue
+                    else:
+                      if allow_changes.lower() == 'y':
+                        d.type = document_type
+                        d.save()
+
+                      break
+                self.stdout.write("        - type  : %s" % d.type)
                 self.stdout.write("        - refid : %s" % d.reference)
                 self.stdout.write("        - id    : %s" % d.id)
                 self.stdout.write("        - title : %s" % d.title)
                 self.stdout.write("        - slug  : %s" % d.slug)
+
 
             # create institution Tag
             t_institution, created = Tag.objects.get_or_create(slug=slugify(affiliation), type=Tag.INSTITUTION, defaults={
