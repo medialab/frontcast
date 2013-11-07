@@ -221,6 +221,7 @@ class Document(models.Model):
   def search(query):
     argument_list =[
       Q(title__icontains=query),
+      Q(slug__icontains=query),   # add this only when there are non ascii chars in query. transform query into a sluggish field. @todo: prepare query as a slug
       Q(abstract__icontains=query),
       Q(reference__icontains=query),
       Q(tags__name__icontains=query)
@@ -258,7 +259,7 @@ class Document(models.Model):
   def __unicode__(self):
     return "%s (%s) a.k.a. %s" % (self.slug, self.language, self.title)
 
-  # use this function if and only if the pin content is in bibtex (CLEAN) format
+  
   def bib(self):
     return bibtex(self.content)
 
@@ -284,10 +285,16 @@ class Document(models.Model):
       for f in filepaths:
         # todo external file resolver e.g. if not http://
         parts = re.split('[/.]',f.strip('/'))
-        attachments.append({
+        attachment = {
+          'type': 'video' if parts[-1] in ['mp4','ogg'] else 'image' ,
           'ext': parts[-1],
           'src': reverse('walt_storage', args=parts)
-        })
+        }
+        if attachment['type'] == 'video':
+          parts[-1] = '%s.%s' % (parts[-1],'png')
+          attachment['poster'] = reverse('walt_storage', args=parts)
+        attachments.append(attachment)
+
     return attachments
 
   def get_organized_tags(self):

@@ -58,7 +58,10 @@ def document(request, pk):
   result = Epoxy(request)
 
   try:
-    d = Document.objects.get(pk=pk, status=Document.PUBLIC)
+    if type(pk) == int:
+      d = Document.objects.get(pk=pk, status=Document.PUBLIC)
+    else:
+      d = Document.objects.get(slug=pk, status=Document.PUBLIC)
   except Document.DoesNotExist,e:
     return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
 

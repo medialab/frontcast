@@ -22,14 +22,14 @@ api_urlpatterns = patterns('walt.api',
     url(r'u/(?P<username>[:a-zA-Z\.\-\d]+)/document/(?P<slug>[:a-zA-Z_\-\d]+)$', 'user_document', name='walt_api_user_document'),
 
     url(r'r/document/$', 'reference_documents', name='walt_api_reference_documents'),
-    url(r'r/document/(?P<pk>\d+)$', 'reference_document', name='walt_api_reference_document'),
+    url(r'r/document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'reference_document', name='walt_api_reference_document'),
 
     # staff only: view all possible documents
     url(r'w/document/$', 'world_documents', name='walt_api_world_documents'),
 
     url(r'document/$', 'documents', name='walt_api_documents'),
     url(r'document/filters/$', 'documents_filters', name='walt_api_documents_filters'),
-    url(r'document/(?P<pk>\d+)/$', 'document', name='walt_api_document'),
+    url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)/$', 'document', name='walt_api_document'),
 
 
     url(r'biblib/$', 'biblib_proxy', name='walt_api_biblib_proxy'),
@@ -38,7 +38,7 @@ api_urlpatterns = patterns('walt.api',
     url(r'oembed/(?P<provider>[a-z]+)/$', 'oembed_proxy', name='walt_api_oembed_proxy'),
 
     url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects'),
-    url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>\d+)$', 'get_object'),
+    url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'get_object'),
 
 )
 
@@ -73,7 +73,7 @@ urlpatterns = patterns('walt.views',
     #//url(r'^humans\.txt$', direct_to_template, {'template': 'frontcast/humans.txt', 'mimetype': 'text/plain'}),
     # url(r'^crossdomain\.xml$', direct_to_template, {'template': 'frontcast/crossdomain.xml', 'mimetype': 'text/xml'}),
 
-    url(r'^s/(?P<folder>[a-zA-Z\d\-]+)/(?P<index>[a-z\-_]+)\.(?P<extension>[a-z\d]+)/$', 'storage', name='walt_storage'), #i.e. proxy to storage space
+    url(r'^s/(?P<folder>[a-zA-Z\d\-]+)/(?P<index>[A-Za-z\-_\d]+)\.(?P<extension>[\.a-z\d]+)/$', 'storage', name='walt_storage'), #i.e. proxy to storage space
 
     url(r'^video/$', 'spiff_video', name='walt_video'), # add video metadata ? provide upload features.
 

@@ -203,16 +203,18 @@
       } else if(name == 'placeholder'){
         var num_of_li = _.li.length,
             li_width = (100/num_of_li);
+            
+        if(num_of_li > 1){
+          html = '<div class="dots placeholders"><ol>'; // style="margin:0; padding:0; position:absolute; width:100%; bottom: 0px; height:20px; background:rgba(255,255,255,.9)
+          
+            $.each(_.li, function(index) {
+              html += '<li style="width:' + li_width +'%; left:' + (li_width*index) + '%" class="' + (index == _.i ? name + ' active' : name) + '"><div class="inner"></div></li>'; // position:absolute; text-align:center; height:30px; 
+            });
 
-        html = '<div class="dots placeholders"><ol>'; // style="margin:0; padding:0; position:absolute; width:100%; bottom: 0px; height:20px; background:rgba(255,255,255,.9)
-        
-          $.each(_.li, function(index) {
-            html += '<li style="width:' + li_width +'%; left:' + (li_width*index) + '%" class="' + (index == _.i ? name + ' active' : name) + '"><div class="inner"></div></li>'; // position:absolute; text-align:center; height:30px; 
-          });
-
-        html += '</ol>';
-        html += '<div class="rail" ><div class="cursor" style="width:' + li_width + '%; "><div class="inner"></div></div></div>';
-        html += '</div>'; 
+          html += '</ol>';
+          html += '<div class="rail" ><div class="cursor" style="width:' + li_width + '%; "><div class="inner"></div></div></div>';
+          html += '</div>'; 
+        };
       } else {
         html = '<div class="';
         html = html + name + 's">' + html + name + ' prev">' + _.o.prev + '</div>' + html + name + ' next">' + _.o.next + '</div></div>';
