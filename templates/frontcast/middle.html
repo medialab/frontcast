@@ -1,4 +1,4 @@
-{% extends "walt/boilerplate.html" %}
+{% extends "frontcast/boilerplate.html" %}
 {% load i18n %}
 
 
@@ -89,7 +89,7 @@
       </div>
     </sidebar>
 
-    <div class="main">
+    <div class="main" style="overflow:hidden">
       <div class="inner">
         
       {% if user.is_authenticated %}
@@ -99,7 +99,47 @@
         </div>
         {% endblock %}
       {% endif %}
+      <div id="dropdown-filters" class="visible">
+        <div class="inner" style="">
+          <div class="hidden" style="height:180px; position:relative;">
+            <div style="height: 180px; ">
 
+              <div class="left">
+                <div class="center">
+                  <div class="action search">
+                    <div class="toggle-dropdown">-- CLOSE SEARCH --</div>
+                    <label><i>free search</i></label>
+                    <i class="icon icon-search"></i>
+                    <div class="input-wrapper"><input type="text" id="search" placeholder="search documents"/><div class="shadow"></div></div>
+                  </div>
+                </div>
+                <div class="inner">&nbsp;</div>
+              </div>
+              <div class="right">
+                <div class="inner">&nbsp;</div>
+              </div>
+
+              
+            </div>
+          </div>
+          <div class="menu" style="height:60px; position:relative">
+            <div class="left">
+              <div class="center">
+                <div class="toggle-dropdown">-- SEARCH --</div>
+              </div>
+              <div class="inner">
+                1 of 324 
+              </div>
+            </div>
+            <div class="right">
+              <div class="inner"><div id="sciences-po-logo"><img src="{{ STATIC_URL }}/img/sciences-po.svg" /></div></div>
+            </div>
+          </div>
+          <div class="rail" style="position:absolute; width:100%; bottom: -2px; height: 3px">
+            <div class="cursor" style="position:absolute;left: 5%; width: 6%; background:crimson; height: 3px;"></div>
+          </div>
+        </div>
+      </div>
       {% block page %}
 
       {% endblock %}
@@ -107,48 +147,7 @@
       </div>
     </div>
 
-    <div class="filters">
-      <div class="action search">
-          <i class="icon icon-search"></i>
-          <input type="text" id="search" placeholder="search documents"/>
-        </div>
-       
-      <!--
-      <h2>filters</h2>
-
-      <div class="filter">
-        <h3>institutions</h3>
-        <div class="fields">
-          <div>Video</div><div><span>5</span></div>
-        </div>
-        <div>
-          <div>Websites</div><div><span>5</span></div>
-
-        </div>
-        <div>
-          <div>Dossiers</div><div><span>5</span></div>
-
-        </div>
-      </div>
-
-      <div class="filter">
-        <h3>types</h3>
-        <div>
-          Video
-
-        </div>
-        <div>
-          Website
-
-        </div>
-        <div>
-          Dossiers
-
-        </div>
-      </div>
-    -->
-      
-    </div>
+    
     <!-- div class="references" ng-controller="ReferenceListCtrl">
       <h2>bibliography</h2>
 

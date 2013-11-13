@@ -4,30 +4,14 @@
 		{
 			"file_exclude_patterns":
 			[
-				"*.min.js"
+				"*.min.js",
+        ".gitignore",
+        "*.LGPL",
+        "*.CECILL*",
+        "COPYING",
+        "requirements.txt"
 			],
-			"name": "js",
-			"path": "static/js"
-		},
-		{
-			"name": "less",
-			"path": "static/less"
-		},
-		{
-			"name": "frontcast",
-			"path": "frontcast"
-		},
-		{
-			"name": "walt:templates",
-			"path": "templates/walt"
-		},
-		{
-			"name": "walt:app",
-			"path": "walt"
-		},
-		{
-			"name": "glue:app",
-			"path": "glue"
+			"path": "."
 		}
 	],
 	"settings":

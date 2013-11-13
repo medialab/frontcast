@@ -316,13 +316,9 @@
               case  walt.SCENE_DOCUMENT_VIEW:
                 services = [
                   {
-                    service: 'get_documents',
-                    params:{
-                      limit: 1,
-                      offset:0,
-                      filters: JSON.stringify({
-                        slug: scene_args.slug
-                      })
+                    service: 'get_document',
+                    shortcuts: {
+                      slug: scene_args.slug 
                     }
                   }
                 ];
@@ -555,6 +551,28 @@
 
       */
       services: [
+        { 
+          id: 'get_document',
+          type: 'GET',
+          url: walt.urls.document,
+          dataType: 'json',
+          data: function(input) {
+            return input.params;
+          },
+          success: function(data) {
+            var items = {};
+            
+            this.dispatchEvent('data__update', {
+              data_documents: {
+                items: [data.object],
+                ids: [''+data.object.id],
+                length: 1,
+                limit: 1,
+                offset: 0
+              }
+            });
+          }
+        },
         { 
           id: 'get_documents',
           type: 'GET',

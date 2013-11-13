@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django.contrib.markup',
     'walt',
+    'frontcast',
     'glue'
 
 )

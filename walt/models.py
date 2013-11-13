@@ -282,10 +282,11 @@ class Document(models.Model):
       # pseudo Yaml
       filepaths = self.remote.strip(' \t\n\r').split('\n') # split multilines (i.e for video)
       
-      for f in filepaths:
+      for i,f in enumerate(filepaths):
         # todo external file resolver e.g. if not http://
         parts = re.split('[/.]',f.strip('/'))
         attachment = {
+          'id': '%s-%s' % (self.id, i),
           'type': 'video' if parts[-1] in ['mp4','ogg'] else 'image' ,
           'ext': parts[-1],
           'src': reverse('walt_storage', args=parts)

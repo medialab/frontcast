@@ -42,10 +42,14 @@ api_urlpatterns = patterns('walt.api',
 
 )
 
+frontcast_urlpatterns = patterns('frontcast.views',
+   url(r'^$', 'home', name='frontcast_home'),
+)
 
 urlpatterns = patterns('walt.views',
     # home
     url(r'^$', 'home', name='walt_home'),
+   
 
     # login / logout
     url(r'^logout/$', 'logout_view', name='walt_logout'),
@@ -82,7 +86,8 @@ urlpatterns = patterns('walt.views',
 
 
     # restful api
-    url(r'^api/', include(api_urlpatterns))
+    url(r'^api/', include(api_urlpatterns)),
+    url(r'^frontcast/', include(frontcast_urlpatterns))
 )
 
 

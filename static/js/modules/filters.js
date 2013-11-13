@@ -9,7 +9,8 @@
     domino.module.call(this);
 
     var _self = this,
-        collection;
+        collection,
+        dropdown;
 
     this.triggers.events.data_documents_filters__updated = function(controller) {
       var scene = controller.get('scene'),
@@ -31,6 +32,14 @@
       // initialize visualization plugin
       walt.verbose('(Filters) listen to init');
       collection = $(".filters").filters();
+      dropdown = $("#dropdown-filters").on('click', '.toggle-dropdown', function(event) {
+        if(!dropdown.hasClass('visible')) {
+          dropdown.addClass('visible');
+          $("#search").focus();
+        } else {
+          dropdown.removeClass('visible');
+        }
+      });
     };
   };
 

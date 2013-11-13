@@ -188,12 +188,12 @@
 
 
     this.enable_header = function() {
-      $('header').show();
+      //$('header').show();
     }
 
 
     this.disable_header = function() {
-      $('header').hide();
+      //$('header').hide();
     }
 
 
@@ -222,7 +222,6 @@
           collection,
           item;
 
-      
       _self.disable_blf_editor();
 
       switch(scene){
@@ -253,7 +252,7 @@
           item = walt.misc.first(collection.items);
           _self.enable_editor(item);
 
-          _self.disable_leader();
+          _self.enable_leader(item);
           _self.disable_header();
 
           break;
@@ -263,6 +262,9 @@
           
           _self.enable_leader(item);
           _self.disable_header();
+          break;
+        default:
+          walt.error('no scene found')
           break;
       }
 

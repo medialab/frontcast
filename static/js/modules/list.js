@@ -6,7 +6,7 @@
     domino.module.call(this);
 
     var _self = this;
-    this.box = $(selector);
+    this.box = $(selector).wall();
     this.selector = selector;
 
     walt.events.LIST__LISTOF_COMPLETED = 'LISTOF_COMPLETED';
@@ -31,7 +31,7 @@
           data = controller.get('data_' + settings.namespace);
 
       walt.verbose('(List) listof:',data.length, 'items, selector:',settings.selector);
-      
+      _self.box.wall('set_property',{selector: settings.selector});
       //_self.unsticky();
 
       /*
@@ -43,10 +43,7 @@
       $(settings.selector, _self.box).each(function() {
         var item = $(this);
         if(data.ids.indexOf(item.attr('data-id')) == -1) {
-          walt.move.destroy(item, {
-            delay:settings.delay
-          });
-          settings.delay += 70;
+          walt.move.destroy(item, {});
         }
       });
 
@@ -67,7 +64,6 @@
               $(previous_item).after(settings.template(data.items[i]));
 
             item = $(settings.prefix + data.ids[i]);
-            item.css('opacity',0);
             var args = {
               delay: settings.delay
             };
@@ -80,18 +76,18 @@
             placeholders: true
 
           });
-          walt.move.fadein(item, {
-            delay: settings.delay
-          });
+          //walt.move.fadein(item, {
+          //  delay: settings.delay
+          //});
           
           previous_item = settings.prefix + data.ids[i]; // maze.log(i, contents[ ids[i] ].name, ids[i] );
           settings.delay += 170;
       }
 
       // setup sliders
+      _self.box.wall('update');
 
-
-      // refresh masonry layout after settings.delay has passed
+      /* refresh masonry layout after settings.delay has passed
       if(_self.container){
         _self.collection = new Masonry(_self.container, {
           gutter: 12,
@@ -111,8 +107,8 @@
             walt.trigger(walt.events.LIST__LISTOF_COMPLETED);
           }
         }, settings.delay);
-      };
-
+      };*/
+      walt.trigger(walt.events.LIST__LISTOF_COMPLETED);
 
     };
 
