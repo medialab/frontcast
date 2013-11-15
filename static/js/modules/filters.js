@@ -17,20 +17,20 @@
           filters = controller.get('data_documents_filters');
 
 
-      walt.verbose('(Filters) listen to data_documents_filters__update', filters);
+      walt.verbose('(Filters) listens to data_documents_filters__update', filters);
 
     };
 
     this.triggers.events.scene__synced = function(controller) {
       var filters = controller.get('data_documents_filters');
       
-      walt.verbose('(Filters) listen to scene__synced', filters);
+      walt.verbose('(Filters) listens to scene__synced', filters);
       walt.trigger('FILTERS__START', filters);
     }
 
     this.triggers.events.init = function(controller) {
       // initialize visualization plugin
-      walt.verbose('(Filters) listen to init');
+      walt.verbose('(Filters) listens to init');
       collection = $(".filters").filters();
       dropdown = $("#dropdown-filters").on('click', '.toggle-dropdown', function(event) {
         if(!dropdown.hasClass('visible')) {

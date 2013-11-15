@@ -5,7 +5,7 @@
     <div class="tags">
       {{#foreach tags.Date}}<span class="tag date">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
       
-      
+      <div class="tag type">{{type}}</div>
       <!--
       {{#each tags.AUTHOR}}
         {{this.name}} -

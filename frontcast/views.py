@@ -25,11 +25,6 @@ from frontcast import local_settings
 
 def home( request ):
   data = _shared_data( request, tags=['home'] )
-  #a = Assignment.objects.filter(unit__profile__user=request.user, date_completed__isnull=True)
-  #if a.count() > 0:
-  # t = a[0].task
-  # return task( request, t.id)
-
   return render_to_response(  "frontcast/index.html", RequestContext(request, data ) )
 
 

@@ -180,6 +180,20 @@
           triggers: 'lock__update',
           dispatch: ['lock__updated']
         },
+        {
+          id: 'ui',
+          description: 'contains all necessary dimensions of the window object. Resize listener is stored in the layout module',
+          type: {
+            height: 'number',
+            width: 'number'
+          },
+          value: {
+            height: 0,
+            width: 0
+          },
+          triggers: 'ui__update',
+          dispatch: ['ui__updated']
+        }
       ],
       shortcuts: [
         {

@@ -17,7 +17,7 @@
     this.triggers.events.scene__synced = function(controller) {
       var scene = controller.get('scene');
 
-      walt.verbose('(Menu) listen to scene__updated');
+      walt.verbose('(Menu) listens to scene__updated');
 
       if(scene != previous_scene) {
         entries.each(function(i) {
@@ -35,7 +35,7 @@
     };
 
     this.triggers.events.init = function(controller) {
-      walt.verbose('(Menu) listen to init');
+      walt.verbose('(Menu) listens to init');
       sidebar = $('sidebar').first();
       entries = sidebar.find('li[data-scene]');
 

@@ -49,7 +49,7 @@ frontcast_urlpatterns = patterns('frontcast.views',
 urlpatterns = patterns('walt.views',
     # home
     url(r'^$', 'home', name='walt_home'),
-   
+    
 
     # login / logout
     url(r'^logout/$', 'logout_view', name='walt_logout'),

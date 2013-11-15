@@ -154,6 +154,8 @@
 
 
     Handlebars.registerHelper("foreach",function(arr,options) {
+        if(!arr)
+          return '';
         if(options.inverse && !arr.length)
         return options.inverse(this);
 

@@ -30,11 +30,11 @@
       var scene_params = controller.get('scene_params');
       
       input.val(scene_params.search || '')
-      walt.verbose('(Search) listen to scene__synced');
+      walt.verbose('(Search) listens to scene__synced');
     }
 
     this.triggers.events.init = function(controller) {
-      walt.verbose('(Search) listen to init');
+      walt.verbose('(Search) listens to init');
       input = $("#search").on('keydown', function(event) {
         if(event.which == 13) _self.send_query();
       });

@@ -72,7 +72,7 @@
 
 
     this.triggers.events.init = function(controller) {
-      walt.verbose('(Route) listen to init');
+      walt.verbose('(Route) listens to init');
       for(var i in walt.ROUTES){
         var route = crossroads.addRoute(walt.ROUTES[i].path),
             scene = walt.ROUTES[i].scene;
@@ -91,7 +91,7 @@
           scene_args = controller.get('scene_args'),
           hash = _routes[scene].interpolate(scene_args).replace(/^[\/]+/,'');
 
-      walt.verbose('(Route) listen to scene__updated');
+      walt.verbose('(Route) listens to scene__updated');
       walt.verbose('... setting hash:', hash);
       
       hasher.setHash(hash);

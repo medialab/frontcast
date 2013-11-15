@@ -35,6 +35,22 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   return "<div id=\"panels\" class=\"container\">\n  <div data-panel=\"create\" style=\"display:none;\">\n   <div class=\"create-form\"></div>\n  </div>\n  <div data-panel=\"fields\" style=\"display:none;\">\n    <div class=\"select-field\"></div>\n  </div>\n  <div data-panel=\"advancedSearch\" style=\"display:none;\">\n    <div class=\"advanced-search\"></div>\n  </div>\n  <div data-panel=\"list\" style=\"display:none;\">\n    <ul class=\"entries-list\"></ul>\n  </div>\n</div>";
   });
+templates['column'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<div class=\"wall-column\">\n  \n  <div class=\"wall-column-header\">\n    <div class=\"wall-column-header-line\"></div>\n      <div class=\"wall-column-shadow\"><div class=\"inner\"></div>\n    </div>\n  </div>\n  \n  <div class=\"wall-column-box nano\">\n    <div class=\"content\"></div>\n  </div>\n  \n  <div class=\"wall-column-footer\">\n    <div class=\"wall-column-shadow\">\n      <div class=\"inner\"></div>\n    </div>\n  </div>\n  \n</div>";
+  });
+templates['column_placeholders'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<div class=\"wall-column-placeholder left\">\n  <div class=\"shadow\"></div>\n</div>\n<div class=\"wall-column-placeholder right\">\n  <div class=\"shadow\"></div>\n</div>";
+  });
 templates['document'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -294,7 +310,11 @@ function program30(depth0,data) {
   options = {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data};
   stack2 = ((stack1 = helpers.foreach || depth0.foreach),stack1 ? stack1.call(depth0, ((stack1 = depth0.tags),stack1 == null || stack1 === false ? stack1 : stack1.Date), options) : helperMissing.call(depth0, "foreach", ((stack1 = depth0.tags),stack1 == null || stack1 === false ? stack1 : stack1.Date), options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n      \n      \n      <!--\n      ";
+  buffer += "\n      \n      <div class=\"tag type\">";
+  if (stack2 = helpers.type) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.type; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "</div>\n      <!--\n      ";
   stack2 = helpers.each.call(depth0, ((stack1 = depth0.tags),stack1 == null || stack1 === false ? stack1 : stack1.AUTHOR), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n    -->\n    </div>\n    <h3>";

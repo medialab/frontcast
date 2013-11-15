@@ -31,9 +31,16 @@
           data = controller.get('data_' + settings.namespace);
 
       walt.verbose('(List) listof:',data.length, 'items, selector:',settings.selector);
-      _self.box.wall('set_property',{selector: settings.selector});
+      _self.box.wall('set_property',{
+        selector: settings.selector,
+        template: settings.template,
+        data: data,
+        item_id_prefix: '#d-',
+        column_height: controller.get('ui').height - 90
+      });
       //_self.unsticky();
-
+      _self.box.wall('update');
+      return;
       /*
         uhm..
         ids variable contains every 'must-in' item.
@@ -85,7 +92,7 @@
       }
 
       // setup sliders
-      _self.box.wall('update');
+      //_self.box.wall('update');
 
       /* refresh masonry layout after settings.delay has passed
       if(_self.container){
@@ -113,7 +120,7 @@
     };
 
     this.triggers.events.init = function(controller, event) {
-      walt.verbose('(List) listen to init, selector:', _self.selector);
+      walt.verbose('(List) listens to init, selector:', _self.selector);
       _self.container = document.querySelector(_self.selector);
 
       
@@ -345,7 +352,7 @@
     this.triggers.events.data_references__updated = function(controller) {
       var references = controller.get('data_references');
 
-      walt.verbose('(ListReferences) listen to data_references__updated');
+      walt.verbose('(ListReferences) listens to data_references__updated');
 
       $('#list-of-documents').find('[data-reference-id]').each(function(i, e) {
         var el = $(this),
