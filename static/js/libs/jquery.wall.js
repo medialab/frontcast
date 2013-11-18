@@ -191,8 +191,13 @@
         });
       
       walt.log(t, s.settings.column_height);
-      if( t> s.settings.column_height - 48){
-        column.find('.content').scrollTop( t-s.settings.column_height/2);
+
+      if( t > s.settings.column_height - 48 || t < 0){
+        column.find('.content').animate({
+          scrollTop: t < 0? 0 : t-s.settings.column_height/2
+        },{
+          queue: false
+        })
       }
 
     }
@@ -315,9 +320,12 @@
       // reset columns
       s.columns = {};
       s.items = [];
+      s.selected_index = -1;
+      s.selected_column = -1;
       s.wall.empty();
 
-      console.log(data.length, data.ids.length,s.settings.items_per_column);
+      // reset selected_index
+
       for(var i in data.ids) {
         s.items.push(s.settings.template(data.items[i]));
       };
