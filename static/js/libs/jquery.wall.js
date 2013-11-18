@@ -52,7 +52,7 @@
       if(s.settings.view=='wall') {
         s.single.css('margin-top', -s.settings.column_height - 48);
       } else {
-        s.navigate(s.selected_index);
+        s.navigate(event, s.selected_index);
         s.single.css('margin-top', 0);
       }
     }
@@ -72,8 +72,7 @@
       visualize selected item in single view
     */
     s.navigate = function(event, index){
-      if(s.settings.view == 'single')
-        s.single.append(s.selected_item.html());
+      s.single.empty().append(s.items[index]);
     }
 
 
@@ -151,6 +150,8 @@
 
 
     s.select = function(event, index){
+      if(!s.settings.data.ids[index])
+        return;
       var item = $(s.settings.item_id_prefix + ''+s.settings.data.ids[index]),
           column = item.closest('.wall-column'),
           column_cursor = column.index(),
@@ -171,6 +172,7 @@
       s.selected_prev_index = item_cursor+1;
 
       if(s.selected_column == -1){
+        walt.log(column_cursor)
         s.columns[column_cursor].el.addClass('active');
       }else if(column_cursor != s.selected_column){
         s.columns[column_cursor].el.addClass('active');
@@ -181,6 +183,9 @@
       s.selected_column = column_cursor;
       s.trigger('update_info');
 
+      if(s.settings.view == 'single')
+        s.navigate(event, s.selected_index);
+      
       // scroll left
       //if( item.position().top > s.settings.column_height){
       if(s.columns[column_cursor].left + s.settings.column_width - s.wall.scrollLeft() > s.wall_width || s.columns[column_cursor].left < s.wall.scrollLeft())
@@ -190,8 +195,7 @@
           queue: false
         });
       
-      walt.log(t, s.settings.column_height);
-
+     
       if( t > s.settings.column_height - 48 || t < 0){
         column.find('.content').animate({
           scrollTop: t < 0? 0 : t-s.settings.column_height/2
@@ -199,6 +203,7 @@
           queue: false
         })
       }
+    
 
     }
 
@@ -248,9 +253,11 @@
         var id = $(this).attr('data-id');
         s.select(event, s.settings.data.ids.indexOf(id));
         
-        
+        if($(this).hasClass('active'))
+          s.switch_view(event,'single');
 
       });
+
       $('#wall-switch-to-list').on('click', function(event){
         s.switch_view(event, 'wall');
       });
@@ -395,6 +402,7 @@
       });
 
       s.resize();
+      debugger
       s.select(event,0);
       s.update_info();
 
