@@ -3,7 +3,17 @@
   var walls = {},
       cursor = 0;
 
+  var Cursor = function(){
+    var self = this;
 
+    this.column = -1; // current column index
+    this.item = -1; // current item index
+    this.length = 0; // current length
+
+    this.update = function(property, value){
+      self[property] = value;
+    }
+  };
   /*
     handle the collection of columns
   */
@@ -16,6 +26,7 @@
       selector: '.pin',
       item_id_prefix: '#pin-',
       column_selector: '.wall-column',
+
       item_template:  function(){ return '<div></div>'}, // handlebar function
       data:{}, /* {
                       ids: Array[49],
@@ -26,10 +37,51 @@
                     }
                 */
       column_template : Handlebars.templates.column,
-      column_placeholders_template: Handlebars.templates.column_placeholders
+      column_placeholders_template: Handlebars.templates.column_placeholders,
+
+      view: 'wall',
+      selected: 0,
+      next: 1,
+      prev: -1,
+      column: 0
     };
 
+
+    s.switch_view = function(event, view){
+      s.settings.view = view;
+      if(s.settings.view=='wall') {
+        s.single.css('margin-top', -s.settings.column_height - 48);
+      } else {
+        s.navigate(s.selected_index);
+        s.single.css('margin-top', 0);
+      }
+    }
+
+    s.update_info = function(event){
+      s.wall_index.text(s.selected_index + 1);
+      s.wall_total.text(s.settings.data.length);
+      s.wall_cursor.animate({
+        left: (s.selected_index/s.settings.data.length)*100 + '%',
+        width: Math.max(2, 100/s.settings.data.length )+ '%',
+      },{
+        queue:false
+      });
+    }
+
+    /*
+      visualize selected item in single view
+    */
+    s.navigate = function(event, index){
+      if(s.settings.view == 'single')
+        s.single.append(s.selected_item.html());
+    }
+
+
     s.columns = {};
+    s.items = [];
+    s.selected_index = -1;
+    s.selected_column = -1;
+
     s.lis = {}; // collection of mouse listeners
     s.timers = {}; //timeout vars 
 
@@ -38,7 +90,11 @@
       update: 'wall_update',
       set_property: 'wall_set_property',
       get_propery: 'wall_get_property',
-      resize: 'wall_resize'
+      resize: 'wall_resize',
+      change_cursor: 'wall_change_cursor',
+      switch_view: 'switch_view',
+      update_info: 'update_info',
+      select: 'wall_select'
     };
 
 
@@ -64,10 +120,7 @@
       s.timers.scrollabilly = setTimeout( function(){s.scrollabilly(scrollleft)}, 200); // evaulate reader position
     };
 
-    s.cursor = {
-      column: -1,
-      item: -1
-    }
+    s.cursor = new Cursor();
 
     s.scrollabilly = function(scrollleft){
       return
@@ -97,52 +150,110 @@
     };
 
 
+    s.select = function(event, index){
+      var item = $(s.settings.item_id_prefix + ''+s.settings.data.ids[index]),
+          column = item.closest('.wall-column'),
+          column_cursor = column.index(),
+          item_cursor =  index,
+          t = item.position().top;
+      
+      s.selected_item = item;
 
+      if(s.selected_index == -1)
+        item.addClass('active')
+      else if(s.selected_index != item_cursor) {
+        $(s.settings.selector + '.active', s.wall).removeClass('active');
+        item.addClass('active');
+      }
+      s.selected_index = item_cursor;
 
+      s.selected_next_index = item_cursor+1;
+      s.selected_prev_index = item_cursor+1;
+
+      if(s.selected_column == -1){
+        s.columns[column_cursor].el.addClass('active');
+      }else if(column_cursor != s.selected_column){
+        s.columns[column_cursor].el.addClass('active');
+        s.columns[s.selected_column].el.removeClass('active');
+        walt.verbose(  'chanced', column_cursor);
+      }
+
+      s.selected_column = column_cursor;
+      s.trigger('update_info');
+
+      // scroll left
+      //if( item.position().top > s.settings.column_height){
+      if(s.columns[column_cursor].left + s.settings.column_width - s.wall.scrollLeft() > s.wall_width || s.columns[column_cursor].left < s.wall.scrollLeft())
+        $(".wall").animate({
+          'scrollLeft':s.columns[column_cursor].left-s.wall_width/2+s.settings.column_width/2
+        },{
+          queue: false
+        });
+      
+      walt.log(t, s.settings.column_height);
+      if( t> s.settings.column_height - 48){
+        column.find('.content').scrollTop( t-s.settings.column_height/2);
+      }
+
+    }
+
+    s.previous = function(event){
+      s.settings.data.ids[s.selected_index - 1] && s.select(event, s.selected_index - 1);
+
+    };
+
+    s.next = function(event){
+      s.settings.data.ids[s.selected_index + 1] && s.select(event, s.selected_index + 1);
+    };
 
     s.init = function(el, options) {
       s.el = el;
+      /*
+        dom elements
+      */
       s.wall = $('<div/>',{
-          "class": "wall"
-        }).css({
-          position: 'relative',
-          width: '100%',
-          'overflow-y': 'hidden',
-          'overflow-x': 'scroll'
-        });
+        "class": "wall"
+      }).css({
+        position: 'relative',
+        width: '100%',
+        'overflow-y': 'hidden',
+        'overflow-x': 'scroll'
+      });
+
+      s.single = $('<div/>',{
+        'class': 'wall-single'
+      });
       
       s.el.empty()
         .css({position: 'relative', overflow: 'hidden'})
+        .append(s.single)
         .append(s.wall);
+      
+      s.wall_index = $('#wall-index');
+      s.wall_total = $('#wall-total');
+      s.wall_cursor = $('#wall-cursor')/*.pep({
+        axis: "x",
+        easeDuration: 500,
+        constrainTo: 'parent'
+      });*/
 
       s.wall.scroll(s.lis.wall_scroll);
-      s.wall.on('mouseenter', s.settings.selector, function(event){
-        var item = $(this),
-            column = item.closest('.wall-column'),
-            column_cursor = column.index(),
-            item_cursor =  column_cursor* s.settings.items_per_column + item.index();
+      s.wall.on('click', s.settings.selector, function(event){
         
-        if(s.cursor.item == -1)
-          item.addClass('active')
-        else if(s.cursor.item  != item_cursor){
-          $(s.settings.selector + '.active',s.wall).removeClass('active');
-          item.addClass('active');
-        }
-        s.cursor.item = item_cursor;
-
-        walt.verbose(s.cursor.item);
+        var id = $(this).attr('data-id');
+        s.select(event, s.settings.data.ids.indexOf(id));
         
-        if(s.cursor.column == -1){
-          s.columns[column_cursor].el.addClass('active');
-        }else if(column_cursor != s.cursor.column){
-          s.columns[column_cursor].el.addClass('active');
-          s.columns[s.cursor.column].el.removeClass('active');
-          walt.verbose(  'chanced', column_cursor);
-        }
+        
 
-        s.cursor.column = column_cursor;
+      });
+      $('#wall-switch-to-list').on('click', function(event){
+        s.switch_view(event, 'wall');
+      });
+      
 
-      })
+      $('#wall-previous').on('click', s.previous);
+
+      $('#wall-next').on('click', s.next);
       /*s.wall.pep({
         axis: "x",
         easeDuration: 500,
@@ -175,6 +286,7 @@
           column_height = column_height || s.settings.column_height;
 
       s.wall.height(column_height + 48);
+      s.single.height(column_height + 48).css('margin-top', -column_height - 48);
       s.el.height(column_height + 48);
 
       s.wall_width = s.wall.width();
@@ -191,9 +303,10 @@
       s.lis.wall_scroll();
     };
 
+    
+
     s.update = function(event) {
       var data = s.settings.data,
-          items = [],
           total = data.length,
           loaded = data.ids.length,
           desired_columns = Math.ceil(data.ids.length/s.settings.items_per_column),
@@ -201,11 +314,12 @@
 
       // reset columns
       s.columns = {};
+      s.items = [];
       s.wall.empty();
 
       console.log(data.length, data.ids.length,s.settings.items_per_column);
       for(var i in data.ids) {
-        items.push(s.settings.template(data.items[i]));
+        s.items.push(s.settings.template(data.items[i]));
       };
       
       /*
@@ -232,11 +346,11 @@
 
      
       //alert(desired_columns);
-      for(var index in items){
+      for(var index in s.items){
         var column_index = Math.floor(index/s.settings.items_per_column),
             column = s.columns[column_index].el;
 
-        $('.wall-column-box .content', column).append(items[index]);
+        $('.wall-column-box .content', column).append(s.items[index]);
 
         s.columns[column_index].items.push(index);
       };
@@ -273,6 +387,9 @@
       });
 
       s.resize();
+      s.select(event,0);
+      s.update_info();
+
     }
 
     s.set_property = function(event, data) {

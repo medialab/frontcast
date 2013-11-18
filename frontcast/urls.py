@@ -87,7 +87,6 @@ urlpatterns = patterns('walt.views',
 
     # restful api
     url(r'^api/', include(api_urlpatterns)),
-    url(r'^frontcast/', include(frontcast_urlpatterns))
+    # url(r'^frontcast/', include(frontcast_urlpatterns))
 )
-
 

@@ -420,6 +420,15 @@ sidebar{
       text-align: right;
       padding-right: @padding;
     }
+
+    .left ul{
+
+      li{
+        float:left;
+        list-style-type: none;
+        margin-right: @padding;
+      }
+    }
   }
 }
 
@@ -1162,6 +1171,18 @@ padding-bottom: 24px;
       border-left: 1px solid #BBBBBC;
     }
   }
+}
+
+.wall-single{
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  
+    -webkit-transition: margin-top 430ms cubic-bezier(0.860, 0.000, 0.070, 1.000); 
+     -moz-transition: margin-top 430ms cubic-bezier(0.860, 0.000, 0.070, 1.000); 
+       -o-transition: margin-top 430ms cubic-bezier(0.860, 0.000, 0.070, 1.000); 
+          transition: margin-top 430ms cubic-bezier(0.860, 0.000, 0.070, 1.000); /* easeInOutQuint */
 }
 
 .wall-column-placeholder{

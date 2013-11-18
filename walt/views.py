@@ -72,7 +72,7 @@ def home( request ):
 	#	t = a[0].task
 	#	return task( request, t.id)
 
-	return render_to_response(  "walt/index.html", RequestContext(request, data ) )
+	return render_to_response(  "frontcast/index.html", RequestContext(request, data ) )
 
 
 @login_required

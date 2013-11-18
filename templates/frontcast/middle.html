@@ -134,7 +134,20 @@
                   </div>
                 </div>
                 <div class="inner">
-                  1 of 324 
+                  <ul>
+                    <li id="wall-previous">&lt;
+                    </li>
+                    <li style="width: 60px; text-align: center">
+                      <span id="wall-index">...</span> of <span id="wall-total">...</span>
+                    </li>
+                    <li id="wall-next">
+                      &gt;
+                    </li>
+                    <li id="wall-switch-to-list">
+                      list
+                    </li>
+                    
+                  </ul>
                 </div>
               </div>
               <div class="right">
@@ -142,7 +155,7 @@
               </div>
             </div>
             <div class="rail" style="position:absolute; width:100%; bottom: -2px; height: 3px">
-              <div class="cursor" style="position:absolute;left: 5%; width: 6%; background:crimson; height: 3px;"></div>
+              <div class="cursor" id="wall-cursor" style="position:absolute;left: 5%; width: 6%; background:crimson; height: 3px;"></div>
             </div>
           </div>
         

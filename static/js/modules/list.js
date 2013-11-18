@@ -278,7 +278,7 @@
       window.location = href;
     }
 
-    $(document).on('click', '.document:not(.editor) h3', _self.set_leader );
+    //$(document).on('click', '.document:not(.editor) h3', _self.set_leader );
     $(document).on('click', '.action.add-text', _self.create_text_document );
     $(document).on('click', '.save-document', _self.save_document );
     $(document).on('click', '.action.add-media', _self.create_media_document );
