@@ -51,9 +51,11 @@
       s.settings.view = view;
       if(s.settings.view=='wall') {
         s.single.css('margin-top', -s.settings.column_height - 48);
+        s.placeholders.css('margin-top',0)
       } else {
         s.navigate(event, s.selected_index);
         s.single.css('margin-top', 0);
+        s.placeholders.css('margin-top',s.settings.column_height)
       }
     }
 
@@ -72,7 +74,11 @@
       visualize selected item in single view
     */
     s.navigate = function(event, index){
-      s.single.empty().append(s.items[index]);
+      s.single
+        .find('.content')
+        .empty()
+        .append(s.items[index])
+      s.single.nanoScroller({alwaysVisible: true});
     }
 
 
@@ -231,8 +237,8 @@
       });
 
       s.single = $('<div/>',{
-        'class': 'wall-single'
-      });
+        'class': 'wall-single nano'
+      }).append($('<div/>',{'class':'content'}));
       
       s.el.empty()
         .css({position: 'relative', overflow: 'hidden'})
@@ -402,7 +408,6 @@
       });
 
       s.resize();
-      debugger
       s.select(event,0);
       s.update_info();
 

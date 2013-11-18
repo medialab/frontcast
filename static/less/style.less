@@ -686,9 +686,23 @@ textarea{
   }
 }
 
+
+
 .pins{
   position:relative;
 
+  .wall-single .pin {
+     display: block;
+     width: 540px + @padding/2;
+     margin: 0 auto;
+      background: white;
+      .actions, .authors{
+        display: block;
+      }
+      .slider{
+       display:block;
+      }
+  }
   
   .pin{
     //border:1px solid @grey_10;
