@@ -1,0 +1,168 @@
+{% extends "walt/tasks/middle.html" %}
+{% load i18n %}
+{% block scripts %}
+  <script src="{{STATIC_URL}}js/blf.min.js"></script>
+  {{ block.super }}
+
+	{% verbatim %}
+	<script id="override-main" type="text/x-handlebars-template">
+
+
+		<div id="panels" class="container">
+			<div data-panel="create" style="display:none;">
+		<div class="create-form"></div>
+		</div>
+			<div data-panel="fields" style="display:none;">
+		<div class="select-field"></div>
+		</div>
+		<div data-panel="advancedSearch" style="display:none;">
+		<div class="advanced-search"></div>
+		</div>
+		<div data-panel="list" style="display:none;">
+		<ul class="entries-list"></ul>
+		</div>
+		</div>
+	</script>
+	{% endverbatim %}
+
+{% endblock %}
+{% block task_layout %}
+  {% for r in t.references %}
+    <!-- {{r.title}}, {{r.reference}} -->
+  {% endfor %}
+
+
+
+
+	<div id="layout" class="biblib-form"></div>
+
+
+{% endblock %}
+<script>
+{% block onload %}{{ block.super }}
+
+
+
+
+
+  /*
+    Some
+    @todo!!
+  */
+
+
+	blf.templates.override(
+    'main',
+    Handlebars.compile($('#override-main').html())
+  );
+
+	blf.init({
+        i18n:{
+          lang: 'fr',
+          url:'{{ STATIC_URL }}/locales/__lng__/__ns__.json'
+        },
+        rpc:{
+          before: function(params, xhr){
+            xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+          }
+        },
+        baseURL: '{% url "walt_api_biblib_proxy" %}',//http://localhost:8080',
+        baseDOM: $('#layout'),
+        callbacks:{
+          save: function(data){
+            var references = [{% for d in t.references %}
+              {
+                id:'{{d.id}}',
+                language:'{{d.language}}',
+                status:'{{d.status}}',
+                type:'{{d.type}}'
+              }{% if forloop.last %}{% else %},{% endif %}{% endfor %}
+              ],
+              reference_to_update = references.length? references.pop(): null;
+
+            if( reference_to_update ){
+
+              reference_to_update.title = data.params.entry.title;
+              reference_to_update.slug = walt.misc.slug(data.params.entry.title);
+              reference_to_update.reference = data.result.rec_id;
+
+              $.ajax({
+                url: walt.urls.api.user_document.replace('/0','/'+ reference_to_update.id),
+                method: 'POST',
+                data: reference_to_update
+              })
+                .success(function(data){console.log(data)})
+                .error( function(data){console.log(data)})
+
+            } else {
+              // brand new stuff
+              debugger
+              walt.domino.controller.request('create_document',{
+                title:data.params.entry.title,
+                reference:data.result.rec_id,
+                status:'P'
+              });
+            }
+          },
+          get_entry:function(data){
+            data.result && blf.control.dispatchEvent('editEntry', { entry: data.result.pop() });
+          }
+        },
+        onComplete: function() {
+          var references = [{% for d in t.references %}'{{d.reference}}'{% if forloop.last %}{% else %},{% endif %}{% endfor %}];
+
+          if (references.length == 0){
+
+            blf.control.dispatchEvent('openField', { field: 'ControversyVideo' });
+          } else {
+            blf.control.request('get_entry', { rec_id: references.pop() });
+          }
+        },
+        advancedSearchPanel: {
+          index: {
+            property_source_index: 'search_index',
+            property_source_operator: 'search_operator',
+            default_operator: 'and',
+            default_index: [
+              'title',
+              'author',
+              'keyword'
+            ]
+          },
+          filters: [
+            {
+              labels: {
+                en: 'Publication year',
+                fr: 'Année de publication'
+              },
+              property_start: 'filter_date_start',
+              property_end: 'filter_date_end',
+              type_ui: 'YearRangeField'
+            },
+            {
+              labels: {
+                en: 'Document types',
+                fr: 'Types de document'
+              },
+              multiple: true,
+              property: 'filter_types',
+              type_source: 'document_type',
+              type_ui: 'CheckboxField'
+            },
+            {
+              labels: {
+                en: 'Languages',
+                fr: 'Langues'
+              },
+              multiple: true,
+              property: 'filter_languages',
+              type_source: 'language',
+              type_ui: 'CheckboxField'
+            }
+          ]
+        }
+      });
+
+
+{% endblock %}
+</script>

@@ -1,0 +1,21 @@
+{% extends "walt/middle.html" %}
+{% load i18n %}
+
+{% block page %}
+
+  {% comment %}<video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
+                  poster="http://video-js.zencoder.com/oceans-clip.png"
+                  data-setup="{}">
+                <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
+                <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
+                <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
+                <track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
+              </video>
+  {% endcomment %}
+ 
+  <div class="documents"> 
+    <div id="list-of-documents" class="pins"></div>
+  </div>
+  
+
+{% endblock %}
