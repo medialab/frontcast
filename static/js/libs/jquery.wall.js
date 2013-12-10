@@ -46,39 +46,62 @@
       column: 0
     };
 
+    s.columnify = function(event, width){
+      for(var i in s.columns){
+        s.columns[i].el.css({
+            left: i * width,
+            width: width,
+            height: s.settings.column_height
+        });
+        s.columns[i].left = i * width;
+        s.columns[i].width = width;
+        s.columns[i].content = s.columns[i].el.find('.content');
+      };
+      
+    }
 
     s.switch_view = function(event, view){
       s.settings.view = view;
       if(s.settings.view=='wall') {
-        s.single.css('margin-top', -s.settings.column_height - 48);
-        s.placeholders.css('margin-top',0)
+        s.columnify(event, s.settings.column_width);
+        s.wall
+          .removeClass('single')
+          .css({'overflow-x': 'scroll'});
+        $('.wall-column-box.nano', s.wall).nanoScroller({alwaysVisible: true}).find('.content').css({'overflow': 'scroll'});
       } else {
-        s.navigate(event, s.selected_index);
-        s.single.css('margin-top', 0);
-        s.placeholders.css('margin-top',s.settings.column_height)
+        s.columnify(event, s.wall_width);
+        s.wall
+          .addClass('single')
+          .css({'overflow-x': 'hidden'});
+         $('.wall-column-box.nano', s.wall).nanoScroller({ stop: true }).find('.content').css({'overflow': 'hidden'});;
       }
+      
     }
 
     s.update_info = function(event){
       s.wall_index.text(s.selected_index + 1);
       s.wall_total.text(s.settings.data.length);
-      s.wall_cursor.animate({
-        left: (s.selected_index/s.settings.data.length)*100 + '%',
-        width: Math.max(2, 100/s.settings.data.length )+ '%',
-      },{
-        queue:false
-      });
+      if(s.settings.data.length == 1)
+        s.wall_cursor.hide();
+      else
+        s.wall_cursor.show().animate({
+          left: (s.selected_index/s.settings.data.length)*100 + '%',
+          width: Math.max(2, 100/s.settings.data.length )+ '%',
+        },{
+          queue:false
+        });
     }
 
     /*
       visualize selected item in single view
     */
     s.navigate = function(event, index){
-      s.single
+      /*/s.single
         .find('.content')
         .empty()
         .append(s.items[index])
       s.single.nanoScroller({alwaysVisible: true});
+      */
     }
 
 
@@ -99,7 +122,8 @@
       change_cursor: 'wall_change_cursor',
       switch_view: 'switch_view',
       update_info: 'update_info',
-      select: 'wall_select'
+      select: 'wall_select',
+      navigate: 'wall_navigate'
     };
 
 
@@ -147,7 +171,6 @@
       }else if(column_cursor != s.cursor.column){
         s.columns[column_cursor].el.addClass('active');
         s.columns[s.cursor.column].el.removeClass('active');
-        walt.verbose(  'chanced', column_cursor);
       }
 
       s.cursor.column = column_cursor;
@@ -166,11 +189,14 @@
       
       s.selected_item = item;
 
-      if(s.selected_index == -1)
+      if(s.selected_index == -1) {
         item.addClass('active')
-      else if(s.selected_index != item_cursor) {
+        s.settings.view == 'single' && s.trigger(s.events.navigate, index);
+      } else if(s.selected_index != item_cursor) {
         $(s.settings.selector + '.active', s.wall).removeClass('active');
         item.addClass('active');
+        s.settings.view == 'single' && s.trigger(s.events.navigate, index);
+      
       }
       s.selected_index = item_cursor;
 
@@ -178,7 +204,6 @@
       s.selected_prev_index = item_cursor+1;
 
       if(s.selected_column == -1){
-        walt.log(column_cursor)
         s.columns[column_cursor].el.addClass('active');
       }else if(column_cursor != s.selected_column){
         s.columns[column_cursor].el.addClass('active');
@@ -189,37 +214,38 @@
       s.selected_column = column_cursor;
       s.trigger('update_info');
 
-      if(s.settings.view == 'single')
-        s.navigate(event, s.selected_index);
       
       // scroll left
       //if( item.position().top > s.settings.column_height){
       if(s.columns[column_cursor].left + s.settings.column_width - s.wall.scrollLeft() > s.wall_width || s.columns[column_cursor].left < s.wall.scrollLeft())
         $(".wall").animate({
-          'scrollLeft':s.columns[column_cursor].left-s.wall_width/2+s.settings.column_width/2
+          'scrollLeft':s.columns[column_cursor].left-s.wall_width/2+s.columns[column_cursor].width/2
         },{
           queue: false
         });
       
-     
       if( t > s.settings.column_height - 48 || t < 0){
-        column.find('.content').animate({
-          scrollTop: t < 0? 0 : t-s.settings.column_height/2
+        var content = column.find('.content'),
+            scrolltop = content.scrollTop();
+        
+        content.animate({
+          scrollTop: t + scrolltop
         },{
           queue: false
         })
       }
+
     
 
     }
 
     s.previous = function(event){
-      s.settings.data.ids[s.selected_index - 1] && s.select(event, s.selected_index - 1);
+      s.settings.data.ids[s.selected_index - 1] && s.trigger(s.events.select, s.selected_index - 1);
 
     };
 
     s.next = function(event){
-      s.settings.data.ids[s.selected_index + 1] && s.select(event, s.selected_index + 1);
+      s.settings.data.ids[s.selected_index + 1] && s.trigger(s.events.select, s.selected_index + 1);
     };
 
     s.init = function(el, options) {
@@ -236,13 +262,13 @@
         'overflow-x': 'scroll'
       });
 
-      s.single = $('<div/>',{
+      /*s.single = $('<div/>',{
         'class': 'wall-single nano'
       }).append($('<div/>',{'class':'content'}));
-      
+      */
       s.el.empty()
         .css({position: 'relative', overflow: 'hidden'})
-        .append(s.single)
+        //.append(s.single)
         .append(s.wall);
       
       s.wall_index = $('#wall-index');
@@ -257,11 +283,11 @@
       s.wall.on('click', s.settings.selector, function(event){
         
         var id = $(this).attr('data-id');
-        s.select(event, s.settings.data.ids.indexOf(id));
-        
         if($(this).hasClass('active'))
           s.switch_view(event,'single');
 
+        s.trigger(s.events.select, s.settings.data.ids.indexOf(id));
+        
       });
 
       $('#wall-switch-to-list').on('click', function(event){
@@ -304,7 +330,7 @@
           column_height = column_height || s.settings.column_height;
 
       s.wall.height(column_height + 48);
-      s.single.height(column_height + 48).css('margin-top', -column_height - 48);
+     // s.single.height(column_height + 48).css('margin-top', -column_height - 48);
       s.el.height(column_height + 48);
 
       s.wall_width = s.wall.width();
@@ -349,20 +375,14 @@
       for(var i=0; i<desired_columns; i++) {
         var column = $('<div/>').html(s.settings.column_template()).contents();
         
-        column.css({
-          left: i * s.settings.column_width,
-          width: s.settings.column_width,
-          height: s.settings.column_height
-        });
-
         s.wall.append(column);
 
         s.columns[i] = {
           el: column,
-          left: i * s.settings.column_width,
           items: []
         }
       }
+      s.columnify(event, s.settings.column_width);
       
 
      
@@ -408,7 +428,8 @@
       });
 
       s.resize();
-      s.select(event,0);
+      s.switch_view(event, s.settings.view);
+      s.trigger(s.events.select,0);
       s.update_info();
 
     }

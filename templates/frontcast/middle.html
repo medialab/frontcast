@@ -94,9 +94,11 @@
         
       {% if user.is_authenticated %}
         {% block assignments %}
+        {% comment %}
         <div class="assignments">
           <div class="assignments" id="list-of-assignments"></div>
         </div>
+        {% endcomment %}
         {% endblock %}
       {% endif %}
       <div id="dropdown-filters" class="">

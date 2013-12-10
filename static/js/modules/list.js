@@ -10,7 +10,7 @@
     this.selector = selector;
 
     walt.events.LIST__LISTOF_COMPLETED = 'LISTOF_COMPLETED';
-
+    walt.events.LIST__WALL_SELECT = 'LIST__WALL_SELECT';
 
     this.listof = function(controller, options) {
       var previous_item = null,
@@ -36,10 +36,12 @@
         template: settings.template,
         data: data,
         item_id_prefix: '#d-',
-        column_height: controller.get('ui').height - 90
+        column_height: controller.get('ui').height - 90,
+        view: 'wall'
       });
       //_self.unsticky();
       _self.box.wall('update');
+      walt.trigger(walt.events.LIST__LISTOF_COMPLETED);
       return;
       /*
         uhm..
@@ -278,12 +280,47 @@
       window.location = href;
     }
 
-    //$(document).on('click', '.document:not(.editor) h3', _self.set_leader );
-    $(document).on('click', '.action.add-text', _self.create_text_document );
-    $(document).on('click', '.save-document', _self.save_document );
-    $(document).on('click', '.action.add-media', _self.create_media_document );
-    $(document).on('change', '.video .permalink textarea', _self.evaluate_permalink );
-    
+    this.triggers.events.init = function(controller, event) {
+      walt.verbose('(ListDocuments) listens to init, selector:', _self.selector);
+      //$(document).on('click', '.document:not(.editor) h3', _self.set_leader );
+      $(document).on('click', '.action.add-text', _self.create_text_document );
+      $(document).on('click', '.save-document', _self.save_document );
+      $(document).on('click', '.action.add-media', _self.create_media_document );
+      $(document).on('change', '.video .permalink textarea', _self.evaluate_permalink );
+      _self.box.on('wall_navigate', function(event, index){
+        var data = walt.domino.controller.get('data_documents'),
+            item = data.items[index],
+            slug = item.slug,
+            id = item.id;
+
+        walt.verbose('(ListDocuments) listens to plugin event wall_navigate:', index);
+        walt.verbose('... document selected:', slug);
+
+        $("#d-"+id)
+          .find('.slider').unslider({
+            placeholders: true
+          })
+          .find('video').each(function(i,e){
+            var v = $(this);
+            walt.verbose('... video HTML5 found:', v.attr('id') );
+            videojs(v.attr('id'), {}, function(){
+              walt.verbose('... video HTML5 found:', v.attr('id') );
+            });
+          });
+        
+        /*
+        do not change scene please...
+        walt.domino.controller.dispatchEvent('scene_args__update', {
+          scene_args: {slug:'faut-il-supprimer-la-prison-la-peine-de-probation-une-alternative-plus-efficace-pour-prevenir-la-recidive'}
+        });
+
+        walt.domino.controller.dispatchEvent('scene__update', {
+          scene: walt.SCENE_DOCUMENT_VIEW
+        });
+        */
+
+      });
+    };
     /*
     
         Triggers
@@ -359,7 +396,7 @@
             reference_id = el.attr('data-reference-id');
 
         if( references.ids.indexOf(reference_id) != -1){
-          walt.verbose('...', el,reference_id);
+          //walt.verbose('...', el,reference_id);
           el.html(references.items[reference_id].mla);
         }
 

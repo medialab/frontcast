@@ -691,17 +691,30 @@ textarea{
 .pins{
   position:relative;
 
-  .wall-single .pin {
-     display: block;
-     width: 540px + @padding/2;
-     margin: 0 auto;
+  .wall.single .pin{
+    height: 100%;
+    overflow: scroll;
+
+    &.active{
       background: white;
+      >.inner{
+        position: relative;
+        width: 50%;
+        height: 100%;
+      }
       .actions, .authors{
         display: block;
       }
       .slider{
-       display:block;
+        display:block;
+        position: absolute;
+        width: 100%;
+        left: 100%;
+        top: 0;
+        height:100%;
+        min-height: 100%;
       }
+    }
   }
   
   .pin{
@@ -728,7 +741,7 @@ padding-bottom: 24px;
     }
 
     &.editor, &.leader{
-      width: 540px + @padding/2;
+      //width: 540px + @padding/2;
       background: white;
       .actions, .authors{
         display: block;
@@ -737,7 +750,7 @@ padding-bottom: 24px;
        display:block;
       }
     }
-
+    
 
 
     &.A_grade, &.editor{
@@ -814,8 +827,8 @@ padding-bottom: 24px;
   }
 
   h3{
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 26px;
+    line-height: 32px;
     color: black;
     position:relative;
     padding: 0 @padding*2;
@@ -1257,7 +1270,7 @@ padding-bottom: 24px;
   height   : 100%;
   overflow : hidden;
 }
-.nano .content {
+.nano >.content {
   position      : absolute;
   overflow      : scroll;
   overflow-x    : hidden;
@@ -1266,13 +1279,13 @@ padding-bottom: 24px;
   bottom        : 0;
   left          : 0;
 }
-.nano .content:focus {
+.nano >.content:focus {
   outline: thin dotted;
 }
-.nano .content::-webkit-scrollbar {
+.nano >.content::-webkit-scrollbar {
   visibility: hidden;
 }
-.has-scrollbar .content::-webkit-scrollbar {
+.has-scrollbar >.content::-webkit-scrollbar {
   visibility: visible;
 }
 .nano > .pane {

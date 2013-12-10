@@ -43,11 +43,7 @@
               poster="{{this.poster}}">
              <source src="{{this.src}}" type='video/mp4' />
             </video>
-            <script>
-              videojs("{{this.id}}", {}, function(){
-                  // Player (this) is initialized and ready.
-              });
-            </script>
+            
           </li>
         {{/if_eq}}
       {{/each}}

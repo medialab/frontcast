@@ -93,11 +93,12 @@
       <div class="inner">
         
       {% if user.is_authenticated %}
-        {% block assignments %}
+        {% comment %}%{% block assignments %}
         <div class="assignments">
           <div class="assignments" id="list-of-assignments"></div>
         </div>
         {% endblock %}
+        {% endcomment %}
       {% endif %}
 
       {% block page %}

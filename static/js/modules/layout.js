@@ -221,7 +221,7 @@
       var scene = walt.domino.controller.get('scene'),
           collection,
           item;
-
+      walt.verbose('(Layout) listens to dom event LIST__LISTOF_COMPLETED');
       _self.disable_blf_editor();
 
       switch(scene){

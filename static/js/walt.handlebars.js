@@ -180,9 +180,7 @@ function program20(depth0,data) {
     + escapeExpression(((stack1 = depth0.poster),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">\n             <source src=\""
     + escapeExpression(((stack1 = depth0.src),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" type='video/mp4' />\n            </video>\n            <script>\n              videojs(\""
-    + escapeExpression(((stack1 = depth0.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\", {}, function(){\n                  // Player (this) is initialized and ready.\n              });\n            </script>\n          </li>\n        ";
+    + "\" type='video/mp4' />\n            </video>\n            \n          </li>\n        ";
   return buffer;
   }
 

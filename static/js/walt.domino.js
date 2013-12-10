@@ -218,6 +218,7 @@
           description: 'it updates data propertties only if needed',
           method: function(e) {
             var user = this.get('user');
+
             walt.log('(domino) on data__update', e.data);
             
             for(var i in e.data){
@@ -236,6 +237,7 @@
                 item.reference != '' && references.push(item.reference);
               };
 
+              // original
               data_hash[i] = data_property;
               this.update(data_hash);
             }
@@ -653,7 +655,7 @@
           },
           success: function(data) {
             var items = {};
-            
+
             this.dispatchEvent('data__update', {
               data_documents: {
                 items: [data.object],

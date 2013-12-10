@@ -23,7 +23,7 @@
         entries.each(function(i) {
           var el = $(this),
               scenes = el.attr('data-scene').trim().split('|');
-          walt.log(scenes, scene);
+          
           if(scenes.indexOf(scene) != -1 )
             el.addClass('active');
           if(scenes.indexOf(previous_scene) != -1)
