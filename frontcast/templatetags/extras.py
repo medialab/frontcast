@@ -24,7 +24,8 @@ def media(attachment):
     return '''
       <video id="%s" class="video-js vjs-default-skin"
         controls preload="auto" width="100%%" height="264"
-        poster="%s">
+        poster="%s"
+        data-setup="{}">
        <source src="%s" type='video/mp4' />
       </video>
 
