@@ -4,8 +4,7 @@
 		{
 			"file_exclude_patterns":
 			[
-				"*.min.js",
-        ".gitignore",
+				".gitignore",
         "*.LGPL",
         "*.CECILL*",
         "COPYING",

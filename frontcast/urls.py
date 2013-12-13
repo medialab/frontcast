@@ -44,6 +44,7 @@ api_urlpatterns = patterns('walt.api',
 
 frontcast_urlpatterns = patterns('frontcast.views',
    url(r'^$', 'home', name='frontcast_home'),
+   url(r'd/(?P<slug>[:a-zA-Z\.\-\d]+)/$', 'document', name='frontcast_document'),
 )
 
 urlpatterns = patterns('walt.views',
@@ -56,7 +57,7 @@ urlpatterns = patterns('walt.views',
     url(r'^login/$', 'login_view', name='walt_login'),
     url(r'^ouch/$', 'not_found', name='not_found'),
 
-    # url(r'^frontcast/', include('frontcast.foo.urls')),
+    url(r'^f/', include(frontcast_urlpatterns)),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

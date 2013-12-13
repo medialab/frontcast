@@ -602,7 +602,7 @@ input{
 }
 
 
-input[type="text"], input[type="password"]{
+input[type="text"], input[type="password"], input[type="year"]{
   line-height: 1.67em;
   color: @black;
   padding: @padding/4 ;
@@ -616,7 +616,7 @@ input[type="text"], input[type="password"]{
   
   &:focus {
     color: black;
-    border-bottom: 1px solid @f-red;
+    border-bottom: 1px solid @f-blue;
     //background: fade(@f-blue, 10%);
   }
 }
@@ -692,8 +692,8 @@ textarea{
   position:relative;
 
   .wall.single .pin{
-    height: 100%;
-    overflow: scroll;
+    //height: 100%;
+    //overflow: scroll;
 
     &.active{
       background: white;
@@ -728,7 +728,7 @@ textarea{
 padding-bottom: 24px;
     
     margin: @padding;
-    overflow:hidden;
+    //overflow:hidden;
 
     .transition(all, .3s, ease-in-out);
 
@@ -827,8 +827,8 @@ padding-bottom: 24px;
   }
 
   h3{
-    font-size: 26px;
-    line-height: 32px;
+    font-size: 16px;
+    line-height: 24px;
     color: black;
     position:relative;
     padding: 0 @padding*2;
@@ -956,8 +956,8 @@ padding-bottom: 24px;
 }
 
 
-#reference-editor{
-  width: 100%;
+#reference-editor, #document-editor{
+  width: 480px;
   height: 100%;
   
   background:white;
@@ -965,6 +965,9 @@ padding-bottom: 24px;
   input[type=text]{
     color: black;
   }
+
+  margin: 0 auto;
+
 }
 
 
@@ -1022,21 +1025,31 @@ padding-bottom: 24px;
   ============
 
 */
-.biblib-form{
+#layout{
+  width: 480px;
+
   ul{
     padding:0;
     margin:0;
+    li{
+      list-style-type:none;
+      float: none;
+    }
+
+    &.creators-list li{
+      background: #fafafa;
+      margin:10px;
+      padding: 10px;
+    }
   }
 
   fieldset{
     border-width:0;
     margin:0;
-    padding:0;
+    
 
     &.invalid{
       border-left: 1px solid #ee312f;
-      padding: 10px;
-      margin: 10px 0;
       
       .message{
         color: @f-red;
@@ -1044,21 +1057,33 @@ padding-bottom: 24px;
     }
   }
 
-  li{
-    list-style-type:none;
-
+  .create-form > fieldset{
+    border-bottom: 1px dashed @f-grey;
+    padding:10px 20px;
   }
 
   label{
     font-size:13px;
-    .greyc(-28%);
-    display:block;
+    line-height: 36px;
   }
 
-  
+  .container{
 
-  input[type=text], textarea{
+  }
+  
+  .indentifier-list input, .indentifiers-list input{
+    width: 85%;
+    display: inline-block;
+  }
+
+  input[type=text], textarea, input[type="year"]{
     width: 97%;
+    min-height:24px;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 6px;
+    border-radius: 0;
+    background: #fafafa;
   }
 
   .action{
@@ -1070,19 +1095,32 @@ padding-bottom: 24px;
     }
   }
 
-  .remove-creator, .moveup-creator, .movedown-creator, .remove-line{
+  .remove-creator, .moveup-creator, .movedown-creator, .remove-line, .remove-value, .remove-identifier{
     background-color: transparent;
     color: black;
   }
 
-  .remove-line{
+  .remove-line, .remove-value, .remove-identifier, .remove-language{
+    background-color: transparent;
+    color: black;
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
 
-    i:before {
-      content: "\f057";
+    &:before {
+      content: "\f00d";
     }
     i{
+      display: none;
       pointer-events: none;
     }
+  }
+
+  .validate-button{
+    margin: 20px auto;
+    display: block;
   }
 }
 

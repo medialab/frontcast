@@ -1,0 +1,46 @@
+{% load i18n %}
+
+      <div id="facets" class="header">
+        <div class="wrapper">
+          <div class="inner">
+            <div class="left">
+              <div class="inner">
+                left side assignments{{filters}}
+              </div>
+            </div>
+            <div class="center">
+              <div class="action search">   
+                <label><i>free search</i></label>
+                <i class="icon icon-search"></i>
+                <div class="input-wrapper"><input type="text" id="search" placeholder="search documents"><div class="shadow"></div></div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="inner">
+                left side assignments
+              </div>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+      </div>
+
+      <div id="handle" class="header">
+        <div class="wrapper">
+          <div class="inner">
+            <div class="left">
+              <div class="inner">{{total_count}} items</div>
+            </div>
+            <div class="center">
+              <div class="toggle-dropdown">
+                <div class="line-through"></div>
+                <span>{% trans "search"%}</span>
+              </div>
+            </div>
+            <div class="right">
+              <div class="inner"><img src="{{ STATIC_URL }}/img/sciences-po.svg"></div>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+      </div>

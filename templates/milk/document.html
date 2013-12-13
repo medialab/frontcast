@@ -1,0 +1,45 @@
+{% extends "milk/middle.html" %}
+{% load i18n %}
+{% load extras%}
+
+{% block page %}
+  <div id="list" class="documents">
+      <article>
+        {% with document.get_organized_tags as tags %}
+        <div class="date">{{tags|tag:'Date'|safe}}</div>
+        {{document.type}}
+        <a href="{%url 'frontcast_document' document.slug%}">
+        <h2>{{document.title}}</h2>
+      </a>
+        
+        <setion class="tags">
+          
+          {{tags|tag:'Institution'|safe}}
+         
+        <section>
+        
+        <setion class="content">
+          {{document.content}}
+
+          
+          <div class="attachments slider">
+            <ul>
+            {% for attachment in document.get_attachments  %}
+              <li>
+                {{attachment|media|safe}}
+              </li>
+            {% endfor %}
+            </ul>
+          </div>
+         
+
+        </section>
+        
+        <setion class="abstract">
+          {{document.abstract}}
+        </setion>
+
+        {% endwith %}
+      </article>
+  </div>
+{% endblock %}

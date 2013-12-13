@@ -22,7 +22,7 @@
     s.settings = {
       column_width: 320,
       column_height: 300,
-      items_per_column: 3,
+      items_per_column: 1,
       selector: '.pin',
       item_id_prefix: '#pin-',
       column_selector: '.wall-column',
@@ -47,6 +47,7 @@
     };
 
     s.columnify = function(event, width){
+      console.log('s.columnify', width);
       for(var i in s.columns){
         s.columns[i].el.css({
             left: i * width,
@@ -61,19 +62,24 @@
     }
 
     s.switch_view = function(event, view){
+      console.log('s.switch_view', view);
+      if( s.settings.view == view){
+        console.log('...', 's.settings.view is already', view);
+        return;
+      }
       s.settings.view = view;
       if(s.settings.view=='wall') {
         s.columnify(event, s.settings.column_width);
         s.wall
           .removeClass('single')
           .css({'overflow-x': 'scroll'});
-        $('.wall-column-box.nano', s.wall).nanoScroller({alwaysVisible: true}).find('.content').css({'overflow': 'scroll'});
+        //$('.wall-column-box.nano', s.wall).nanoScroller({alwaysVisible: true}).find('.content').css({'overflow': 'scroll'});
       } else {
         s.columnify(event, s.wall_width);
         s.wall
           .addClass('single')
           .css({'overflow-x': 'hidden'});
-         $('.wall-column-box.nano', s.wall).nanoScroller({ stop: true }).find('.content').css({'overflow': 'hidden'});;
+         //$('.wall-column-box.nano', s.wall).nanoScroller({ stop: true }).find('.content').css({'overflow': 'hidden'});;
       }
       
     }
@@ -191,11 +197,11 @@
 
       if(s.selected_index == -1) {
         item.addClass('active')
-        s.settings.view == 'single' && s.trigger(s.events.navigate, index);
+        //s.settings.view == 'single' && s.trigger(s.events.navigate, index);
       } else if(s.selected_index != item_cursor) {
         $(s.settings.selector + '.active', s.wall).removeClass('active');
         item.addClass('active');
-        s.settings.view == 'single' && s.trigger(s.events.navigate, index);
+        //s.settings.view == 'single' && s.trigger(s.events.navigate, index);
       
       }
       s.selected_index = item_cursor;
@@ -221,7 +227,8 @@
         $(".wall").animate({
           'scrollLeft':s.columns[column_cursor].left-s.wall_width/2+s.columns[column_cursor].width/2
         },{
-          queue: false
+          queue: false,
+          duration: s.settings.view=='wall'? 500: 0
         });
       
       if( t > s.settings.column_height - 48 || t < 0){
@@ -231,7 +238,8 @@
         content.animate({
           scrollTop: t + scrolltop
         },{
-          queue: false
+          queue: false,
+          duration: s.settings.view=='wall'? 500: 0
         })
       }
 
@@ -282,9 +290,10 @@
       s.wall.scroll(s.lis.wall_scroll);
       s.wall.on('click', s.settings.selector, function(event){
         
-        var id = $(this).attr('data-id');
-        if($(this).hasClass('active'))
-          s.switch_view(event,'single');
+        var item = $(this),
+            id = item.attr('data-id');
+
+        item.hasClass('active') && s.switch_view(event,'single');
 
         s.trigger(s.events.select, s.settings.data.ids.indexOf(id));
         
