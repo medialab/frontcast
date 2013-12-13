@@ -198,16 +198,15 @@ def storage( request, folder=None, index=None, extension=None ):
 
 	storage_path = settings.STORAGE_ROOT_PROTECTED if request.user.is_authenticated() else settings.STORAGE_ROOT_PUBLIC 
 
+
 	filepath = os.path.join( storage_path, folder,"%s.%s" % (index,extension) );
 
+
 	if os.path.exists(filepath):
-		from django.core.servers.basehttp import FileWrapper
-
-		content_type = guess_type( filepath )
-
-		wrapper = FileWrapper(file(filepath))
-		response = HttpResponse(wrapper, content_type=content_type[0])
-		response['Content-Length'] = os.path.getsize(filepath)
+		hidden_filepath = os.path.join('/videos/protected/', folder, "%s.%s"% (index,extension))
+		logger.info('Hello', hidden_filepath)
+		response = HttpResponse()
+		response['X-Accel-Redirect'] = hidden_filepath
 		return response
 
 
