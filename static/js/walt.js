@@ -30,7 +30,7 @@
   walt.PERMISSION_CAN_EDIT = 'CAN_EDIT'; // !WARNING this variable is actually used inside handlebar templates files. 
 
   walt.SCENES = [];
-  walt.SCENE_SPLASH = 'splash page';
+  walt.SCENE_INDEX = 'index';
   walt.SCENE_SEARCH = 'search';
   walt.SCENE_DOCUMENT_VIEW = 'd';
   walt.SCENE_DOCUMENT_EDIT = 'de';
@@ -51,7 +51,7 @@
   walt.ROUTES = [
     {
       path: '/:?params:',
-      scene: walt.SCENE_SPLASH,
+      scene: walt.SCENE_INDEX,
       description: ''
     },
     {
@@ -326,14 +326,14 @@
   */
   walt.init = function(debug){
     walt.debug = debug || walt.DEBUG_INFO;
-    console.log('\n\t----\n','\twelcome to walt:', walt.VERSION, '\n\t----\n');
+    walt.log('\n\t----\n','\twelcome to walt:', walt.VERSION, '\n\t----\n');
 
     walt.CSRFTOKEN = walt.misc.get_cookie('csrftoken');
     $.ajaxSetup({
       crossDomain: false, // obviates need for sameOrigin test
       beforeSend: function(xhr, settings) { if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type))){ xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);}}
     });
-    walt.log('csfrtoken updated');
+    walt.log('csfrtoken: ', walt.CSRFTOKEN);
 
     //walt.engine.init();
     walt.domino.init();

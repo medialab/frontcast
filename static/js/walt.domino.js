@@ -2,13 +2,13 @@
   'use strict';
 
   window.walt = window.walt || {};
-  walt.domino = {};
+  walt.domino = walt.domino || {};
 
   // Domino global settings:
   domino.settings({
     shortcutPrefix: '::',
     displayTime: true,
-    verbose:false,
+    verbose:true,
     strict: true,
     clone: false
   });
@@ -566,7 +566,7 @@
         service types: get, create, modify, remove
 
       */
-      services: [
+      services: walt.domino.services || [
         { 
           id: 'get_document',
           type: 'GET',

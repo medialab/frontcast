@@ -33,11 +33,11 @@ def home( request ):
   
   data, q = _queryset(request, qs=queryset, d=data) 
   data['facets'] = get_document_filters(q)
-  return render_to_response(  "milk/index.html", RequestContext(request, data ) )
+  return render_to_response(  "dusk/index.html", RequestContext(request, data ) )
 
 def notfound(request):
   raise
-  return render_to_response("milk/index.html", RequestContext(request, {}))
+  return render_to_response("dusk/index.html", RequestContext(request, {}))
 
 
 def document(request, slug):
@@ -49,7 +49,7 @@ def document(request, slug):
   data['total_count'] = 1
   data['filters'] = None
 
-  return render_to_response(  "milk/document.html", RequestContext(request, data ) )
+  return render_to_response(  "dusk/document.html", RequestContext(request, data ) )
 
 def _queryset(request, qs, d={}):
   e = Epoxy(request)
@@ -65,5 +65,5 @@ def _queryset(request, qs, d={}):
 
 def _shared_data( request, tags=[], d={} ):
   d['tags'] = tags
-  
+  d['debug'] = settings.DEBUG
   return d

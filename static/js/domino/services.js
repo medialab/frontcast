@@ -1,0 +1,110 @@
+;(function(window, jQuery, domino, undefined) {
+  'use strict';
+
+  window.walt = window.walt || {};
+  walt.domino = walt.domino || {};
+
+  /*
+
+        Services
+        ========
+
+        How to test services:
+        var d = walt.domino.controller;
+        d.request('service_name',{offset:10, limit:20, query:'query search'})
+
+        service types: get, create, modify, remove
+
+      */
+  walt.domino.services = [
+    { 
+      id: 'get_document',
+      type: 'GET',
+      url: walt.urls.document,
+      dataType: 'json',
+      data: function(input) {
+        return input.params;
+      },
+      success: function(data) {
+        var items = {};
+        
+        this.dispatchEvent('data__update', {
+          data_documents: {
+            items: [data.object],
+            ids: [''+data.object.id],
+            length: 1,
+            limit: 1,
+            offset: 0
+          }
+        });
+      }
+    },
+    { 
+      id: 'get_documents',
+      type: 'GET',
+      url: walt.urls.documents,
+      dataType: 'json',
+      data: function(input) {
+        walt.log('(Service) launch "get_documents"', input);
+        return input.params;
+      },
+      success: function(data) {
+        // todo infinite adding not replacing items.
+        walt.log('(Service) success "get_documents"', data.status);
+        this.dispatchEvent('data__update', {
+          data_documents: {
+            items: data.objects,
+            ids:$.map(data.objects, function(e){return ''+e.id;}),
+            length: +data.meta.total_count,
+            limit: +data.meta.limit || data.objects.length,
+            offset: data.meta.offset || 0
+          }
+        });
+      }
+    },
+    /*
+      
+      Non WALTY endpoints
+      ===================
+
+      BIBLIB references, vimeo oembed endpoint etc...
+
+    */
+    {
+      id: 'get_references',
+      url: walt.urls.references, 
+      type: walt.rpc.type,
+      error: walt.rpc.error,
+      expect: walt.rpc.expect,
+      contentType: walt.rpc.contentType,
+      before: function(params, xhr){
+        xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+      },
+      async: true,
+      data: function( input ) { // input={params:{method:'citation_by_rec_ids', params:[]}}
+        walt.log('(Service) launch "get_references"', input);
+         return walt.rpc.buildData( input.params.method, input.params.params);
+      },
+      success: function(data, params) {
+        walt.log('(Service) success "get_references"', data);
+        if(data.result) {
+          var ids = data.result.map(function(i){return i.rec_id}),
+              items = {};
+
+          if(ids.length) {
+            for(var i in data.result) {
+              items[data.result[i].rec_id] = data.result[i];
+            };
+
+            this.update({
+              data_references: {
+                items: items,
+                ids: ids
+              }
+            });
+          };
+        };
+      }
+    }
+  ];
+})(window, jQuery, domino);

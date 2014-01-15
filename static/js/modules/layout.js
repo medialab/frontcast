@@ -225,7 +225,7 @@
       _self.disable_blf_editor();
 
       switch(scene){
-        case walt.SCENE_SPLASH:
+        case walt.SCENE_INDEX:
         case walt.SCENE_PUBLIC:
         case walt.SCENE_SEARCH:
           _self.disable_header();

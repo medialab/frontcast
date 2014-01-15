@@ -1,0 +1,219 @@
+{% load i18n %}
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>Forccast{% block title %}{% endblock %}</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- CSS
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css/font-awesome.css">
+  
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css/base.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css/skeleton.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css/layout.css">
+
+
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- Favicons
+  ================================================== -->
+  <link rel="shortcut icon" href="{{ STATIC_URL }}/images/favicon.ico">
+  <link rel="apple-touch-icon" href="{{ STATIC_URL }}/images/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}/images/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="{{ STATIC_URL }}/images/apple-touch-icon-114x114.png">
+
+  <!-- video js -->
+  <link href="{{ STATIC_URL }}/player/video-js.css" rel="stylesheet" type="text/css">
+  <script src="{{ STATIC_URL }}/player/video.js"></script>
+  <script>videojs.options.flash.swf = "{{ STATIC_URL }}/player/video-js.swf";</script>
+
+</head>
+<body>
+
+
+
+  <!-- Primary Page Layout
+  ================================================== -->
+  <header>
+    <div class="container">
+      <div class="six columns">forccast archive</div>
+      <div class="ten columns right-aligned">
+        <a class="entry">search</a>
+        <a class="entry">{% if user.authenticated %}logout{% else %}login{% endif %}</a>
+        <a class="entry">about</a>
+      </div>
+    </div>
+  </header>
+  <!-- Delete everything in this .container and get started on your own site! -->
+  <div id="main">
+
+  {% block content %}
+    <div class="container">
+    
+    
+      <div class="two columns" style="height: 300px">
+        <nav>
+
+          <select>
+            <option>sorted by name</option>
+          </select>
+          
+        </nav>
+      </div>
+
+      <div class="fourteen columns">
+        <div class="list" id="grid-of-documents">
+          <div class="box">
+
+          </div>
+          <div class="box size23">
+            
+          </div>
+          <div class="box">
+            
+          </div>
+          <div class="box">
+            
+          </div>
+          <div class="box">
+            
+          </div>
+          <div class="box">
+            
+          </div>
+          <div class="box">
+            
+          </div>
+          <div class="box">
+            
+          </div>
+        </div> 
+      </div>
+    </div>
+  {% endblock %}
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="four columns">
+        &nbsp;
+      </div>
+      <div class="four columns">
+        &nbsp;
+      </div>
+      <div class="four columns">
+        &nbsp;
+      </div>
+      <div class="four columns">
+        <a class="boo" href="//sciencespo.fr">
+          SciencesPo
+        </a>
+      </div>
+
+
+  </footer>
+  
+
+
+  <script src="{{ STATIC_URL }}/js/libs/jquery.min.js"></script>
+  <script src="{{ STATIC_URL }}/js/libs/jquery.nested.js" type="text/javascript"></script>
+
+  <!-- DOMINO Controllers and dependencies (minified vs debug)
+  ================================================== -->
+  
+
+
+  {% block domino %}
+    <!-- compiled handlebars templates -->
+    <script src="{{ STATIC_URL }}/js/libs/handlebars.runtime.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}/js/libs/handlebars.helpers.js" type="text/javascript"></script>    
+    <script src="{{ STATIC_URL }}/build/templates.min.js" type="text/javascript"></script>
+  
+    {% if debug %}
+      <script src="{{ STATIC_URL }}/js/libs/domino.min.js"></script>
+      <script src="{{ STATIC_URL }}/js/walt.js"></script>
+      <script>
+        // API endpooints for models
+        walt.urls = {
+            documents: '{% url "walt_api_documents" %}', // public available documents
+            document: '{% url "walt_api_document" "::slug" %}',
+            documents_filters: '{% url "walt_api_documents_filters" %}', // filters for public available documents
+            references: '{% url "walt_api_biblib_proxy_safe" %}',
+            oembed_youtube: '{% url "walt_api_oembed_proxy" "youtube" %}',
+            oembed_flickr: '{% url "walt_api_oembed_proxy" "flickr" %}'
+        };
+
+      </script>
+      
+
+      <!-- routing and hashers -->
+      <script src="{{ STATIC_URL }}/js/libs/signals.min.js" type="text/javascript"></script>
+      <script src="{{ STATIC_URL }}/js/libs/hasher.min.js" type="text/javascript"></script>
+      <script src="{{ STATIC_URL }}/js/libs/crossroads.min.js" type="text/javascript"></script>
+
+
+      <script src="{{ STATIC_URL }}/js/domino/services.js"></script>
+      <script src="{{ STATIC_URL }}/js/domino/hacks.js"></script>
+
+      <script src="{{ STATIC_URL }}/js/domino/modules/grid.js"></script>
+      <script src="{{ STATIC_URL }}/js/domino/modules/layout.js"></script>
+      <script src="{{ STATIC_URL }}/js/domino/modules/route.js"></script>
+
+      <script src="{{ STATIC_URL }}/js/walt.domino.model.js"></script>
+
+    {% else %}
+
+      <script src="{{ STATIC_URL }}/js/build/walt.domino.min.js"></script>
+
+    {% endif %}
+      
+      <script>
+            /*
+              # api endpoint . Override / extends locally
+            */
+            walt.urls = {
+                
+                documents: '{% url "walt_api_documents" %}', // public available documents
+                document: '{% url "walt_api_document" "::slug" %}',
+                documents_filters: '{% url "walt_api_documents_filters" %}', // filters for public available documents
+                references: '{% url "walt_api_biblib_proxy_safe" %}',
+                oembed_youtube: '{% url "walt_api_oembed_proxy" "youtube" %}',
+                oembed_flickr: '{% url "walt_api_oembed_proxy" "flickr" %}'
+            };
+
+            /*
+                Initialize walt
+            */
+            $(window).load( function(){
+                
+              walt.user.username = '{{ user.username }}';
+              walt.user.is_staff = '{{ user.is_staff }}' == 'True';
+              walt.static_url = '{{ STATIC_URL }}';
+              walt.init();
+
+               
+            })
+      </script>
+
+  {% endblock %}
+<!-- End Document
+================================================== -->
+</body>
+</html>
