@@ -84,14 +84,14 @@ walt_urlpatterns = patterns('walt.views',
     # url(r'^frontcast/', include(frontcast_urlpatterns))
 )
 
-urlpatterns = patterns('',
-  url(r'^$', 'frontcast.views.home', name='frontcast_home'),
-  url(r'^d/(?P<slug>[:a-zA-Z\.\-\d]+)/$', 'frontcast.views.document', name='frontcast_document'),
+urlpatterns = patterns('frontcast.views',
+  url(r'^$', 'home', name='frontcast_home'),
+  url(r'^d/(?P<slug>[:a-zA-Z\.\-\d]+)/$', 'document', name='frontcast_document'),
   url(r'^w/', include(walt_urlpatterns)),
   # restful api
   url(r'^api/', include(api_urlpatterns)),
 
-  url(r'^s/(?P<folder>[a-zA-Z\d\-]+)/(?P<index>[A-Za-z\-_\d]+)\.(?P<extension>[\.a-z\d]+)/$', 'walt.views.storage', name='walt_storage'), #i.e. proxy to storage space
+  url(r'^s/(?P<folder>[a-zA-Z\d\-]+)/(?P<index>[A-Za-z\-_\d]+)\.(?P<extension>[\.a-z\d]+)/$', 'storage', name='frontcast_storage'), #i.e. proxy to storage space
 
   # login / logout
   #url(r'^logout/$', 'logout_view', name='walt_logout'),

@@ -39,6 +39,43 @@ def notfound(request):
   raise
   return render_to_response("dusk/index.html", RequestContext(request, {}))
 
+#
+#
+#   Storage
+#   =======
+#
+#   Direct storage solution. You only have to login. extension are given as first arg
+#
+def storage( request, folder=None, index=None, extension=None ):
+  data = _shared_data(request, tags=['me'])
+
+  storage_path = settings.STORAGE_ROOT_PROTECTED if request.user.is_authenticated() else settings.STORAGE_ROOT_PUBLIC 
+
+
+  filepath = os.path.join( storage_path, folder,"%s.%s" % (index,extension) );
+
+
+  if os.path.exists(filepath):
+    hidden_filepath = os.path.join('/videos/protected/', folder, "%s.%s"% (index,extension))
+    logger.info('Hello', hidden_filepath)
+    response = HttpResponse()
+    response['X-Accel-Redirect'] = hidden_filepath
+    return response
+
+
+  data['filepath'] = {
+    'folder':folder,
+    'index':index,
+    'extension':extension,
+    'total': filepath,
+    'content-type':  guess_type( filepath )[0],
+    'exists': os.path.exists( filepath )
+  }
+
+  #os.path.join(settings.STORAGE_ROOT, index)
+
+  return render_to_response(  "dusk/404.html", RequestContext(request, data ) )
+
 
 def document(request, slug):
   data = _shared_data(request, tags=['home'] )
