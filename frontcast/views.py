@@ -57,7 +57,6 @@ def storage( request, folder=None, index=None, extension=None ):
 
   if os.path.exists(filepath):
     hidden_filepath = os.path.join('/videos/protected/', folder, "%s.%s"% (index,extension))
-    logger.info('Hello', hidden_filepath)
     response = HttpResponse()
     response['X-Accel-Redirect'] = hidden_filepath
     return response
