@@ -1,0 +1,43 @@
+{% extends "dusk/index.html" %}
+{% load i18n %}
+
+{% block title %}
+  resource not found
+{% endblock %}
+
+  {% block content %}
+    <div class="container">
+      <div class="sixteen columns" style="height: 300px">
+        <h1>{% trans "login" %}</h1>
+        
+        {% if error %}
+        <p class="red">
+          {{ error }}
+        </p>
+        {% endif %}
+
+        {% if debug %}
+        <p>next: {{ next }}</p>
+        {% endif %}
+
+        <form method="POST" action="{% url 'frontcast_login' %}">
+          <input type="hidden" value="{{ next }}" name="next" />
+          {% csrf_token %}
+        
+        
+          <p>
+            <label for="id_login_username">{% trans "username" %}</label>
+            <input id="id_login_username" type="text" autofocus="autofocus" name="username" class="span5" maxlength="64" />
+          </p>
+          <p>
+            <label for="id_login_password">{% trans "password" %}</label>
+            <input id="id_login_password" type="password" name="password" class="span5"  maxlength="64" />
+          </p>
+          <button>{% trans "login" %} <i class="fa fa-unlock"></i></button>
+        </form>
+      </div>
+    </div>
+  {% endblock %}
+
+  {% block domino %}
+  {% endblock %}
