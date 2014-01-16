@@ -58,7 +58,7 @@ walt_urlpatterns = patterns('walt.views',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    
 
     url(r'^d/$', 'document', name='walt_empty_document'), #i.e. user page
     url(r'^d/(?P<slug>[a-z\.-]+)/$', 'document', name='walt_document'), #i.e. user page
@@ -96,5 +96,6 @@ urlpatterns = patterns('frontcast.views',
   # login / logout
   url(r'^logout/$', 'logout_view', name='frontcast_logout'),
   url(r'^login/$', 'login_view', name='frontcast_login'),
+  url(r'^admin/', include(admin.site.urls)),
  # url(r'^ouch/$', 'not_found', name='not_found'),
 )

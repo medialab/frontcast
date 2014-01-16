@@ -51,13 +51,16 @@ nav{
 
 footer{
   background-color: #ec5148;
-  padding: 12px 0;
   color: #ffffff;
   clear: both;
   position: fixed;
   bottom: 0px;
   width: 100%;
   z-index: 999;
+}
+
+img{
+  vertical-align: middle;
 }
 
 .below-the-footer{
@@ -112,7 +115,13 @@ a.entry{
 }
 
 a.entry.active, a.entry:hover{
-  background: ;
+  
+}
+
+li{
+  margin: 0;
+  padding: 0;
+  line-height: 1.618em;
 }
 /* #Media Queries
 ================================================== */
@@ -170,7 +179,7 @@ a.entry.active, a.entry:hover{
 }
 
 .box .tags{
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin: 12px 12px 0px 12px;
 }
 
@@ -183,7 +192,14 @@ a.entry.active, a.entry:hover{
 }
 
 .box .thumb{
-  width: 100%; background: rgba(0,0,0,0.176); height:100%
+  width: 100%; background: #181818; height:100%
+}
+.box .thumb img{
+  width: 100%;
+  -webkit-transition: opacity 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+   -moz-transition: opacity 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+     -o-transition: opacity 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+        transition: opacity 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); /* easeOutQuint */
 }
 
 .box .actions{
@@ -206,11 +222,21 @@ a.entry.active, a.entry:hover{
   font-size: 1.1rem;
   text-transform: uppercase;
   text-decoration: none;
+  color: #f9eedc;
+  display: block;
+}
+
+.box .actions:hover a{
   color: white;
+  
 }
 
 .box:hover .actions{
   bottom: 0px;
+}
+
+.box:hover .thumb img{
+  opacity: .5;
 }
 
 .box:hover{
@@ -221,21 +247,26 @@ a.entry.active, a.entry:hover{
 ================================================== */
 .big-box{
   background: white;
+  overflow: hidden;
+}
+
+.big-box .pusher{
+  height: 24px;
 }
 
 .big-box h2{
   font-size: 2.4rem;
-  margin: 0px 12px 12px 12px;
+  margin: 0px 24px 0px 24px;
 }
 
-.big-box .abstract{
-  font-size: 1.2rem;
-  margin: 0px 12px 12px 12px;
+.big-box .content{
+  font-size: 1.4rem;
+  margin: 0px 24px 0px 24px;
 }
 
 .big-box .tags{
   font-size: 1.1rem;
-  margin: 12px 12px 0px 12px;
+  margin: 0px 24px 0px 24px;
 }
 
 .big-box .tags .date{
@@ -263,6 +294,12 @@ a.entry.active, a.entry:hover{
 ================================================== */
 #main{
   padding: 108px 0;
+}
+
+#counter-documents{
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 
@@ -397,4 +434,164 @@ Pagination Styles
 .swiper-visible-switch {
   /* Specific visible button style: */  
   
+}
+
+
+div.fancy-select {
+  position: relative;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  color: white;
+}
+
+div.fancy-select.disabled {
+  opacity: 0.5;
+}
+
+div.fancy-select select:focus + div.trigger {
+  /*box-shadow: 0 0 0 2px #4B5468;*/
+}
+
+div.fancy-select select:focus + div.trigger.open {
+  box-shadow: none;
+}
+
+div.fancy-select div.trigger-wrapper {
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  background: #cacaca;
+  color: #585858;
+  width: 100%;
+  padding: 0;
+}
+
+div.fancy-select div.trigger {
+  padding: 4px 12px;
+  
+}
+div.fancy-select div.trigger:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-top-color: #4B5468;
+  top: 20px;
+  right: 9px;
+}
+
+div.fancy-select div.trigger.open {
+  background: #ec5148;
+  color: white;
+  box-shadow: none;
+}
+
+div.fancy-select div.trigger.open:after {
+  border-top-color: #7A8498;
+}
+
+div.fancy-select ul.options {
+  list-style: none;
+  margin: 0;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 50;
+  max-height: 200px;
+  overflow: auto;
+  background: #33cccc;
+  border-radius: 3px;
+  border-top: 1px solid #7DD8D2;
+  width: 100%;
+
+  transition: opacity 300ms ease-out, top 300ms ease-out, visibility 300ms ease-out;
+  -webkit-transition: opacity 300ms ease-out, top 300ms ease-out, visibility 300ms ease-out;
+  -moz-transition: opacity 300ms ease-out, top 300ms ease-out, visibility 300ms ease-out;
+  -ms-transition: opacity 300ms ease-out, top 300ms ease-out, visibility 300ms ease-out;
+  -o-transition: opacity 300ms ease-out, top 300ms ease-out, visibility 300ms ease-out;
+}
+
+div.fancy-select ul.options.open {
+  visibility: visible;
+  top: 50px;
+  opacity: 1;
+
+  /* have to use a non-visibility transition to prevent this iOS issue (bug?): */
+  /*http://stackoverflow.com/questions/10736478/css-animation-visibility-visible-works-on-chrome-and-safari-but-not-on-ios*/
+  transition: opacity 300ms ease-out, top 300ms ease-out;
+  -webkit-transition: opacity 300ms ease-out, top 300ms ease-out;
+  -moz-transition: opacity 300ms ease-out, top 300ms ease-out;
+  -ms-transition: opacity 300ms ease-out, top 300ms ease-out;
+  -o-transition: opacity 300ms ease-out, top 300ms ease-out;
+}
+
+div.fancy-select ul.options.overflowing {
+  top: auto;
+  bottom: 40px;
+
+  transition: opacity 300ms ease-out, bottom 300ms ease-out, visibility 300ms ease-out;
+  -webkit-transition: opacity 300ms ease-out, bottom 300ms ease-out, visibility 300ms ease-out;
+  -moz-transition: opacity 300ms ease-out, bottom 300ms ease-out, visibility 300ms ease-out;
+  -ms-transition: opacity 300ms ease-out, bottom 300ms ease-out, visibility 300ms ease-out;
+  -o-transition: opacity 300ms ease-out, bottom 300ms ease-out, visibility 300ms ease-out;
+}
+
+div.fancy-select ul.options.overflowing.open {
+  top: auto;
+  bottom: 50px;
+
+  transition: opacity 300ms ease-out, bottom 300ms ease-out;
+  -webkit-transition: opacity 300ms ease-out, bottom 300ms ease-out;
+  -moz-transition: opacity 300ms ease-out, bottom 300ms ease-out;
+  -ms-transition: opacity 300ms ease-out, bottom 300ms ease-out;
+  -o-transition: opacity 300ms ease-out, bottom 300ms ease-out;
+}
+
+div.fancy-select ul.options li {
+  padding: 8px 12px;
+  color: #2B8686;
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition: all 150ms ease-out;
+  -webkit-transition: all 150ms ease-out;
+  -moz-transition: all 150ms ease-out;
+  -ms-transition: all 150ms ease-out;
+  -o-transition: all 150ms ease-out;
+}
+
+div.fancy-select ul.options li.selected {
+  background: rgba(43,134,134,0.3);
+  color: rgba(255,255,255,0.75);
+}
+
+div.fancy-select ul.options li.hover {
+  color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+.vjs-poster{
+  background-color: black;
+}
+.video .vjs-default-skin .vjs-big-play-button{
+  left: 50%;
+margin-left: -2em;
+top: 50%;
+margin-top: -1.3em;
 }

@@ -62,6 +62,19 @@
         });
       }
     },
+    { 
+      id: 'get_documents_filters',
+      type: 'GET',
+      url: walt.urls.documents_filters,
+      dataType: 'json',
+      data: function(input) {
+        walt.log('(Service) launch "get_documents_filters"', input);
+        return input.params;
+      },
+      success: function(data, params) {
+        this.update('data_documents_filters', data.objects);
+      }
+    },
     /*
       
       Non WALTY endpoints

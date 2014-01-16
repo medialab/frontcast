@@ -12,7 +12,7 @@
         input;
 
     this.send_query = function(event) {
-      var scene_args = walt.domino.controller.get('scene_args'),      
+      var scene_args = walt.domino.controller.get('scene_args') || {},      
           query = input.val();
           
       scene_args.params = scene_args.params || {};
@@ -39,8 +39,6 @@
         if(event.which == 13) _self.send_query();
       });
       $(".search .icon").on('click', _self.send_query);
-
-
     };
   };
 

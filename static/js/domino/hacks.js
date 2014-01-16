@@ -20,7 +20,7 @@
       method: function(e) {
         var user = this.get('user');
 
-        walt.log('(domino) on data__update', e.data);
+        walt.log('@data__update', e.data);
         
         for(var i in e.data){
           var data_property = e.data[i],
@@ -42,6 +42,8 @@
           data_hash[i] = data_property;
           this.update(data_hash);
         }
+
+        walt.log('@data__update biblib references:', references.length);
 
         if( references.length )
           this.dispatchEvent('call_service', {
@@ -106,6 +108,12 @@
                   {
                     service: 'get_documents',
                     params: params
+                  },
+                  {
+                    service: 'get_documents_filters',
+                    params:{
+                      limit: -1,
+                    }
                   }
                 ];
                 break;
@@ -137,6 +145,36 @@
 
           }
         },
+    /*
+
+      Services hacks
+      ==============
+      
+      Lock and unlock UI fopr every request provided.
+      usage: walt.domino.controller.dispatchEvent('call_service',{
+        service: get_documents,
+        params: {
+          limit:2, offset:2
+        }
+      })
+    */
+    {
+      triggers: 'call_service',
+      method: function(event){
+        walt.domino.controller.update('ui_status', walt.UI_STATUS_LOCKED);
+        walt.log('(domino) call_service', event.data.service);
+        
+        this.request([{
+          service: event.data.service || "untitled",
+          shortcuts: event.data.shortcuts || {},
+          params: event.data.params || {}
+        }],{
+          success:  function() {
+            walt.domino.controller.update('ui_status', walt.UI_STATUS_UNLOCKED);
+          }
+        });
+      }
+    }
   ]
 
 })(window, jQuery, domino);

@@ -11,7 +11,8 @@
 
     var _self = this,
         container, // grid document viewer (nested plugin)
-        viewer; // single document viewer
+        viewer,
+        counter; // single document viewer
 
     this.triggers.events.scene__synced = function(controller) {
       var scene = controller.get('scene');
@@ -26,6 +27,7 @@
         animate: false
       });
       viewer = $("#single-document");
+      counter = $("#counter-documents");
     };
 
 
@@ -46,6 +48,8 @@
       scene == walt.SCENE_DOCUMENT_VIEW && _self.single(controller, {
         namespace:'documents'
       });
+
+
     };
 
     this.single = function(controller){
@@ -65,6 +69,19 @@
         createPagination: true
         //etc..
       });
+
+      viewer.find("video").each(function(){
+        var item = $(this),
+            videoid = item.attr('id');
+
+        if(videojs.players[videoid])
+          delete videojs.players[videoid]
+        walt.verbose('(Grid) .single video found:', videoid, videojs.players);
+        videojs(videoid, {}, function(){
+          walt.verbose('(Grid) .single video started');
+          // Player (this) is initialized and ready.
+        });
+      });
     }
 
     this.listof = function(controller, options){
@@ -83,6 +100,8 @@
 
       viewer.empty();
       container.empty();
+      
+      counter.text(data.length);
       
       for( var i in data.items){
         boxes.push(settings.template(data.items[i]));

@@ -12,7 +12,13 @@
   <div class="abstract">{{{abstract}}}</div>
   {{/if}}
 
-  <div class="thumb" ></div>
+  <div class="thumb" >
+    {{#each attachments}}
+      {{#if_eq this.type compare="image"}}
+         <img src="{{this.src}}"/>
+      {{/if_eq}}
+    {{/each}}
+  </div>
   <!-- 
 
   {{#if tags.Institution.length}}
@@ -24,8 +30,6 @@
 
   -->
   <div class="actions">
-    <a class="" href="#">cite it</a>
-    <a class="" href="/#{{#url "d" "slug" slug}}{{/url}}">view</a>
-    <a class="" href="#">cite it</a>
+    <a href="/#{{#url "d" "slug" slug}}{{/url}}">view</a>
   </div>
 </div>

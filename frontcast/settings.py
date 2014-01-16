@@ -213,5 +213,5 @@ logger.setLevel(logging.DEBUG)
 EMAIL_HOST = local_settings.EMAIL_HOST
 EMAIL_PORT = local_settings.EMAIL_PORT
 
-
-
+# ONly for nginx servers. Otherwise it must be false
+ENABLE_XACCEL = local_settings.ENABLE_XACCEL

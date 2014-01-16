@@ -72,3 +72,6 @@ BIBLIB_ENDPOINT = "http://localhost:8080/"
 
 EMAIL_HOST = 'smtp.domain.com'
 EMAIL_PORT = 25
+
+# IF frontcast is used by nginx servers - set to True = ENABLE STREAMING. Otherwise leave this value to False
+ENABLE_XACCEL = False

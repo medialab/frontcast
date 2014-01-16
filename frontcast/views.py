@@ -54,12 +54,23 @@ def storage( request, folder=None, index=None, extension=None ):
 
   filepath = os.path.join( storage_path, folder,"%s.%s" % (index,extension) );
 
-
   if os.path.exists(filepath):
-    hidden_filepath = os.path.join('/videos/protected/', folder, "%s.%s"% (index,extension))
-    response = HttpResponse()
-    response['X-Accel-Redirect'] = hidden_filepath
-    return response
+    if settings.ENABLE_XACCEL :
+      hidden_filepath = os.path.join('/videos/protected/', folder, "%s.%s"% (index,extension))
+      response = HttpResponse()
+      response['X-Accel-Redirect'] = hidden_filepath
+      return response
+    else:
+      from django.core.servers.basehttp import FileWrapper
+
+      content_type = guess_type(filepath)
+
+      wrapper = FileWrapper(file(filepath))
+      response = HttpResponse(wrapper, content_type=content_type[0])
+      response['Content-Length'] = os.path.getsize(filepath)
+      return response
+    # serve the file via django
+
 
 
   data['filepath'] = {
