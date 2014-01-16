@@ -68,6 +68,7 @@ def storage( request, folder=None, index=None, extension=None ):
     'extension':extension,
     'total': filepath,
     'content-type':  guess_type( filepath )[0],
+    'hidden_filepath': os.path.join('/videos/protected/', folder, "%s.%s"% (index,extension)),
     'exists': os.path.exists( filepath )
   }
 

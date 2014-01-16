@@ -9,10 +9,12 @@
     <div class="container">
       <div class="sixteen columns" style="height: 300px">
         <h1>not found ... désolé !</h1>
+        {% if debug %}
+        {{filepath}}
+        {% endif %}
       </div>
     </div>
   {% endblock %}
 
   {% block domino %}
   {% endblock %}
-  
