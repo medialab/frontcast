@@ -94,7 +94,7 @@ urlpatterns = patterns('frontcast.views',
   url(r'^s/(?P<folder>[a-zA-Z\d\-]+)/(?P<index>[A-Za-z\-_\d]+)\.(?P<extension>[\.a-z\d]+)/$', 'storage', name='frontcast_storage'), #i.e. proxy to storage space
 
   # login / logout
-  #url(r'^logout/$', 'logout_view', name='walt_logout'),
-  #url(r'^login/$', 'login_view', name='walt_login'),
+  url(r'^logout/$', 'logout_view', name='frontcast_logout'),
+  url(r'^login/$', 'login_view', name='frontcast_login'),
  # url(r'^ouch/$', 'not_found', name='not_found'),
 )

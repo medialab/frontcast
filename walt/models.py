@@ -289,11 +289,11 @@ class Document(models.Model):
           'id': '%s-%s' % (self.id, i),
           'type': 'video' if parts[-1] in ['mp4','ogg'] else 'image' ,
           'ext': parts[-1],
-          'src': reverse('walt_storage', args=parts)
+          'src': reverse('frontcast_storage', args=parts)
         }
         if attachment['type'] == 'video':
           parts[-1] = '%s.%s' % (parts[-1],'png')
-          attachment['poster'] = reverse('walt_storage', args=parts)
+          attachment['poster'] = reverse('frontcast_storage', args=parts)
         attachments.append(attachment)
 
     return attachments

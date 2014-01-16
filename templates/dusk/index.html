@@ -56,7 +56,11 @@
       <div class="six columns">forccast archive</div>
       <div class="ten columns right-aligned">
         <a class="entry">search</a>
-        <a class="entry">{% if user.authenticated %}logout{% else %}login{% endif %}</a>
+        {% if user.is_authenticated %}
+          <a class="entry" href="{% url "frontcast_logout"%}">{% trans "logout" %} {{user}}</a>
+        {% else %}
+          <a class="entry" href="{% url "frontcast_login"%}">{% trans "login" %}</a>
+        {% endif %}
         <a class="entry">about</a>
       </div>
     </div>
