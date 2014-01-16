@@ -40,6 +40,7 @@ header{
   z-index: 1000;
   top: 0;
   width: 100%;
+  border-bottom: 1px solid #cacaca;
 }
 
 nav{
@@ -56,6 +57,7 @@ footer{
   position: fixed;
   bottom: 0px;
   width: 100%;
+  z-index: 999;
 }
 
 .below-the-footer{
@@ -76,6 +78,8 @@ a.boo {
   color: #f9eedc;
   text-align: center;
   display: block;
+  border-radius:2px;
+  padding: 2px 6px;
 }
 
 a.boo:hover{
@@ -138,13 +142,95 @@ a.entry.active, a.entry:hover{
 ================================================== */
 .box{
   background: white;
+  overflow: hidden;
 }
 
 .box h2{
   font-size: 1.4rem;
-  margin: 10px 12px 12px 12px;
+  margin: 0px 12px 12px 12px;
 }
 
+.box .abstract{
+  font-size: 1.2rem;
+  margin: 0px 12px 12px 12px;
+}
+
+.box .tags{
+  font-size: 1.1rem;
+  margin: 12px 12px 0px 12px;
+}
+
+.box .tags .date{
+  color: #ccc;
+}
+
+.box .tags .type{
+  color: #ec5148;
+}
+
+.box .thumb{
+  width: 100%; background: rgba(0,0,0,0.176); height:100%
+}
+
+.box .actions{
+  position: absolute;
+  bottom: -36px;
+  width: 100%;
+  height: 36px;
+  margin:0;
+  padding: 0;
+  background: #ec5148;
+  text-align: center;
+  line-height: 32px;
+  color: white;
+  -webkit-transition: bottom 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+   -moz-transition: bottom 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+     -o-transition: bottom 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+        transition: bottom 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); /* easeOutQuint */
+}
+.box .actions a{
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: white;
+}
+
+.box:hover .actions{
+  bottom: 0px;
+}
+
+.box:hover{
+  background-color: #fafafa;
+}
+
+/* #the big pin
+================================================== */
+.big-box{
+  background: white;
+}
+
+.big-box h2{
+  font-size: 2.4rem;
+  margin: 0px 12px 12px 12px;
+}
+
+.big-box .abstract{
+  font-size: 1.2rem;
+  margin: 0px 12px 12px 12px;
+}
+
+.big-box .tags{
+  font-size: 1.1rem;
+  margin: 12px 12px 0px 12px;
+}
+
+.big-box .tags .date{
+  color: #ccc;
+}
+
+.big-box .tags .type{
+  color: #ec5148;
+}
 
 /* #Dummy-stuffs
 ================================================== */
@@ -165,3 +251,136 @@ a.entry.active, a.entry:hover{
   padding: 108px 0;
 }
 
+
+/* #puglins
+================================================== */
+/*
+ * Swiper - Mobile Touch Slider CSS
+ * http://www.idangero.us/sliders/swiper
+ *
+ * Vladimir Kharlampidi, The iDangero.us
+ * http://www.idangero.us/
+ * 
+ * Copyright 2012-2013, Vladimir Kharlampidi
+ * The iDangero.us
+ * http://www.idangero.us
+ *
+ * Licensed under GPL & MIT
+ *
+*/
+
+/* ===============================================================
+Basic Swiper Styles 
+================================================================*/
+.swiper-container {
+  margin:0 auto;
+  position:relative;
+  overflow:hidden;
+  -webkit-backface-visibility:hidden;
+  -moz-backface-visibility:hidden;
+  -ms-backface-visibility:hidden;
+  -o-backface-visibility:hidden;
+  backface-visibility:hidden;
+  /* Fix of Webkit flickering */
+  z-index:1;
+}
+.swiper-wrapper {
+  position:relative;
+  width:100%;
+  -webkit-transition-property:-webkit-transform, left, top;
+  -webkit-transition-duration:0s;
+  -webkit-transform:translate3d(0px,0,0);
+  -webkit-transition-timing-function:ease;
+  
+  -moz-transition-property:-moz-transform, left, top;
+  -moz-transition-duration:0s;
+  -moz-transform:translate3d(0px,0,0);
+  -moz-transition-timing-function:ease;
+  
+  -o-transition-property:-o-transform, left, top;
+  -o-transition-duration:0s;
+  -o-transform:translate3d(0px,0,0);
+  -o-transition-timing-function:ease;
+  -o-transform:translate(0px,0px);
+  
+  -ms-transition-property:-ms-transform, left, top;
+  -ms-transition-duration:0s;
+  -ms-transform:translate3d(0px,0,0);
+  -ms-transition-timing-function:ease;
+  
+  transition-property:transform, left, top;
+  transition-duration:0s;
+  transform:translate3d(0px,0,0);
+  transition-timing-function:ease;
+
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.swiper-free-mode > .swiper-wrapper {
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -ms-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  margin: 0 auto;
+}
+.swiper-slide {
+  float: left;
+}
+
+/* IE10 Windows Phone 8 Fixes */
+.swiper-wp8-horizontal {
+  -ms-touch-action: pan-y;
+}
+.swiper-wp8-vertical {
+  -ms-touch-action: pan-x;
+}
+
+/* ===============================================================
+Your custom styles, here you need to specify container's and slide's
+sizes, pagination, etc.
+================================================================*/
+.swiper-container {
+  /* Specify Swiper's Size: */
+
+  width:100%;
+  height: 300px;
+}
+.swiper-slide {
+  /* Specify Slides's Size: */
+  
+  width: 100%;
+  height: 100%;
+  background: black;
+}
+.swiper-slide-active {
+  /* Specific active slide styling: */
+  
+}
+.swiper-slide-visible {
+  /* Specific visible slide styling: */ 
+
+}
+/* ===============================================================
+Pagination Styles
+================================================================*/
+.pagination{
+  padding: 12px 9px 12px 9px;
+}
+.swiper-pagination-switch {
+  /* Stylize pagination button: */  
+  width: 60px;
+  height: 24px;
+  background: #cacaca;
+  display: inline-block;
+  margin: 0 3px;
+}
+.swiper-active-switch {
+  /* Specific active button style: */ 
+  background: #ec5148;
+}
+.swiper-visible-switch {
+  /* Specific visible button style: */  
+  
+}

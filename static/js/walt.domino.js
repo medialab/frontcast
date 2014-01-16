@@ -121,7 +121,7 @@
           id: 'scene',
           description: 'basic app view',
           type: 'walt.scene',
-          value: walt.SCENE_SPLASH,
+          value: walt.SCENE_INDEX,
           triggers: 'scene__update',
           dispatch: ['scene__updated']
         },
@@ -290,7 +290,7 @@
 
             
             switch(scene){
-              case walt.SCENE_SPLASH:
+              case walt.SCENE_INDEX:
                 params = $.extend(true, params, {
                   filters: {
                     type__in: [

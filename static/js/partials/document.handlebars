@@ -1,4 +1,31 @@
-<div class="box">
-  
+<div class="box {{#if abstract}}size12 {{/if}}" style="overflow:hidden">
+  <div class="tags">
+    <span class="date">
+      {{#foreach tags.Date}}<span class="tag date">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
+    </span>
+    <span class="type">{{type}}</span>
+  </div>
+
   <h2>{{title}}</h2>
+
+  {{#if abstract}}
+  <div class="abstract">{{{abstract}}}</div>
+  {{/if}}
+
+  <div class="thumb" ></div>
+  <!-- 
+
+  {{#if tags.Institution.length}}
+    &middot;
+    <span class="institutions">
+      {{#foreach tags.Institution}}<span class="tag institution">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
+    </span>
+    {{/if}}
+
+  -->
+  <div class="actions">
+    <a class="" href="#">cite it</a>
+    <a class="" href="/f/#{{#url "d" "slug" slug}}{{/url}}">view</a>
+    <a class="" href="#">cite it</a>
+  </div>
 </div>

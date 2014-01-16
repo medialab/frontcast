@@ -109,6 +109,22 @@
                   }
                 ];
                 break;
+
+              case walt.SCENE_DOCUMENT_VIEW:
+                services = [
+                  {
+                    service: 'get_document',
+                    shortcuts: {
+                      slug: scene_args.slug 
+                    },
+                    params: {}
+                  }
+                ];
+                break;
+                
+              default:
+                walt.error('@scene__updated, unrecognized scene name:', scene)
+                break;
             }; // end of switch scene
             walt.log('@scene__updated, services ', services, scene == walt.SCENE_INDEX);
                 

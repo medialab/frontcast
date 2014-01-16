@@ -1,0 +1,59 @@
+<div class="big-box">
+  <div class="tags">
+    <span class="date">
+      {{#foreach tags.Date}}<span class="tag date">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
+    </span>
+    <span class="type">{{type}}</span>
+  </div>
+
+  <h2>{{title}}</h2>
+
+  {{#if abstract}}
+  <div class="abstract">{{{abstract}}}</div>
+  {{/if}}
+
+  <div class="thumb" ></div>
+  <!-- 
+
+  {{#if tags.Institution.length}}
+    &middot;
+    <span class="institutions">
+      {{#foreach tags.Institution}}<span class="tag institution">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
+    </span>
+    {{/if}}
+
+  -->
+  {{#if attachments.length}}
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      
+      
+        
+        {{#each attachments}}
+
+          {{#if_eq this.type compare="image"}}
+            <div class="swiper-slide"><img src="{{this.src}}"/></div>
+          {{/if_eq}}
+          {{#if_eq this.type compare="video"}}
+            <div class="swiper-slide">
+              <video id="{{this.id}}" class="video-js vjs-default-skin"
+                controls preload="auto" width="100%" height="264"
+                poster="{{this.poster}}">
+               <source src="{{this.src}}" type='video/mp4' />
+              </video>
+              
+            </div>
+          {{/if_eq}}
+        {{/each}}
+    </div>
+    
+  </div>
+  {{/if}}
+  <div class="pagination"></div>
+
+  <div class="actions">
+    <a class="" href="#">cite it</a>
+    <a class="" href="/f/#{{#url "d" "slug" slug}}{{/url}}">view</a>
+    <a class="" href="#">cite it</a>
+  </div>
+</div>

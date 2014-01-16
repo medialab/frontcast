@@ -42,22 +42,17 @@ api_urlpatterns = patterns('walt.api',
 
 )
 
-frontcast_urlpatterns = patterns('frontcast.views',
-   url(r'^$', 'home', name='frontcast_home'),
-   url(r'd/(?P<slug>[:a-zA-Z\.\-\d]+)/$', 'document', name='frontcast_document'),
-)
 
-urlpatterns = patterns('walt.views',
+
+walt_urlpatterns = patterns('walt.views',
+  #patterns('walt.views',
     # home
     url(r'^$', 'home', name='walt_home'),
     
 
-    # login / logout
-    url(r'^logout/$', 'logout_view', name='walt_logout'),
-    url(r'^login/$', 'login_view', name='walt_login'),
-    url(r'^ouch/$', 'not_found', name='not_found'),
+    
 
-    url(r'^f/', include(frontcast_urlpatterns)),
+    
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -86,8 +81,18 @@ urlpatterns = patterns('walt.views',
     url(r'^setup/$', 'setup', name='walt_setup'), # add video metadata ? provide upload features.
 
 
-    # restful api
-    url(r'^api/', include(api_urlpatterns)),
+    
     # url(r'^frontcast/', include(frontcast_urlpatterns))
 )
 
+urlpatterns = patterns('frontcast.views',
+  url(r'^$', 'home', name='frontcast_home'),
+  url(r'^d/(?P<slug>[:a-zA-Z\.\-\d]+)/$', 'document', name='frontcast_document'),
+  url(r'^w/', include(walt_urlpatterns)),
+  # restful api
+  url(r'^api/', include(api_urlpatterns)),
+  # login / logout
+  #url(r'^logout/$', 'logout_view', name='walt_logout'),
+  #url(r'^login/$', 'login_view', name='walt_login'),
+ # url(r'^ouch/$', 'not_found', name='not_found'),
+)
