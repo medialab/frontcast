@@ -35,7 +35,7 @@ h1,h2,h3,h4,h5{
 
 header{
   background-color: #ffffff;
-  padding: 24px 0;
+  padding: 12px 0;
   position: fixed;
   z-index: 1000;
   top: 0;
@@ -300,6 +300,14 @@ li{
   font-size: 2.4rem;
   margin-bottom: 12px;
   text-align: center;
+}
+
+#search-query{
+  display: inline;
+  margin: 0;
+  background: #fff;
+  color: #181818;
+  font: 1.3rem/1.618em 'Lato', sans-serif;
 }
 
 

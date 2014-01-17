@@ -34,7 +34,8 @@
             ids: [''+data.object.id],
             length: 1,
             limit: 1,
-            offset: 0
+            offset: 0,
+            order_by: []
           }
         });
       }
@@ -57,7 +58,8 @@
             ids:$.map(data.objects, function(e){return ''+e.id;}),
             length: +data.meta.total_count,
             limit: +data.meta.limit || data.objects.length,
-            offset: data.meta.offset || 0
+            offset: data.meta.offset || 0,
+            order_by: data.meta.order_by || []
           }
         });
       }

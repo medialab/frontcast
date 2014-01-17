@@ -55,7 +55,8 @@
     <div class="container">
       <div class="six columns"><img src="{{ STATIC_URL }}/img/forccast.svg"/>archive</div>
       <div class="ten columns right-aligned">
-        <a class="entry">search</a>
+        <input type="text" name="query" id="search-query" placeholder="search" autofocus=autofocus>
+
         {% if user.is_authenticated %}
           <a class="entry" href="{% url "frontcast_logout"%}">{% trans "logout" %} {{user}}</a>
         {% else %}
@@ -75,14 +76,11 @@
       <div class="two columns" style="height: 300px">
         <nav>
           <div id="counter-documents"></div>
-          <label>{% trans "search"%}</label>
-          <input type="text" name="query" id="search-query" placeholder="search" autofocus=autofocus>
-
-          <select>
-            <option selected="selected">by name</option>
-            <option>by 1/name</option>
-            <option>by year</option>
-            <option>by 1/year</option>
+          
+          <select id="order-by">
+            <option value="pk">recent</option>
+            <option value="-pk">older</option>
+            <option value="-abstract">top rated</option>
           </select>
           
         </nav>

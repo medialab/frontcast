@@ -13,10 +13,10 @@
       forceiOS: false,
       includeBlank: false,
       optionTemplate: function(optionEl) {
-        return optionEl.text();
+        return optionEl.html();
       },
       triggerTemplate: function(optionEl) {
-        return optionEl.text();
+        return optionEl.html();
       }
     }, opts);
     isiOS = !!navigator.userAgent.match(/iP(hone|od|ad)/i);

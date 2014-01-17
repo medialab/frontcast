@@ -68,6 +68,7 @@
             ids: ['string'],
             limit: 'number',
             offset: 'number',
+            order_by: ['string'],
             length: 'number' // total_count of items - limit infinite loiading
           },
           value: {
@@ -75,7 +76,8 @@
             ids: [],
             limit: 0,
             offset: 0,
-            length: 0
+            length: 0,
+            order_by: [],
           },
           dispatch: ['data_documents__updated']
         },
