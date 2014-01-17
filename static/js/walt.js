@@ -68,7 +68,7 @@
       }
     },
     {
-      path: '/d/{slug}/edit',
+      path: '/d/{slug}/edit/:?params:',
       scene: walt.SCENE_DOCUMENT_EDIT,
       description: ''
     },

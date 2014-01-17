@@ -12,7 +12,8 @@
     var _self = this,
         container, // grid document viewer (nested plugin)
         viewer,
-        counter; // single document viewer
+        counter, //the jquery element for the counter
+        countup; // the countup counter
 
     this.triggers.events.scene__synced = function(controller) {
       var scene = controller.get('scene');
@@ -28,6 +29,8 @@
       });
       viewer = $("#single-document");
       counter = $("#counter-documents");
+      
+      
     };
 
 
@@ -35,30 +38,59 @@
       #Data stuff for the Grid Module
       It handles item activation on scene__updated.
     */
-
     this.triggers.events.data_documents__updated = function(controller) {
       var scene = controller.get('scene');
 
       walt.verbose('(Grid) listens to data_documents__updated', scene);
       
-      (scene == walt.SCENE_INDEX || walt.SCENE_SEARCH) && _self.listof(controller, {
-        namespace:'documents'
-      });
-
-      scene == walt.SCENE_DOCUMENT_VIEW && _self.single(controller, {
-        namespace:'documents'
-      });
-
-
+      switch(scene){
+        case walt.SCENE_INDEX:
+        case walt.SCENE_SEARCH:
+          _self.listof(controller, {namespace: 'documents'});
+          break;
+        case walt.SCENE_DOCUMENT_VIEW:
+          _self.single(controller, {namespace: 'documents'});
+          break;
+        case walt.SCENE_DOCUMENT_EDIT:
+          _self.edit(controller, {namespace: 'documents'});
+          break;
+      }
+     
     };
 
-    this.single = function(controller){
-      
-      var doc = controller.get('data_documents').items[0];
 
-      walt.verbose('(Grid) .single');
-      container.empty();
-      viewer.append( Handlebars.templates.document_view(doc));
+    /*
+      Print out the reference for the given document
+    */
+    this.triggers.events.data_references__updated = function(controller) {
+      var references = controller.get('data_references'),
+          single_reference_item = viewer.find('[data-reference-id]');
+
+      walt.verbose('(Grid) listens to data_references__updated');
+
+      // single document references
+      single_reference_item.length && single_reference_item.html(references.items[single_reference_item.attr('data-reference-id')].mla);
+
+      /* grid documents references - not planned
+      container.find('[data-reference-id]').each(function(i, e) {
+        var el = $(this),
+            reference_id = el.attr('data-reference-id');
+
+        if( references.ids.indexOf(reference_id) != -1){
+          el.html(references.items[reference_id].mla);
+        }
+      });
+      */
+    };
+
+
+    this.single = function(controller) {  
+      var doc = controller.get('data_documents').items[0],
+          previouscount = countup? countup.endVal: 0;
+
+      walt.verbose('(Grid) .single', doc);
+      container.empty().height('auto');
+      viewer.empty().append( Handlebars.templates.document_view(doc));
       viewer.find('.swiper-container').swiper({
         //Your options here:
         mode:'horizontal',
@@ -70,7 +102,7 @@
         //etc..
       });
 
-      viewer.find("video").each(function(){
+      viewer.find("video").each(function() {
         var item = $(this),
             videoid = item.attr('id');
 
@@ -82,9 +114,23 @@
           // Player (this) is initialized and ready.
         });
       });
+
+      countup = new countUp("counter-documents", previouscount, 1, 0, 1.500);
+      countup.start()
     }
 
-    this.listof = function(controller, options){
+
+    this.edit = function(controller) {  
+      var doc = controller.get('data_documents').items[0];
+
+      walt.verbose('(Grid) .edit', doc);
+      container.empty().height('auto');
+      viewer.empty().append( Handlebars.templates.document_edit(doc));
+      
+    }
+
+
+    this.listof = function(controller, options) {
       var settings = $.extend({
             selector:'.document', // css selector for the given item
             prefix: '#d-', // id prefix for the given stuff
@@ -93,7 +139,8 @@
           }),
           boxes = [],
 
-          data = controller.get('data_' + settings.namespace);
+          data = controller.get('data_' + settings.namespace),
+          previouscount = countup? countup.endVal: 0;
 
       walt.verbose('(Grid) .listof');
       walt.verbose('...',data.length, 'items, selector:', settings.selector, ' replacing items...');
@@ -101,8 +148,10 @@
       viewer.empty();
       container.empty();
       
-      counter.text(data.length);
       
+      countup = new countUp("counter-documents", previouscount, data.length, 0, 1.500);
+      countup.start()
+
       for( var i in data.items){
         boxes.push(settings.template(data.items[i]));
       }

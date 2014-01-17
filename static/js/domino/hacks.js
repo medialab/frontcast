@@ -119,6 +119,7 @@
                 break;
 
               case walt.SCENE_DOCUMENT_VIEW:
+              case walt.SCENE_DOCUMENT_EDIT:
                 services = [
                   {
                     service: 'get_document',
@@ -129,9 +130,8 @@
                   }
                 ];
                 break;
-                
               default:
-                walt.error('@scene__updated, unrecognized scene name:', scene)
+                walt.error('@scene__updated, remember that you must add the (probably) new scene choice inside the hacks.js!! unrecognized scene name:', scene)
                 break;
             }; // end of switch scene
             walt.log('@scene__updated, services ', services, scene == walt.SCENE_INDEX);
