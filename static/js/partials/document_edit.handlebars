@@ -1,0 +1,99 @@
+<div class="big-box editor">
+  <div class="pusher"></div>
+  <div class="tags">
+    <span class="date">
+      {{#foreach tags.Date}}<span class="tag date">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
+    </span>
+    <span class="type">
+      <label>type</label>
+      <input type="text" value="{{type}}"/>
+    </span>
+  </div>
+
+  <h2><label>title</label><input type="text" value="{{title}}"/></h2>
+
+  {{#if tags.Institution.length}}
+    <div class="tags">
+        {{#foreach tags.Institution}}
+          <span class="tag">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}
+        {{/foreach}}
+      
+    </div>
+  {{/if}}
+  <div class="pusher"></div>
+ 
+
+  
+  <!-- 
+
+  {{#if tags.Institution.length}}
+    &middot;
+    <span class="institutions">
+      {{#foreach tags.Institution}}<span class="tag institution">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
+    </span>
+    {{/if}}
+
+  -->
+  {{#if_gt attachments.length compare=1}}
+
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      
+      
+        
+        {{#each attachments}}
+
+          {{#if_eq this.type compare="image"}}
+            <div class="swiper-slide"><img src="{{this.src}}"/></div>
+          {{/if_eq}}
+          {{#if_eq this.type compare="video"}}
+            <div class="swiper-slide">
+              <video id="{{this.id}}" class="video-js vjs-default-skin"
+                controls preload="auto" width="100%" height="264"
+                poster="{{this.poster}}">
+               <source src="{{this.src}}" type='video/mp4' />
+              </video>
+              
+            </div>
+          {{/if_eq}}
+        {{/each}}
+    </div>
+    
+  </div>
+  <div class="pagination"></div>
+  {{else}}
+    {{#each attachments}}
+
+          {{#if_eq this.type compare="image"}}
+            <div class=""><img src="{{this.src}}"/></div>
+          {{/if_eq}}
+          {{#if_eq this.type compare="video"}}
+            <div class="video">
+              <video id="{{this.id}}" class="video-js vjs-default-skin"
+                controls preload="auto" width="100%" height="264"
+                poster="{{this.poster}}">
+               <source src="{{this.src}}" type='video/mp4' />
+              </video>
+              
+            </div>
+          {{/if_eq}}
+        {{/each}}
+  {{/if_gt}}
+
+
+  {{#if content}}
+    <div class="content"><textarea>{{{content_raw}}}</textarea></div>
+  {{/if}}
+
+  {{#unless_eq reference compare=""}}
+    <div class="mla">
+      <span data-reference-id="{{reference}}"></span>
+      {{#if permissions}}
+        {{#if_eq permissions compare="CAN_EDIT"}}
+          <a href="{{settings.base_url}}/#{{#url "re" "slug" this.slug}}{{/url}}" title="edit bibliographic reference"><i class="icon-pencil"></i></a>
+        {{/if_eq}}
+      {{/if}}
+    </div>
+    <div class="pusher"></div>
+  {{/unless_eq}}
+</div>
