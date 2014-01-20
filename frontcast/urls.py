@@ -86,7 +86,7 @@ walt_urlpatterns = patterns('walt.views',
 
 urlpatterns = patterns('frontcast.views',
   url(r'^$', 'home', name='frontcast_home'),
-  url(r'^d/(?P<slug>[:a-zA-Z\.\-\d]+)/$', 'document', name='frontcast_document'),
+  url(r'^d/(?P<slug>[:a-zA-Z\.\-\d]+)/edit/$', 'document_edit', name='frontcast_document_edit'),
   url(r'^w/', include(walt_urlpatterns)),
   # restful api
   url(r'^api/', include(api_urlpatterns)),

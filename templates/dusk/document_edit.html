@@ -1,0 +1,212 @@
+{% extends "dusk/index.html" %}
+{% load i18n %}
+
+{% block title %}
+  resource not found
+{% endblock %}
+
+  {% block content %}
+    <div class="container">
+    
+    
+      <div class="two columns" style="height: 300px">
+        <nav>
+          
+        </nav>
+      </div>
+
+      <div class="single twelve columns" id="single-document">
+        <div class="big-box editor">
+          <div id="layout" class="biblib-form" style="min-height:100px"></div>
+          
+
+        </div>
+      </div>
+      <div id="actions" class="two columns">
+        <button class="blue validate-button">save <i class="fa fa-save"></i></button>
+      </div>
+    </div>
+  {% endblock %}
+
+  {% block domino %}
+    <script src="{{STATIC_URL}}js/libs/blf.min.js"></script>
+    <script src="{{STATIC_URL}}js/walt.js"></script>
+    <script>
+        // API endpooints for models
+        walt.urls = {
+            documents: '{% url "walt_api_documents" %}', // public available documents
+            document: '{% url "walt_api_document" "::slug" %}',
+            documents_filters: '{% url "walt_api_documents_filters" %}', // filters for public available documents
+            references: '{% url "walt_api_biblib_proxy_safe" %}',
+            oembed_youtube: '{% url "walt_api_oembed_proxy" "youtube" %}',
+            oembed_flickr: '{% url "walt_api_oembed_proxy" "flickr" %}'
+        };
+        walt.static_url = "{{ STATIC_URL}}";
+    </script>
+    <script id="override-main" type="text/x-handlebars-template">
+      <div id="panels" class="container">
+        <div data-panel="create" style="display:none;">
+      <div class="create-form"></div>
+      </div>
+        <div data-panel="fields" style="display:none;">
+      <div class="select-field"></div>
+      </div>
+      <div data-panel="advancedSearch" style="display:none;">
+        <div class="advanced-search"></div>
+      </div>
+      <div data-panel="list" style="display:none;">
+        <ul class="entries-list"></ul>
+      </div>
+    </script>
+    <script>
+      /*
+          Initialize walt + biblib
+      */
+      $(window).load( function(){
+      var item = {{document.tojson|safe}};
+
+      blf.templates.override(
+        'main',
+        Handlebars.compile($('#override-main').html())
+      );
+
+      blf.init({
+        lang: 'en',
+        i18n:{
+          url: walt.static_url + '/locales/__lng__/__ns__.json'
+        },
+        rpc:{
+          before: function(params, xhr){
+            xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+          }
+        },
+        baseURL: walt.urls.references,//http://localhost:8080',
+        corpus: "forccast",
+        baseDOM: $('#layout'),
+        callbacks:{
+          save: function(controller, data) {
+            walt.log('saved.');
+            console.log(data);
+            //location.href="/#/";
+          },
+          get_entry:function(controller, data){
+            if(data.result && data.result.length)
+              controller.dispatchEvent('editEntry', { entry: data.result.pop() });
+            else{
+              var creators = [],
+                  person = {},
+                  affiliation = {},
+                  name_family,
+                  name_given,
+                  institution;
+
+              if(item.tags.AUTHOR) // BIBBLIB MADNESS :D
+                for(var i in item.tags.AUTHOR){
+                  name_family = item.tags.AUTHOR[i].name.match(/([^,]+),/);
+                  if(!name_family) // skip useless tags
+                    continue;
+                  name_family = name_family.pop().trim();
+                  name_given = item.tags.AUTHOR[i].name.match(/,([^\(]+)\(?/).pop().trim();
+
+                  person = {
+                    rec_metajson: 1,
+                    rec_class: 'Person',
+                    name_given: name_given,
+                    name_family: name_family
+                  };
+
+                  institution = item.tags.AUTHOR[i].name.match(/\(([^\)]+)\)?/);
+                  if(institution)
+                    creators.push({
+                      role: 'aut',
+                      agent: person,
+                      affiliation: {
+                        agent:{
+                          name: institution.pop().trim(),
+                          rec_class: "Orgunit",
+                          rec_metajson: 1
+                        },
+                        role: 'undetermined'
+                      }
+                    });
+                  else
+                    creators.push({
+                      role: 'aut',
+                      agent: person
+                    });
+                };
+              //debugger
+              // brand new reference (with a GIVEN rec_id)
+              controller.dispatchEvent('editEntry', {entryId: item.reference, entry: {
+                title: item.title,
+                rec_type: item.type,
+                rec_id: item.reference,
+                creators: creators
+              }});
+            }
+            // resize 
+            //el.height(el[0].scrollHeight);
+          }
+        },
+        onComplete: function(controller) {
+          controller.request('get_entry', { rec_id: "{{document.reference}}" });
+          $('.validate-button', '#actions').click(function(){$('.validate-button', '#layout').trigger('click');})
+      //$('.validate-button').click(function(){alert('jeijrioejriejirjeirjeijrer');});
+
+        },
+        advancedSearchPanel: {
+          index: {
+            property_source_index: 'search_index',
+            property_source_operator: 'search_operator',
+            default_operator: 'and',
+            default_index: [
+              'title',
+              'author',
+              'keyword'
+            ]
+          },
+          filters: [
+            {
+              labels: {
+                en: 'Publication year',
+                fr: 'Année de publication'
+              },
+              property_start: 'filter_date_start',
+              property_end: 'filter_date_end',
+              type_ui: 'YearRangeField'
+            },
+            {
+              labels: {
+                en: 'Document types',
+                fr: 'Types de document'
+              },
+              multiple: true,
+              property: 'filter_types',
+              type_source: 'document_type',
+              type_ui: 'CheckboxField'
+            },
+            {
+              labels: {
+                en: 'Languages',
+                fr: 'Langues'
+              },
+              multiple: true,
+              property: 'filter_languages',
+              type_source: 'language',
+              type_ui: 'CheckboxField'
+            }
+          ]
+        }
+      });
+        
+          
+              walt.user.username = '{{ user.username }}';
+              walt.user.is_staff = '{{ user.is_staff }}' == 'True';
+              walt.static_url = '{{ STATIC_URL }}';
+              walt.init();
+
+
+      });
+
+    </script>
+  {% endblock %}

@@ -1,4 +1,4 @@
-import re, os, operator
+import re, os, operator, json
 from datetime import datetime
 from markdown import markdown
 
@@ -344,6 +344,9 @@ class Document(models.Model):
       'authors': [a.username for a in self.authors.all()]
 
     }
+
+  def tojson(self):
+    return json.dumps(self.json())
 
 
 class Assignment(models.Model):

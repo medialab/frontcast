@@ -53,8 +53,8 @@ footer{
   background-color: #ec5148;
   color: #ffffff;
   clear: both;
-  position: fixed;
-  bottom: 0px;
+  /*position: fixed;
+  bottom: 0px;*/
   width: 100%;
   z-index: 999;
 }
@@ -74,15 +74,16 @@ img{
 ================================================== */
 button, a.boo {
   font: 1.2rem/1.618em 'Lato', sans-serif;
+  font-weight: 700;
   text-transform: uppercase;
   text-decoration: none;
-  font-weight: normal;
   background: #ec5148;
   color: #f9eedc;
   text-align: center;
   display: block;
   border-radius:2px;
-  padding: 12px 16px;
+  padding: 6px 12px;
+  margin:0;
   text-shadow: none;
   border-width: 0px;
   -webkit-transition: background 200ms ease-in-out; 
@@ -94,7 +95,17 @@ button, a.boo {
 button:hover, a.boo:hover{
   background:  #ff5450;
   color: white;
-   border-width: 0px;
+  border-width: 0px;
+}
+
+button.blue, a.boo.blue {
+  background: #33cccc;
+}
+
+button.blue:hover, a.boo.blue:hover{
+  background:  #33cccc;
+  color: white;
+  border-width: 0px;
 }
 
 button:active{
@@ -116,6 +127,10 @@ a.entry{
 
 a.entry.active, a.entry:hover{
   
+}
+
+ul, ol{
+  margin: 0;
 }
 
 li{
@@ -250,6 +265,10 @@ li{
   overflow: hidden;
 }
 
+.big-box.editor{
+  background: transparent;
+}
+
 .big-box .pusher{
   height: 24px;
 }
@@ -321,7 +340,98 @@ li{
   font: 1.3rem/1.618em 'Lato', sans-serif;
 }
 
+#actions{
+  position: fixed;
+}
 
+#layout{
+  
+}
+#layout fieldset{
+  padding: 12px 18px 12px 18px;
+  background: white;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+#layout fieldset.title{
+  padding-bottom: 0px;
+}
+
+#layout fieldset input{
+  width: 98%;
+  border-width: 0;
+  border-bottom: 1px solid;
+  border-radius: 0;
+  font: 0.9em/1.618em 'Lato', sans-serif;
+}
+
+#layout li fieldset{
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+
+#layout .container{
+  width: 100%;
+  clear: both;
+}
+
+#layout .CreatorField{
+  padding: 12px 12px 0 12px;
+}
+
+#layout .CreatorField label{
+  padding: 0 6px;
+}
+
+#layout .CreatorField li{
+  width: 156px;
+  display: inline-block;
+  margin: 6px;
+  overflow:hidden;
+  background: #f8f8f8;
+}
+
+#layout .TypeField label, #layout .IdentifierField label, #layout .KeywordField label, #layout .LanguageValueField label{
+  display: inline;
+}
+
+
+#layout .CreatorField li select{
+  display: none;
+}
+
+
+
+#layout .CreatorField li .custom-container{
+  margin: 12px;
+}
+
+#layout .CreatorField li input{
+  width: 120px;
+  margin: 0;
+}
+
+#layout .actions{
+  text-align: center;
+}
+
+#layout button {
+  display: inline;
+  background: #cacaca;
+  color: white;
+  float: right;
+}
+
+#layout button:hover{
+  background: #ec5148;
+}
+
+#layout fieldset.person-name-prefix, #layout fieldset.person-affiliation-role{
+  display: none;
+}
 /* #puglins
 ================================================== */
 /*
@@ -460,7 +570,7 @@ Pagination Styles
 
 div.fancy-select {
   position: relative;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: uppercase;
   font-size: 1.2rem;
   color: white;

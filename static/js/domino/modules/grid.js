@@ -10,9 +10,14 @@
     domino.module.call(this);
 
     var _self = this,
-        container, // grid document viewer (nested plugin)
-        viewer,
-        counter, //the jquery element for the counter
+        container = $("#grid-of-documents").nested({ // grid document viewer (nested plugin)
+          minWidth: 190,
+          gutter: 12,
+          animate: false
+        }),
+        viewer = $("#single-document"),
+        counter = $("#counter-documents"),
+        actions = $("#actions"), //the jquery element for the counter
         countup; // the countup counter
 
     this.triggers.events.scene__synced = function(controller) {
@@ -22,13 +27,7 @@
 
     this.triggers.events.init = function(controller) {
       walt.verbose('(Grid) listens to init');
-      container = $("#grid-of-documents").nested({
-        minWidth: 190,
-        gutter: 12,
-        animate: false
-      });
-      viewer = $("#single-document");
-      counter = $("#counter-documents");
+      
       
       
     };
@@ -116,9 +115,20 @@
       });
 
       countup = new countUp("counter-documents", previouscount, 1, 0, 1.500);
-      countup.start()
+      countup.start();
+
+
+      // check if it has the right to edit, then add edit buttons
+      _self.enable_edit(doc);
     }
 
+    this.enable_edit = function(doc){
+      actions.empty().append($('<a/>',{'class':'boo', href:'/d/' + doc.slug + '/edit'}).html('edit <i class="fa fa-pencil"></i>'))
+    }
+    
+    this.enable_save = function(doc){
+      actions.empty().append($('<a/>',{'class':'boo blue', href:'/#/d/' + doc.slug }).html('save <i class="fa fa-save"></i>'))
+    }
 
     this.edit = function(controller) {  
       var doc = controller.get('data_documents').items[0];
@@ -126,7 +136,7 @@
       walt.verbose('(Grid) .edit', doc);
       container.empty().height('auto');
       viewer.empty().append( Handlebars.templates.document_edit(doc));
-      
+      _self.enable_save(doc);
     }
 
 
@@ -147,6 +157,7 @@
 
       viewer.empty();
       container.empty();
+      actions.empty();
       
       
       countup = new countUp("counter-documents", previouscount, data.length, 0, 1.500);

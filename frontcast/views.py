@@ -88,16 +88,14 @@ def storage( request, folder=None, index=None, extension=None ):
   return render_to_response(  "dusk/404.html", RequestContext(request, data ) )
 
 
-def document(request, slug):
+def document_edit(request, slug):
   data = _shared_data(request, tags=['home'] )
   try:
     data['document'] = Document.objects.get( slug=slug)
   except Document.DoesNotExist, e:
     return notfound(request)
-  data['total_count'] = 1
-  data['filters'] = None
 
-  return render_to_response(  "dusk/document.html", RequestContext(request, data ) )
+  return render_to_response(  "dusk/document_edit.html", RequestContext(request, data ) )
 
 def _queryset(request, qs, d={}):
   e = Epoxy(request)
