@@ -69,10 +69,10 @@
   },
   "LanguageValueField": {
     "errors": {
-      "at_least_one": "At least one language has to be specified."
+      "at_least_one": "At least one entry has to be specified."
     },
     "actions":{
-      "add":"add language"
+      "add":"add"
     }
   },
   "TypeField": {

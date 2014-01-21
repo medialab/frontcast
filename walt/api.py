@@ -177,7 +177,11 @@ def user_document(request, username, slug):
   result = Epoxy(request)
 
   try:
-    if request.user.username == username:
+    if request.user.is_staff:
+      d = Document.objects.get(
+        Q(slug=slug)
+      )
+    elif request.user.username == username:
       d = Document.objects.get(
         Q(slug=slug),
         Q(owner=request.user) | Q(authors=request.user)
@@ -354,7 +358,7 @@ def biblib_proxy_safe(request):
   # get request as an arbitrary object
   r = '%s'%request.read()
   data = json.loads(r)
-  logger.info('... to be sent %s' % r)
+  
   # inject role in request
   if data['method'] in ["save", "field", "fields", "set_metadata_property"]:
     if request.user.is_staff:
@@ -366,6 +370,7 @@ def biblib_proxy_safe(request):
       # todo: check if user has access
       pass
 
+  logger.info('... params to be sent %s' % data['params'])
   # return result.json()
 
   req = urllib2.Request(settings.BIBLIB_ENDPOINT, json.dumps(data))

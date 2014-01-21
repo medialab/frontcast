@@ -347,23 +347,38 @@ li{
 #layout{
   
 }
-#layout fieldset{
+.editor fieldset{
   padding: 12px 18px 12px 18px;
   background: white;
   overflow: hidden;
   margin-bottom: 24px;
 }
 
-#layout fieldset.title{
+.editor fieldset.title{
   padding-bottom: 0px;
+  display: none;
 }
 
-#layout fieldset input{
+.editor fieldset input, .editor fieldset textarea{
+  width: 98%;
+  margin-bottom: 0;
+  font: 0.9em/1.618em 'Lato', sans-serif;
+}
+
+{
   width: 98%;
   border-width: 0;
   border-bottom: 1px solid;
   border-radius: 0;
   font: 0.9em/1.618em 'Lato', sans-serif;
+}
+
+.editor label{
+  display: block;
+  font: 1.1rem/1.618em 'Lato', sans-serif;
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
 }
 
 #layout li fieldset{
@@ -429,7 +444,7 @@ li{
   background: #ec5148;
 }
 
-#layout fieldset.person-name-prefix, #layout fieldset.person-affiliation-role{
+.editor fieldset.person-name-prefix, .editor fieldset.person-affiliation-role{
   display: none;
 }
 /* #puglins
@@ -726,3 +741,48 @@ margin-left: -2em;
 top: 50%;
 margin-top: -1.3em;
 }
+
+
+
+
+
+
+
+
+
+/* #Toastmessage Plugin css
+================================================== */
+
+.toast-container{z-index:9999;}
+* html .toast-container{position:absolute;}
+.toast-item{
+  height:auto;
+  background:#181818;
+  opacity:.9;
+  border-radius: 2px;
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
+  color:white;
+  padding: 8px 12px;
+  display:block;
+  position:relative;
+  margin:0 0 12px 0;
+}
+.toast-item h1{
+  font-size:1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  text-align: center;
+  margin:0;
+}
+.toast-item p{text-align:left;margin-left:50px;}
+.toast-item-image{display:none}
+.toast-type-notice{color:white;}
+.toast-type-success{color:white;}
+.toast-type-warning{color:white;border-color:#FCBD57;}
+.toast-type-error{color:white;border-color:#B32B2B;}
+.toast-position-bottom-right{position:fixed;bottom:20px;right:20px;}
+
+
+

@@ -11,14 +11,18 @@
     
       <div class="two columns" style="height: 300px">
         <nav>
-          
+          <div id="counter-documents">1</div>
         </nav>
       </div>
 
       <div class="single twelve columns" id="single-document">
         <div class="big-box editor">
+          <fieldset>
+            <label for="document-content">Content</label>
+            <textarea id="document-content">{{document.content}}</textarea>
+          </fieldset>
+
           <div id="layout" class="biblib-form" style="min-height:100px"></div>
-          
 
         </div>
       </div>
@@ -29,6 +33,7 @@
   {% endblock %}
 
   {% block domino %}
+
     <script src="{{STATIC_URL}}js/libs/blf.min.js"></script>
     <script src="{{STATIC_URL}}js/walt.js"></script>
     <script>
@@ -36,6 +41,7 @@
         walt.urls = {
             documents: '{% url "walt_api_documents" %}', // public available documents
             document: '{% url "walt_api_document" "::slug" %}',
+            user_document: '{% url "walt_api_user_document" "::username" "::slug" %}',
             documents_filters: '{% url "walt_api_documents_filters" %}', // filters for public available documents
             references: '{% url "walt_api_biblib_proxy_safe" %}',
             oembed_youtube: '{% url "walt_api_oembed_proxy" "youtube" %}',
@@ -63,6 +69,7 @@
           Initialize walt + biblib
       */
       $(window).load( function(){
+
       var item = {{document.tojson|safe}};
 
       blf.templates.override(
@@ -85,8 +92,40 @@
         baseDOM: $('#layout'),
         callbacks:{
           save: function(controller, data) {
-            walt.log('saved.');
+            walt.toast('saving...');
+            
+            var abstract = data.params.entry.descriptions.length? data.params.entry.descriptions[0].value: '',
+                title = data.params.entry.title,
+                content = $("#document-content").val();
+
+            walt.verbose('@save blf callback');
+            walt.verbose('... title', title);
+            walt.verbose('... abstract', abstract);
+            walt.verbose('... content', content);
+
             console.log(data);
+            $.ajax({
+              url: walt.urls.user_document.replace('/::username','/' + walt.user.username ).replace('/::slug','/{{document.slug}}'),
+              method: 'POST',
+              data: {
+                title: title,
+                abstract: abstract,
+                content: content,
+                type:'{{document.type}}',
+                language:'{{document.language}}',
+                remote: '{{document.remote}}',
+                reference: '{{docuemnt.reference}}'
+              }
+            })
+            .success(function(data) {
+              if(data.status == "ok"){
+                walt.toast('saved', {cleanup: true});
+                //location.href="/#/d/{{document.slug}}";
+              }
+            })
+            .error( function(data) {
+              console.log(data);
+            });
             //location.href="/#/";
           },
           get_entry:function(controller, data){
@@ -141,7 +180,8 @@
                 title: item.title,
                 rec_type: item.type,
                 rec_id: item.reference,
-                creators: creators
+                creators: creators,
+                descriptions: [{language:'en', value:item.abstract_raw}]
               }});
             }
             // resize 
@@ -150,6 +190,7 @@
         },
         onComplete: function(controller) {
           controller.request('get_entry', { rec_id: "{{document.reference}}" });
+          $('textarea').autosize();
           $('.validate-button', '#actions').click(function(){$('.validate-button', '#layout').trigger('click');})
       //$('.validate-button').click(function(){alert('jeijrioejriejirjeirjeijrer');});
 

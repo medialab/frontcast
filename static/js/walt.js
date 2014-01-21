@@ -202,7 +202,7 @@
     var settings=$.extend({
       text: "<div>"+(!title?"<h1>"+message+"</h1>":"<h1>"+title+"</h1><p>"+message+"</p>")+"</div>",
       type: "notice",
-      position: "middle-center",
+      position: "bottom-right",
       inEffectDuration: 200,
       outEffectDuration: 200,
       stayTime: 1900
@@ -336,7 +336,7 @@
     walt.log('csfrtoken: ', walt.CSRFTOKEN);
 
     //walt.engine.init();
-    walt.domino.init();
+    walt.domino && walt.domino.init();
   };
 
 })(window, jQuery, domino);
