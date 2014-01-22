@@ -33,6 +33,16 @@
   -->
   {{#if_gt attachments.length compare=1}}
 
+  {{#if_eq this.type compare="video"}}
+    <div class="video">
+      <video id="{{this.id}}" class="video-js vjs-default-skin"
+        controls preload="auto" width="100%" height="264"
+        poster="{{this.poster}}">
+       <source src="{{this.src}}" type='video/mp4' />
+      </video>
+    </div>
+  {{/if_eq}}
+
   <div class="swiper-container">
     <div class="swiper-wrapper">
       
@@ -43,16 +53,7 @@
           {{#if_eq this.type compare="image"}}
             <div class="swiper-slide"><img src="{{this.src}}"/></div>
           {{/if_eq}}
-          {{#if_eq this.type compare="video"}}
-            <div class="swiper-slide">
-              <video id="{{this.id}}" class="video-js vjs-default-skin"
-                controls preload="auto" width="100%" height="264"
-                poster="{{this.poster}}">
-               <source src="{{this.src}}" type='video/mp4' />
-              </video>
-              
-            </div>
-          {{/if_eq}}
+          
         {{/each}}
     </div>
     

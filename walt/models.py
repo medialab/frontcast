@@ -284,17 +284,20 @@ class Document(models.Model):
       
       for i,f in enumerate(filepaths):
         # todo external file resolver e.g. if not http://
-        parts = re.split('[/.]',f.strip('/'))
-        attachment = {
-          'id': '%s-%s' % (self.id, i),
-          'type': 'video' if parts[-1] in ['mp4','ogg'] else 'image' ,
-          'ext': parts[-1],
-          'src': reverse('frontcast_storage', args=parts)
-        }
-        if attachment['type'] == 'video':
-          parts[-1] = '%s.%s' % (parts[-1],'png')
-          attachment['poster'] = reverse('frontcast_storage', args=parts)
-        attachments.append(attachment)
+        try:
+          parts = re.split('[/.]',f.strip('/'))
+          attachment = {
+            'id': '%s-%s' % (self.id, i),
+            'type': 'video' if parts[-1] in ['mp4','ogg'] else 'image' ,
+            'ext': parts[-1],
+            'src': reverse('frontcast_storage', args=parts)
+          }
+          if attachment['type'] == 'video':
+            parts[-1] = '%s.%s' % (parts[-1],'png')
+            attachment['poster'] = reverse('frontcast_storage', args=parts)
+          attachments.append(attachment)
+        except:
+          continue
 
     return attachments
 

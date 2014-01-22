@@ -53,8 +53,8 @@ footer{
   background-color: #ec5148;
   color: #ffffff;
   clear: both;
-  /*position: fixed;
-  bottom: 0px;*/
+  position: fixed;
+  bottom: 0px;
   width: 100%;
   z-index: 999;
 }
@@ -782,7 +782,7 @@ margin-top: -1.3em;
 .toast-type-success{color:white;}
 .toast-type-warning{color:white;border-color:#FCBD57;}
 .toast-type-error{color:white;border-color:#B32B2B;}
-.toast-position-bottom-right{position:fixed;bottom:20px;right:20px;}
+.toast-position-bottom-right{position:fixed;bottom:36px;right:18px;}
 
 
 
