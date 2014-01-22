@@ -99,10 +99,29 @@
               }
             };
 
+            params.filters = params.filters || {};
+
             
             switch(scene){
               case walt.SCENE_INDEX:
               case walt.SCENE_SEARCH:
+                params.filters = JSON.stringify(params.filters);
+                services = [
+                  {
+                    service: 'get_documents',
+                    params: params
+                  },
+                  {
+                    service: 'get_documents_filters',
+                    params:{
+                      limit: -1,
+                    }
+                  }
+                ];
+                break;
+
+              case walt.SCENE_ME:
+                params.filters.owner__username = "daniele.guido";
                 params.filters = JSON.stringify(params.filters);
                 services = [
                   {

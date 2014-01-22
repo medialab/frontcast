@@ -45,6 +45,7 @@
       switch(scene){
         case walt.SCENE_INDEX:
         case walt.SCENE_SEARCH:
+        case walt.SCENE_ME:
           _self.listof(controller, {namespace: 'documents'});
           break;
         case walt.SCENE_DOCUMENT_VIEW:

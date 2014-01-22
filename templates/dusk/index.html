@@ -58,7 +58,8 @@
         <input type="text" name="query" id="search-query" placeholder="search" autofocus=autofocus>
 
         {% if user.is_authenticated %}
-          <a class="entry" href="{% url "frontcast_logout"%}">{% trans "logout" %} {{user}}</a>
+          <a class="entry" href="{% url "frontcast_home"%}#/me">{{user}}{% trans "'s space" %}</a> | 
+          <a class="entry" href="{% url "frontcast_logout"%}">{% trans "logout" %}</a> |
         {% else %}
           <a class="entry" href="{% url "frontcast_login"%}">{% trans "login" %}</a>
         {% endif %}
@@ -136,8 +137,8 @@
         &nbsp;
       </div>
       <div class="four columns">
-        <a class="boo" href="//sciencespo.fr">
-          SciencesPo
+        <a class="boo" href="//forccast.hypotheses.org/">
+          <img src="{{ STATIC_URL }}/img/forccast.svg"/>
         </a>
       </div>
 
