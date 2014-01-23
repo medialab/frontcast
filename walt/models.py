@@ -276,7 +276,7 @@ class Document(models.Model):
 
   		___""" %(self.title, self.id, self.slug, self.language, self.mimetype)
 
-  def get_attachments(self):
+  def get_attachments(self, deep=True):
     attachments = {
       'thumb':{
         'id': '%s-%s' % (self.id, 0),
@@ -284,34 +284,61 @@ class Document(models.Model):
         'ext': 'png',
         'src': reverse('frontcast_storage', args=['%s'%self.reference if self.reference else 'common', 'cover','png'])
       },
-      'video':{}, # the very video
+      'video':{}, #  video gallery, src index
       'gallery':[], # images and videos
       'pdf':[] #pdf attached (or other downloadable format)
     }
+    
+    if not deep: # massive get
+      return attachments
 
-    return attachments
-    if self.remote is not None and len(self.remote):
-      # pseudo Yaml
-      filepaths = self.remote.strip(' \t\n\r').split('\n') # split multilines (i.e for video)
-      
-      for i,f in enumerate(filepaths):
-        # todo external file resolver e.g. if not http://
-        try:
-          parts = re.split('[/.]',f.strip('/'))
-          attachment = {
+    # get every file for the single reference
+    path = os.path.join(settings.STORAGE_ROOT_PROTECTED, self.reference)
+
+    if not os.path.isdir(path):
+      return attachments
+
+    files = os.listdir(path)
+
+    for i,f in enumerate(files):
+      parts = re.split('[/.]', f)
+
+      if len(parts) != 2 or f == 'cover.png': # esclude double extension and file without extension as well. will be client  added
+        continue
+
+      ext = parts[-1]
+      name = parts[0]
+      src = reverse('frontcast_storage', args=[self.reference, name, ext])
+
+
+      # check extension and collect attachments. Check readme.md file for storage settings.
+      if ext in ['mp4', 'ogg']:
+        if name not in attachments['video']:
+          attachments['video'][name] = {
             'id': '%s-%s' % (self.id, i+1),
-            'type': 'video' if parts[-1] in ['mp4','ogg'] else 'image' ,
-            'ext': parts[-1],
-            'src': reverse('frontcast_storage', args=parts)
+            'sources':[],
+            'poster': reverse('frontcast_storage', args=[self.reference, name, "%s.png" % ext])
           }
-          if attachment['type'] == 'video':
-            parts[-1] = '%s.%s' % (parts[-1],'png')
-            attachment['poster'] = reverse('frontcast_storage', args=parts)
-          attachments.append(attachment)
-        except:
-          continue
+        attachments['video'][name]['sources'].append({
+          ext: src
+        })
+
+      elif ext in ['jpg', 'png']:
+        attachments['gallery'].append({
+          'id': '%s-%s' % (self.id, i+1),
+          'src': src,
+          'ext': ext
+        })
+
+      elif ext in ['pdf', 'doc']:
+        attachments['pdf'].append({
+          'id': '%s-%s' % (self.id, i+1),
+          'src': src,
+          'ext': ext
+        })
 
     return attachments
+
 
   def get_organized_tags(self):
     tags = {}
@@ -323,6 +350,7 @@ class Document(models.Model):
       tags[t_type].append(t)
     return tags
   
+
   def json(self, deep=False):
     # divide tags according to type
     tags = {}
@@ -334,7 +362,7 @@ class Document(models.Model):
       tags[t_type].append(t.json())
 
     # undesratnd remote/ locales file
-    attachments = self.get_attachments();
+    attachments = self.get_attachments(deep);
 
     
     return{

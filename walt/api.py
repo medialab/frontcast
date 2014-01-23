@@ -81,7 +81,7 @@ def document(request, pk):
 
     #  return result.throw_error(error='%s' % form.errors, code=API_EXCEPTION_FORMERRORS).json()
 
-  return result.item(d).json()
+  return result.item(d, deep=True).json()
 
 
 def reference_documents(request):

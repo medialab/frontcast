@@ -34,33 +34,30 @@
     {{/if}}
 
   -->
-  {{#if_gt attachments.length compare=1}}
+  
 
-  {{#if_eq this.type compare="video"}}
+  {{#if attachments.video}}
     <div class="video">
       <video id="{{this.id}}" class="video-js vjs-default-skin"
         controls preload="auto" width="100%" height="264"
         poster="{{this.poster}}">
-       <source src="{{this.src}}" type='video/mp4' />
+      {{#each this.sources}}
+      <source src="{{this.src}}" type='video/{{this.ext}}' />
+      {{/each}}
       </video>
     </div>
-  {{/if_eq}}
+  {{/if}}
 
+  {{#if attachments.gallery}}
   <div class="swiper-container">
     <div class="swiper-wrapper">
-      
-      
-        
-        {{#each attachments}}
-
-          {{#if_eq this.type compare="image"}}
-            <div class="swiper-slide"><img src="{{this.src}}"/></div>
-          {{/if_eq}}
-          
-        {{/each}}
+      {{#each attachments.gallery}}
+        <div class="swiper-slide"><img src="{{this.src}}"/></div>
+      {{/each}}
     </div>
-    
   </div>
+  {{/if}}
+
   <div class="pagination"></div>
   {{else}}
     {{#each attachments}}
