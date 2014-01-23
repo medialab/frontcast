@@ -149,6 +149,20 @@
                   }
                 ];
                 break;
+                
+              case walt.SCENE_DOCUMENT_ADD:
+                this.update({
+                  data_documents: {
+                    items: [],
+                    ids: [],
+                    limit: 0,
+                    offset: 0,
+                    length: 0,
+                    order_by: [],
+                  }
+                });
+                break;
+
               default:
                 walt.error('@scene__updated, remember that you must add the (probably) new scene choice inside the hacks.js!! unrecognized scene name:', scene)
                 break;

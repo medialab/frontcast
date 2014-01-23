@@ -54,6 +54,9 @@
         case walt.SCENE_DOCUMENT_EDIT:
           _self.edit(controller, {namespace: 'documents'});
           break;
+        case walt.SCENE_DOCUMENT_ADD:
+          _self.create(controller, {namespace: 'documents'});
+          break;
       }
      
     };
@@ -153,6 +156,13 @@
       container.empty().height('auto');
       viewer.empty().append( Handlebars.templates.document_edit(doc));
       _self.enable_save(doc);
+    }
+
+    this.create = function(controller) {  
+      walt.verbose('(Grid) .create');
+      container.empty().height('auto');
+      viewer.empty().append( Handlebars.templates.document_edit({}));
+      _self.enable_save({});
     }
 
 

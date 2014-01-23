@@ -34,6 +34,7 @@
   walt.SCENE_SEARCH = 'search';
   walt.SCENE_DOCUMENT_VIEW = 'd';
   walt.SCENE_DOCUMENT_EDIT = 'de';
+  walt.SCENE_DOCUMENT_ADD = 'da';
   walt.SCENE_REFERENCES = 'r';
   walt.SCENE_REFERENCE_EDIT = 're';
 
@@ -60,6 +61,11 @@
       description: ''
     },
     {
+      path: '/d/add/',
+      scene: walt.SCENE_DOCUMENT_ADD,
+      description: ''
+    },
+    {
       path: '/d/{slug}:?params:',
       scene: walt.SCENE_DOCUMENT_VIEW,
       description: '',
@@ -72,6 +78,7 @@
       scene: walt.SCENE_DOCUMENT_EDIT,
       description: ''
     },
+    
     {
       path: '/r/',
       scene: walt.SCENE_REFERENCES,
