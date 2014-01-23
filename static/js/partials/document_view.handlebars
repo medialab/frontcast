@@ -47,7 +47,13 @@
       </video>
     </div>
   {{/each}}
-
+  
+  <div class="remote">
+    {{#if permalink}}
+    <a href="{{permalink}}" class="boo dark">view web-site <i class="fa fa-link"></i></a>
+    {{/if}}
+  </div>
+  
   {{#if attachments.gallery}}
   <div class="swiper-container">
     <div class="swiper-wrapper">

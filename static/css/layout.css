@@ -80,7 +80,7 @@ button, a.boo {
   background: #ec5148;
   color: #f9eedc;
   text-align: center;
-  display: block;
+  display: inline-block;
   border-radius:2px;
   padding: 6px 12px;
   margin:0;
@@ -100,6 +100,16 @@ button:hover, a.boo:hover{
 
 button.blue, a.boo.blue {
   background: #33cccc;
+}
+
+button.dark, a.boo.dark {
+  background: #383838;
+}
+
+button.dark:hover, a.boo.dark:hover{
+  background:  #ff5450;
+  color: white;
+  border-width: 0px;
 }
 
 button.blue:hover, a.boo.blue:hover{
@@ -209,6 +219,7 @@ li{
 .box .thumb{
   width: 100%; background: #181818; height:100%
 }
+
 .box .thumb img{
   width: 100%;
   -webkit-transition: opacity 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
@@ -233,6 +244,7 @@ li{
      -o-transition: bottom 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
         transition: bottom 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); /* easeOutQuint */
 }
+
 .box .actions a{
   font-size: 1.1rem;
   text-transform: uppercase;
@@ -267,6 +279,12 @@ li{
 
 .big-box.editor{
   background: transparent;
+}
+
+.big-box .remote{
+  padding: 12px;
+  text-align: center;
+  background: #181818;
 }
 
 .big-box .pusher{

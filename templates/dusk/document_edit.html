@@ -23,6 +23,10 @@
             <textarea id="document-content">{{document.content}}</textarea>
           </fieldset>
 
+          <fieldset>
+            <label for="document-permalink">Permalink, external link</label>
+            <textarea id="document-permalink">{{document.permalink}}</textarea>
+          </fieldset>
           <div id="layout" class="biblib-form" style="min-height:100px"></div>
 
         </div>
@@ -97,12 +101,14 @@
             
             var abstract = data.params.entry.descriptions.length? data.params.entry.descriptions[0].value: '',
                 title = data.params.entry.title,
-                content = $("#document-content").val();
+                content = $("#document-content").val(),
+                permalink = $("#document-permalink").val();
 
             walt.verbose('@save blf callback');
             walt.verbose('... title', title);
             walt.verbose('... abstract', abstract);
             walt.verbose('... content', content);
+            walt.verbose('... content', permalink);
 
             $.ajax({
               url: walt.urls.document.replace('/%3A%3Aslug','/{{document.slug}}'),
@@ -110,7 +116,8 @@
               data: {
                 title: title,
                 abstract: abstract,
-                content: content
+                content: content,
+                permalink: permalink
               }
             })
             .success(function(data) {
