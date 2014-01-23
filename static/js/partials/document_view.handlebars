@@ -36,7 +36,7 @@
   -->
   
 
-  {{#if attachments.video}}
+  {{#each attachments.video}}
     <div class="video">
       <video id="{{this.id}}" class="video-js vjs-default-skin"
         controls preload="auto" width="100%" height="264"
@@ -46,7 +46,7 @@
       {{/each}}
       </video>
     </div>
-  {{/if}}
+  {{/each}}
 
   {{#if attachments.gallery}}
   <div class="swiper-container">
