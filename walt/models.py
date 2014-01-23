@@ -321,7 +321,8 @@ class Document(models.Model):
             'poster': reverse('frontcast_storage', args=[self.reference, name, "%s.png" % ext])
           }
         attachments['video'][name]['sources'].append({
-          ext: src
+          'src': src,
+          'ext': ext
         })
 
       elif ext in ['jpg', 'png']:
