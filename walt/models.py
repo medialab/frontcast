@@ -317,6 +317,7 @@ class Document(models.Model):
           attachments['video'][name] = {
             'id': '%s-%s' % (self.id, i+1),
             'sources':[],
+            'name' : name,
             'poster': reverse('frontcast_storage', args=[self.reference, name, "%s.png" % ext])
           }
         attachments['video'][name]['sources'].append({
@@ -337,6 +338,7 @@ class Document(models.Model):
           'ext': ext
         })
 
+    attachments['video'] = attachments['video'].values()
     return attachments
 
 
