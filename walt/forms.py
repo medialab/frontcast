@@ -8,6 +8,10 @@ class LoginForm(forms.Form):
 	password = forms.CharField( label=_('password'),  max_length=64, widget=forms.PasswordInput(render_value=False ) )
 
 
+class FullDocumentForm(ModelForm):
+  class Meta:
+    model = Document
+
 class DocumentForm(ModelForm):
   def clean(self):
     print 'cleaning...........', self.instance.status, self.instance.slug
