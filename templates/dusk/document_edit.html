@@ -123,7 +123,7 @@
             .success(function(data) {
               if(data.status == "ok"){
                 walt.toast('saved', {cleanup: true});
-                //location.href="/#/d/{{document.slug}}";
+                location.href="/#/d/{{document.slug}}";
               }
             })
             .error( function(data) {

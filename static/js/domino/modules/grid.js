@@ -155,7 +155,7 @@
 
     this.enable_buttons = function(doc){
       doc.permalink &&
-        actions.append(Handlebars.templates.permalink({href:doc.href}));
+        actions.append(Handlebars.templates.permalink({href:doc.permalink}));
 
       doc.attachments.pdf.length &&
         downloads.append(Handlebars.templates.download(doc.attachments.pdf));

@@ -56,7 +56,7 @@ def storage( request, folder=None, index=None, extension=None ):
   filepath = os.path.join( storage_path, folder,"%s.%s" % (index,extension) );
 
   if os.path.exists(filepath):
-    if settings.ENABLE_XACCEL :
+    if settings.ENABLE_XACCEL and extension in ['mp4', 'ogg']:
       hidden_filepath = os.path.join('/videos/protected/', folder, "%s.%s"% (index,extension))
       response = HttpResponse()
       response['X-Accel-Redirect'] = hidden_filepath
