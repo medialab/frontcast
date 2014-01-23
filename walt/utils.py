@@ -4,6 +4,13 @@ from django.db.models import Count
 from django.conf import settings
 from walt.models import Assignment, Task, Tag, Document
 
+def is_number(s):
+  try:
+    float(s)
+    return True
+  except ValueError:
+    return False
+
 #
 #
 #   @param user instance of<User>

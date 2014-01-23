@@ -152,6 +152,7 @@
         return new Handlebars.SafeString(nl2br);
     });
 
+    
 
     Handlebars.registerHelper("foreach",function(arr,options) {
         if(!arr)

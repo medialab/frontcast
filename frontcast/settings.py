@@ -51,6 +51,8 @@ USE_TZ = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = local_settings.MEDIA_ROOT
+
+STORAGE_ROOT = local_settings.STORAGE_ROOT
 STORAGE_ROOT_PUBLIC = local_settings.STORAGE_ROOT_PUBLIC
 STORAGE_ROOT_PROTECTED = local_settings.STORAGE_ROOT_PROTECTED
 

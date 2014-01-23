@@ -64,12 +64,27 @@
     */
     this.triggers.events.data_references__updated = function(controller) {
       var references = controller.get('data_references'),
-          single_reference_item = viewer.find('[data-reference-id]');
+          single_reference_item = viewer.find('[data-reference-id]'),
+          doc,
+          ref,
+          keywords;//pure js object of BIBLIB reference
 
       walt.verbose('(Grid) listens to data_references__updated');
 
+      
       // single document references
-      single_reference_item.length && single_reference_item.html(references.items[single_reference_item.attr('data-reference-id')].mla);
+      if(single_reference_item.length){
+        ref = references.items[single_reference_item.attr('data-reference-id')];
+        keywords = ref.keywords? ref.keywords.filter(function(a){return a.language=='en'}).pop().values: [];
+
+        doc = single_reference_item.closest('.big-box').find('.keywords').append(keywords.join(', '));
+
+        single_reference_item.html(ref.citations.html.mla);
+        walt.verbose('... keywords', keywords);
+      }
+
+      // single document keywords
+
 
       /* grid documents references - not planned
       container.find('[data-reference-id]').each(function(i, e) {

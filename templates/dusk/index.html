@@ -216,7 +216,7 @@
             walt.urls = {
                 
                 documents: '{% url "walt_api_documents" %}', // public available documents
-                document: '{% url "walt_api_document" "::slug" %}',
+                document: '{% url "walt_api_document" "--slug" %}',
                 documents_filters: '{% url "walt_api_documents_filters" %}', // filters for public available documents
                 references: '{% url "walt_api_biblib_proxy_safe" %}',
                 oembed_youtube: '{% url "walt_api_oembed_proxy" "youtube" %}',

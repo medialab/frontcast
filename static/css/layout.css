@@ -283,8 +283,8 @@ li{
   margin: 0px 24px 0px 24px;
 }
 
-.big-box .tags{
-  font-size: 1.1rem;
+.big-box .tags,  .big-box .keywords{
+  font-size: 1.2rem;
   margin: 0px 24px 0px 24px;
 }
 

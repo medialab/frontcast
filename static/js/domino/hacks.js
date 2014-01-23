@@ -29,7 +29,7 @@
               references = [];
 
           /* set permission UI and collect references */
-          for(var j in data_property.items){
+          for(var j in data_property.items) {
             item = data_property.items[j];
 
             if(item.owner && (user.is_staff || item.owner == user.username || item.authors.indexOf(user.username)!= -1 ))
@@ -45,12 +45,12 @@
 
         walt.log('@data__update biblib references:', references.length);
 
-        if( references.length )
+        if( references.length == 1)
           this.dispatchEvent('call_service', {
             service: 'get_references',
             params:{
-              method:'citation_by_rec_ids',
-              params:[ 'forccast', references, 'mla', 'html']
+              method:'metadata_by_rec_ids',
+              params:[ 'forccast', references]//, 'mla', 'html']
             }
           });
         

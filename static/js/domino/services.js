@@ -120,6 +120,26 @@
           };
         };
       }
+    },
+    {
+      id: 'get_metadata',
+      url: walt.urls.references, 
+      type: walt.rpc.type,
+      error: walt.rpc.error,
+      expect: walt.rpc.expect,
+      contentType: walt.rpc.contentType,
+      before: function(params, xhr){
+        xhr.setRequestHeader("X-CSRFToken", walt.CSRFTOKEN);
+      },
+      async: true,
+      data: function( input ) { // input={params:{method:'citation_by_rec_ids', params:[]}}
+        walt.log('(Service) launch "get_metadata"', input);
+         return walt.rpc.buildData( input.params.method, input.params.params);
+      },
+      success: function(data, params) {
+        walt.log('(Service) success "get_metadata"', data);
+        
+      }
     }
   ];
 })(window, jQuery, domino);

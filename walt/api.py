@@ -14,7 +14,7 @@ from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_
 
 from walt.models import Assignment, Profile, Document, Tag, Task
 from walt.forms import DocumentForm, FullDocumentForm
-from walt.utils import get_document_filters
+from walt.utils import get_document_filters, is_number
 
 logger = logging.getLogger('glue')
 
@@ -58,7 +58,10 @@ def document(request, pk):
   result = Epoxy(request)
 
   try:
-    d = Document.objects.get(Q(pk=pk, status=Document.PUBLIC) | Q(slug=pk, status=Document.PUBLIC))
+    if is_number(pk):
+      d = Document.objects.get(pk=pk, status=Document.PUBLIC)
+    else:
+      d = Document.objects.get(slug=pk, status=Document.PUBLIC)
   except Document.DoesNotExist,e:
     return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
 

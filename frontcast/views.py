@@ -2,6 +2,7 @@ import logging, os, urllib
 from mimetypes import guess_type
 
 from django.conf import settings
+from django.core.servers.basehttp import FileWrapper
 from django.db.models import Q
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout, authenticate
@@ -61,17 +62,18 @@ def storage( request, folder=None, index=None, extension=None ):
       response['X-Accel-Redirect'] = hidden_filepath
       return response
     else:
-      from django.core.servers.basehttp import FileWrapper
-
       content_type = guess_type(filepath)
-
       wrapper = FileWrapper(file(filepath))
       response = HttpResponse(wrapper, content_type=content_type[0])
       response['Content-Length'] = os.path.getsize(filepath)
       return response
     # serve the file via django
-
-
+  elif extension == "png":
+    filepath = os.path.join( settings.STORAGE_ROOT, "common/notfound.png");
+    wrapper = FileWrapper(file(filepath))
+    response = HttpResponse(wrapper, content_type='image/png')
+    response['Content-Length'] = os.path.getsize(filepath)
+    return response
 
   data['filepath'] = {
     'folder':folder,

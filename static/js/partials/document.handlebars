@@ -13,11 +13,7 @@
   {{/if}}
 
   <div class="thumb" >
-    {{#each attachments}}
-      {{#if_eq this.type compare="image"}}
-         <img src="{{this.src}}"/>
-      {{/if_eq}}
-    {{/each}}
+    <img src="{{attachments.thumb.src}}"/>
   </div>
   <!-- 
 

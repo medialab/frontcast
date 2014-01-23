@@ -7,7 +7,7 @@
 
   // Domino global settings:
   domino.settings({
-    shortcutPrefix: '::',
+    shortcutPrefix: '%3A%3A',
     displayTime: true,
     verbose:false,
     strict: true,

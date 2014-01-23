@@ -277,7 +277,19 @@ class Document(models.Model):
   		___""" %(self.title, self.id, self.slug, self.language, self.mimetype)
 
   def get_attachments(self):
-    attachments = []
+    attachments = {
+      'thumb':{
+        'id': '%s-%s' % (self.id, 0),
+        'type': 'thumb',
+        'ext': 'png',
+        'src': reverse('frontcast_storage', args=['%s'%self.reference if self.reference else 'common', 'cover','png'])
+      },
+      'video':{}, # the very video
+      'gallery':[], # images and videos
+      'pdf':[] #pdf attached (or other downloadable format)
+    }
+
+    return attachments
     if self.remote is not None and len(self.remote):
       # pseudo Yaml
       filepaths = self.remote.strip(' \t\n\r').split('\n') # split multilines (i.e for video)
@@ -287,7 +299,7 @@ class Document(models.Model):
         try:
           parts = re.split('[/.]',f.strip('/'))
           attachment = {
-            'id': '%s-%s' % (self.id, i),
+            'id': '%s-%s' % (self.id, i+1),
             'type': 'video' if parts[-1] in ['mp4','ogg'] else 'image' ,
             'ext': parts[-1],
             'src': reverse('frontcast_storage', args=parts)
