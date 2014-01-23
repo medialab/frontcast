@@ -7,6 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db.models.loading import get_model
 from django.db.models import Q,Count
+from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.utils.text import slugify
 
@@ -65,21 +66,19 @@ def document(request, pk):
   except Document.DoesNotExist,e:
     return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
 
-  if result.is_POST():
-    form = FullDocumentForm(result.request.REQUEST, instance=d)
+  if result.is_GET():
+    return result.item(d, deep=True).json()
+
+  if not request.user.is_authenticated():
+    # check ownerships or is_staffitude or is_author to enable it @todo
+    return result.throw_error(code=API_EXCEPTION_AUTH).json()
     
-    print form.errors
-    #if form.is_valid():
-    result.warning('o', form.errors)
-    d = form.save(commit=False)
-    d.save()
-
-      
-    #elif "__all__" in form.errors:
-    #  result.warning('ccaaaaaaa',result.request.REQUEST.get('title'))
-    #else:
-
-    #  return result.throw_error(error='%s' % form.errors, code=API_EXCEPTION_FORMERRORS).json()
+  if result.is_POST():
+    is_valid, d = edit_object(instance=d, Form=FullDocumentForm, request=request)
+    if is_valid:
+      d.save()
+    else:
+      return result.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
 
   return result.item(d, deep=True).json()
 
@@ -423,3 +422,13 @@ def oembed_proxy(request, provider):
   # set the body
   return HttpResponse(response.read())
 
+
+def edit_object(instance, Form, request):
+  data = model_to_dict(instance)
+  data.update(request.REQUEST)
+
+  form = Form(instance=instance, data=data)
+  if form.is_valid():
+    instance = form.save(commit=False)
+    return True, instance
+  return False, form.errors

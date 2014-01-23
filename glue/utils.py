@@ -99,6 +99,10 @@ class Epoxy:
     self.response['meta']['warnings'][ key ] = message
 
 
+  def is_GET(self):
+    return self.method == 'GET'
+
+
   def is_POST(self):
     return self.method == 'POST'
 

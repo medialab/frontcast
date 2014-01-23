@@ -104,18 +104,13 @@
             walt.verbose('... abstract', abstract);
             walt.verbose('... content', content);
 
-            console.log(data);
             $.ajax({
-              url: walt.urls.user_document.replace('/::username','/' + walt.user.username ).replace('/::slug','/{{document.slug}}'),
+              url: walt.urls.document.replace('/%3A%3Aslug','/{{document.slug}}'),
               method: 'POST',
               data: {
                 title: title,
                 abstract: abstract,
-                content: content,
-                type:'{{document.type}}',
-                language:'{{document.language}}',
-                remote: '{{document.remote}}',
-                reference: '{{document.reference}}'
+                content: content
               }
             })
             .success(function(data) {
@@ -125,7 +120,7 @@
               }
             })
             .error( function(data) {
-              console.log(data);
+              walt.error(data);
             });
             //location.href="/#/";
           },

@@ -161,8 +161,8 @@
     this.create = function(controller) {  
       walt.verbose('(Grid) .create');
       container.empty().height('auto');
-      viewer.empty().append( Handlebars.templates.document_edit({}));
-      _self.enable_save({});
+      viewer.empty().append( Handlebars.templates.document_add({}));
+      //_self.enable_save({});
     }
 
 
