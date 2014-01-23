@@ -102,7 +102,13 @@ button.blue, a.boo.blue {
   background: #33cccc;
 }
 
-button.dark, a.boo.dark {
+button.blue:hover, a.boo.blue:hover{
+  background:  #33cccc;
+  color: white;
+  border-width: 0px;
+}
+
+button.dark, a.boo.dark{
   background: #383838;
 }
 
@@ -112,10 +118,15 @@ button.dark:hover, a.boo.dark:hover{
   border-width: 0px;
 }
 
-button.blue:hover, a.boo.blue:hover{
-  background:  #33cccc;
-  color: white;
-  border-width: 0px;
+button.transparent, a.boo.transparent{
+  background: transparent;
+  padding: 6px 0;
+  color: #333;
+}
+
+button.transparent:hover, a.boo.transparent:hover, button.transparent:active, a.boo.transparent:active{
+  color: #000;
+  text-decoration: underline;
 }
 
 button:active{
@@ -284,7 +295,6 @@ li{
 .big-box .remote{
   padding: 12px;
   text-align: center;
-  background: #181818;
 }
 
 .big-box .pusher{
@@ -358,8 +368,14 @@ li{
   font: 1.3rem/1.618em 'Lato', sans-serif;
 }
 
-#actions{
+#sidebar{
   position: fixed;
+}
+
+#downloads{
+  border-top: 1px solid #999393;
+  margin-top: 24px;
+  padding-top: 12px;
 }
 
 #layout{

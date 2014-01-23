@@ -18,6 +18,7 @@
         viewer = $("#single-document"),
         counter = $("#counter-documents"),
         actions = $("#actions"), //the jquery element for the counter
+        downloads = $("#downloads"), //the jquery element for the counter
         countup; // the countup counter
 
     this.triggers.events.scene__synced = function(controller) {
@@ -42,6 +43,12 @@
 
       walt.verbose('(Grid) listens to data_documents__updated', scene);
       
+      // do the cleaning up
+      viewer.empty();
+      container.empty();
+      actions.empty();
+      downloads.empty();
+
       switch(scene){
         case walt.SCENE_INDEX:
         case walt.SCENE_SEARCH:
@@ -139,10 +146,21 @@
 
       // check if it has the right to edit, then add edit buttons
       _self.enable_edit(doc);
+      _self.enable_buttons(doc);
     }
 
     this.enable_edit = function(doc){
       actions.empty().append($('<a/>',{'class':'boo', href:'/d/' + doc.slug + '/edit'}).html('edit <i class="fa fa-pencil"></i>'))
+    }
+
+    this.enable_buttons = function(doc){
+      doc.permalink &&
+        actions.append(Handlebars.templates.permalink({href:doc.href}));
+
+      doc.attachments.pdf.length &&
+        downloads.append(Handlebars.templates.download(doc.attachments.pdf));
+        
+     
     }
     
     this.enable_save = function(doc){
@@ -181,9 +199,7 @@
       walt.verbose('(Grid) .listof');
       walt.verbose('...',data.length, 'items, selector:', settings.selector, ' replacing items...');
 
-      viewer.empty();
-      container.empty();
-      actions.empty();
+      
       
       
       countup = new countUp("counter-documents", previouscount, data.length, 0, 1.500);

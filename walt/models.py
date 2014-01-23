@@ -336,7 +336,8 @@ class Document(models.Model):
         attachments['pdf'].append({
           'id': '%s-%s' % (self.id, i+1),
           'src': src,
-          'ext': ext
+          'ext': ext,
+          'name': name
         })
 
     attachments['video'] = attachments['video'].values()
