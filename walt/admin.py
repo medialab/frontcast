@@ -9,7 +9,7 @@ class TaskAdmin(admin.ModelAdmin):
   search_fields = ['name']
 
 class DocumentAdmin(admin.ModelAdmin):
-	search_fields = ['title']
+	search_fields = ['title', 'reference', 'slug']
 
 class ProfileAdmin(admin.ModelAdmin):
   search_fields = ['language']

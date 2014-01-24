@@ -256,8 +256,8 @@ class Document(models.Model):
     unique_together = ("slug", "reference")
     ordering = ['-id']
 
-  #def __unicode__(self):
-  #  return "%s (%s) a.k.a. %s" % (self.slug, self.language, self.title)
+  def __unicode__(self):
+    return "[%s] %s" % (self.slug, self.reference)
 
   
   def bib(self):
