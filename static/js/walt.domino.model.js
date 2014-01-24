@@ -77,7 +77,7 @@
             limit: 0,
             offset: 0,
             length: 0,
-            order_by: [],
+            order_by: ['-rating'],
           },
           dispatch: ['data_documents__updated']
         },

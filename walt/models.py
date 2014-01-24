@@ -190,7 +190,7 @@ class Document(models.Model):
   content = models.TextField(default="", blank=True, null=True)
   language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES)
   mimetype = models.CharField(max_length=255, default="", choices=MIMETYPES_CHOICES, blank=True, null=True) # according to type, if needed (like imagefile)
-
+  rating = models.PositiveSmallIntegerField(default=0) # 0 to 10
 
   # TIME
   date = models.DateField(blank=True, null=True) # main date, manually added
@@ -254,7 +254,7 @@ class Document(models.Model):
 
   class Meta:
     unique_together = ("slug", "reference")
-    ordering = ['-id']
+    ordering = ('-rating',)
 
   def __unicode__(self):
     return "[%s] %s" % (self.slug, self.reference)
@@ -372,6 +372,7 @@ class Document(models.Model):
     return{
       'id': self.id,
       'slug':self.slug,
+      'rating':self.rating,
       'status': self.get_status_display(),
       'title': self.title,
       'abstract': markdown(self.abstract),

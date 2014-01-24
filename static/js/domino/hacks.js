@@ -107,6 +107,7 @@
               case walt.SCENE_SEARCH:
                 params.filters = JSON.stringify(params.filters);
                 params.limit = -1
+                params.order_by = params.order_by || '["-date"]'
                 services = [
                   {
                     service: 'get_documents',
