@@ -16,7 +16,7 @@
         </nav>
       </div>
 
-      <div class="single twelve columns" id="single-document">
+      <div class="single eleven columns" id="single-document">
         <div class="big-box editor">
           <fieldset>
             <label for="document-content">Content</label>
@@ -31,8 +31,10 @@
 
         </div>
       </div>
-      <div id="actions" class="two columns">
-        <button class="blue validate-button">save <i class="fa fa-save"></i></button>
+      <div id="sidebar" class="three columns">
+        <div id="actions">
+          <button class="blue validate-button">save <i class="fa fa-save"></i></button>
+        </div>
       </div>
     </div>
   {% endblock %}
@@ -99,7 +101,7 @@
           save: function(controller, data) {
             walt.toast('saving...');
             
-            var abstract = data.params.entry.descriptions.length? data.params.entry.descriptions[0].value: '',
+            var abstract = data.params.entry.descriptions? data.params.entry.descriptions[0].value: '',
                 title = data.params.entry.title,
                 content = $("#document-content").val(),
                 permalink = $("#document-permalink").val();

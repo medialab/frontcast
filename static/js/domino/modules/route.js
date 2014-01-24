@@ -12,7 +12,8 @@
     domino.module.call(this);
 
     var _self = this,
-        _routes = [];
+        _routes = [],
+        previous_hash;
 
 
     function bind(route, scene) {
@@ -26,12 +27,12 @@
           scene_args[route._paramsIds[i][0] == '?'? route._paramsIds[i].substring(1):route._paramsIds[i]] = arguments[i];
         }
 
-        walt.verbose('(Route) matched: [', scene,']', scene_args);
-
+        walt.verbose('(Route) .bind matched: [', scene,']', scene_args);
+        
         _self.dispatchEvent('scene_args__update', {
           scene_args: scene_args
         });
-
+        
         _self.dispatchEvent('scene__update', {
           scene: scene
         });
@@ -40,10 +41,12 @@
 
 
     function parse_hash(h, previous) {
-      previous = previous || '[no previous hash set]';
-      walt.verbose('(Route) parse_hash: ', h, '(previous:', previous, ')');
-      if(h.split(/[\?&]/).sort().join('') != previous.split(/[\?&]/).sort().join(''))
+      previous_hash = previous_hash || '[no previous hash set]';
+      walt.verbose('(Route) parse_hash: ', h, '(previous:', previous_hash, ')');
+      if(h.split(/[\?&]/).sort().join('') != previous_hash.split(/[\?&]/).sort().join('')){
         crossroads.parse(h);
+        previous_hash = h;
+      }
       else
         walt.verbose('... hash already in place, skipping');
     };
@@ -88,12 +91,22 @@
 
     this.triggers.events.scene__updated = function(controller) {
       var scene = controller.get('scene'),
-          scene_args = controller.get('scene_args'),
-          hash = _routes[scene].interpolate(scene_args).replace(/^[\/]+/,'');
+          scene_args = $.extend({}, controller.get('scene_args')),
+          filters,
+          hash;
+
+      if(scene_args.params && scene_args.params.filters && typeof scene_args.params.filters === "object")
+        scene_args.params.filters = JSON.stringify(scene_args.params.filters)
+      
+      hash = _routes[scene].interpolate(scene_args).replace(/^[\/]+/,'');
 
       walt.verbose('(Route) listens to scene__updated');
+      walt.verbose('... LOCAL scene_args:', scene_args);
+      walt.verbose('... scene_args:', controller.get('scene_args'));
       walt.verbose('... setting hash:', hash);
       
+      previous_hash = hash;
+
       hasher.setHash(hash);
       
     };

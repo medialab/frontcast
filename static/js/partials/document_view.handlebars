@@ -4,7 +4,7 @@
     <span class="date">
       {{#foreach tags.Date}}<span class="tag date">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
     </span>
-    <span class="type">{{type}}</span>
+    <span class="type" data-slug="{{type}}">{{type}}</span>
   </div>
 
   <h2>{{title}}</h2>
@@ -12,13 +12,12 @@
   {{#if tags.Institution.length}}
     <div class="tags">
         {{#foreach tags.Institution}}
-          <span class="tag">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}
+          <span class="tag" data-slug="{{this.slug}}">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}
         {{/foreach}}
       
     </div>
   {{/if}}
-  <div class="pusher"></div>
- 
+  
 
   <div class="keywords">
     

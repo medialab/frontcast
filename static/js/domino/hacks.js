@@ -76,28 +76,14 @@
           method: function(event) {
             var scene = this.get('scene'),
                 scene_args = this.get('scene_args'),
-                services = [],
-                params = {};
+                params = $.extend({}, this.get('scene_params')),
+                services = [];
 
             walt.log('@scene__updated', 'scene:', scene);
-            walt.log('... scene_args:', scene_args);
-            
+            walt.log('... scene_params:', params);
             
             this.update('ui_status', walt.UI_STATUS_LOCKED);
-            // ADD COMMENTS HERE
-            if(scene_args.params) {
-              for(var i in scene_args.params) {
-                if(i == "filters") {
-                  try{
-                    params[i] = JSON.parse(scene_args.params.filters);
-                  } catch(e){
-                    walt.error(e);
-                  }
-                } else {
-                  params[i] = scene_args.params[i];
-                }
-              }
-            };
+            
 
             params.filters = params.filters || {};
 
@@ -180,6 +166,31 @@
 
           }
         },
+    {
+      triggers: 'scene_args__updated',
+      method: function(event) {
+        var scene_args = this.get('scene_args'),
+            params = {};
+
+        walt.log('@scene_args__updated', scene_args);
+        if(scene_args.params) {
+          for(var i in scene_args.params) {
+            if(i == "filters") {
+              try{
+                params[i] = JSON.parse(scene_args.params.filters);
+              } catch(e){
+                walt.error('@scene_args__updated',e, scene_args.params.filters);
+                params[i] = scene_args.params.filters;
+              }
+            } else {
+              params[i] = scene_args.params[i];
+            }
+          }
+        };
+
+        this.update('scene_params', params);
+      }
+    },
     /*
 
       Services hacks
@@ -210,6 +221,7 @@
         });
       }
     }
+
   ]
 
 })(window, jQuery, domino);

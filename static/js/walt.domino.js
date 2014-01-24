@@ -461,7 +461,7 @@
                 params = {};
 
             walt.log('(domino) on scene_args__updated', scene_args);
-            
+            /*
             if(scene_args.params) {
               for(var i in scene_args.params) {
                 if(i == "filters") {
@@ -477,6 +477,7 @@
             };
 
             this.update('scene_params', params);
+            */
           }
         },
         /*

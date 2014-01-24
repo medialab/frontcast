@@ -77,7 +77,7 @@
           single_reference_item = viewer.find('[data-reference-id]'),
           doc,
           ref,
-          keywords;//pure js object of BIBLIB reference
+          keywords = [];//pure js object of BIBLIB reference
 
       walt.verbose('(Grid) listens to data_references__updated');
 
@@ -85,9 +85,15 @@
       // single document references
       if(single_reference_item.length){
         ref = references.items[single_reference_item.attr('data-reference-id')];
-        keywords = ref.keywords? ref.keywords.filter(function(a){return a.language=='en'}).pop().values: [];
 
-        doc = single_reference_item.closest('.big-box').find('.keywords').append(keywords.join(', '));
+        try {
+          keywords = ref.keywords? ref.keywords.filter(function(a){return a.language=='en'}).pop().values: [];
+        } catch(e) {
+          walt.error(e, '(Grid) listens to data_references__updated (reference keyword have to be in english');
+        }
+        
+        if(keywords.length)
+          doc = single_reference_item.closest('.big-box').find('.keywords').html('#' + keywords.join(', #'));
 
         single_reference_item.html(ref.citations.html.mla);
         walt.verbose('... keywords', keywords);
@@ -182,6 +188,7 @@
       viewer.empty().append( Handlebars.templates.document_add({}));
       //_self.enable_save({});
     }
+
 
 
     this.listof = function(controller, options) {

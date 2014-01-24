@@ -1,9 +1,9 @@
-<div class="box {{#if abstract}}size12 {{/if}}" style="overflow:hidden">
+<div class="box {{status}} {{#if abstract}}size12 {{/if}}" style="overflow:hidden">
   <div class="tags">
     <span class="date">
       {{#foreach tags.Date}}<span class="tag date">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
     </span>
-    <span class="type">{{type}}</span>
+    <span class="type" data-slug="{{type}}" data-filter="type__in">{{type}}</span>
   </div>
 
   <h2>{{title}}</h2>

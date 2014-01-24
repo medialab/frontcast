@@ -163,10 +163,18 @@ li{
 ================================================== */
 
 	/* Smaller than standard 960 (devices and browsers) */
-	@media only screen and (max-width: 959px) {}
+	@media only screen and (max-width: 959px) {
+
+
+  }
 
 	/* Tablet Portrait size to standard 960 (devices and browsers) */
-	@media only screen and (min-width: 768px) and (max-width: 959px) {}
+	@media only screen and (min-width: 768px) and (max-width: 959px) {
+    
+    nav{
+      width: 76px;
+    }
+  }
 
 	/* All Mobile Sizes (devices and browser) */
 	@media only screen and (max-width: 767px) {}
@@ -207,6 +215,18 @@ li{
 .box h2{
   font-size: 1.4rem;
   margin: 0px 12px 12px 12px;
+}
+.box.draft{
+  
+}
+
+.box.draft .tags{
+  /*border-top: 1px solid #ec5148;
+  padding-top: 6px;*/
+}
+
+.box.draft .tags .date{
+ color: #181818;
 }
 
 .box .abstract{
@@ -312,7 +332,7 @@ li{
 }
 
 .big-box .tags,  .big-box .keywords{
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   margin: 0px 24px 0px 24px;
 }
 

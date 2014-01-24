@@ -9,7 +9,7 @@
   domino.settings({
     shortcutPrefix: '%3A%3A',
     displayTime: true,
-    verbose:false,
+    verbose: false,
     strict: true,
     clone: false
   });
@@ -196,7 +196,7 @@
     walt.domino.controller.addModule( walt.domino.modules.Layout, [walt.domino.controller], {id:'layout'});
     walt.domino.controller.addModule( walt.domino.modules.Grid, null, {id:'menu'});
     walt.domino.controller.addModule( walt.domino.modules.Route, null, {id:'route'});
-    //walt.domino.controller.addModule( walt.domino.modules.Filters, null, {id:'filters'});
+    walt.domino.controller.addModule( walt.domino.modules.Filters, null, {id:'filters'});
     walt.domino.controller.addModule( walt.domino.modules.Search, null, {id:'search'});
     walt.domino.controller.addModule( walt.domino.modules.Form, null, {id:'form'});
 

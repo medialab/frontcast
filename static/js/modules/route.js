@@ -28,6 +28,7 @@
 
         walt.verbose('(Route) matched: [', scene,']', scene_args);
 
+        
         _self.dispatchEvent('scene_args__update', {
           scene_args: scene_args
         });
