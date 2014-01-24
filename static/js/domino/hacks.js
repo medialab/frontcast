@@ -106,6 +106,7 @@
               case walt.SCENE_INDEX:
               case walt.SCENE_SEARCH:
                 params.filters = JSON.stringify(params.filters);
+                params.limit = -1
                 services = [
                   {
                     service: 'get_documents',

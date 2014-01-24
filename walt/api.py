@@ -32,11 +32,13 @@ def access_denied(request):
 # ---
 #
 def documents(request):
-  if request.user.is_authenticated():
+  if request.user.is_staff:
+    queryset =   Document.objects.filter()
+  elif request.user.is_authenticated():
     queryset =   Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)).distinct()
   else:
     queryset = Document.objects.filter(status=Document.PUBLIC).distinct()
- 
+    
   result = Epoxy(request).queryset(queryset)
   return result.json()
 
@@ -59,10 +61,20 @@ def document(request, pk):
   result = Epoxy(request)
 
   try:
-    if is_number(pk):
-      d = Document.objects.get(pk=pk, status=Document.PUBLIC)
+    if request.user.is_staff:
+      d = Document.objects.get(
+        Q(slug=pk)
+      )
+    elif request.user.is_authenticated():
+      d = Document.objects.get(
+        Q(slug=pk),
+        Q(owner=request.user) | Q(authors=request.user)
+      )
     else:
-      d = Document.objects.get(slug=pk, status=Document.PUBLIC)
+      if is_number(pk):
+        d = Document.objects.get(pk=pk, status=Document.PUBLIC)
+      else:
+        d = Document.objects.get(slug=pk, status=Document.PUBLIC)
   except Document.DoesNotExist,e:
     return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
 

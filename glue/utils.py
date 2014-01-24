@@ -150,6 +150,8 @@ class Epoxy:
       if '%s' % self.request.REQUEST.get('limit', 0) == '-1':
         self.offset = 0
         self.limit = -1
+        self.response['meta']['offset'] = self.offset
+        self.response['meta']['limit'] = self.limit
       else:
         form = OffsetLimitForm( self.request.REQUEST )
         if form.is_valid():
@@ -194,7 +196,7 @@ class Epoxy:
       if not hasattr(queryset.model, "search"):
         self.warning( 'search', "Model %s has no method to perform your search" % queryset.model.__name__ )
       else:
-        queryset = queryset.filter( queryset.model.search(self.search) )
+        queryset = queryset.filter( queryset.model.search(self.search) ).distinct()
 
     if type( queryset ) == QuerySet:
 

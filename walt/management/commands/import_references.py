@@ -1,5 +1,6 @@
 import os, csv
 from optparse import make_option
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -42,7 +43,9 @@ class Command(BaseCommand):
         owner = User.objects.get(username=options['owner'])
         self.stdout.write("    using <user:%s> as owner\n\n" % owner.username)
         document_translate_types = {
-          'video': 'ControversyVideo'
+          'video': 'ControversyVideo',
+          'site web': 'ControversyWeb',
+          'ControversyWeb': 'ControversyWeb'
         }
 
         raw_input("press any key to continue");
@@ -60,6 +63,7 @@ class Command(BaseCommand):
             document_title = row['document_title']
             document_reference = row['document_reference']
             document_type = document_translate_types[row['task'].strip()]
+            document_date = datetime.strptime('%s-06-06' % row['document_tag_year'], '%Y-%m-%d')
 
             tag_year = row['document_tag_year']
             tag_course = row['course_code']
@@ -77,7 +81,8 @@ class Command(BaseCommand):
                     reference=document_reference,
                     type=document_type,
                     language='en',
-                    owner=owner
+                    owner=owner,
+                    date=document_date
                 )
                 d.save()
 
@@ -94,6 +99,7 @@ class Command(BaseCommand):
                     else:
                       if allow_changes.lower() == 'y':
                         d.type = document_type
+                        d.date = document_date
                         d.save()
 
                       break
@@ -130,7 +136,7 @@ class Command(BaseCommand):
             # attach affiliation to authors
             t_author.related.add(t_institution)
 
-            self.stdout.write("        - auth. : %s" % t_author)
+            print("        - auth. : %s" % t_author)
 
 
 
