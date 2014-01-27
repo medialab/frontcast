@@ -2,6 +2,7 @@ import logging, os, urllib
 from mimetypes import guess_type
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.core.servers.basehttp import FileWrapper
 from django.db.models import Q
 from django.contrib.admin.views.decorators import staff_member_required
@@ -104,7 +105,8 @@ def document_edit(request, slug):
   if request.user.is_staff or data['document'].owner == request.user: 
     return render_to_response(  "dusk/document_edit.html", RequestContext(request, data ) )
   else:
-    return login_view(request, message=_("unauthorized request"))
+    print 'reverse', 'frontcast_document_edit'
+    return login_view(request, message=_("unauthorized request"), default_next=reverse('frontcast_document_edit',args=(slug,)))
 
 
 def _queryset(request, qs, d={}):
@@ -129,18 +131,19 @@ def _shared_data( request, tags=[], d={} ):
 logger = logging.getLogger('glue')
 
 
-def login_view(request, message="", default_next=None):
-  if request.user.is_authenticated():
-    return home( request )
-
+def login_view(request, message=None, default_next=None):
   form = LoginForm( request.POST )
   next = request.REQUEST.get('next', 'frontcast_home') if default_next is None else default_next
 
   login_message = { 'next': next if len( next ) else 'frontcast_home'}
 
-  if message:
+  if message is not None:
     login_message['error'] = message
+    data = _shared_data( request, tags=[ "login" ], d=login_message )
     return render_to_response('dusk/login.html', RequestContext(request, data ) )
+
+  if request.user.is_authenticated() and request.method != 'POST':
+    return home( request )
 
   if request.method != 'POST':
     data = _shared_data( request, tags=[ "login" ], d=login_message )
