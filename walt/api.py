@@ -10,6 +10,7 @@ from django.db.models import Q,Count
 from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.utils.text import slugify
+from django.views.decorators.csrf import csrf_exempt
 
 from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
 
@@ -375,6 +376,7 @@ def biblib_proxy(request):
   return HttpResponse(response.read())
 
 
+@csrf_exempt
 def biblib_proxy_safe(request):
   # it *should'nt* allow save/edit requests. User proxy_safe instead
   import urllib2, json

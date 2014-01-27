@@ -605,6 +605,10 @@ sizes, pagination, etc.
   text-align: center;
 }
 
+.swiper-slide img{
+  max-width: 100%;
+}
+
 .swiper-slide-active {
   /* Specific active slide styling: */
   
