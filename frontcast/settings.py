@@ -33,7 +33,7 @@ TIME_ZONE = 'Europe/Rome'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'it-it'
+LANGUAGE_CODE = 'en-EN'
 
 SITE_ID = 1
 
