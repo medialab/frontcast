@@ -36,9 +36,11 @@ def home( request ):
   data['facets'] = get_document_filters(q)
   return render_to_response(  "dusk/index.html", RequestContext(request, data ) )
 
+
 def notfound(request):
   raise
   return render_to_response("dusk/index.html", RequestContext(request, {}))
+
 
 #
 #
@@ -97,7 +99,13 @@ def document_edit(request, slug):
   except Document.DoesNotExist, e:
     return notfound(request)
 
-  return render_to_response(  "dusk/document_edit.html", RequestContext(request, data ) )
+  print data['document'].owner
+  print data['document'].authors
+  if request.user.is_staff or data['document'].owner == request.user: 
+    return render_to_response(  "dusk/document_edit.html", RequestContext(request, data ) )
+  else:
+    return login_view(request, message=_("unauthorized request"))
+
 
 def _queryset(request, qs, d={}):
   e = Epoxy(request)
@@ -121,14 +129,18 @@ def _shared_data( request, tags=[], d={} ):
 logger = logging.getLogger('glue')
 
 
-def login_view( request ):
+def login_view(request, message="", default_next=None):
   if request.user.is_authenticated():
     return home( request )
 
   form = LoginForm( request.POST )
-  next = request.REQUEST.get('next', 'frontcast_home')
+  next = request.REQUEST.get('next', 'frontcast_home') if default_next is None else default_next
 
   login_message = { 'next': next if len( next ) else 'frontcast_home'}
+
+  if message:
+    login_message['error'] = message
+    return render_to_response('dusk/login.html', RequestContext(request, data ) )
 
   if request.method != 'POST':
     data = _shared_data( request, tags=[ "login" ], d=login_message )

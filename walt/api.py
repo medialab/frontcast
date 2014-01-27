@@ -69,7 +69,7 @@ def document(request, pk):
     elif request.user.is_authenticated():
       d = Document.objects.get(
         Q(slug=pk),
-        Q(owner=request.user) | Q(authors=request.user)
+        Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)
       )
     else:
       if is_number(pk):
