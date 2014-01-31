@@ -77,6 +77,23 @@
         this.update('data_documents_filters', data.objects);
       }
     },
+    { 
+      id: 'get_documents_facets',
+      type: 'GET',
+      url: walt.urls.documents_filters,
+      dataType: 'json',
+      data: function(input) {
+        walt.log('%c (Service) ', 'color:#3887BE;background-color:gold', ' launch "get_documents_facets"', input);
+        return input.params;
+      },
+      success: function(data, params) {
+        walt.log('%c (Service) ', walt.STYLE_CONSOLE_SERVICES, 'success "get_documents_facets"', data.status);
+        if(data.status == walt.API_OK)
+          this.update('data_documents_facets', data.objects);     
+        else
+          this.dispatchEvent('service__error', data.error);
+      }
+    },
     /*
       
       Non WALTY endpoints

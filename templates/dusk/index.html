@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}/css/base.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}/css/skeleton.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}/css/layout.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css/tipr.css">
 
 
 
@@ -77,7 +78,8 @@
       <div class="two columns" style="height: 300px">
         <nav>
           <div id="counter-documents">0</div>
-          
+          <div style="width:48px; border-top: 1px solid black;margin: 0 auto;"></div>
+          <div style="text-align: center"><a href="/#" id="counter-documents-global">0</a></div>
           <select id="order-by">
             <option value="-date|-pk">recent</option>
             <option value="date|pk">older</option>
@@ -129,32 +131,63 @@
 
   <footer>
     <div class="container">
-      <div class="four columns">
+      <div class="three columns">
         &nbsp;
       </div>
-      <div class="four columns">
+      <div class="three columns">
         &nbsp;
       </div>
-      <div class="four columns">
+      <div class="four columns toggle-filters">
+        <div class="choose">
+          <div class="when-closed">open filters</div>
+          <div class="when-opened">close filters</div>
+        </div>
+      </div>
+      <div class="three columns">
         &nbsp;
       </div>
-      <div class="four columns">
+      <div class="three columns">
         <a class="boo" href="//forccast.hypotheses.org/">
-          <img src="{{ STATIC_URL }}/img/forccast.svg"/>
+          <img src="{{ STATIC_URL }}/img/forccast-white.svg"/>
         </a>
       </div>
+    </div>
 
+    <div id="filters-wrapper">
+      <div class="container">
+        <div class="sixteen columns">
+          <div id="active-filters"></div>
+        </div>
+        <div class="four columns">
+          types
+        </div>
+        <div class="four columns">
+
+          &nbsp;
+        </div>
+        <div class="four columns">
+          &nbsp;
+        </div>
+        <div class="four columns">
+          &nbsp;
+        </div>
+        
+        
+      </div>
+    </div>
 
   </footer>
   
 
 
   <script src="{{ STATIC_URL }}/js/libs/jquery.min.js"></script>
-   <script src="{{ STATIC_URL }}/js/libs/jquery.toastmessage.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}/js/libs/jquery.toastmessage.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}/js/libs/jquery.nested.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}/js/libs/jquery.idangerous.swiper.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}/js/libs/jquery.fancyselect.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}/js/libs/jquery.autosize.min.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}/js/libs/jquery.tipr.js" type="text/javascript"></script>
+
 
   <script src="{{ STATIC_URL }}/js/libs/countUp.js" type="text/javascript"></script>
   

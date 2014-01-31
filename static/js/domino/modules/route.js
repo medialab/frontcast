@@ -95,13 +95,15 @@
           filters,
           hash;
 
-      if(scene_args.params && scene_args.params.filters && typeof scene_args.params.filters === "object")
-        scene_args.params.filters = JSON.stringify(scene_args.params.filters)
+      walt.verbose('(Route) listens to scene__updated');
+      walt.verbose('... LOCAL scene_args:', scene_args);
+      //if(scene_args.params && scene_args.params.filters && typeof scene_args.params.filters === "object")
+      //  scene_args.params.filters = JSON.stringify(scene_args.params.filters)
       
       hash = _routes[scene].interpolate(scene_args).replace(/^[\/]+/,'');
 
-      walt.verbose('(Route) listens to scene__updated');
-      walt.verbose('... LOCAL scene_args:', scene_args);
+      
+      
       walt.verbose('... scene_args:', controller.get('scene_args'));
       walt.verbose('... setting hash:', hash);
       

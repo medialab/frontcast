@@ -77,16 +77,25 @@
             var scene = this.get('scene'),
                 scene_args = this.get('scene_args'),
                 params = $.extend({}, this.get('scene_params')),
+                facets = this.get('data_documents_facets'),
                 services = [];
 
             walt.log('@scene__updated', 'scene:', scene);
             walt.log('... scene_params:', params);
             
             this.update('ui_status', walt.UI_STATUS_LOCKED);
-            
+
 
             params.filters = params.filters || {};
 
+            // preload facets
+            if(!facets.tags)
+              services.push({
+                service: 'get_documents_facets',
+                params:{
+                  limit: -1,
+                }
+              });
             
             switch(scene){
               case walt.SCENE_INDEX:
@@ -94,7 +103,7 @@
                 params.filters = JSON.stringify(params.filters);
                 params.limit = -1
                 params.order_by = params.order_by || '["-date"]'
-                services = [
+                services.push(
                   {
                     service: 'get_documents',
                     params: params
@@ -103,15 +112,16 @@
                     service: 'get_documents_filters',
                     params:{
                       limit: -1,
+                      filters: params.filters
                     }
                   }
-                ];
+                );
                 break;
 
               case walt.SCENE_ME:
                 params.filters.owner__username = "daniele.guido";
                 params.filters = JSON.stringify(params.filters);
-                services = [
+                services.push(
                   {
                     service: 'get_documents',
                     params: params
@@ -122,12 +132,12 @@
                       limit: -1,
                     }
                   }
-                ];
+                );
                 break;
 
               case walt.SCENE_DOCUMENT_VIEW:
               case walt.SCENE_DOCUMENT_EDIT:
-                services = [
+                services.push(
                   {
                     service: 'get_document',
                     shortcuts: {
@@ -135,7 +145,7 @@
                     },
                     params: {}
                   }
-                ];
+                );
                 break;
                 
               case walt.SCENE_DOCUMENT_ADD:
@@ -179,6 +189,7 @@
               try{
                 params[i] = JSON.parse(scene_args.params.filters);
               } catch(e){
+                // silently parsing stuffs
                 walt.error('@scene_args__updated',e, scene_args.params.filters);
                 params[i] = scene_args.params.filters;
               }
@@ -219,6 +230,12 @@
             walt.domino.controller.update('ui_status', walt.UI_STATUS_UNLOCKED);
           }
         });
+      }
+    },
+    {
+      triggers: 'service__error',
+      method: function(event) {
+        walt.log('@service__error', event.data);
       }
     }
 

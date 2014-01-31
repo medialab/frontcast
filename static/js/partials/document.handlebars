@@ -1,9 +1,9 @@
 <div class="box {{status}} {{#if abstract}}size12 {{/if}}" style="overflow:hidden">
   <div class="tags">
-    <span class="date">
-      {{#foreach tags.Date}}<span class="tag date">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
+    <span class="date" >
+      {{#foreach tags.Date}}<span class="set-property tag date" data-tip="filter by {{this.name}}" data-slug="{{this.name}}" data-filter="tags__slug__in">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}{{/foreach}}
     </span>
-    <span class="type" data-slug="{{type}}" data-filter="type__in">{{type}}</span>
+    <span class="set-property type" data-tip="filter by type: {{type}}" data-slug="{{type}}" data-filter="type__in">{{type}}</span>
   </div>
 
   <h2>{{title}}</h2>

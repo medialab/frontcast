@@ -17,6 +17,10 @@
 
   */
   walt.VERSION = '0.0.0';
+  walt.API_OK = "ok"
+  walt.API_ERROR = "error"
+
+  walt.STYLE_CONSOLE_SERVICES = 'color:#3887BE;background-color:gold';
 
   walt.CSRFTOKEN = 'django crfr token';
   walt.static_url = 'django static url for assets';
@@ -24,7 +28,7 @@
   walt.DEBUG_VERBOSE = 2; // will show walt.log() stuff and walt.verbose() stuff
   walt.DEBUG_INFO = 3; // will show walt.log() stuff
   walt.DEBUG_ERROR = 4; // will show error only
-
+  
   walt.debug = walt.DEBUG_INFO;
 
   walt.PERMISSION_CAN_EDIT = 'CAN_EDIT'; // !WARNING this variable is actually used inside handlebar templates files. 

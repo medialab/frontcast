@@ -16,7 +16,7 @@ from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_
 
 from walt.models import Assignment, Profile, Document, Tag, Task
 from walt.forms import DocumentForm, FullDocumentForm
-from walt.utils import get_document_filters, is_number
+from walt.utils import get_document_filters, get_available_documents, is_number
 
 logger = logging.getLogger('glue')
 
@@ -50,10 +50,12 @@ def documents_filters(request):
   '''
   epoxy = Epoxy(request)
  
-  queryset= Document.objects.filter(status=Document.PUBLIC, **epoxy.filters)
-  epoxy.meta('total_count', queryset.count())
+  queryset = get_available_documents(request).filter(**epoxy.filters)
+  c = queryset.count()
+  epoxy.meta('total_count', c)
 
   filters = get_document_filters(queryset=queryset)
+  filters['total_count'] =c # I know, I know... copy for god's sake
   epoxy.add('objects', filters);
   return epoxy.json()
 
@@ -90,6 +92,7 @@ def document(request, pk):
     is_valid, d = edit_object(instance=d, Form=FullDocumentForm, request=request)
     if is_valid:
       d.save()
+      
     else:
       return result.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
 

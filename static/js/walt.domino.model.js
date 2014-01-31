@@ -136,6 +136,14 @@
 
         */
         {
+          id: 'data_documents_facets',
+          description: 'the complete available set of filters. To be loaded once',
+          type: 'object',
+          value: {},
+          triggers: 'data_documents_facets__update',
+          dispatch: ['data_documents_facets__updated']
+        },
+        {
           id: 'data_documents_filters',
           description: 'the django-compatible documents filter object',
           type: 'object',

@@ -26,13 +26,31 @@ def unicode_dict_reader(utf8_data, **kwargs):
     for row in csv_reader:
         yield dict([(key, unicode(value, 'utf-8')) for key, value in row.iteritems()])
 
+# #
+# @param request
+# @return <django.model.Queryset>
+#
+def get_available_documents(request):
+  if request.user.is_staff:
+    queryset =   Document.objects.filter().distinct()
+  elif request.user.is_authenticated():
+    queryset =   Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)).distinct()
+  else:
+    queryset = Document.objects.filter(status=Document.PUBLIC).distinct()
+  return queryset
+
 
 def get_document_filters(queryset):
-  filters = {'type': {}, 'tags':{}}
+  filters = {'type': {}, 'year': {}, 'tags':{}}
   ids = []
 
   for t in queryset.order_by().values('type').annotate(count=Count('id')):
     filters['type']['%s'%t['type']] = {
+      'count': t['count']
+    }
+
+  for t in queryset.order_by().values('date').annotate(count=Count('id')):
+    filters['year']['%s'%t['date']] = {
       'count': t['count']
     }
 
