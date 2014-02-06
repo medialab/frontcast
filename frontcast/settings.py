@@ -55,6 +55,9 @@ MEDIA_ROOT = local_settings.MEDIA_ROOT
 STORAGE_ROOT = local_settings.STORAGE_ROOT
 STORAGE_ROOT_PUBLIC = local_settings.STORAGE_ROOT_PUBLIC
 STORAGE_ROOT_PROTECTED = local_settings.STORAGE_ROOT_PROTECTED
+STORAGE_SHARED_FILENAME = [
+  'cover.png'
+]
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -217,3 +220,4 @@ EMAIL_PORT = local_settings.EMAIL_PORT
 
 # ONly for nginx servers. Otherwise it must be false
 ENABLE_XACCEL = local_settings.ENABLE_XACCEL
+

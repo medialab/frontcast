@@ -6,7 +6,7 @@
     <span class="set-property type" data-tip="filter by type: {{type}}" data-slug="{{type}}" data-filter="type__in">{{type}}</span>
   </div>
 
-  <h2>{{title}}</h2>
+  <h2><a href="/#{{#url "d" "slug" slug}}{{/url}}">{{title}}</a></h2>
 
   {{#if abstract}}
   <div class="abstract">{{{abstract}}}</div>

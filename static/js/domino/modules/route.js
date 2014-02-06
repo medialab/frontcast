@@ -42,8 +42,9 @@
 
     function parse_hash(h, previous) {
       previous_hash = previous_hash || '[no previous hash set]';
-      walt.verbose('(Route) parse_hash: ', h, '(previous:', previous_hash, ')');
+      walt.verbose('(Route) parse_hash: "', h, '"(previous:', previous_hash, ')');
       if(h.split(/[\?&]/).sort().join('') != previous_hash.split(/[\?&]/).sort().join('')){
+        walt.verbose('... parse_hash parsing..."');
         crossroads.parse(h);
         previous_hash = h;
       }

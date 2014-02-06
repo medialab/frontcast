@@ -53,6 +53,8 @@
   <!-- Primary Page Layout
   ================================================== -->
   <header>
+    <div class="shadow-wrapper"></div>
+    <div class="shadow"></div>
     <div class="container">
       <div class="four columns"><a href="{% url 'frontcast_home'%}"><img src="{{ STATIC_URL }}/img/forccast.svg"/>archive</a></div>
       <div class="twelve columns right-aligned">
@@ -67,6 +69,7 @@
         <a class="entry">about</a>
       </div>
     </div>
+    
   </header>
   <!-- Delete everything in this .container and get started on your own site! -->
   <div id="main">
@@ -79,7 +82,7 @@
         <nav>
           <div id="counter-documents">0</div>
           <div style="width:48px; border-top: 1px solid black;margin: 0 auto;"></div>
-          <div style="text-align: center"><a href="/#" id="counter-documents-global">0</a></div>
+          <div style="text-align: center"><a href="/#/?" id="counter-documents-global">0</a></div>
           <select id="order-by">
             <option value="-date|-pk">recent</option>
             <option value="date|pk">older</option>
@@ -101,27 +104,6 @@
         <div class="list" id="grid-of-documents">
           <div class="box">
 
-          </div>
-          <div class="box size23">
-            
-          </div>
-          <div class="box">
-            
-          </div>
-          <div class="box">
-            
-          </div>
-          <div class="box">
-            
-          </div>
-          <div class="box">
-            
-          </div>
-          <div class="box">
-            
-          </div>
-          <div class="box">
-            
           </div>
         </div> 
       </div>
