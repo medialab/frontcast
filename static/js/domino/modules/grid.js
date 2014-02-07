@@ -216,7 +216,7 @@
         boxes.push(settings.template(data.items[i]));
       }
 
-      container.append(boxes).nested('append', boxes);
+      boxes.length && container.append(boxes).nested('append', boxes);
       //container.append();
     }
 

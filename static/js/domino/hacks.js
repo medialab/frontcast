@@ -96,6 +96,7 @@
                   limit: -1,
                 }
               });
+
             
             switch(scene){
               case walt.SCENE_INDEX:
@@ -103,6 +104,7 @@
                 params.filters = JSON.stringify(params.filters);
                 params.limit = -1
                 params.order_by = params.order_by || '["-date"]'
+
                 services.push(
                   {
                     service: 'get_documents',
@@ -110,10 +112,7 @@
                   },
                   {
                     service: 'get_documents_filters',
-                    params:{
-                      limit: -1,
-                      filters: params.filters
-                    }
+                    params: params
                   }
                 );
                 break;

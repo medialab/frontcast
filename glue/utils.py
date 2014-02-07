@@ -5,6 +5,8 @@ from django.conf import settings
 from django.http import HttpResponse, HttpRequest
 from django.forms import Form, IntegerField
 from django.core import serializers
+from operator import and_
+from django.db.models import Q
 
 #
 #    CONSTS
@@ -86,6 +88,7 @@ class Epoxy:
     self.request = request
     self.response = { 'status':'ok' } # a ditionary of things
     self.filters = {}
+    self.reduce = None
     self.search = None
     self.method = method
     self.limit = API_DEFAULT_LIMIT
@@ -136,6 +139,24 @@ class Epoxy:
         self.filters = self.meta('filters', json.loads( self.request.REQUEST.get('filters')))
       except Exception, e:
         self.warning( 'filters', "Exception: %s" % e )
+      else:
+        # format filters having REDUCE__! add a magic dict
+        reduces = []
+        pop_fields = []
+
+        for field in self.filters:
+          if field.endswith('__REDUCE'):
+            f = field[:-8]
+            pop_fields.append(field)
+            reduces = reduces + [(f, i) for i in self.filters[field]]
+        
+        for i in pop_fields:
+          self.filters.pop(i, None)
+
+        #  reduces = [(u'tags__slug', u'sciences-po'), (u'tags__slug', u'2013')]
+        self.reduce = reduces
+
+
 
     # order by
     if self.method == 'GET' and 'order_by' in self.request.REQUEST:
@@ -198,6 +219,12 @@ class Epoxy:
       else:
         queryset = queryset.filter( queryset.model.search(self.search) ).distinct()
 
+    if self.reduce is not None:
+      for r in self.reduce:
+        queryset = queryset.filter(r)
+        #queryset = queryset.filter(self.reduce)
+      queryset = queryset.distinct()
+
     if type( queryset ) == QuerySet:
 
       self.response['meta']['total_count'] = queryset.filter( **self.filters ).count()
@@ -209,6 +236,8 @@ class Epoxy:
       qs = queryset
     else:
       qs = queryset.filter()
+
+
 
     # apply limits
     if self.limit > -1:
@@ -226,7 +255,7 @@ class Epoxy:
 
     #except Exception, e:
     #  return self.throw_error( error="Exception: %s" % e, code=API_EXCEPTION_INVALID )
-
+    self._queryset = qs
     return self
 
 

@@ -34,13 +34,14 @@ def access_denied(request):
 #
 def documents(request):
   if request.user.is_staff:
-    queryset =   Document.objects.filter()
+    queryset =   Document.objects.filter().distinct()
   elif request.user.is_authenticated():
     queryset =   Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)).distinct()
   else:
     queryset = Document.objects.filter(status=Document.PUBLIC).distinct()
     
   result = Epoxy(request).queryset(queryset)
+  result.meta('query', '%s' % result._queryset.query)
   return result.json()
 
 
@@ -51,6 +52,14 @@ def documents_filters(request):
   epoxy = Epoxy(request)
  
   queryset = get_available_documents(request).filter(**epoxy.filters)
+  # deal with reduce and search field
+  if epoxy.reduce:
+    for r in epoxy.reduce:
+      queryset = queryset.filter(r)
+
+  if epoxy.search:
+    queryset = queryset.filter( Document.search(epoxy.search)).distinct()
+
   c = queryset.count()
   epoxy.meta('total_count', c)
 

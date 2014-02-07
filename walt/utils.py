@@ -41,7 +41,7 @@ def get_available_documents(request):
 
 
 def get_document_filters(queryset):
-  filters = {'type': {}, 'year': {}, 'tags':{}}
+  filters = {'type': {}, 'year': {}, 'tags':{} }
   ids = []
 
   for t in queryset.order_by().values('type').annotate(count=Count('id')):
@@ -58,8 +58,9 @@ def get_document_filters(queryset):
   for d in queryset:
     ids.append(d.id)
 
-  # 3. get document tags
-  tag_queryset = Tag.objects.filter(document__status=Document.PUBLIC, document__id__in=ids).extra(select={'doc_id':'walt_document.id'})
+  # 3. get document tags. @TODO imporve performances
+  
+  tag_queryset = Tag.objects.filter(document__id__in=ids)
   
   for t in tag_queryset:
     _type = '%s' % t.type

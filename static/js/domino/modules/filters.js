@@ -13,6 +13,8 @@
         glo = $('#counter-documents-global'),
         footer = $('footer'),
         active_filters = $('#active-filters'),
+        facets_loaded = false,
+        filters_loaded = false,
         handlers ={ };
 
 
@@ -33,11 +35,15 @@
 
       // setting filters accurately
       scene_params.filters = scene_params.filters || {};
-      scene_params.filters[filter] = [slug];
+      if(scene_params.filters[filter] && typeof scene_params.filters[filter] == 'object')
+        scene_params.filters[filter].indexOf(slug) == -1 && scene_params.filters[filter].push(slug);
+      else
+        scene_params.filters[filter] = [slug];
       walt.verbose('... .set_property, scene_params.filters modified:', scene_params.filters);
 
       _self.send_args(scene_params);
     };
+
 
     handlers.remove_value = function(event) {
       var item = $(this).closest('[data-filter]'),
@@ -152,13 +158,125 @@
       else
         handlers.close_filters();
 
+
+    };
+
+
+    this.triggers.events.data_documents_filters__updated = function(controller) {
+      filters_loaded = true;
+      if(!facets_loaded)
+        return; // ignore if facets haven't been initialized yet
+
+
+      var data_documents_filters = controller.get('data_documents_filters');
+      
+      $('.facets').each(function(i,e) {
+        var wrapper = $(this),
+            types = wrapper.attr('data-facet').split('.'),
+            data;
+
+        if(!types.length)
+          return;
+        else if(types.length>1)
+          data = data_documents_filters[types[0]][types[1]]; // UGLY!!!!!! I know, I know...
+        else
+          data = data_documents_filters[types[0]];
+
+
+        wrapper.find('[data-slug]').each(function(i,e) {
+          var item = $(this),
+              slug = item.attr('data-slug'),
+              value = item.find('.bar-value'),
+              count = item.find('.count'),
+              maximum = item.attr('data-maximum');
+
+          //console.log(slug, data, maximum, data[slug].count);
+          if(data && data[slug]){
+            value.css({
+              height: ((data[slug].count*33/maximum) + 3) + 'px'
+            });
+            count.text(data[slug].count).css({
+              bottom: ((data[slug].count*33/maximum) + 3) + 'px',
+              opacity: 1
+            });
+          } else {
+            value.css({
+              height: '1px',
+              
+            })
+            count.text('0').css({
+              bottom: '1px',
+              opacity: 0
+            });
+          }
+        })
+
+      });
+     
     };
 
     this.triggers.events.data_documents_facets__updated = function(controller) {
       var data_documents_facets = controller.get('data_documents_facets');
 
+      //alert('facets');
       walt.verbose('(Filters) listens to data_documents_facets__updated', data_documents_facets);
       glo.text(data_documents_facets.total_count);
+
+      // evaluate facets
+      $('.facets').each(function(i,e) {
+        var wrapper = $(this),
+            types = wrapper.attr('data-facet').split('.'),
+            type,
+            data,
+            max = 0,
+            facet,
+            facets = [],
+            _facets = [];
+
+        if(!types.length)
+          return;
+        else if(types.length>1)
+          data = data_documents_facets[types[0]][types[1]]; // UGLY!!!!!! I know, I know...
+        else
+          data = data_documents_facets[types[0]];
+
+        if(!data)
+          return;
+
+        type = types[0];
+
+        // get max value
+        for(var i in data) {
+          max = Math.max(data[i].count, max);
+          facets.push({
+            type: type ,
+            label: i,
+            count: data[i].count
+          });
+        };
+
+        if(facets.length == 0)
+          return
+        // todo sorting according to a function
+        facets.sort();
+
+        for(var i in facets){
+          facet = facets[i];
+          facet.step = 100/facets.length;
+          facet.max = max;
+          facet.value = facet.count*100/max; // box value
+          facet.global = facet.count*100/max; // box hsadow value
+          facet.filter = type + "__slug__REDUCE";
+          facet.slug = facet.label;
+          _facets.push(Handlebars.templates.facet(facet));
+        }
+
+        wrapper.append(_facets.join(''));
+      });
+      
+      facets_loaded = true;
+      if(filters_loaded) // filters loaded before facets (async problem we don't mean to solve now)
+        _self.triggers.events.data_documents_filters__updated(controller);
     };
 
 
