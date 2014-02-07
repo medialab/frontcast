@@ -59,7 +59,7 @@
       <div class="four columns"><a href="{% url 'frontcast_home'%}"><img src="{{ STATIC_URL }}/img/forccast.svg"/>archive</a></div>
       <div class="twelve columns right-aligned">
         <input type="text" name="query" id="search-query" placeholder="search" autofocus=autofocus>
-        <a class="entry" href="{% url "frontcast_home"%}#/">{% trans "index" %}</a>
+        <a class="entry" href="{% url "frontcast_home"%}#/?">{% trans "index" %}</a>
         {% if user.is_authenticated %}
           <a class="entry" href="{% url "frontcast_home"%}#/me">{{user}}{% trans "'s space" %}</a> | 
           <a class="entry" href="{% url "frontcast_logout"%}">{% trans "logout" %}</a> |

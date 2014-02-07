@@ -143,6 +143,12 @@
                       slug: scene_args.slug 
                     },
                     params: {}
+                  },
+                  {
+                    service: 'get_documents_filters',
+                    params: {
+                      filters: JSON.stringify({slug: scene_args.slug})
+                    }
                   }
                 );
                 break;
