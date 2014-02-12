@@ -182,6 +182,21 @@
           }
         },
     {
+      triggers: 'scene__synced',
+      description: 'load ajax finished next event to be expected is scene__filled',
+      method: function(event) {
+        // @todo for domino!!!!!!!!! Normally this log here should be executed BEFORE the scene__filled hacks .... LIKE it already happens for the modules listeners ... to be checked
+        //walt.log('@scene__synced');
+      }
+    },
+    {
+      triggers: 'scene__filled',
+      description: 'load and DOM creation finished, can release the UI lock',
+      method: function(event) {
+        // walt.log('@scene__filled called');
+      }
+    },
+    {
       triggers: 'scene_args__updated',
       method: function(event) {
         var scene_args = this.get('scene_args'),

@@ -18,9 +18,9 @@
         {{#foreach tags.Institution}}
           <span class="tag">{{this.name}}</span>{{#unless this.$last}}, {{/unless}}
         {{/foreach}}
-      {{/if}}
+      
     </div>
-    
+    {{/if}}
     {{#each attachments}}
       {{#if_in this.ext compare="pdf"}}
       <div class="actions">

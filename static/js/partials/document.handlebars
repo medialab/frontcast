@@ -7,7 +7,14 @@
   </div>
 
   <h2><a href="/#{{#url "d" "slug" slug}}{{/url}}">{{title}}</a></h2>
-
+  {{#if tags.KEYWORD.length}}
+    <div class="tags">
+        {{#foreach tags.KEYWORD}}
+          <span class="set-property tag keyword" data-tip="filter by {{this.name}}" data-slug="{{this.slug}}" data-filter="tags__slug__REDUCE">#{{this.name}}</span>{{#unless this.$last}}, {{/unless}}
+        {{/foreach}}
+      
+    </div>
+    {{/if}}
   {{#if abstract}}
   <div class="abstract">{{{abstract}}}</div>
   {{/if}}

@@ -122,10 +122,34 @@
                 permalink: permalink
               }
             })
-            .success(function(data) {
-              if(data.status == "ok"){
+            .success(function(result) {
+              if(result.status == "ok"){
                 walt.toast('saved', {cleanup: true});
-                location.href="/#/d/{{document.slug}}";
+                // location.href="/#/d/{{document.slug}}";
+                // save tags
+                if(data.params.entry.keywords){
+
+                  walt.verbose('... keywords',data.params.entry.keywords); //":[{"language":"en"
+                  for(var i in data.params.entry.keywords) {
+                    if(data.params.entry.keywords[i].language == "en") {
+                      $.ajax({
+                        url: walt.urls.document.replace('/%3A%3Aslug/','/{{document.slug}}/attach-tags/'),
+                        method: 'POST',
+                        data: {
+                          tags: data.params.entry.keywords[i].values.join(',')
+                        }
+                      }).success(function(result) {
+                        if(result.status == "ok"){
+                          walt.toast('tags saved', {cleanup: true});
+                          location.href="/#/d/{{document.slug}}";
+                        }
+                      }).error( function(data) {
+                        walt.error(data);
+                      });
+                    }
+                  }
+                }
+                  //location.href="/#/d/{{document.slug}}"
               }
             })
             .error( function(data) {

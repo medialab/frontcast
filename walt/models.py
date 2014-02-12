@@ -10,7 +10,6 @@ from django.db.models import Q
 from django.utils.text import slugify
 from django.utils.timezone import utc
 
-
 class Task(models.Model):
   DELIVERABLE = 'de'
   FILL_REFERENCE = 'rF'
@@ -80,13 +79,17 @@ class Tag(models.Model):
   # tag specification e.g. we want to specify an institution for a given author
   related = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
 
+  def save(self, **kwargs):
+    if self.pk is None:
+      self.slug = uuslug(model=Tag, instance=self, value=self.name)
+    super(Tag, self).save()
 
   def __unicode__(self):
     return "%s : %s"% (self.get_type_display(), self.name)
 
   class Meta:
     ordering = ["type", "slug" ]
-    unique_together = ("type", "slug")
+    unique_together = ("type", "name")
 
   def json(self):
     return{
@@ -107,6 +110,8 @@ class Unit(models.Model):
 
   def __unicode__(self):
     return "%s [%s]" % (self.ldap_id, self.name)
+
+
 
 
 class Profile(models.Model):
@@ -425,3 +430,24 @@ class Assignment(models.Model):
   class Meta:
     ordering = ["-date_due", "-task" ]
     unique_together = ("unit", "task")
+
+
+#
+# Return an unique slug identifier for the given instance. Used only when pk is null
+# @param text - the text to be slugified 
+#
+def uuslug(model, instance, value, max_length=128):
+  slug = slugify(value)[:max_length] # safe autolimiting
+  slug_base = slug
+  i = 1;
+
+  while model.objects.filter(slug=slug).count():
+    candidate = '%s-%s' % (slug_base, i)
+
+    if len(candidate) > max_length:
+      slug = slug[:max_length-len('-%s' % i)]
+
+    slug = re.sub('\-+','-',candidate)
+    i += 1
+
+  return slug

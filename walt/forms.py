@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
@@ -11,6 +13,11 @@ class LoginForm(forms.Form):
 class FullDocumentForm(ModelForm):
   class Meta:
     model = Document
+
+
+class DocumentTagsForm(forms.Form):
+  tags = forms.RegexField(regex=r'^[\s\w,\-\_]*$',label=_('tags') )
+
 
 class DocumentForm(ModelForm):
   def clean(self):

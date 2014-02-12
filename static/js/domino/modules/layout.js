@@ -16,8 +16,9 @@
         header = $('header'),
         footer = $('footer');
 
-    this.triggers.events.ui__updated = function(){
-
+    this.triggers.events.scene__filled = function(){
+      walt.verbose('(Layout) listens to scene__filled');
+      _self.ghostscroll();
     }
     
     this.resize = function(){
@@ -45,6 +46,13 @@
         header.hasClass('drop-shadow') && header.removeClass('drop-shadow');
       else 
         header.addClass('drop-shadow');
+
+      if( y > scrollheight - h - 12) // footer shadow invisible
+        footer.hasClass('drop-shadow') && footer.removeClass('drop-shadow');
+      else 
+        footer.addClass('drop-shadow');
+
+
       /*
       if( y > scrollheight - h - 12){ // footer shadow invisible
         footer.hasClass('drop-shadow') && footer.removeClass('drop-shadow');
@@ -63,7 +71,7 @@
       });
       _self.resize();
       walt.verbose('(Layout) listens to init');
-
+      $(document).tulip();
       $(document).scroll(_self.ghostscroll);
     };
   };

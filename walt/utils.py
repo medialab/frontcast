@@ -1,6 +1,6 @@
 import csv
 
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.conf import settings
 from walt.models import Assignment, Task, Tag, Document
 
@@ -22,9 +22,34 @@ def get_pending_assignments( user ):
 
 
 def unicode_dict_reader(utf8_data, **kwargs):
-    csv_reader = csv.DictReader(utf8_data, **kwargs)
-    for row in csv_reader:
-        yield dict([(key, unicode(value, 'utf-8')) for key, value in row.iteritems()])
+  csv_reader = csv.DictReader(utf8_data, **kwargs)
+  for row in csv_reader:
+      yield dict([(key, unicode(value, 'utf-8')) for key, value in row.iteritems()])
+
+
+# #
+# @param request
+# @return <walt.models.Dpcument> or raise exception
+#
+def get_available_document(request, pk):
+  q = Q(pk=pk) if is_number(pk) else Q(slug=pk)
+
+  try:
+    if request.user.is_staff:
+      d = Document.objects.get(q)
+      
+    elif request.user.is_authenticated():
+      d = Document.objects.get(
+        q,
+        Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)
+      )
+    else:
+      d = Document.objects.get(q, status=Document.PUBLIC)
+  except Document.DoesNotExist,e:
+    raise
+
+  return d
+
 
 # #
 # @param request

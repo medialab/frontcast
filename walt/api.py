@@ -15,8 +15,8 @@ from django.views.decorators.csrf import csrf_exempt
 from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
 
 from walt.models import Assignment, Profile, Document, Tag, Task
-from walt.forms import DocumentForm, FullDocumentForm
-from walt.utils import get_document_filters, get_available_documents, is_number
+from walt.forms import DocumentForm, FullDocumentForm, DocumentTagsForm
+from walt.utils import get_document_filters, get_available_documents, get_available_document, is_number
 
 logger = logging.getLogger('glue')
 
@@ -106,6 +106,34 @@ def document(request, pk):
       return result.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
 
   return result.item(d, deep=True).json()
+
+
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def document_attach_tags(request, pk):
+  result = Epoxy(request)
+
+  # check validity first of all
+  form = DocumentTagsForm(request.REQUEST)
+  if form.is_valid():
+    try:
+      d = get_available_document(request, pk)
+    except Document.DoesNotExist,e:
+      return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
+
+    # list of unique comma separated cleaned tags.
+    tags = list(set([t.strip() for t in form.cleaned_data['tags'].split(',')]))
+
+    for tag in tags:
+      t, created = Tag.objects.get_or_create(name=tag, type=Tag.KEYWORD)
+      t.save()
+      d.tags.add(t)
+
+    result.meta('tags', tags)
+    return result.item(d, deep=True).json()
+
+  else:
+    return result.throw_error(error='%s' % form.errors, code=API_EXCEPTION_FORMERRORS).json()
+
 
 
 def reference_documents(request):

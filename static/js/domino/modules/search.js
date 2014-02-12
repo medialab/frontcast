@@ -51,12 +51,13 @@
       });
     }
 
-    this.triggers.events.scene__synced = function(controller) {
-      var scene_args = controller.get('scene_args'),
-          scene_params = scene_args.params || {};
-      
-      input.val(scene_params.search || '')
-      walt.verbose('(Search) listens to scene__synced');
+    this.triggers.events.scene__filled = function(controller) {
+      var scene_params = controller.get('scene_params');
+      walt.verbose('(Search) listens to scene__filled');
+      if(scene_params.search){
+        walt.verbose('...', 'setting input query');
+        input.val(scene_params.search || '')
+      }
     }
 
     this.triggers.events.init = function(controller) {

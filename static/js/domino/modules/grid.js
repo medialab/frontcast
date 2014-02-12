@@ -21,9 +21,8 @@
         downloads = $("#downloads"), //the jquery element for the counter
         countup; // the countup counter
 
-    this.triggers.events.scene__synced = function(controller) {
-      var scene = controller.get('scene');
-      walt.verbose('(Grid) listens to scene__updated');
+    this.triggers.events.scene__filled = function(controller) {
+      walt.verbose('(Grid) listens to scene__filled');
     };
 
     this.triggers.events.init = function(controller) {
@@ -41,13 +40,14 @@
     this.triggers.events.data_documents__updated = function(controller) {
       var scene = controller.get('scene');
 
-      walt.verbose('(Grid) listens to data_documents__updated', scene);
+      walt.verbose('(Grid) listens to scene__synced', scene);
       
       // do the cleaning up
       viewer.empty();
       container.empty();
       actions.empty();
       downloads.empty();
+
 
       switch(scene){
         case walt.SCENE_INDEX:
@@ -84,6 +84,8 @@
       
       // single document references
       if(single_reference_item.length){
+
+        walt.verbose('... replacing reference html');
         ref = references.items[single_reference_item.attr('data-reference-id')];
 
         try {
@@ -153,7 +155,10 @@
       // check if it has the right to edit, then add edit buttons
       _self.enable_edit(doc);
       _self.enable_buttons(doc);
+
+      //_self.dispatchEvent('scene__filled');
     }
+
 
     this.enable_edit = function(doc){
       actions.empty().append($('<a/>',{'class':'boo', href:'/d/' + doc.slug + '/edit'}).html('edit <i class="fa fa-pencil"></i>'))
@@ -180,6 +185,8 @@
       container.empty().height('auto');
       viewer.empty().append( Handlebars.templates.document_edit(doc));
       _self.enable_save(doc);
+
+      
     }
 
     this.create = function(controller) {  
@@ -218,6 +225,8 @@
 
       boxes.length && container.append(boxes).nested('append', boxes);
       //container.append();
+      walt.verbose('...', 'forwarding scene__filled');
+      _self.dispatchEvent('scene__filled');
     }
 
   };

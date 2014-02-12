@@ -269,13 +269,22 @@
 
   walt.verbose = function(){
     if(walt.debug >= walt.DEBUG_VERBOSE){
-      var index = '          ';
-      walt.debug_index = walt.debug_index || 0;
-      walt.debug_index++;
-      index = index + walt.debug_index;
+      var index = '          ',
+          counter;
+      
+      walt.debug_index = walt.debug_index || 0;      
+
+      if(arguments[0] == '...'){
+        counter = '      ';
+      } else{
+        walt.debug_index++;
+        index = index + walt.debug_index;
+      }
+
+      counter = index.substr(-6);
 
       try{
-        var args = ['\t', index.substr(-6)].concat(Array.prototype.slice.call(arguments));
+        var args = ['\t', counter].concat(Array.prototype.slice.call(arguments));
         console.log.apply(console, args);
       } catch(e){}
     }

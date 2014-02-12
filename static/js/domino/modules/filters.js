@@ -114,7 +114,7 @@
       });
       
       _self.dispatchEvent('scene__update', {
-        scene: scene
+        scene: walt.SCENE_SEARCH
       });
     };
 
