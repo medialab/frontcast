@@ -5,7 +5,7 @@ from markdown import markdown
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from django.db import models
+from django.db import models, IntegrityError
 from django.db.models import Q
 from django.utils.text import slugify
 from django.utils.timezone import utc
@@ -139,7 +139,110 @@ class Profile(models.Model):
     return d
 
 
-class Document(models.Model):
+
+class AbstractDocument(models.Model):
+  '''
+  base class for both Document and WorkingDocument
+  '''
+  # the text content
+  slug = models.SlugField(max_length=160, unique=True)
+  title = models.CharField(max_length=160, default="")
+  abstract = models.TextField(default="", blank=True, null=True)
+  content = models.TextField(default="", blank=True, null=True)
+  language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES)
+  rating = models.PositiveSmallIntegerField(default=0) # 0 to 10
+
+  # TIME
+  date = models.DateField(blank=True, null=True) # main date, manually added
+  date_last_modified = models.DateTimeField(blank=True, null=True) #cfr save() method
+
+  # who first created it.
+  owner = models.ForeignKey(User) # the original owner
+  
+  # external permalink.  
+  permalink  = models.TextField(default="", blank=True, null=True) # remote link
+  permalink_hash  = models.CharField(max_length=32, blank=True, null=True) # remote link
+
+  
+  class Meta:
+    abstract = True
+
+
+
+class WorkingDocument(AbstractDocument):
+  '''
+  This is a special document for internal purposes: to form a Scenario pedagogique, to collect sequences etc..
+  Feel free to change type.
+  Each object can refer to documents Pedagogical stuff like sequences, tools, tasks etc..
+  Note that no hierarchy is specified!
+  Comments probably via DISQUS. To be DISCUSSED.
+  
+  copies are symmetrical relationships between different forks.
+  '''
+  SEQUENCE  = 'B'
+  TASK      = 'I'
+  TOOL      = 'T'
+  COPY      = 'C'
+
+  TYPE_CHOICES = (
+    (SEQUENCE, 'pedagogical sequence'),
+    (TASK,     'pedagogical task'),
+    (TOOL,     'pedagogical tool'),
+    (COPY,     'carbon copy'),
+  )
+
+  WAITING_FOR_PUBLICATION = 'W' # ask for peer review !
+  PUBLIC                  = 'P' # make the document publicly available
+  PRIVATE                 = 'M' # read and edit only to owner
+
+  STATUS_CHOICES = (
+    (WAITING_FOR_PUBLICATION, 'publish it, please!'),
+    (PUBLIC,                  'public'),
+    (PRIVATE,                 'private'),
+  )
+  
+  parent  = models.ForeignKey("self", null=True, blank=True, related_name="children") # filiation
+  dependencies = models.ManyToManyField("self", symmetrical=False, null=True, blank=True, related_name="dependents") # forkz! woring copies of the same pedagogical documents. A versioning likeLike related for documents
+  copies = models.ManyToManyField("self", symmetrical=True, null=True, blank=True) # forkz! woring copies of the same pedagogical documents. A versioning likeLike related for documents
+  tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !
+  documents = models.ManyToManyField('Document', null=True, blank=True) # internal links with existings documents
+
+  status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PRIVATE, blank=True, null=True)
+  type = models.CharField(max_length=32, choices=TYPE_CHOICES)
+
+
+  class Meta:
+    ordering = ('-type', '-id',)
+
+
+  def __unicode__(self):
+    return "[%s] %s" % (self.get_type_display(), self.slug)
+
+
+  def save(self, **kwargs):
+    # handle type-driven validation when parent is given. must we put this logic into the form? Nope because of parent stuff.
+    self.slug = uuslug(model=WorkingDocument, instance=self, value=self.title)
+
+    if self.parent:
+      #print self.slug, self.type,' child of', self.parent.slug, self.parent.type, '?'
+      if self.type == WorkingDocument.SEQUENCE:
+        raise IntegrityError("WoringDocument of type SEQUENCE Can't have parents")
+      elif self.type == WorkingDocument.COPY:
+        raise IntegrityError("WoringDocument of type COPY Can't have parents! It is just a local copy and herites the type of the clone")
+      elif self.type == WorkingDocument.TASK and self.parent.type not in [WorkingDocument.SEQUENCE, WorkingDocument.TASK]:
+        raise IntegrityError("WoringDocument of type TASK must be below SEQUENCE or TASK parent type")
+      elif self.type == WorkingDocument.TOOL and self.parent.type not in [WorkingDocument.TASK, WorkingDocument.TOOL]:
+        raise IntegrityError("WoringDocument of type TOOL must be below TASK or TOOL parent type")
+        
+    super(WorkingDocument, self).save()
+
+
+
+class Document(AbstractDocument):
+  '''
+  A normal document class(e.g. for the inquiry).
+  It contains documents and their references
+  '''
   WAITING_FOR_PUBLICATION = 'W'
   PUBLIC 	= 'P' # make the document publicly available
   SHARED   = 'S' # editable only to authors, viewable by watchers
@@ -186,31 +289,19 @@ class Document(models.Model):
     (PDF, 'pdf'),
     (STORED_VIDEO, 'video - storage')
   )
-  # storage function for filefield
-
-  # the text content
-  slug = models.SlugField(max_length=160, unique=True)
-  title = models.CharField(max_length=160, default="")
-  abstract = models.TextField(default="", blank=True, null=True)
-  content = models.TextField(default="", blank=True, null=True)
-  language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES)
+  
   mimetype = models.CharField(max_length=255, default="", choices=MIMETYPES_CHOICES, blank=True, null=True) # according to type, if needed (like imagefile)
-  rating = models.PositiveSmallIntegerField(default=0) # 0 to 10
-
-  # TIME
-  date = models.DateField(blank=True, null=True) # main date, manually added
-  date_last_modified = models.DateTimeField(blank=True, null=True) #cfr save() method
+  
+  
 
   # URL LOCATION
   local = models.FileField(upload_to='documents/%Y-%m/',  blank=True, null=True) # local stored file inside media folder (aka upload)
-  remote = models.TextField(blank=True, null=True) # local stored file inside storage folder. IT DOES NOT ALLOW UPLOAD! format: either http:/// or 
+  remote = models.TextField(blank=True, null=True) # DEPRECATED local stored file inside storage folder. IT DOES NOT ALLOW UPLOAD! format: either http:/// or 
 
-  permalink  = models.TextField(default="", blank=True, null=True) # remote link
-  permalink_hash  = models.CharField(max_length=32, blank=True, null=True) # remote link
 
   # document friendship
-  related = models.ManyToManyField("self", symmetrical=True, null=True, blank=True)
-  parent  = models.ForeignKey("self", null=True, blank=True, related_name="children")
+  related = models.ManyToManyField("self", symmetrical=True, null=True, blank=True) # forkz!
+  parent  = models.ForeignKey("self", null=True, blank=True, related_name="children") # comments
   status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DRAFT, blank=True, null=True)
   type = models.CharField(max_length=32, choices=TYPE_CHOICES, default=TEXT)
 
@@ -218,7 +309,6 @@ class Document(models.Model):
   tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !
   reference = models.CharField(max_length=60, default=0, blank=True, null=True)
 
-  owner = models.ForeignKey(User) # the original owner
   authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
 
@@ -441,7 +531,7 @@ def uuslug(model, instance, value, max_length=128):
   slug_base = slug
   i = 1;
 
-  while model.objects.filter(slug=slug).count():
+  while model.objects.exclude(pk=instance.pk).filter(slug=slug).count():
     candidate = '%s-%s' % (slug_base, i)
 
     if len(candidate) > max_length:

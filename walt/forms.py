@@ -3,7 +3,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
-from walt.models import Document
+from walt.models import Document, WorkingDocument
 
 class LoginForm(forms.Form):
 	username = forms.CharField( label=_('login'), max_length=64 )
@@ -45,3 +45,9 @@ class DocumentForm(ModelForm):
   class Meta:
     model = Document
     exclude = ['owner', 'slug']
+
+
+class WorkingDocumentForm(ModelForm):
+  class Meta:
+    model = WorkingDocument
+    fields = ['title', 'type', 'documents', 'owner', 'abstract']

@@ -1,0 +1,32 @@
+{
+  "name": "frontcast",
+  "description": "the forccast magic platform",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Daniele Guido",
+  "homepage": "",
+  "contributors": [
+    "Daniele Guido <gui.daniele@gmail.com> (https://github.com/danieleguido)"
+  ],
+  "bugs": {
+    "url": ""
+  },
+  "dependencies": {},
+  "keywords": [
+    "forccast",
+    "rapid styler"
+  ],
+  "repository": "",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-less": "~0.9.0",
+    "grunt-contrib-handlebars": "~0.6.1"
+  }
+}

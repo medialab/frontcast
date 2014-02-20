@@ -1,7 +1,9 @@
-Django==1.5.1
+Django==1.6.1
 Markdown==2.3.1
+Pycco==0.3.0
+Pygments==1.6
 django-auth-ldap==1.1.4
-pysqlite==2.6.3
+pystache==0.5.3
 python-ldap==2.4.12
+smartypants==1.8.3
 wsgiref==0.1.2
-uWSGI==1.9.18.2

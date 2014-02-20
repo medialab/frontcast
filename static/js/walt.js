@@ -53,6 +53,9 @@
   walt.SCENE_MANAGE_REFERENCES = 'edit-references';
   walt.SCENE_WORLD_DRAFTS = 'drafts'; // show all drafts available to staff memers only (via api)
 
+  walt.SCENE_WORKING_DOCUMENTS_INDEX = 'working-documents';
+  
+
   walt.ROUTES = [
     {
       path: '/:?params:',
@@ -82,7 +85,10 @@
       scene: walt.SCENE_DOCUMENT_EDIT,
       description: ''
     },
-    
+    {
+      path: '/teaching/:?params:',
+      scene: walt.SCENE_WORKING_DOCUMENTS_INDEX
+    },
     {
       path: '/r/',
       scene: walt.SCENE_REFERENCES,
