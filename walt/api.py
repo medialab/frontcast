@@ -1,10 +1,11 @@
-import logging
+import logging, json
 
 from datetime import datetime
 
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.db.models.loading import get_model
 from django.db.models import Q,Count
 from django.forms.models import model_to_dict
@@ -12,27 +13,32 @@ from django.http import HttpResponse
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 
-from glue.utils import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
+from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
 
-from walt.models import Assignment, Profile, Document, Tag, Task
-from walt.forms import DocumentForm, FullDocumentForm, DocumentTagsForm
+from walt.models import Assignment, Profile, Document, Tag, Task, WorkingDocument
+from walt.forms import DocumentForm, FullDocumentForm, DocumentTagsForm, TagsForm
 from walt.utils import get_document_filters, get_available_documents, get_available_document, is_number
 
+
+
 logger = logging.getLogger('glue')
+
+
 
 def index(request):
   return Epoxy(request).json()
 
 
+
 def access_denied(request):
   return Epoxy.error(request, message='access denied');
 
-#
-#
-#  Public domain Document objects getter
-# ---
-#
+
+
 def documents(request):
+  '''
+  Public domain Document objects getter
+  '''
   if request.user.is_staff:
     queryset =   Document.objects.filter().distinct()
   elif request.user.is_authenticated():
@@ -43,6 +49,7 @@ def documents(request):
   result = Epoxy(request).queryset(queryset)
   result.meta('query', '%s' % result._queryset.query)
   return result.json()
+
 
 
 def documents_filters(request):
@@ -67,6 +74,7 @@ def documents_filters(request):
   filters['total_count'] =c # I know, I know... copy for god's sake
   epoxy.add('objects', filters);
   return epoxy.json()
+
 
 
 def document(request, pk):
@@ -106,6 +114,87 @@ def document(request, pk):
       return result.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
 
   return result.item(d, deep=True).json()
+
+
+
+@staff_member_required
+def working_documents(request):
+  result = Epoxy(request).queryset(WorkingDocument.objects.filter())
+  return result.json()
+
+
+
+@staff_member_required
+def working_document(request, pk):
+  if is_number(pk):
+    d = WorkingDocument.objects.get(pk=pk)
+  else: 
+    d = WorkingDocument.objects.get(slug=pk)
+
+  result = Epoxy(request)
+  result.item(d)
+
+  return result.json()
+
+
+
+@staff_member_required
+def working_document_attach_tags(request, pk):
+  if is_number(pk):
+    d = WorkingDocument.objects.get(pk=pk)
+  else: 
+    d = WorkingDocument.objects.get(slug=pk)
+
+  result = Epoxy(request)
+  result.item(d)
+ 
+  if result.is_POST():
+    is_valid, d = helper_free_tag(instance=d, request=request, append=False)
+    if not is_valid:
+      return result.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
+
+  result.item(d, deep=True)
+  return result.json()
+
+
+import networkx as nx
+from networkx.algorithms import bipartite
+from networkx.readwrite import json_graph
+from django.db.models import Count
+@transaction.atomic
+def graph_bipartite(request, model_name, m2m_name):
+  mod = get_model('walt', model_name)
+  
+  #result = Epoxy(request).queryset()
+  B = nx.Graph()
+
+  #print getattr(mod, m2m_name)
+  m2m = getattr(mod, m2m_name).field.rel.to
+
+  # filter set a and set b....
+  for v in m2m.objects.exclude(**{'%s__isnull' % model_name:True}).annotate(w=Count(model_name)):
+    B.add_node('v%s' % v.id, attr_dict={'pk':v.id}, label=v.slug, weight=v.w)
+
+    for u_in_v in getattr(v, '%s_set' % model_name).all():
+      B.add_node('u%s' % u_in_v.id, attr_dict={'pk': u_in_v.id}, label=u_in_v.slug)
+      B.add_edge('v%s' % v.id, 'u%s' % u_in_v.id)
+
+  #add_edge
+    
+  '''{
+  "nodes": [
+    {
+      "id": "n0",
+      "label": "A node",
+      "x": 0,
+      "y": 0,
+      "size": 3
+    },'''
+  data = json_graph.node_link_data(B)
+  #//  result.item(obj)
+  #  result.add('objects', [model_to_dict(i) for i in getattr(obj, m2m_name).all()])
+  return HttpResponse(json.dumps(data, default=Epoxy.encoder, indent=2), content_type='application/json')
+
 
 
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
@@ -365,37 +454,6 @@ def user_assignment(request, pk):
   return result.json()
 
 
-#
-#
-#  Generic objects getter
-# ---
-#
-@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
-def get_objects(request, model_name):
-  try:
-    m = get_model("walt", model_name)
-    queryset = m.objects.filter()
-  except AttributeError, e:
-    return Epoxy.error(request, message='model "%s" not found' % model_name, code='AttributeError')
-  
-  result = Epoxy(request).queryset(
-    queryset,
-    model=m
-  )
-  return result.json()
-
-
-#
-#
-#  Generic single object getter
-# ---
-#
-@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
-def get_object(request, model_name, pk):
-  m = get_model("walt", model_name)
-  result = Epoxy(request).single(m, {'pk':pk})
-  return result.json()
-
 
 #
 #
@@ -486,3 +544,33 @@ def edit_object(instance, Form, request):
     instance = form.save(commit=False)
     return True, instance
   return False, form.errors
+
+
+
+
+
+@transaction.atomic
+def helper_free_tag(instance, request, append=True):
+  '''
+  instance's model should have tags m2m property...
+  '''
+  form = TagsForm(request.REQUEST)
+
+  if form.is_valid():
+    tags = list(set([t.strip() for t in form.cleaned_data['tags'].split(',')]))# list of unique comma separated cleaned tags.
+    candidates = []
+    for tag in tags:
+      t, created = Tag.objects.get_or_create(name=tag, type=form.cleaned_data['type'])
+      if append:
+        instance.tags.add(t)
+      else:
+        candidates.append(t)
+
+    if not append:
+      instance.tags = candidates
+    
+    instance.save()
+
+    return True, instance
+  return False, form.errors
+

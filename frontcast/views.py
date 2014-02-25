@@ -15,7 +15,7 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 
-from glue.utils import Epoxy
+from glue import Epoxy
 
 from walt.forms import LoginForm
 from walt.models import Assignment, Document, Task
@@ -25,8 +25,8 @@ from frontcast import local_settings
 
 
 
-def home( request ):
-  data = _shared_data(request, tags=['home'] )
+def home(request):
+  data = _shared_data(request, tags=['home'])
   
   if request.user.is_authenticated():
     queryset = Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)).distinct()
@@ -35,7 +35,15 @@ def home( request ):
   
   data, q = _queryset(request, qs=queryset, d=data) 
   data['facets'] = get_document_filters(q)
-  return render_to_response(  "dusk/index.html", RequestContext(request, data ) )
+  return render_to_response(  "dusk/index.html", RequestContext(request, data))
+
+
+
+@staff_member_required
+def scenario(request):
+  data = _shared_data(request, tags=['scenario'])
+  return render_to_response("dusk/scenario.html", RequestContext(request, data))
+
 
 
 def notfound(request):

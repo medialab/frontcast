@@ -22,7 +22,7 @@ html {
 }
 
 body{
-  font: 1.5em/1.618em 'Lato', sans-serif;
+  font: 1.5em/1.618em 'Source Sans Pro', sans-serif;
   background-color: #f9f7ed;
   height:100%;
   padding: 0;
@@ -30,7 +30,7 @@ body{
 }
 
 h1,h2,h3,h4,h5{
-  font: 2rem/1.618em 'Lato', sans-serif;
+  font: 2rem/1.618em 'Source Sans Pro', sans-serif;
 }
 
 header{
@@ -73,7 +73,7 @@ img{
 /* #Page Styles
 ================================================== */
 button, a.boo {
-  font: 1.2rem/1.618em 'Lato', sans-serif;
+  font: 1.2rem/1.618em 'Source Sans Pro', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   text-decoration: none;
@@ -140,6 +140,7 @@ button .fa, a.boo .fa {
 }
 
 a.entry{
+  
   font-size: 1.1rem;
   text-transform: uppercase;
   text-decoration: none;
@@ -378,9 +379,14 @@ li{
 }
 
 #counter-documents{
+  font-family: 'Source Code Pro', sans-serif;
   font-size: 2.4rem;
   margin-bottom: 12px;
   text-align: center;
+}
+
+#counter-documents-global{
+  font-family: 'Source Code Pro', sans-serif;
 }
 
 #search-query{
@@ -388,7 +394,7 @@ li{
   margin: 0;
   background: #fff;
   color: #181818;
-  font: 1.3rem/1.618em 'Lato', sans-serif;
+  font: 1.3rem/1.618em 'Source Sans Pro', sans-serif;
 }
 
 #sidebar{
@@ -419,7 +425,7 @@ li{
 .editor fieldset input, .editor fieldset textarea{
   width: 98%;
   margin-bottom: 0;
-  font: 0.9em/1.618em 'Lato', sans-serif;
+  font: 0.9em/1.618em 'Source Sans Pro', sans-serif;
 }
 
 {
@@ -427,12 +433,12 @@ li{
   border-width: 0;
   border-bottom: 1px solid;
   border-radius: 0;
-  font: 0.9em/1.618em 'Lato', sans-serif;
+  font: 0.9em/1.618em 'Source Sans Pro', sans-serif;
 }
 
 .editor label{
   display: block;
-  font: 1.1rem/1.618em 'Lato', sans-serif;
+  font: 1.1rem/1.618em 'Source Sans Pro', sans-serif;
   font-weight: 700;
   margin-bottom: 6px;
   text-transform: uppercase;

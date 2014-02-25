@@ -8,6 +8,7 @@ from walt.models import WorkingDocument
 
 
 
+
 class WorkingDocumentTest(TestCase):
   def test_save(self):
     '''

@@ -27,19 +27,28 @@ api_urlpatterns = patterns('walt.api',
     # staff only: view all possible documents
     url(r'w/document/$', 'world_documents', name='walt_api_world_documents'),
 
+    #staff only: graphs
+    url(r'graph/bipartite/(?P<model_name>[:a-zA-Z_\-]+)/(?P<m2m_name>[:a-zA-Z_]+)/$', 'graph_bipartite', name='walt_api_graph_bipartite'),
+
+     # staff only: working documents
+    url(r'working-document/$', 'working_documents', name='walt_api_working_documents'),
+    url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)/$', 'working_document', name='walt_api_working_document'),
+    url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)/attach-tags/$', 'working_document_attach_tags', name='walt_api_working_document_attach_tags'),
+
+   
     url(r'document/$', 'documents', name='walt_api_documents'),
     url(r'document/filters/$', 'documents_filters', name='walt_api_documents_filters'),
     url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)/$', 'document', name='walt_api_document'),
     url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)/attach-tags/$', 'document_attach_tags', name='walt_api_document_attach_tags'),
+
+
 
     url(r'biblib/$', 'biblib_proxy', name='walt_api_biblib_proxy'),
     url(r'biblib-safe/$', 'biblib_proxy_safe', name='walt_api_biblib_proxy_safe'), # user is not logged in! but requests are safe enough
 
     url(r'oembed/(?P<provider>[a-z]+)/$', 'oembed_proxy', name='walt_api_oembed_proxy'),
 
-    url(r'(?P<model_name>[a-zA-Z_]+)/$', 'get_objects'),
-    url(r'(?P<model_name>[a-zA-Z_]+)/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'get_object'),
-
+    
 )
 
 
@@ -86,10 +95,14 @@ walt_urlpatterns = patterns('walt.views',
 
 urlpatterns = patterns('frontcast.views',
   url(r'^$', 'home', name='frontcast_home'),
+  url(r'^scenario/$', 'scenario', name='frontcast_scenario'),
+
   url(r'^d/(?P<slug>[:a-zA-Z\.\-\d]+)/edit/$', 'document_edit', name='frontcast_document_edit'),
   url(r'^w/', include(walt_urlpatterns)),
   # restful api
   url(r'^api/', include(api_urlpatterns)),
+  # test purpose glue
+  url(r'^glue/', include('glue.urls')),
 
   url(r'^s/(?P<folder>[a-zA-Z\d\-]+)/(?P<index>[A-Za-z\-_\d]+)\.(?P<extension>[\.a-z\d]+)/$', 'storage', name='frontcast_storage'), #i.e. proxy to storage space
 

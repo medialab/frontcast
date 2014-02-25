@@ -79,17 +79,21 @@ class Tag(models.Model):
   # tag specification e.g. we want to specify an institution for a given author
   related = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
 
+
   def save(self, **kwargs):
     if self.pk is None:
       self.slug = uuslug(model=Tag, instance=self, value=self.name)
     super(Tag, self).save()
 
+
   def __unicode__(self):
     return "%s : %s"% (self.get_type_display(), self.name)
+
 
   class Meta:
     ordering = ["type", "slug" ]
     unique_together = ("type", "name")
+
 
   def json(self):
     return{
@@ -235,6 +239,30 @@ class WorkingDocument(AbstractDocument):
         raise IntegrityError("WoringDocument of type TOOL must be below TASK or TOOL parent type")
         
     super(WorkingDocument, self).save()
+
+
+  def json(self, deep=False):
+    d = {
+      'id': self.id,
+      'slug':self.slug,
+      'title':self.rating,
+      'type': self.type,
+      'type_label': self.get_type_display(),
+      'title': self.title,
+      'abstract_raw': self.abstract,
+      'abstract': markdown(self.abstract),
+      'owner': self.owner.username
+    }
+
+    if deep:
+      d.update({
+        'tags': [t.json() for t in self.tags.all()]
+      })
+
+
+
+
+    return d
 
 
 
