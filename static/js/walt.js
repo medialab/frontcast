@@ -36,6 +36,8 @@
   walt.SCENES = [];
   walt.SCENE_INDEX = 'index';
   walt.SCENE_SEARCH = 'search';
+  walt.SCENE_SEARCH_GRAPH = 'searchgr';
+  
   walt.SCENE_DOCUMENT_VIEW = 'd';
   walt.SCENE_DOCUMENT_EDIT = 'de';
   walt.SCENE_DOCUMENT_ADD = 'da';
@@ -66,6 +68,11 @@
       path: '/s:?params:',
       scene: walt.SCENE_SEARCH,
       description: ''
+    },
+    {
+      path: '/g:?params:',
+      scene: walt.SCENE_SEARCH_GRAPH,
+      description: 'filter/explore collection with graph view document/tag bipartite graph'
     },
     {
       path: '/d/add/',

@@ -93,6 +93,18 @@
           },
           dispatch: ['data_references__updated']
         },
+        {
+          id: 'data_documents_graph',
+          type: {
+            nodes: ['object'],
+            edges: ['object']
+          },
+          value: {
+            nodes: [],
+            edges: []
+          },
+          dispatch: ['data_documents_graph__updated']
+        },
         /*
 
           Routing mechanism

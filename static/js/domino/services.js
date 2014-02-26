@@ -70,10 +70,11 @@
       url: walt.urls.documents_filters,
       dataType: 'json',
       data: function(input) {
-        walt.log('(Service) launch "get_documents_filters"', input);
+        console.log('%c (Service) ', walt.STYLE_CONSOLE_SERVICES, 'launch "get_documents_filters" with input', input);
         return input.params;
       },
       success: function(data, params) {
+        console.log('%c (Service) ', walt.STYLE_CONSOLE_SERVICES, 'success "get_documents_filters"', data.status);
         this.update('data_documents_filters', data.objects);
       }
     },
@@ -83,15 +84,44 @@
       url: walt.urls.documents_filters,
       dataType: 'json',
       data: function(input) {
-        walt.log('%c (Service) ', 'color:#3887BE;background-color:gold', ' launch "get_documents_facets"', input);
+        console.log('%c (Service) ', walt.STYLE_CONSOLE_SERVICES, 'launch "get_documents_facets" with input', input);
         return input.params;
       },
       success: function(data, params) {
-        walt.log('%c (Service) ', walt.STYLE_CONSOLE_SERVICES, 'success "get_documents_facets"', data.status);
+        console.log('%c (Service) ', walt.STYLE_CONSOLE_SERVICES, 'success "get_documents_facets"', data.status);
         if(data.status == walt.API_OK)
           this.update('data_documents_facets', data.objects);     
         else
           this.dispatchEvent('service__error', data.error);
+      }
+    },
+    { 
+      id: 'get_documents_graph',
+      type: 'GET',
+      url: '/api/graph/bipartite/document/tags/',
+      dataType: 'json',
+      data: function(input) {
+        console.log('%c (Service) ', 'color:#3887BE;background-color:gold', ' launch "get_documents_graph"', input);
+        return input.params;
+      },
+      success: function(data, params) {
+        console.log('%c (Service) ', walt.STYLE_CONSOLE_SERVICES, 'success "get_documents_graph"', data);
+        
+        this.update({data_documents_graph: {
+          nodes: data.nodes,
+          edges: data.edges
+        }});
+
+        this.dispatchEvent('data__update', {
+          data_documents: {
+            items: [],
+            ids: [],
+            limit: 0,
+            offset: 0,
+            length: 0,
+            order_by: [],
+          }
+        });
       }
     },
     /*

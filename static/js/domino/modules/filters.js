@@ -102,11 +102,11 @@
     this.send_args = function(scene_params) {
       var scene = walt.domino.controller.get('scene'),
           scene_args = $.extend({}, walt.domino.controller.get('scene_args'));
-
+ 
       walt.verbose('(Filters) .send_args received', scene_params);
       scene_args.params = {};
       scene_args.params.filters = JSON.stringify(scene_params.filters);
-      scene_args.params.search = scene_params.search;
+      scene_args.params.search = scene_params.search || '';
       walt.verbose('... .send_args outputting:', scene_args.params.filters,scene_args);
 
       _self.dispatchEvent('scene_args__update', {
@@ -114,7 +114,7 @@
       });
       
       _self.dispatchEvent('scene__update', {
-        scene: walt.SCENE_SEARCH
+        scene: scene //walt.SCENE_SEARCH
       });
     };
 

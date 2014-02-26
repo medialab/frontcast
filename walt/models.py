@@ -187,12 +187,14 @@ class WorkingDocument(AbstractDocument):
   TASK      = 'I'
   TOOL      = 'T'
   COPY      = 'C'
+  DONTKNOW  = '?'
 
   TYPE_CHOICES = (
     (SEQUENCE, 'pedagogical sequence'),
     (TASK,     'pedagogical task'),
     (TOOL,     'pedagogical tool'),
     (COPY,     'carbon copy'),
+    (DONTKNOW, 'I really don\'t know yet...'),
   )
 
   WAITING_FOR_PUBLICATION = 'W' # ask for peer review !
@@ -224,6 +226,8 @@ class WorkingDocument(AbstractDocument):
 
 
   def save(self, **kwargs):
+    #'if does permalink exist, do not save.' @todo
+    
     # handle type-driven validation when parent is given. must we put this logic into the form? Nope because of parent stuff.
     self.slug = uuslug(model=WorkingDocument, instance=self, value=self.title)
 
@@ -237,7 +241,7 @@ class WorkingDocument(AbstractDocument):
         raise IntegrityError("WoringDocument of type TASK must be below SEQUENCE or TASK parent type")
       elif self.type == WorkingDocument.TOOL and self.parent.type not in [WorkingDocument.TASK, WorkingDocument.TOOL]:
         raise IntegrityError("WoringDocument of type TOOL must be below TASK or TOOL parent type")
-        
+    
     super(WorkingDocument, self).save()
 
 
@@ -569,3 +573,5 @@ def uuslug(model, instance, value, max_length=128):
     i += 1
 
   return slug
+
+

@@ -40,11 +40,11 @@
     this.triggers.events.data_documents__updated = function(controller) {
       var scene = controller.get('scene');
 
-      walt.verbose('(Grid) listens to scene__synced', scene);
+      walt.verbose('(Grid) listens to data_documents__updated', scene);
       
       // do the cleaning up
-      viewer.empty();
-      container.empty();
+      viewer.css('height', 'auto').empty();
+      container.css('height', 'auto').empty();
       actions.empty();
       downloads.empty();
 
@@ -54,6 +54,10 @@
         case walt.SCENE_SEARCH:
         case walt.SCENE_ME:
           _self.listof(controller, {namespace: 'documents'});
+          break;
+        case walt.SCENE_SEARCH_GRAPH:
+          _self.sigma(controller)
+          //_self.listof(controller, {namespace: 'documents'});
           break;
         case walt.SCENE_DOCUMENT_VIEW:
           _self.single(controller, {namespace: 'documents'});
@@ -115,6 +119,52 @@
       });
       */
     };
+
+
+    this.sigma = function(controller) {
+      var data = controller.get('data_documents_graph');
+      walt.verbose('(Grid) .sigma', data);
+      sigma.renderers.def = sigma.renderers.canvas;
+
+      viewer.height($(window).height() - 200);
+      var s = new sigma({
+        container: 'single-document',
+        settings: {
+          defaultNodeColor: '#ec5148',
+          labelThreshold: 6,
+          font: 'Source Sans Pro',
+          sideMargin: 32,
+          labelSizeRatio: 1.4,
+          labelSize: 'proportional'
+        }
+      });
+
+      data.edges.forEach(function(edge) {
+        edge.id = '' + sigma.utils.id();
+        edge.color = '#c0c0c0';
+      });
+
+      data.nodes.forEach(function(node, i) {
+        node.size = node.weight || node.size || 1;
+        node.size+= 1;
+      });
+
+      s.cameras[0].goTo({
+        x: 0,
+        y: 0,
+        angle: 0,
+        ratio: 1
+      });
+
+      s.graph.clear().read(data);
+      s.startForceAtlas2();
+
+      setTimeout(function() {
+        s.stopForceAtlas2();
+      }, 6000);
+      
+
+    }
 
 
     this.single = function(controller) {  
@@ -212,9 +262,6 @@
 
       walt.verbose('(Grid) .listof');
       walt.verbose('...',data.length, 'items, selector:', settings.selector, ' replacing items...');
-
-      
-      
       
       countup = new countUp("counter-documents", previouscount, data.length, 0, 1.500);
       countup.start()

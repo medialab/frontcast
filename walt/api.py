@@ -1,4 +1,5 @@
 import logging, json
+import networkx as nx
 
 from datetime import datetime
 
@@ -14,6 +15,9 @@ from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
+
+from networkx.algorithms import bipartite
+from networkx.readwrite import json_graph
 
 from walt.models import Assignment, Profile, Document, Tag, Task, WorkingDocument
 from walt.forms import DocumentForm, FullDocumentForm, DocumentTagsForm, TagsForm
@@ -157,40 +161,60 @@ def working_document_attach_tags(request, pk):
   return result.json()
 
 
-import networkx as nx
-from networkx.algorithms import bipartite
-from networkx.readwrite import json_graph
-from django.db.models import Count
+
 @transaction.atomic
 def graph_bipartite(request, model_name, m2m_name):
   mod = get_model('walt', model_name)
-  
-  #result = Epoxy(request).queryset()
-  B = nx.Graph()
-
-  #print getattr(mod, m2m_name)
   m2m = getattr(mod, m2m_name).field.rel.to
 
-  # filter set a and set b....
-  for v in m2m.objects.exclude(**{'%s__isnull' % model_name:True}).annotate(w=Count(model_name)):
-    B.add_node('v%s' % v.id, attr_dict={'pk':v.id}, label=v.slug, weight=v.w)
+  result = Epoxy(request)
+  B = nx.Graph()
 
-    for u_in_v in getattr(v, '%s_set' % model_name).all():
-      B.add_node('u%s' % u_in_v.id, attr_dict={'pk': u_in_v.id}, label=u_in_v.slug)
+  vfilters = {}
+  warnings = {}
+
+  #print getattr(mod, m2m_name)
+  if 'v-filters' in request.REQUEST:
+    try:
+      vfilters = json.loads(request.REQUEST.get('v-filters'))
+    except Exception, e:
+      result.warning('v-filters', "Exception: %s" % e)
+    else:
+      result.meta('v-filters', vfilters)
+
+  # filter set a and set b....
+  for v in m2m.objects.exclude(**{'%s__isnull' % model_name:True}).filter(**vfilters).annotate(w=Count(model_name)):
+    B.add_node('v%s' % v.id, attr_dict={'pk':v.id, 'color': '#ccc', 'slug': v.slug}, label=v.name if hasattr(v,'name') else '%s' % v, weight=v.w)
+    queryset = getattr(v, '%s_set' % model_name).filter(**result.filters)
+    if result.reduce is not None:
+      for r in result.reduce:
+        queryset = queryset.filter(r)
+        #queryset = queryset.filter(self.reduce)
+    queryset = queryset.distinct()
+
+    for u_in_v in queryset:
+      B.add_node('u%s' % u_in_v.id, attr_dict={'pk': u_in_v.id, 'color': '#ba3c3c'}, label=u_in_v.title if hasattr(u_in_v,'title') else '%s'% u_in_v)
       B.add_edge('v%s' % v.id, 'u%s' % u_in_v.id)
 
-  #add_edge
-    
-  '''{
-  "nodes": [
-    {
-      "id": "n0",
-      "label": "A node",
-      "x": 0,
-      "y": 0,
-      "size": 3
-    },'''
+  # computate spring layout position on n=50 iterations to have a valid stasrting point.
   data = json_graph.node_link_data(B)
+  data.update(result.response)
+
+  data['edges'] = []
+
+  for link in data['links']:
+    data['edges'].append({
+      'source': data['nodes'][link['source']]['id'],
+      'target': data['nodes'][link['target']]['id']
+    })
+
+  data.pop("links", None)
+
+  positions = nx.spring_layout(B).values()
+
+  for i, p in enumerate(positions):
+    data['nodes'][i]['x'] = p[0]
+    data['nodes'][i]['y'] = p[1]
   #//  result.item(obj)
   #  result.add('objects', [model_to_dict(i) for i in getattr(obj, m2m_name).all()])
   return HttpResponse(json.dumps(data, default=Epoxy.encoder, indent=2), content_type='application/json')

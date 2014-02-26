@@ -117,6 +117,24 @@
                 );
                 break;
 
+              case walt.SCENE_SEARCH_GRAPH:
+                params.filters = JSON.stringify(params.filters);
+                params['v-filters'] = JSON.stringify({type:'Ke'});
+                params.limit = -1
+                params.order_by = params.order_by || '["-date"]'
+
+                services.push(
+                  {
+                    service: 'get_documents_graph',
+                    params: params
+                  },
+                  {
+                    service: 'get_documents_filters',
+                    params: params
+                  }
+                );
+                break;
+
               case walt.SCENE_ME:
                 params.filters.owner__username = "daniele.guido";
                 params.filters = JSON.stringify(params.filters);

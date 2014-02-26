@@ -42,7 +42,10 @@ header{
   width: 100%;
   
 }
-
+canvas.sigma-scene{
+  background: #edebe1;
+  border: 1px solid #d7c0b8;
+}
 nav{
   position: fixed;
   width: 100px;

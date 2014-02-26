@@ -3,8 +3,9 @@
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.test import TestCase
+from django.test.client import RequestFactory
 
-from walt.models import WorkingDocument
+from walt.models import WorkingDocument, Document, Tag
 
 
 
@@ -68,3 +69,24 @@ class WorkingDocumentTest(TestCase):
 
     self.assertEqual('%s by %s' % (task.parent.slug, u.username), 'untitled-hello-world-sequence by Kollective')
 
+
+
+class DocumentTest(TestCase):
+  '''
+  Test various graph functions inside walt.api
+  '''
+  def setUp(self):
+    # Every test needs access to the request factory.
+    self.factory = RequestFactory()
+    self.admin = User.objects.create_user(
+      username='jacob', email='jacob@…', password='top_secret')
+    self.admin.is_staff = True
+
+  def test_api_graph_bipartite(self):
+    '''
+    Test filters for view graph bipartite. Output should be a well formatted json
+    '''
+    request = self.factory.get('/api/graph/bipartite/document/tags/?indent&v-filters={"type__in":["Ke"]}&u-filters={"slug__icontains":"mort"}')
+    request.user = self.admin
+
+    self.assertEqual(True, True)

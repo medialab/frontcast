@@ -20,6 +20,10 @@ angular.module('walt.controllers', []).
       $scope.documents = data.objects;
     });
   }])
-  .controller('MyCtrl2', [function() {
-
+  .controller('workingdocumentCreateCtrl', ['$scope', '$location', function($scope, $location) {
+    var permalink = 'ciao'
+    $scope.addTodo = function(){
+      // blablablab
+      $location.path('corpusCtrl')
+    }
   }]);
