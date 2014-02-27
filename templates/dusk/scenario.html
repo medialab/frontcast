@@ -47,9 +47,11 @@
     </div>
     
   </header>
+
   <div id="main" >
-    <div class="container" ng-view>
-    <span app-version></span><
+    <div class="container animate-container">
+      <div class="view" ng-view></div>
+    
     </div>
   </div>
 
@@ -59,6 +61,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-resource.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
     <script src="{{ STATIC_URL }}/js/angular/app.js"></script>
     <script src="{{ STATIC_URL }}/js/angular/services.js"></script>
     <script src="{{ STATIC_URL }}/js/angular/controllers.js"></script>

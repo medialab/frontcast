@@ -20,7 +20,7 @@ from networkx.algorithms import bipartite
 from networkx.readwrite import json_graph
 
 from walt.models import Assignment, Profile, Document, Tag, Task, WorkingDocument
-from walt.forms import DocumentForm, FullDocumentForm, DocumentTagsForm, TagsForm
+from walt.forms import DocumentForm, FullDocumentForm, DocumentTagsForm, TagsForm, WorkingDocumentForm, URLForm
 from walt.utils import get_document_filters, get_available_documents, get_available_document, is_number
 
 
@@ -110,7 +110,7 @@ def document(request, pk):
     return result.throw_error(code=API_EXCEPTION_AUTH).json()
     
   if result.is_POST():
-    is_valid, d = edit_object(instance=d, Form=FullDocumentForm, request=request)
+    is_valid, d = edit_object(instance=d, Form=FullDocumentForm, request=request, epoxy=epoxy)
     if is_valid:
       d.save()
       
@@ -123,8 +123,21 @@ def document(request, pk):
 
 @staff_member_required
 def working_documents(request):
-  result = Epoxy(request).queryset(WorkingDocument.objects.filter())
-  return result.json()
+  epoxy = Epoxy(request)
+
+  if epoxy.is_POST():
+    form = WorkingDocumentForm(epoxy.data)
+    if form.is_valid():
+      print 'is valid'
+      w = form.save(commit=False)
+      w.owner = request.user
+      w.save()
+      epoxy.item(w, deep=True)
+    else:
+      return epoxy.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS).json()
+  else:
+    epoxy.queryset(WorkingDocument.objects.filter())
+  return epoxy.json()
 
 
 
@@ -135,10 +148,18 @@ def working_document(request, pk):
   else: 
     d = WorkingDocument.objects.get(slug=pk)
 
-  result = Epoxy(request)
-  result.item(d)
+  epoxy = Epoxy(request)
 
-  return result.json()
+  if epoxy.is_POST():
+    is_valid, d = edit_object(instance=d, Form=WorkingDocumentForm, request=request, epoxy=epoxy)
+    if is_valid:
+      d.save()
+    else:
+      return epoxy.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
+
+  epoxy.item(d, deep=True)
+
+  return epoxy.json()
 
 
 
@@ -149,16 +170,38 @@ def working_document_attach_tags(request, pk):
   else: 
     d = WorkingDocument.objects.get(slug=pk)
 
-  result = Epoxy(request)
-  result.item(d)
+  epoxy = Epoxy(request)
+  epoxy.item(d)
  
-  if result.is_POST():
-    is_valid, d = helper_free_tag(instance=d, request=request, append=False)
+  if epoxy.is_POST():
+    is_valid, d = helper_free_tag(instance=d, append=False, epoxy=epoxy)
     if not is_valid:
-      return result.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
+      return epoxy.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
 
-  result.item(d, deep=True)
-  return result.json()
+  epoxy.item(d, deep=True)
+  return epoxy.json()
+
+
+
+@staff_member_required
+def url_title(request):
+  '''
+  @phttpparam url=http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/
+  '''
+  result = Epoxy(request)
+  form = URLForm(request.REQUEST)
+
+  if form.is_valid():
+    import urllib2
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(urllib2.urlopen(form.cleaned_data['url']).read())
+
+    result.add('object',{
+      'title': soup.title.string
+    })
+    return result.json()
+  
+  return result.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS).json()
 
 
 
@@ -559,9 +602,12 @@ def oembed_proxy(request, provider):
   return HttpResponse(response.read())
 
 
-def edit_object(instance, Form, request):
+def edit_object(instance, Form, request, epoxy=None):
   data = model_to_dict(instance)
-  data.update(request.REQUEST)
+  if epoxy:
+    data.update(epoxy.data)
+  else:
+    data.update(request.REQUEST)
 
   form = Form(instance=instance, data=data)
   if form.is_valid():
@@ -574,11 +620,11 @@ def edit_object(instance, Form, request):
 
 
 @transaction.atomic
-def helper_free_tag(instance, request, append=True):
+def helper_free_tag(instance, epoxy, append=True):
   '''
   instance's model should have tags m2m property...
   '''
-  form = TagsForm(request.REQUEST)
+  form = TagsForm(epoxy.data)
 
   if form.is_valid():
     tags = list(set([t.strip() for t in form.cleaned_data['tags'].split(',')]))# list of unique comma separated cleaned tags.

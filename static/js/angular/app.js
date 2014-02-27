@@ -32,13 +32,20 @@ angular.module('d3', [])
 // Declare app level module which depends on filters, and services
 angular.module('walt', [
   'ngRoute',
+  'ngCookies',
+  'ngAnimate',
   'walt.filters',
   'walt.services',
   'walt.directives',
   'walt.controllers',
   'd3'
 ]).
-config(['$routeProvider', function($routeProvider) {
+config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider, $cookies) {
+  $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+  $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+
+  $routeProvider.when('/w/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.edit.html', controller: 'workingdocumentEditCtrl'});
+  
   $routeProvider.when('/w/bookmark', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.bookmark.html', controller: 'workingdocumentCreateCtrl'});
   // $routeProvider.when('/w/edit', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.edit.html', controller: 'workingdocumentCreateCtrl'});
   
@@ -46,4 +53,6 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/corpus/:id', {templateUrl: '/frontcast/static/js/angular/partials/corpus.html', controller: 'corpusCtrl'});
   $routeProvider.when('/document', {templateUrl: '/frontcast/static/js/angular/partials/document.list.html', controller: 'MyCtrl2'});
   $routeProvider.otherwise({redirectTo: '/corpus'});
+
+  //$locationProvider.html5Mode(true);
 }]);

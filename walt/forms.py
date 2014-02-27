@@ -58,7 +58,13 @@ class DocumentForm(ModelForm):
     exclude = ['owner', 'slug']
 
 
+
 class WorkingDocumentForm(ModelForm):
   class Meta:
     model = WorkingDocument
-    fields = ['title', 'type', 'documents', 'owner', 'abstract']
+    fields = ['title', 'permalink', 'type', 'documents', 'abstract', 'rating']
+
+
+
+class URLForm(forms.Form):
+  url = forms.URLField()

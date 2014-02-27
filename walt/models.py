@@ -154,7 +154,7 @@ class AbstractDocument(models.Model):
   abstract = models.TextField(default="", blank=True, null=True)
   content = models.TextField(default="", blank=True, null=True)
   language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES)
-  rating = models.PositiveSmallIntegerField(default=0) # 0 to 10
+  rating = models.PositiveSmallIntegerField(default=0, blank=True) # 0 to 10
 
   # TIME
   date = models.DateField(blank=True, null=True) # main date, manually added
@@ -226,11 +226,10 @@ class WorkingDocument(AbstractDocument):
 
 
   def save(self, **kwargs):
-    #'if does permalink exist, do not save.' @todo
-    
     # handle type-driven validation when parent is given. must we put this logic into the form? Nope because of parent stuff.
+    created = self.pk is None
     self.slug = uuslug(model=WorkingDocument, instance=self, value=self.title)
-
+    
     if self.parent:
       #print self.slug, self.type,' child of', self.parent.slug, self.parent.type, '?'
       if self.type == WorkingDocument.SEQUENCE:
@@ -241,8 +240,17 @@ class WorkingDocument(AbstractDocument):
         raise IntegrityError("WoringDocument of type TASK must be below SEQUENCE or TASK parent type")
       elif self.type == WorkingDocument.TOOL and self.parent.type not in [WorkingDocument.TASK, WorkingDocument.TOOL]:
         raise IntegrityError("WoringDocument of type TOOL must be below TASK or TOOL parent type")
-    
+
     super(WorkingDocument, self).save()
+
+    if created and self.permalink:
+      alias = WorkingDocument.objects.exclude(pk=self.pk).filter(permalink=self.permalink).order_by('id')
+
+      if alias.count() > 0:
+        self.type = WorkingDocument.COPY
+        alias[0].copies.add(self) # save as a copy automatically
+        alias[0].save()
+        super(WorkingDocument, self).save()
 
 
   def json(self, deep=False):
@@ -255,10 +263,15 @@ class WorkingDocument(AbstractDocument):
       'title': self.title,
       'abstract_raw': self.abstract,
       'abstract': markdown(self.abstract),
+      'permalink': self.permalink,
       'owner': self.owner.username
     }
 
     if deep:
+      if self.type == WorkingDocument.COPY:
+        d.update({
+          'copy_of': [{'id':c.id, 'type':c.type} for c in self.copies.all()]
+        })
       d.update({
         'tags': [t.json() for t in self.tags.all()]
       })

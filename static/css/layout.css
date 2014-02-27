@@ -76,8 +76,8 @@ img{
 /* #Page Styles
 ================================================== */
 button, a.boo {
-  font: 1.2rem/1.618em 'Source Sans Pro', sans-serif;
-  font-weight: 700;
+  font: 1.2rem/1.618em 'Source Code Pro', sans-serif;
+  font-weight: normal;
   text-transform: uppercase;
   text-decoration: none;
   background: #ec5148;
@@ -99,6 +99,10 @@ button:hover, a.boo:hover{
   background:  #ff5450;
   color: white;
   border-width: 0px;
+}
+
+button::disabled{
+  background: #ccc;
 }
 
 button.blue, a.boo.blue {
@@ -1067,4 +1071,37 @@ footer.drop-shadow {
 
 footer.drop-shadow .shadow{
   top: -6px;
+}
+
+
+/* #FORMS NG
+================================================== */
+input.display-inline-block,
+.display-inline-block{
+  display: inline-block;
+}
+
+input.display-block,
+.display-block{
+  display: block;
+}
+
+input:focus.ng-invalid-pattern,
+input.ng-invalid-pattern{
+  border: 1px solid red;
+}
+
+
+.ng-hide-add, .ng-hide-remove{
+  -webkit-transition: all 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+     -moz-transition: all 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+       -o-transition: all 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000); 
+          transition: all 400ms cubic-bezier(0.230, 1.000, 0.320, 1.000);
+}
+.ng-hide-add{
+opacity:0;
+}
+
+.grey{
+  color: #ccc;
 }

@@ -1,9 +1,16 @@
+
 <h2>Save a link</h2>
-<form ng-submit="addTodo()">
-<label for="workingdocument-permalink">url</label>
-<input type="text" id="workingdocument-permalink" name="url" ng-model="permalink"/>
+<form name="bookmarkForm" ng-submit="addTodo()">
+  <label for="workingdocument-permalink">url<span class="error" ng-show="bookmarkForm.permalink.$error.required">*</span></label>
+  <!-- span class="error" ng-show="bookmarkForm.permalink.$error.required">Not valid url!</span -->
+  <input
+    type="text" ng-required="true"
+    ng-pattern="/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/"
+    name="permalink"
+    ng-model="permalink"
+    class="display-inline-block"/>
+  <span ng-show="bookmarkForm.permalink.$valid"><i class="fa {{status.icon}}"></i></span>
 
-<button type="submit" class="boo" value="add">add</button>
+  <button ng-disabled="{{button.disabled}}" class="boo display-block" value="add">{{button.text}}</button>
+
 </form>
-
-{{permalink}}

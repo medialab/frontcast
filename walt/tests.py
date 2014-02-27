@@ -1,16 +1,50 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
+
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.test import TestCase
 from django.test.client import RequestFactory
 
 from walt.models import WorkingDocument, Document, Tag
+from walt import api
+
+
+
+class ApiUtilsTest(TestCase):
+  def setUp(self):
+    # Every test needs access to the request factory.
+    self.factory = RequestFactory()
+    self.admin = User.objects.create_user(
+      username='jacob', email='jacob@…', password='top_secret')
+    self.admin.is_staff = True
+
+
+  def test_url_title(self):
+    '''
+    Test URL grabbing title.
+    '''
+    req = self.factory.get('/api/url/title/',{
+      'url': 'http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/'
+    })
+    req.user = self.admin
+
+    response = json.loads(api.url_title(req).content)
+    self.assertEqual(response['status'],'ok')
 
 
 
 
 class WorkingDocumentTest(TestCase):
+  def setUp(self):
+    # Every test needs access to the request factory.
+    self.factory = RequestFactory()
+    self.admin = User.objects.create_user(
+      username='jacob', email='jacob@…', password='top_secret')
+    self.admin.is_staff = True
+
+
   def test_save(self):
     '''
     handle duplicates workindocument. Test UUslug indirectly
@@ -26,6 +60,56 @@ class WorkingDocumentTest(TestCase):
     w1.save()
 
     self.assertEqual('%s, %s by %s' % (w.slug, w1.slug, w.owner.username), 'untitled-hello-world, untitled-hello-world-1 by Kollective')
+
+
+  def test_api_create(self):
+    '''
+    Creation of a working document via api.
+    '''
+    request = self.factory.post('/api/working-document/',{
+      'type': '?',
+      'title': '@Don’t Just Visualize Data—Visçeralize It!',
+      'permalink': 'http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/'
+    })
+    request.user = self.admin
+
+    response = json.loads(api.working_documents(request).content)
+
+    self.assertEqual('ok--jacob--dont-just-visualize-datavisceralize-it', '--'.join([
+      response['status'],
+      response['object']['owner'],
+      response['object']['slug']
+    ]))
+
+
+
+  def test_api_create_duplicates(self):
+    '''
+    Creation of two working document via api having the same permalink.
+    '''
+    req_1 = self.factory.post('/api/working-document/',{
+      'type': '?',
+      'title': '@Don’t Just Visualize Data—Visçeralize It!',
+      'permalink': 'http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/'
+    })
+    req_1.user = self.admin
+    res_1 = json.loads(api.working_documents(req_1).content)
+
+    req_2 = self.factory.post('/api/working-document/',{
+      'type': '?',
+      'title': '@Don’t Just Visualize Data—Visçeralize It!',
+      'permalink': 'http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/'
+    })
+    req_2.user = self.admin
+    res_2 = json.loads(api.working_documents(req_2).content)
+
+    self.assertEqual('ok--jacob--dont-just-visualize-datavisceralize-it-1--2--1', '--'.join(str(v) for v in [
+      res_2['status'],
+      res_2['object']['owner'],
+      res_2['object']['slug'],
+      res_2['object']['id'],
+      res_2['object']['copy_of'][0]['id']
+    ]))
 
 
   def test_save_hierarchy(self):
@@ -81,6 +165,7 @@ class DocumentTest(TestCase):
     self.admin = User.objects.create_user(
       username='jacob', email='jacob@…', password='top_secret')
     self.admin.is_staff = True
+
 
   def test_api_graph_bipartite(self):
     '''

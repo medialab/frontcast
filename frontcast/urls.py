@@ -31,11 +31,12 @@ api_urlpatterns = patterns('walt.api',
     url(r'graph/bipartite/(?P<model_name>[:a-zA-Z_\-]+)/(?P<m2m_name>[:a-zA-Z_]+)/$', 'graph_bipartite', name='walt_api_graph_bipartite'),
 
      # staff only: working documents
-    url(r'working-document/$', 'working_documents', name='walt_api_working_documents'),
-    url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)/$', 'working_document', name='walt_api_working_document'),
-    url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)/attach-tags/$', 'working_document_attach_tags', name='walt_api_working_document_attach_tags'),
+    url(r'working-document$', 'working_documents', name='walt_api_working_documents'),
+    url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'working_document', name='walt_api_working_document'),
+    url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)/attach-tags$', 'working_document_attach_tags', name='walt_api_working_document_attach_tags'),
 
-   
+    url(r'url/title$', 'url_title', name='walt_api_url_title'),
+
     url(r'document/$', 'documents', name='walt_api_documents'),
     url(r'document/filters/$', 'documents_filters', name='walt_api_documents_filters'),
     url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)/$', 'document', name='walt_api_document'),
