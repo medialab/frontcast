@@ -24,17 +24,21 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}/css/base.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}/css/skeleton.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}/css/layout.css">
+  
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css/staff.css">
 </head>
 <body>
 <!-- Primary Page Layout
   ================================================== -->
-  <header>
+  <header  ng-controller="headerCtrl">
     <div class="shadow-wrapper"></div>
     <div class="shadow"></div>
     <div class="container">
       <div class="four columns"><a href="{% url 'frontcast_home'%}"><img src="{{ STATIC_URL }}/img/forccast.svg"/>archive</a></div>
       <div class="twelve columns right-aligned">
-        <input type="text" name="query" id="search-query" placeholder="search" autofocus=autofocus>
+        <form ng-submit="search()" style="display:inline; margin 0; padding:0">
+          <input type="text" name="query" id="search-query" ng-model="query" placeholder="search" autofocus=autofocus>
+        </form>
         <a class="entry" href="{% url "frontcast_home"%}#/?">{% trans "index" %}</a>
         {% if user.is_authenticated %}
           <a class="entry" href="{% url "frontcast_home"%}#/me">{{user}}{% trans "'s space" %}</a> | 
@@ -54,6 +58,32 @@
     
     </div>
   </div>
+
+  <footer class="" ng-controller="filtersCtrl" >
+    <div class="shadow-wrapper"></div>
+    <div class="shadow"></div>
+    <div class="container">
+      <div class="three columns">
+        &nbsp;
+      </div>
+      <div class="three columns">
+        &nbsp;
+      </div>
+      <div class="four columns toggle-filters">
+        <div class="choose">
+          <div class="when-closed">open filters</div>
+          <div class="when-opened">close filters</div>
+        </div>
+      </div>
+      <div class="three columns">
+        &nbsp;
+      </div>
+      <div class="three columns">
+        <a class="boo" href="//forccast.hypotheses.org/">
+          <img src="/frontcast/static//img/forccast-white.svg">
+        </a>
+      </div>
+    </div>
 
   {% block scripts %}
     <!-- api endpoints are hardcoded inside services.js -->

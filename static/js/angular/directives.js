@@ -3,13 +3,30 @@
 /* Directives */
 
 
-angular.module('walt.directives', []).
-  directive('appVersion', ['version', function(version) {
+angular.module('walt.directives', [])
+  .directive('appVersion', ['version', function(version) {
     return function(scope, elm, attrs) {
       elm.text(version);
     };
-  }]).
-  directive('d3Bars', ['d3Service',  function(d3Service) {
+  }])
+  /*
+    handle columns resize
+  */
+  .directive('resizable', ['$window', function($window) {
+    return function($scope) {
+      $scope.initializeWindowSize = function() {
+        $scope.availableHeight = $window.innerHeight;
+      };
+      $scope.initializeWindowSize();
+      return angular.element($window).bind('resize', function() {
+        console.log("eeeeee")
+        $scope.initializeWindowSize();
+        return $scope.$apply();
+      });
+    };
+    
+  }])
+  .directive('d3Bars', ['d3Service',  function(d3Service) {
     return  {
       restrict: 'EA',
       scope: {},

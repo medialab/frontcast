@@ -91,11 +91,11 @@ class Tag(models.Model):
 
 
   class Meta:
-    ordering = ["type", "slug" ]
+    ordering = ["type", "id" ]
     unique_together = ("type", "name")
 
 
-  def json(self):
+  def json(self, deep=False):
     return{
       'id': self.id,
       'slug':self.slug,
@@ -154,7 +154,7 @@ class AbstractDocument(models.Model):
   abstract = models.TextField(default="", blank=True, null=True)
   content = models.TextField(default="", blank=True, null=True)
   language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES)
-  rating = models.PositiveSmallIntegerField(default=0, blank=True) # 0 to 10
+  rating = models.PositiveSmallIntegerField(default=0, blank=True, null=True) # 0 to 10
 
   # TIME
   date = models.DateField(blank=True, null=True) # main date, manually added
@@ -225,6 +225,17 @@ class WorkingDocument(AbstractDocument):
     return "[%s] %s" % (self.get_type_display(), self.slug)
 
 
+  @staticmethod
+  def search(query):
+    argument_list =[
+      Q(title__icontains=query),
+      Q(slug__icontains=query),   # add this only when there are non ascii chars in query. transform query into a sluggish field. @todo: prepare query as a slug
+      Q(abstract__icontains=query),
+      Q(tags__name__icontains=query)
+    ]
+    return reduce(operator.or_, argument_list)
+
+
   def save(self, **kwargs):
     # handle type-driven validation when parent is given. must we put this logic into the form? Nope because of parent stuff.
     created = self.pk is None
@@ -264,7 +275,9 @@ class WorkingDocument(AbstractDocument):
       'abstract_raw': self.abstract,
       'abstract': markdown(self.abstract),
       'permalink': self.permalink,
-      'owner': self.owner.username
+      'owner': self.owner.username,
+      'date': self.date.strftime('%Y-%m-%d') if self.date else None,
+      
     }
 
     if deep:
@@ -272,13 +285,9 @@ class WorkingDocument(AbstractDocument):
         d.update({
           'copy_of': [{'id':c.id, 'type':c.type} for c in self.copies.all()]
         })
-      d.update({
-        'tags': [t.json() for t in self.tags.all()]
-      })
-
-
-
-
+    d.update({
+      'tags': [t.json() for t in self.tags.all()]
+    })
     return d
 
 

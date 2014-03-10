@@ -49,10 +49,8 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   $routeProvider.when('/w/bookmark', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.bookmark.html', controller: 'workingdocumentCreateCtrl'});
   // $routeProvider.when('/w/edit', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.edit.html', controller: 'workingdocumentCreateCtrl'});
   
-  $routeProvider.when('/corpus', {templateUrl: '/frontcast/static/js/angular/partials/corpus.list.html', controller: 'corpusListCtrl'});
-  $routeProvider.when('/corpus/:id', {templateUrl: '/frontcast/static/js/angular/partials/corpus.html', controller: 'corpusCtrl'});
-  $routeProvider.when('/document', {templateUrl: '/frontcast/static/js/angular/partials/document.list.html', controller: 'MyCtrl2'});
-  $routeProvider.otherwise({redirectTo: '/corpus'});
+  $routeProvider.when('/', {templateUrl: '/frontcast/static/js/angular/partials/index.html', controller: 'indexCtrl'});
+  $routeProvider.otherwise({redirectTo: '/'});
 
   //$locationProvider.html5Mode(true);
 }]);

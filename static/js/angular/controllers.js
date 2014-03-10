@@ -23,6 +23,97 @@ angular.module('walt.controllers', []).
     });
   }])
   /*
+    
+    Filters and co.
+    ===
+
+  */
+  .controller('filtersCtrl', ['$rootScope', '$scope', '$routeParams', '$location', function($rootScope, $scope, $routeParams, $location) {
+    $rootScope.filters = {};
+
+    // commont filter propertiues here
+    $rootScope.setProperties = function(property, value) {
+      $rootScope.filters[property] = [value];
+      console.log('%c filters setProperties', 'background: crimson; color: white',property, value, $rootScope.filters);
+      $location.search('filters', JSON.stringify($rootScope.filters))
+    };
+
+    $rootScope.setProperty = function(property, value) {
+      $rootScope.filters[property] = value;
+      console.log('%c filters setProperty', 'background: crimson; color: white',property, value, $rootScope.filters);
+      $location.search('filters', JSON.stringify($rootScope.filters))
+    };
+
+    $rootScope.extendFilters = function(filter) {
+      var filters = angular.extend({}, $rootScope.filters, filter);
+      return JSON.stringify(filters)
+    };
+  }])
+  /*
+
+    Handle header search and menu enlightment
+    ===
+
+  */
+  .controller('headerCtrl', ['$rootScope', '$scope', '$location', function($rootScope, $scope, $location){
+    // $scope.$on('$locationChangeSuccess')
+    $rootScope.query = "";
+
+    $scope.search = function(){
+      $rootScope.query = $scope.query;
+      $location.search('search', $rootScope.query);
+    }
+  }])
+  /*
+
+    Show the list of all types of working document !
+    ===
+
+  */
+  .controller('indexCtrl', ['$rootScope', '$routeParams', '$scope', 'WorkingDocumentFactory', function($rootScope, $routeParams, $scope, WorkingDocumentFactory) {
+    $scope.sequences = {};
+    $scope.tasks = {};
+    $scope.tools = {};
+    $scope.others = {};
+
+    try{
+      $rootScope.filters = angular.extend({}, JSON.parse($routeParams.filters || "{}"));
+    } catch(e){
+      console.log('%c >> filter has been ignored, exception message: "' + e.message +'"','background: gold; color: #cc1600; line-height:5em');
+      $rootScope.filters = {};
+    }
+
+    try{
+      $rootScope.query = $routeParams.search;
+    } catch(e){
+      console.log('%c >> query param has been ignored, exception message: "' + e.message +'"','background: gold; color: #cc1600; line-height:5em');
+      $rootScope.query = "";
+    }
+
+    console.log('%c load filters ', 'background: #151515; color: white', $rootScope.filters);
+    console.log('%c load search query ', 'background: #151515; color: white', $rootScope.query);
+
+    WorkingDocumentFactory.query({search: $rootScope.query, filters:$scope.extendFilters({type: 'B'})}, function(data){
+      $scope.sequences = data;
+      console.log(data);
+    });
+
+    WorkingDocumentFactory.query({search: $rootScope.query, filters: $scope.extendFilters({type: 'I'})}, function(data){
+      $scope.tasks = data;
+      console.log(data);
+    });
+
+    WorkingDocumentFactory.query({search: $rootScope.query, filters: $scope.extendFilters({type: 'T'})}, function(data){
+      $scope.tools = data;
+      console.log(data);
+    });
+
+    WorkingDocumentFactory.query({search: $rootScope.query, filters: $scope.extendFilters({type: '?'})}, function(data){
+      $scope.others = data;
+      console.log(data);
+    });
+  }])
+  /*
 
     Edit the abstrac and the tags of a working document 
     ===

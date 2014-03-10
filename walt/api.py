@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 
-from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST
+from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 
 from networkx.algorithms import bipartite
 from networkx.readwrite import json_graph
@@ -124,11 +124,9 @@ def document(request, pk):
 @staff_member_required
 def working_documents(request):
   epoxy = Epoxy(request)
-
   if epoxy.is_POST():
     form = WorkingDocumentForm(epoxy.data)
     if form.is_valid():
-      print 'is valid'
       w = form.save(commit=False)
       w.owner = request.user
       w.save()
@@ -188,20 +186,24 @@ def url_title(request):
   '''
   @phttpparam url=http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/
   '''
-  result = Epoxy(request)
+  epoxy = Epoxy(request)
   form = URLForm(request.REQUEST)
 
   if form.is_valid():
     import urllib2
     from bs4 import BeautifulSoup
-    soup = BeautifulSoup(urllib2.urlopen(form.cleaned_data['url']).read())
+    try:
+      soup = BeautifulSoup(urllib2.urlopen(form.cleaned_data['url']).read())
+    except urllib2.HTTPError, e:
+      soup = BeautifulSoup(e.read())
+      #return epoxy.throw_error(error='%s' % e, code=API_EXCEPTION_HTTPERROR).json()
 
-    result.add('object',{
+    epoxy.add('object',{
       'title': soup.title.string
     })
-    return result.json()
+    return epoxy.json()
   
-  return result.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS).json()
+  return epoxy.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS).json()
 
 
 
