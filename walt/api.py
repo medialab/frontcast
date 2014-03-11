@@ -82,7 +82,7 @@ def documents_filters(request):
 
 
 def document(request, pk):
-  result = Epoxy(request)
+  epoxy = Epoxy(request)
 
   try:
     if request.user.is_staff:
@@ -100,24 +100,24 @@ def document(request, pk):
       else:
         d = Document.objects.get(slug=pk, status=Document.PUBLIC)
   except Document.DoesNotExist,e:
-    return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
+    return epoxy.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
 
-  if result.is_GET():
-    return result.item(d, deep=True).json()
+  if epoxy.is_GET():
+    return epoxy.item(d, deep=True).json()
 
   if not request.user.is_authenticated():
     # check ownerships or is_staffitude or is_author to enable it @todo
-    return result.throw_error(code=API_EXCEPTION_AUTH).json()
+    return epoxy.throw_error(code=API_EXCEPTION_AUTH).json()
     
-  if result.is_POST():
+  if epoxy.is_POST():
     is_valid, d = edit_object(instance=d, Form=FullDocumentForm, request=request, epoxy=epoxy)
     if is_valid:
       d.save()
       
     else:
-      return result.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
+      return epoxy.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
 
-  return result.item(d, deep=True).json()
+  return epoxy.item(d, deep=True).json()
 
 
 
@@ -192,12 +192,13 @@ def url_title(request):
   if form.is_valid():
     import urllib2
     from bs4 import BeautifulSoup
+    print form.cleaned_data['url']
     try:
       soup = BeautifulSoup(urllib2.urlopen(form.cleaned_data['url']).read())
     except urllib2.HTTPError, e:
       soup = BeautifulSoup(e.read())
       #return epoxy.throw_error(error='%s' % e, code=API_EXCEPTION_HTTPERROR).json()
-
+    print soup
     epoxy.add('object',{
       'title': soup.title.string
     })

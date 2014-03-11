@@ -19,12 +19,45 @@ angular.module('walt.directives', [])
       };
       $scope.initializeWindowSize();
       return angular.element($window).bind('resize', function() {
-        console.log("eeeeee")
         $scope.initializeWindowSize();
         return $scope.$apply();
       });
     };
     
+  }])
+  /*
+    Usage <div ghost-scroll >
+    var y = $(document).scrollTop(),
+          scrollheight =main.outerHeight();
+
+      if(y < 12) // header shadow invisible
+        header.hasClass('drop-shadow') && header.removeClass('drop-shadow');
+      else 
+        header.addClass('drop-shadow');
+
+      if( y > scrollheight - h - 12) // footer shadow invisible
+        footer.hasClass('drop-shadow') && footer.removeClass('drop-shadow');
+      else 
+        footer.addClass('drop-shadow');
+  */
+  .directive('ghostScroll', ['$window', function($window) {
+    return function($scope, element, attrs) {
+      angular.element($window).bind("scroll", function() {
+        var y = this.pageYOffset, // console.log(this.pageYOffset)
+            h = element.outerHeight;
+            
+        if(y < 12){
+          // angular.element('header')
+          
+        }
+             /*if (this.pageYOffset >= 100) {
+                 scope.boolChangeClass = true;
+             } else {
+                 scope.boolChangeClass = false;
+             }
+            scope.$apply();*/
+      });
+    };
   }])
   .directive('d3Bars', ['d3Service',  function(d3Service) {
     return  {

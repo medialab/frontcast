@@ -23,6 +23,12 @@
   <div class="col" >
     <div class="wd" ng-repeat="item in tools.objects">
       <h4>{{item.title}}</h4>
+      <a href="{{item.permalink}}">{{item.permalink}}</a>
+      <div class="tags">
+      <span class="tag" ng-click='setProperties("tags__slug__REDUCE", tag.slug)' ng-repeat="tag in item.tags">
+          #{{tag.name}}
+        </span>
+      </div>
     </div>
   </div>
 

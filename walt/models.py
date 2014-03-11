@@ -58,6 +58,10 @@ class Tag(models.Model):
   RATING = 'Ra'
   COURSE = 'Co'
 
+  FAMILY = 'CA' # type/value tag ! for working document
+  COPYRIGHT = 'CP' # open source, for working document
+  REMOTE = 'RE' # is remote or local for working document
+
   TYPE_CHOICES = (
     (FREE, 'no category'),
     (AUTHOR, 'AUTHOR'),
@@ -69,7 +73,10 @@ class Tag(models.Model):
     (GEOCOVER, 'Geographic coverage'),
     (ACTION, 'ACTION'),
     (RATING, 'RATING'),
-    (COURSE, 'course code')
+    (COURSE, 'course code'),
+    (FAMILY, 'family of tags'),
+    (COPYRIGHT, 'opensource or commercial?'),
+    (REMOTE, 'local or remote?')
   )
 
   name = models.CharField(max_length=128) # e.g. 'Mr. E. Smith'
@@ -158,7 +165,7 @@ class AbstractDocument(models.Model):
 
   # TIME
   date = models.DateField(blank=True, null=True) # main date, manually added
-  date_last_modified = models.DateTimeField(blank=True, null=True) #cfr save() method
+  date_last_modified = models.DateTimeField(auto_now_add=True) #cfr save() method
 
   # who first created it.
   owner = models.ForeignKey(User) # the original owner
@@ -345,8 +352,6 @@ class Document(AbstractDocument):
   )
   
   mimetype = models.CharField(max_length=255, default="", choices=MIMETYPES_CHOICES, blank=True, null=True) # according to type, if needed (like imagefile)
-  
-  
 
   # URL LOCATION
   local = models.FileField(upload_to='documents/%Y-%m/',  blank=True, null=True) # local stored file inside media folder (aka upload)
@@ -361,7 +366,7 @@ class Document(AbstractDocument):
 
   # tags and metadata. Reference is thre Reference Manager ID field (external resource then)
   tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !
-  reference = models.CharField(max_length=60, default=0, blank=True, null=True)
+  reference = models.CharField(max_length=60, default=0, blank=True, null=True, unique=True)
 
   authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
@@ -401,9 +406,11 @@ class Document(AbstractDocument):
 
     super(Document, self).save()
 
+
   class Meta:
     unique_together = ("slug", "reference")
     ordering = ('-rating',)
+
 
   def __unicode__(self):
     return "[%s] %s" % (self.slug, self.reference)
@@ -544,6 +551,33 @@ class Document(AbstractDocument):
 
   def tojson(self):
     return json.dumps(self.json())
+
+
+
+class BooleanTag(models.Model):
+  key =  models.CharField(max_length=128, unique=True) 
+  value = models.NullBooleanField(blank=True, null=True)
+
+
+
+class DocumentProfile(models.Model):
+  '''
+  A simple profile to analyse documents (instead of multiple tags).
+  Document are given as foreign key and there are profile specific boolean tags and Profile Tags.
+  Profile tags' model is Tag, because those tags can be used somewhere else like "audio interviews".
+  '''
+  document = models.ForeignKey(Document, related_name="profile")
+  owner = models.ForeignKey(User) # who has compiled it
+
+  date = models.DateField(blank=True, null=True) # main date, manually added
+  date_created = models.DateTimeField(auto_now=True)
+  date_last_modified = models.DateTimeField(auto_now_add=True)
+
+  notes = models.TextField(blank=True)
+
+  properties = models.ManyToManyField(BooleanTag, null=True, blank=True)
+  tags = models.ManyToManyField(Tag, null=True, blank=True)
+
 
 
 class Assignment(models.Model):
