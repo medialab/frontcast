@@ -127,8 +127,8 @@ INSTALLED_APPS = (
     #    'django.contrib.markup',
     'walt',
     'frontcast',
-    'glue'
-
+    'glue',
+    'observer',
 )
 
 # A sample logging configuration. The only tangible logging

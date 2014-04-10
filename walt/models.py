@@ -183,13 +183,14 @@ class AbstractDocument(models.Model):
 class WorkingDocument(AbstractDocument):
   '''
   This is a special document for internal purposes: to form a Scenario pedagogique, to collect sequences etc..
-  Feel free to change type.
+  Feel free to change / add type.
   Each object can refer to documents Pedagogical stuff like sequences, tools, tasks etc..
   Note that no hierarchy is specified!
   Comments probably via DISQUS. To be DISCUSSED.
   
   copies are symmetrical relationships between different forks.
   '''
+  COURSE    = 'C'
   SEQUENCE  = 'B'
   TASK      = 'I'
   TOOL      = 'T'
@@ -202,7 +203,10 @@ class WorkingDocument(AbstractDocument):
     (TOOL,     'pedagogical tool'),
     (COPY,     'carbon copy'),
     (DONTKNOW, 'I really don\'t know yet...'),
+    (COURSE,   'course'), # ex tag cursus, it must be enlightened
   )
+
+  TYPE_TREE = [SEQUENCE, TASK, TOOL]
 
   WAITING_FOR_PUBLICATION = 'W' # ask for peer review !
   PUBLIC                  = 'P' # make the document publicly available
@@ -249,9 +253,10 @@ class WorkingDocument(AbstractDocument):
     self.slug = uuslug(model=WorkingDocument, instance=self, value=self.title)
     
     if self.parent:
-      #print self.slug, self.type,' child of', self.parent.slug, self.parent.type, '?'
-      if self.type == WorkingDocument.SEQUENCE:
-        raise IntegrityError("WoringDocument of type SEQUENCE Can't have parents")
+      if self.parent.type not in WorkingDocument.TYPE_TREE:
+        raise IntegrityError("WoringDocumentparent is not of the type SEQUENCE, TASK or TOOL") #print self.slug, self.type,' child of', self.parent.slug, self.parent.type, '?'
+      if self.type == WorkingDocument.SEQUENCE or self.type == WorkingDocument.COURSE:
+        raise IntegrityError("WoringDocument of type SEQUENCE or COURSE Can't have parents")
       elif self.type == WorkingDocument.COPY:
         raise IntegrityError("WoringDocument of type COPY Can't have parents! It is just a local copy and herites the type of the clone")
       elif self.type == WorkingDocument.TASK and self.parent.type not in [WorkingDocument.SEQUENCE, WorkingDocument.TASK]:
@@ -553,30 +558,6 @@ class Document(AbstractDocument):
     return json.dumps(self.json())
 
 
-
-class BooleanTag(models.Model):
-  key =  models.CharField(max_length=128, unique=True) 
-  value = models.NullBooleanField(blank=True, null=True)
-
-
-
-class DocumentProfile(models.Model):
-  '''
-  A simple profile to analyse documents (instead of multiple tags).
-  Document are given as foreign key and there are profile specific boolean tags and Profile Tags.
-  Profile tags' model is Tag, because those tags can be used somewhere else like "audio interviews".
-  '''
-  document = models.ForeignKey(Document, related_name="profile")
-  owner = models.ForeignKey(User) # who has compiled it
-
-  date = models.DateField(blank=True, null=True) # main date, manually added
-  date_created = models.DateTimeField(auto_now=True)
-  date_last_modified = models.DateTimeField(auto_now_add=True)
-
-  notes = models.TextField(blank=True)
-
-  properties = models.ManyToManyField(BooleanTag, null=True, blank=True)
-  tags = models.ManyToManyField(Tag, null=True, blank=True)
 
 
 
