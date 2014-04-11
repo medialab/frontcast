@@ -4,7 +4,17 @@ from django.views.generic import TemplateView
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 
+
 admin.autodiscover()
+
+
+observer_api_urlpatterns = patterns('observer.api',
+  url(r'^$', 'index'),
+  url(r'document-profile$', 'document_profiles'),
+  url(r'document-profile/(?P<document_pk>[:a-zA-Z\.\-\d]+)$', 'document_profile'),
+  url(r'layouts$', 'layouts'),
+  url(r'layout/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'layout'),
+)
 
 
 api_urlpatterns = patterns('walt.api',
@@ -49,8 +59,10 @@ api_urlpatterns = patterns('walt.api',
 
     url(r'oembed/(?P<provider>[a-z]+)/$', 'oembed_proxy', name='walt_api_oembed_proxy'),
 
-    
+    url(r'^observer/', include(observer_api_urlpatterns)),
 )
+
+
 
 
 
