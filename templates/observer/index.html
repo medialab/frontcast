@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A layout example with a side menu that hides on mobile, just like the Pure website.">
+
+    <title>Side Menu &ndash; Layout Examples &ndash; Pure</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+
+
+
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure.css">
+
+
+
+  
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="{{STATIC_URL}}css/pure/side-menu-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="{{STATIC_URL}}css/pure/side-menu.css">
+    <!--<![endif]-->
+  
+
+
+
+
+    
+
+    
+
+    
+
+</head>
+<body ng-app="walt">
+<style>
+  /*
+    Colors:
+    #181818  dark dark grey;
+    #ec5148  probably forccast red on screen
+    #ff5450  lighter forccast red
+    #d84744  light forccast red;
+    #7c2927  dark dark forccast red;
+    #33cccc  probably forccast blue
+  */
+  html {
+    font-size: 62.5%;
+    height: 100%;
+  }
+  body{
+    font: 1.5em/1.618em 'Source Sans Pro', sans-serif;
+  }
+
+  #menu{
+    background-color: #fff;
+    
+  }
+
+  #menu a{
+    color: #181818;
+    font: 1.5rem/1.618em 'Source Sans Pro', sans-serif;
+    text-transform: lowercase;
+    text-decoration: none;
+    padding: 6px 6px 6px 18px;
+  }
+
+  #menu .pure-menu li a:hover, #menu .pure-menu li a:focus{
+    background-color: #fff;
+    color: #33cccc;
+    border-left: 6px solid #33cccc;
+    padding-left: 12px;
+  }
+
+  #menu a.pure-menu-heading{
+    font: 1.5rem/1.618em 'Source Sans Pro', sans-serif;
+    text-transform: none;
+    padding-left: 11px; /*due to logo padding.. sorry*/
+  }
+
+  #menu .pure-menu-selected{
+    background-color: #fff;
+    
+  }
+
+  #menu .pure-menu-selected a{
+    color: #ec5148;
+    border-left: 6px solid #ec5148;
+    padding-left: 12px;
+  }
+
+  #menu .pure-menu-heading{
+    background-color: #fff;
+    color: #ec5148;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  #menu .pure-menu-heading img{
+    vertical-align: baseline;
+  }
+
+  #menu .pure-menu ul, #menu .pure-menu .menu-item-divided{
+    border-top: none;
+  }
+
+  .header{
+    text-align: left;
+    padding:0;
+    margin:0;
+  }
+
+  .header h1{
+    font: 1.2rem/1.618em 'Source Sans Pro', sans-serif;
+    padding: 12px;
+    margin: 0;
+  }
+
+  .view .menu ul {
+    padding: 12px 0;
+    margin: 0;
+  }
+
+  .view .menu ul li{
+    display: inline-block;
+    padding: 6px;
+  }
+
+  .view .menu ul li a{
+    font: 1.2rem/1.618em 'Source Sans Pro', sans-serif;
+    text-decoration: none;
+    color: #181818;
+  }
+
+  label.required{
+    font-weight: bold;
+  }
+  .angular-ratings { overflow: hidden; *zoom: 1; list-style: none; padding: 0; margin: 0; }
+.angular-ratings li { float: left; width: 20px; height: 20px; border: 1px solid silver; margin: 1px; text-indent: -500000em; background: #cccccc url(angular-star.png) no-repeat; background-size: 100%; }
+.angular-ratings li.over { border-color: silver; background-color: white; background-position: 0 -20px; cursor: pointer; }
+.angular-ratings li.active { border-color: red; background-color: yellow; background-position: 0 -20px; }
+
+ .content{
+  max-width: 100%;
+}
+</style>
+
+
+
+
+
+<div id="layout" ng-controller="layoutCtrl">
+    <!-- Menu toggle -->
+    <a href="#menu" id="menuLink" class="menu-link">
+        <!-- Hamburger icon -->
+        <span></span>
+    </a>
+
+    <div id="menu">
+        <div class="pure-menu pure-menu-open">
+            <a class="pure-menu-heading" href="#"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
+
+            <ul>
+                <li class="menu-item-divided pure-menu-selected"><a href="#">Home</a></li>
+                <li><a href="#">sequences</a></li>
+                <li><a href="#">tasks</a></li>
+
+                <li><!-- class="menu-item-divided pure-menu-selected" -->
+                    <a href="#/tools">tools</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div id="main">
+        <div class="header">
+            <h1>the pedagogical observer</h1>
+            
+        </div>
+
+        <div class="content">
+           <div class="view" ng-view></div>
+            <!-- h2 class="content-subhead">How to use this layout</h2>
+            <p>
+                To use this layout, you can just copy paste the HTML, along with the CSS in <a href="/css/layouts/side-menu.css" alt="Side Menu CSS">side-menu.css</a>, and the JavaScript in <a href="/js/ui.js">ui.js</a>. The JS file uses vanilla JavaScript to simply toggle an <code>active</code> class that makes the menu responsive.
+            </p>
+
+            <h2 class="content-subhead">Now Let's Speak Some Latin</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+
+            <div class="pure-g">
+                <div class="pure-u-1-4">
+                    <img class="pure-img-responsive" src="http://farm3.staticflickr.com/2875/9069037713_1752f5daeb.jpg" alt="Peyto Lake">
+                </div>
+                <div class="pure-u-1-4">
+                    <img class="pure-img-responsive" src="http://farm3.staticflickr.com/2813/9069585985_80da8db54f.jpg" alt="Train">
+                </div>
+                <div class="pure-u-1-4">
+                    <img class="pure-img-responsive" src="http://farm6.staticflickr.com/5456/9121446012_c1640e42d0.jpg" alt="T-Shirt Store">
+                </div>
+                <div class="pure-u-1-4">
+                    <img class="pure-img-responsive" src="http://farm8.staticflickr.com/7357/9086701425_fda3024927.jpg" alt="Mountain">
+                </div>
+            </div>
+
+            <h2 class="content-subhead">Try Resizing your Browser</h2>
+            <p>
+                <button class="button-success pure-button">Success Button</button>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p -->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="{{STATIC_URL}}js/pure/ui.js"></script>
+
+{% block scripts %}
+    <!-- api endpoints are hardcoded inside services.js -->
+    <!-- In production use: -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-resource.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
+    <script src="{{ STATIC_URL }}/js/angular/app.js"></script>
+    <script src="{{ STATIC_URL }}/js/angular/services.js"></script>
+    <script src="{{ STATIC_URL }}/js/angular/controllers.js"></script>
+    <script src="{{ STATIC_URL }}/js/angular/filters.js"></script>
+    <script src="{{ STATIC_URL }}/js/angular/directives.js"></script>
+  {% endblock %}
+
+
+</body>
+</html>

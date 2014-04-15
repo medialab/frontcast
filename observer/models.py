@@ -3,187 +3,193 @@ from django import forms
 from django.contrib.auth.models import User
 from django.db import models
 
-from walt.models import uuslug
+from walt.models import uuslug, WorkingDocument, Document
 
 
 
-class LayoutField(models.Model):
-  NULL_BOOLEAN = 'NullBooleanField'
-  CHAR = 'CharField', # max 160 chars
-  TEXT = 'TextField', # charfield with TEXTAREA widget
-  CHOICE = 'ChoiceField', # use filters as LIST
-  MODEL_CHOICE = 'ModelChoiceField'
-  MODEL_MULTIPLE_CHOICE = 'ModelMultipleChoiceField'
+class Property(models.Model):
+  '''
+  All possible Observed properties, flattened. E.g. multiple choices fields are yes / no / None on a property.
+  1. phase
+  2. specific tag 'observate' category
+  '''
+  # 2. phases
+  ANALYSIS      = 'analysis'
+  EXPLORATION   = 'exploration'
+  METHODOLOGY   = 'methodology'
+  PARTICIPATION = 'participatio'
+  PRESENTATION  = 'presentation'
+  SOURCES       = 'sources'
+  STATISTICS    = 'statistics'
 
-  TYPE_CHOICES = (
-    (NULL_BOOLEAN, 'Checkbox'),
-    (CHAR, 'CharField, max 160 chars'),
-    (TEXT, 'TextField'),
-    (CHOICE, 'ChoiceField'),
-    (MODEL_CHOICE, 'ModelChoiceField. Cfr https://docs.djangoproject.com/en/dev/ref/forms/fields/#modelmultiplechoicefield'),
-    (MODEL_MULTIPLE_CHOICE, 'ModelMultipleChoiceField. Cfr https://docs.djangoproject.com/en/dev/ref/forms/fields/#modelmultiplechoicefield'),
+  PHASE_CHOICES = (
+    (ANALYSIS,      'analysis'),
+    (EXPLORATION,   'exploration'),
+    (METHODOLOGY,   'methodology'),
+    (PARTICIPATION, 'participation'), # max length 12 reached here
+    (PRESENTATION,  'presentation'),
+    (SOURCES,       'sources'),
+    (STATISTICS,    'statistics'),
+  )
+  # 3. property type. to be coupled with the question!
+  
+  ACTOR_TABLE     = 'actor_table'
+  ARG_TREE        = 'arg_tree'
+  COSMOGRAPHY     = 'cosmography'
+  DIAGRAM         = 'diagram'
+  SC_LIT          = 'sc_lit'
+  SCIENTOMETRICS  = 'scientometri'
+  METHODOLOGY     = 'tmethodology'
+  QUAL_DA         = 'qual_da'
+  SOURCES_DETAILS = 'sources_deta'
+  COMMENTS        = 'comments'
+  ANIMATION       = 'animation'
+  COMIC           = 'comic'
+  GLOSSARY        = 'glossary'
+  VIZ_ANALOGY     = 'viz_analogy'
+  STATS           = 'stats'
+
+  METH_DETAILS_DATASETS   = 'details_data'
+  METH_DETAILS_INTERVIEWS = 'details_inte'
+  METH_DETAILS_NEWSPAPERS = 'details_news'
+  METH_DETAILS_SITEVISIT  = 'details_site'
+
+  TYPE_METH_DETAILS_CHOICES = ( # to be used as multiple choices inside the observer.forms.ProfileForm)
+    (METH_DETAILS_DATASETS,   'they detail datasets'),
+    (METH_DETAILS_INTERVIEWS, 'they detail interview'),
+    (METH_DETAILS_NEWSPAPERS, 'they detail newspapers'),
+    (METH_DETAILS_SITEVISIT,  'they detail site visit')
+  )
+  
+  INTERVIEW_VIDEO      = 'interview_vi'
+  INTERVIEW_AUDIO      = 'interview_au'
+  INTERVIEW_TRANSCRIPT = 'interview_tr'
+  INTERVIEW_NOTE       = 'interview_no'
+
+  TYPE_INTERVIEW_CHOICES = (
+    (INTERVIEW_VIDEO,      'video interview'),
+    (INTERVIEW_AUDIO,      'audio interview'),
+    (INTERVIEW_TRANSCRIPT, 'interview transcripted'),
+    (INTERVIEW_NOTE,       'interview detailed notes'),
   )
 
-  question = models.TextField() # that is the question
-  
-  type = models.CharField(max_length=24, choices=TYPE_CHOICES) 
+  TYPE_CHOICES = (
+    (ACTOR_TABLE,     'actor table'),
+    (ARG_TREE,        'Argument Trees'),
+    (COSMOGRAPHY,     'cosmography'),
+    (DIAGRAM,         'Schematic process diagrams'),
+    (SC_LIT,          'Analysis of scientific literature'),
+    (SCIENTOMETRICS,  'Scientometric maps'),
+    (METHODOLOGY,     'Methodology section'),
+    (QUAL_DA,         'Qualitative data analysis'),
+    (SOURCES_DETAILS, 'Index or list of sources'),
+    (COMMENTS,        'Debate space'),
+    (ANIMATION,       'animation'),
+    (COMIC,           'Comics and Vignettes'),
+    (GLOSSARY,        'Glossary'),
+    (VIZ_ANALOGY,     'Visual Analogies'),
+    (STATS,           'Statistics'),
+  )
 
-  filters = models.TextField(blank=True, null=True) # in the form of a json dict only. cfr. validation
-  modelname = models.CharField(max_length=128, blank=True, null=True) # in the form "app.model" 'walt.WorkingDocument'. useful to decide which LayoutValue class need to be used to store the value.
-  
-
-  def get_queryset(self):
-    '''
-    Return the queryset to be used inside the <observer.Layout instance>.get_form() method
-    Note: for type MODEL_CHOICE or MODEL_MULTIPLE_CHOICE ONLY.
-    '''
-    mod = models.loading.get_model(*self.modelname.split('.',1))
-    qs = mod.objects.filter(**json.loads(self.filters))
-    return qs
-
-
-  def json(self, deep=False):
-    d = {
-      'question': self.question,
-      'type': self.type
-    }
-
-    if self.type in [LayoutField.MODEL_CHOICE, LayoutField.MODEL_MULTIPLE_CHOICE]:
-      d['filters'] = json.loads(self.filters)
-      d['modelname'] = json.loads(self.modelname)
-    elif self.type == LayoutField.CHOICE:
-      d['filters'] = json.loads(self.filters) # json as key value props just like choice field.
-
-    return d
-
-
-  def __unicode__(self):
-    return "%s %s" % (self.section, self.question)
-
-
-
-class LayoutValue(models.Model):
-  field = models.ForeignKey(LayoutField)
-
-  # possible values below
-  null_boolean_value = models.NullBooleanField(null=True)
-  char_value = models.CharField(max_length=160, null=True, blank=True) # this is the answer. A generic container, we do not need it to be dynamic.
-  text_value = models.TextField(null=True, blank=True)
-
-  # multiple items. 
-  items = models.ManyToManyField('walt.WorkingDocument')
-
-
-  def save(self, **kwargs):
-    '''
-    this method verify that a null_boolean FIELD correspond a null_boolean value.. Raise Exception.
-    '''
-    super(LayoutValue, self).save()
-
-
-
-class Layout(models.Model):
-  name = models.CharField(max_length=32)
-  slug = models.SlugField(max_length=32, null=True, blank=True, unique=True)
-  fields = models.ManyToManyField(LayoutField, through='Question')
-  
-  # return a form dynamically basesd on Layout information
-  def get_form(self, **kwargs):
-    class DForm(forms.Form):
-      def __init__(self, layout, *args, **kwargs):
-        super(DForm, self).__init__(*args, **kwargs)
-        for fs in layout.questions.all():
-          fieldclass = getattr(forms, fs.field.type)
-          if fs.field.type in [LayoutField.MODEL_CHOICE, LayoutField.MODEL_MULTIPLE_CHOICE]:
-            self.fields['field_%s_%s' % (fs.slug, fs.id)] = fieldclass(queryset=fs.field.get_queryset(), label=fs.field.question)
-          else:
-            self.fields['field_%s_%s' % (fs.slug, fs.id)] = fieldclass(label=fs.field.question)
-    
-    return DForm(self, **kwargs)
+  type     = models.CharField(max_length=12, choices=TYPE_CHOICES + TYPE_METH_DETAILS_CHOICES + TYPE_INTERVIEW_CHOICES, null=True, blank=True) # e.g. 'author' or 'institution'
+  phase    = models.CharField(max_length=12, choices=PHASE_CHOICES, null=True, blank=True) 
+  slug     = models.SlugField(max_length=128, unique=True) # a simple way to access integrated stuffs
 
 
   def save(self, **kwargs):
     if self.pk is None:
-      self.slug = uuslug(model=Layout, instance=self, value=self.name)
-    super(Layout, self).save()
+      self.slug = uuslug(model=Property, instance=self, value='-'.join([self.phase, self.type]))
+    super(Property, self).save()
 
 
   def json(self, deep=False):
     d = {
-      'id': self.pk,
-      'name': self.name,
-      'fields': [q.json() for q in self.questions.all()]
+      'id': self.id,
+      'slug': self.slug,
+      'type': self.type
     }
     return d
 
 
   def __unicode__(self):
-    return "%s" % self.name
-
-
-
-class Question(models.Model):
-  '''
-  Links LayoutField and Layout. Each Fielad belongs to a section. The list of
-  Layout related field willl be sorted by section+position
-  '''
-  layout = models.ForeignKey(Layout, related_name="questions")
-  field = models.ForeignKey(LayoutField, related_name="section")
-  position = models.IntegerField(default=0, blank=True, null=True) #the sorting index
-  section = models.CharField(max_length=32)
-  slug = models.SlugField(max_length=32)
-
-
-  def save(self, **kwargs):
-    if self.pk is None and self.position == 0: # aka default position, or the very first Item
-      self.position = Question.objects.filter(layout=self.layout, slug=self.slug).count() + 1
-    super(Question, self).save()
-
-
-  def json(self, deep=False):
-    d = {
-      'id': self.pk,
-      'section' : self.section,
-      'position': self.position,
-      'field': self.field.json()
-    }
-    return d
-
-
-  def __unicode__(self):
-    return "%s/%s: %s" % (self.section, self.position, self.field.type)
+    return "%s %s" % (self.phase, self.type)
 
 
   class Meta:
-    ordering = ['slug','position']
-    unique_together = ("layout", "field")
+    ordering = ["phase", "type"]
+    unique_together = ("phase", "type")
+    verbose_name_plural = "properties"
+
+
+
+class Device(models.Model):
+  '''
+  When A tool has been used for a specific document?
+  Json property: cfr DocumentProfile
+  '''
+  DATABASE = 'database'
+  ACTOR_DIAG = 'actor_diag'
+  ANALYSIS_SPECIAL = 'analysis_special'
+  CHRONOLOGY = 'chronology'
+  CRAWL      = 'crawl'
+  EXPLORE_SPECIAL = 'explore_special'
+  MEDIA_ANALYSIS = 'media_analysis'
+  DISAGREEMENT = 'disagreement'
+  EXT_CONTENT = 'ext_content'
+  GEOLOCATION = 'geolocation'
+  WEBTOOL = 'webtool'
+  SNA = 'sna'
+  TAGCLOUD = 'tagcloud'
+  TEXT_ANALYSIS = 'text_analysis'
+
+  TYPE_CHOICES = (
+    (DATABASE, 'Databases'),
+    (ACTOR_DIAG, 'Actor diagrams'),
+    (ANALYSIS_SPECIAL, 'Specialised analysis Tools'),
+    (CHRONOLOGY, 'Controversy Timeline'),
+    (CRAWL,           'Web crawling maps'),
+    (EXPLORE_SPECIAL, 'Specialised Search and Exploration Tools'),
+    (MEDIA_ANALYSIS, 'Media and public opinion analysis '),
+    (DISAGREEMENT, 'Presentation of the disagreement'),
+    (EXT_CONTENT, 'External content'),
+    (GEOLOCATION, 'Geographical maps'),
+    (WEBTOOL, 'Web-site building tools'),
+    (SNA, 'Social Network Analysis Tools'),
+    (TAGCLOUD, 'Tag clouds'),
+    (TEXT_ANALYSIS, 'Textual analysis'),
+  )
+
+  working_document = models.ForeignKey(WorkingDocument, related_name="supports")
+  document = models.ForeignKey(Document, related_name="devices") # directly through a document
+  type = models.CharField(max_length=12, choices=TYPE_CHOICES)
+
+
+  class Meta:
+    unique_together = ("working_document", "document", "type")
 
 
 
 class DocumentProfile(models.Model):
   '''
-  A simple profile to analyse documents (instead of multiple tags).
-  Document are given as foreign key and there are profile specific boolean tags and Profile Tags.
-  Profile tags' model is Tag, because those tags can be used somewhere else like "audio interviews".
+  A simple profile to analyse documents, or better a mediated table Document-Properties:
+  document are given as foreign key and they share a number of properties.
+  
   '''
-  document = models.ForeignKey('walt.Document', unique=True)
-  layout = models.ForeignKey(Layout)
+  document = models.ForeignKey(Document, related_name="profile", unique=True)
   owner = models.ForeignKey(User) # who has compiled it
 
   date = models.DateField(blank=True, null=True) # main date, manually added
   date_created = models.DateTimeField(auto_now=True)
   date_last_modified = models.DateTimeField(auto_now_add=True)
 
-  notes = models.TextField(blank=True)
+  notes = models.TextField(blank=True) # free evaluation
 
-  values = models.ManyToManyField(LayoutValue, null=True, blank=True)
-  tags = models.ManyToManyField('walt.Tag', null=True, blank=True)
-
+  properties = models.ManyToManyField(Property, null=True, blank=True)
+  
 
   def json(self, deep=False):
     d = {
       'id': self.document.id,
-      'layout': self.layout.json(),
       'date': self.date.isoformat() if self.date else None,
       'date_created': self.date_created.isoformat(),
       'date_last_modified': self.date_last_modified.isoformat(),
@@ -195,3 +201,7 @@ class DocumentProfile(models.Model):
 
   def __unicode__(self):
     return "%s" % self.document
+
+
+  class Meta:
+    ordering = ["-date_last_modified"]

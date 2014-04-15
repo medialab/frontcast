@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 
-from observer.models import Layout, DocumentProfile
+from observer.models import DocumentProfile
 
 
 
@@ -15,7 +15,6 @@ def index(request):
 
 @staff_member_required
 def document_profiles(request):
-
   return Epoxy(request).queryset(DocumentProfile.objects.filter()).json()
 
 
@@ -44,16 +43,3 @@ def document_profile(request, document_pk):
   return epoxy.json()
 
 
-
-@staff_member_required
-def layouts(request):
-  '''
-  get all available observers layouts
-  '''
-  return Epoxy(request).queryset(Layout.objects.filter()).json()
-
-
-
-@staff_member_required
-def layout(request):
-  return Epoxy(request).json()

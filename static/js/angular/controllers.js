@@ -2,25 +2,117 @@
 
 /* Controllers */
 var CONTROLLER_STATUS_AVAILABLE = 'available',
-    CONTROLLER_STATUS_WORKING = 'busy'
+    CONTROLLER_STATUS_WORKING = 'busy',
+    CONTROLLER_PARAMS_UPDATED = "CONTROLLER_PARAMS_UPDATED";
 
-angular.module('walt.controllers', []).
-  controller('corpusListCtrl', ['$scope', 'CorpusListFactory', function($scope, CorpusListFactory) {
-    CorpusListFactory.query(function(data){
-      $scope.howmany = data.meta.total_count;
-      $scope.corpora = data.objects;
-      
+angular.module('walt.controllers', [])
+  /*
+    
+    The very main controller. Handle filters.
+    ===
+
+  */
+  .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', function($scope, $rootScope, $location, $route) {
+    $scope.filters = {};
+    $scope.query = "";
+    $scope.limit = 25;
+    $scope.offset = 0;
+    $scope.default_limit = 25;
+    $scope.default_offset = 0;
+
+    $scope.loadFilters = function(options) {
+      var candidates = $location.search().filters,
+          limit = +$location.search().limit,
+          offset = +$location.search().offset;
+
+      if(candidates) {
+        try{
+          var filters = JSON.parse(candidates);
+          $scope.filters = filters;
+        } catch(e){
+          console.log("%c! filters failed ", 'color:white; background-color:crimson', e.message);
+          
+        }
+      } else
+        $scope.filters = {};
+
+      $scope.limit = isNaN(limit)? $scope.default_limit: limit;
+      $scope.offset = isNaN(offset)? $scope.default_offset: offset;
+      // limit and offset here
+      console.log("%c filters ", 'color:white; background-color:green', $scope.limit, $scope.offset);
+          
+      $scope.$broadcast(CONTROLLER_PARAMS_UPDATED, options);
+    };
+
+    $rootScope.$on('$routeUpdate', function(e, r){
+      console.log("%c! route updated ", 'color:white; background-color:crimson', e.message);
+          
+      $scope.loadFilters({controller: r.$$route.controller}); // push current controllername
     });
+
+    
+
+    // commont filter propertiues here
+    $scope.setProperties = function(property, value) {
+      $scope.filters[property] = [value];
+      console.log('%c filters setProperties', 'background: crimson; color: white',property, value, $scope.filters);
+      $location.search('filters', JSON.stringify($scope.filters))
+    };
+
+    $scope.setProperty = function(property, value) {
+      $scope.filters[property] = value;
+      console.log('%c filters setProperty', 'background: crimson; color: white',property, value, $scope.filters);
+      $location.search('filters', JSON.stringify($scope.filters))
+    };
+
+    $scope.extendFilters = function(filter) {
+      var filters = angular.extend({}, $scope.filters, filter);
+      return JSON.stringify(filters)
+    };
+
+    console.log('%c layoutCtrl ', 'background: #151515; color: white', $scope.filters);
+    $scope.loadFilters();
+
   }])
-  .controller('corpusCtrl', ['$scope','$routeParams','CorpusFactory', 'DocumentListFactory', function($scope, $routeParams, CorpusFactory, DocumentListFactory) {
-    CorpusFactory.query({id: $routeParams.id}, function(data){
-      $scope.corpus = data.object;
-      
+  /*
+    
+    View related controllers
+    ===
+
+  */
+  .controller('overviewCtrl', ['$scope', function($scope){
+    console.log('%c overviewCtrl ', 'background: gold;');
+  }])
+
+
+
+  .controller('toolsCtrl', ['$scope', 'WorkingDocumentListFactory', function($scope, WorkingDocumentListFactory){
+    $scope.name = 'tools';
+
+    $scope.sync = function() {
+      WorkingDocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.extendFilters({type: 'T'})}, function(data){
+        $scope.items = data.objects;
+        console.log(data);
+      });
+    };
+
+    $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
+      console.log('received...');
+      $scope.sync();
     });
-    DocumentListFactory.query({id: $routeParams.id}, function(data){
-      $scope.howmany = data.meta.total_count;
-      $scope.documents = data.objects;
-    });
+
+    $scope.sync();
+    console.log('%c toolsCtrl ', 'background: lime;');
+  }])
+
+
+
+  .controller('toolCtrl', ['$scope', '$route', '$routeParams', function($scope, $route, $routeParams){
+    $scope.status = CONTROLLER_STATUS_AVAILABLE;
+
+    console.log('%c toolCtrl ', 'background: lime;', $routeParams.id, $routeParams);
+
+
   }])
   /*
     
@@ -29,25 +121,7 @@ angular.module('walt.controllers', []).
 
   */
   .controller('filtersCtrl', ['$rootScope', '$scope', '$routeParams', '$location', function($rootScope, $scope, $routeParams, $location) {
-    $rootScope.filters = {};
-
-    // commont filter propertiues here
-    $rootScope.setProperties = function(property, value) {
-      $rootScope.filters[property] = [value];
-      console.log('%c filters setProperties', 'background: crimson; color: white',property, value, $rootScope.filters);
-      $location.search('filters', JSON.stringify($rootScope.filters))
-    };
-
-    $rootScope.setProperty = function(property, value) {
-      $rootScope.filters[property] = value;
-      console.log('%c filters setProperty', 'background: crimson; color: white',property, value, $rootScope.filters);
-      $location.search('filters', JSON.stringify($rootScope.filters))
-    };
-
-    $rootScope.extendFilters = function(filter) {
-      var filters = angular.extend({}, $rootScope.filters, filter);
-      return JSON.stringify(filters)
-    };
+    
   }])
   /*
 

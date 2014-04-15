@@ -1,0 +1,45 @@
+
+<h2>
+  {{name}}
+</h2>
+<div class="menu">
+  <ul>
+    <li><a href="#">view as list</a></li>
+    <li><a href="#/tools/add">add tool</a></li>
+    <li><input type="text" placeholder="search"></li>
+  </ul>
+</div>
+<form class="pure-form pure-form-stacked" name="editForm" ng-submit="addTool()">
+  <p>
+    <label class="required">title</label>
+    <input class="pure-input-1-2" required type="text" ng-model="title">
+  </p>
+  <p>
+    <label>type</label>
+    <input class="pure-input-1-2" required type="text" ng-model="name">
+  </p>
+  <!-- -->
+  <p>
+    <label>some words about it (markdown syntax)</label>
+    <textarea type="text" class="pure-input-1-2" ng-model="workingdocument.abstract_raw"></textarea>
+  </p>
+  <!-- -->
+  <fieldset class="pure-group">
+    <label>url address</label>
+        <input type="text" class="pure-input-1-2" placeholder="http://">
+        <input type="text" class="pure-input-1-2" placeholder="picture url">
+  </fieldset>
+  <p>
+    <label>comma separated tags</label>
+    <input type="text" ng-model="csv_tags">
+  </p>
+  <p>
+    <label>overall rating</label>
+    <angular-ratings ng-model="user_rating" notify-url="notify.json" notify-id="id">
+  </p>
+  <button ng-click="addTodo()" ng-disabled="status != 'available'" class="pure-button" value="add">
+    <span ng-if="status == 'available'">save modifications</span>
+    <span ng-if="status == 'busy'">working...</span>
+  </button>
+  
+</form>

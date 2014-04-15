@@ -5,16 +5,10 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 
 
+
 admin.autodiscover()
 
 
-observer_api_urlpatterns = patterns('observer.api',
-  url(r'^$', 'index'),
-  url(r'document-profile$', 'document_profiles'),
-  url(r'document-profile/(?P<document_pk>[:a-zA-Z\.\-\d]+)$', 'document_profile'),
-  url(r'layouts$', 'layouts'),
-  url(r'layout/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'layout'),
-)
 
 
 api_urlpatterns = patterns('walt.api',
@@ -58,8 +52,6 @@ api_urlpatterns = patterns('walt.api',
     url(r'biblib-safe/$', 'biblib_proxy_safe', name='walt_api_biblib_proxy_safe'), # user is not logged in! but requests are safe enough
 
     url(r'oembed/(?P<provider>[a-z]+)/$', 'oembed_proxy', name='walt_api_oembed_proxy'),
-
-    url(r'^observer/', include(observer_api_urlpatterns)),
 )
 
 
@@ -123,5 +115,6 @@ urlpatterns = patterns('frontcast.views',
   url(r'^logout/$', 'logout_view', name='frontcast_logout'),
   url(r'^login/$', 'login_view', name='frontcast_login'),
   url(r'^admin/', include(admin.site.urls)),
+  url(r'^observer/', include('observer.urls')),
  # url(r'^ouch/$', 'not_found', name='not_found'),
 )

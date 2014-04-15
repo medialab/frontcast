@@ -49,7 +49,12 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   $routeProvider.when('/w/bookmark', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.bookmark.html', controller: 'workingdocumentCreateCtrl'});
   // $routeProvider.when('/w/edit', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.edit.html', controller: 'workingdocumentCreateCtrl'});
   
-  $routeProvider.when('/', {templateUrl: '/frontcast/static/js/angular/partials/index.html', controller: 'indexCtrl'});
+  $routeProvider.when('/', {templateUrl: '/frontcast/static/js/angular/partials/overview.html', controller: 'overviewCtrl'});
+  $routeProvider.when('/tools', {templateUrl: '/frontcast/static/js/angular/partials/items.list.html', controller: 'toolsCtrl'});
+  $routeProvider.when('/tools/add', {templateUrl: '/frontcast/static/js/angular/partials/tool.add.html', controller: 'toolCtrl'});
+  $routeProvider.when('/tools/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/tool.add.html', controller: 'toolCtrl'});
+    
+
   $routeProvider.otherwise({redirectTo: '/'});
 
   //$locationProvider.html5Mode(true);

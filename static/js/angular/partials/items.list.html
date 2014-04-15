@@ -1,0 +1,15 @@
+
+<h2>
+  {{name}}
+</h2>
+<div class="menu">
+  <ul>
+    <li><a href="#">view as list</a></li>
+    <li><a href="#/tools/add">add tool</a></li>
+    <li><input type="text" placeholder="search"></li>
+  </ul>
+</div>
+<div class="wd" ng-repeat="item in items">
+  <h4>#{{item.id}} {{item.title}}</h4>
+  <a href="#/tools/{{item.id}}/edit">edit</a>
+</div>
