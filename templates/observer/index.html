@@ -9,7 +9,7 @@
 
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro' rel='stylesheet' type='text/css'>
 
-
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 
 
@@ -25,11 +25,12 @@
     <!--[if gt IE 8]><!-->
         <link rel="stylesheet" href="{{STATIC_URL}}css/pure/side-menu.css">
     <!--<![endif]-->
-  
+    
+    <link rel="stylesheet" href="{{STATIC_URL}}css/fancy-select.css">
 
 
-
-
+<link rel="stylesheet/less" type="text/css" href="{{STATIC_URL}}less/observer.less">
+<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.0/less.min.js"></script>
     
 
     
@@ -54,43 +55,47 @@
   }
   body{
     font: 1.5em/1.618em 'Source Sans Pro', sans-serif;
+    background-color: #f9f7ed;
   }
 
   #menu{
-    background-color: #fff;
+    background-color: transparent;
     
   }
 
   #menu a{
     color: #181818;
-    font: 1.5rem/1.618em 'Source Sans Pro', sans-serif;
+    font: 1.3rem/1.618em 'Source Sans Pro', sans-serif;
     text-transform: lowercase;
     text-decoration: none;
-    padding: 6px 6px 6px 18px;
+    padding: 2px 6px 3px 6px;
+    margin: 3px 18px;
+    display: inline-block;
   }
 
   #menu .pure-menu li a:hover, #menu .pure-menu li a:focus{
-    background-color: #fff;
-    color: #33cccc;
-    border-left: 6px solid #33cccc;
-    padding-left: 12px;
+    background-color: #33cccc;
+    color: #fff;
   }
 
   #menu a.pure-menu-heading{
-    font: 1.5rem/1.618em 'Source Sans Pro', sans-serif;
+    font: 1.4rem/1.618em 'Source Sans Pro', sans-serif;
     text-transform: none;
-    padding-left: 11px; /*due to logo padding.. sorry*/
+    display: block;
+    background: transparent;
+    margin: 0;
+    padding: 12px 12px 0px 11px;
+    height: 36px;
   }
 
   #menu .pure-menu-selected{
-    background-color: #fff;
+    background-color: transparent;
     
   }
 
   #menu .pure-menu-selected a{
-    color: #ec5148;
-    border-left: 6px solid #ec5148;
-    padding-left: 12px;
+    background-color: #ec5148;
+    color: #fff;
   }
 
   #menu .pure-menu-heading{
@@ -98,6 +103,7 @@
     color: #ec5148;
     padding-top: 12px;
     padding-bottom: 12px;
+
   }
 
   #menu .pure-menu-heading img{
@@ -109,15 +115,36 @@
   }
 
   .header{
+    position: fixed;
     text-align: left;
     padding:0;
     margin:0;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 48px;
+    z-index: 999;
+  }
+
+  .header >.inner{
+    margin-left: 50px;
+  }
+
+  @media (min-width: 48em){
+    .header >.inner{
+      margin-left: 150px;
+    }
   }
 
   .header h1{
-    font: 1.2rem/1.618em 'Source Sans Pro', sans-serif;
+    font: 1.4rem/1.618em 'Source Sans Pro', sans-serif;
     padding: 12px;
     margin: 0;
+    text-align: left;
+  }
+
+  .view{
+    margin-top: 36px;
   }
 
   .view .menu ul {
@@ -147,6 +174,86 @@
  .content{
   max-width: 100%;
 }
+
+  span.tag{
+    font-size: 1.2rem;
+    padding: 3px 5px;
+    margin: 3px;
+    cursor: pointer;
+  }
+
+  span.tag:hover{
+    background:#181818;
+    color: white;
+  }
+
+  .doc {
+    margin: 12px;
+  }
+  .doc h4{
+    margin: 0;
+  }
+
+  #main{
+    padding: 48px 0;
+  }
+
+  
+
+  .footer{
+    background-color: #ec5148;
+color: #ffffff;
+clear: both;
+position: fixed;
+bottom: 0px;
+width: 100%;
+z-index: 1000;
+  }
+
+
+  .doc, .item{
+    position: relative;
+    width: 30.555555555556%;
+    float: left;
+    padding: 0;
+    margin: 0 2.166666666667% 30px 0;
+
+
+  }
+
+  .doc .inner, .item .inner{
+    position: relative;
+    clear: left;
+    background: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+        height: 210px;
+  }
+
+  .doc h4, .item h4{
+    position: relative;
+    padding: 12px 18px;
+  }
+
+  .doc .devices{
+    margin: 0 18px;
+    word-break: break-word;
+  }
+
+  .doc h4 a, .item h4 a{
+    text-decoration: none;
+    font-weight: normal;
+    color: #181818;
+  }
+
+  .doc h4 a:hover, .doc h4 a:active {
+
+  }
+
 </style>
 
 
@@ -165,11 +272,11 @@
             <a class="pure-menu-heading" href="#"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 
             <ul>
-                <li class="menu-item-divided pure-menu-selected"><a href="#">Home</a></li>
-                <li><a href="#">sequences</a></li>
-                <li><a href="#">tasks</a></li>
-
-                <li><!-- class="menu-item-divided pure-menu-selected" -->
+                <li><a href="#/">overview</a>
+                </li>
+                <li ng-class="viewname=='/documents' ? 'pure-menu-selected': ''"><a href="#/docs">documents</a></li>
+                
+                <li ng-class="viewname=='/tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#/tools">tools</a>
                 </li>
 
@@ -179,8 +286,11 @@
 
     <div id="main">
         <div class="header">
-            <h1>the pedagogical observer</h1>
-            
+          <div class="inner" ng-if="showPaginator">
+            <div class="counter" ng-include src="'/frontcast/static/js/angular/partials/helpers.counter.html'"></div>
+  <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
+          </div>
+
         </div>
 
         <div class="content">
@@ -222,10 +332,11 @@
 
 
 
-
 <script src="{{STATIC_URL}}js/pure/ui.js"></script>
 
 {% block scripts %}
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="{{ STATIC_URL }}/js/libs/jquery.fancyselect.js"></script>
     <!-- api endpoints are hardcoded inside services.js -->
     <!-- In production use: -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
@@ -233,6 +344,10 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-resource.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
+     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-sanitize.min.js"></script>
+
+    <script src="{{ STATIC_URL }}js/libs/angular-toggle-switch.min.js"></script>
+
     <script src="{{ STATIC_URL }}/js/angular/app.js"></script>
     <script src="{{ STATIC_URL }}/js/angular/services.js"></script>
     <script src="{{ STATIC_URL }}/js/angular/controllers.js"></script>

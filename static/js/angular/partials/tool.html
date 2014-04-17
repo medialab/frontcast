@@ -1,0 +1,52 @@
+<div class="pure-g">
+
+  
+  <div class="pure-u-3-4">
+
+
+    <div class="big-item">
+      <h2>{{item.title}}</h2>
+      <h3>{{item.type_label}}</h3>
+
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div class="cover">
+            <div class="box" ng-repeat="tag in item.tags.CU">
+              <img ng-src="{{tag.name}}">
+            </div>
+          </div>
+        
+          <div class="abstract" ng-bind-html="item.abstract">
+          
+          </div>
+        </div>
+        <div class="pure-u-1-2">
+
+          <div class="tags">
+            <h4>tags</h4>
+            <span class="tag" class="wd" ng-repeat="tag in item.tags.CA">
+              {{tag.name}}
+            </span>
+          </div>
+          <div class="property">
+            <i class="fa fa-globe"></i><div class="value">{{item.permalink}}</div>
+          </div>
+
+          <div class="property" ng-repeat="tag in item.tags.CP">
+            <i class="fa fa-dollar"></i><div class="value">{{tag.name}}</div>
+          </div>
+
+          <div class="property" ng-repeat="tag in item.tags.RE">
+            <i class="fa fa-magic"></i><div class="value">{{tag.name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="pure-u-1-4">
+    <div class="list">list of document
+    </div>
+  </div>
+</div>

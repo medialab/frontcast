@@ -1,15 +1,12 @@
-
-<h2>
-  {{name}}
-</h2>
-<div class="menu">
-  <ul>
-    <li><a href="#">view as list</a></li>
-    <li><a href="#/tools/add">add tool</a></li>
-    <li><input type="text" placeholder="search"></li>
-  </ul>
-</div>
-<div class="wd" ng-repeat="item in items">
-  <h4>#{{item.id}} {{item.title}}</h4>
+<div class="doc item" ng-class="item.status" ng-repeat="item in items">
+  <div class="inner">
+  <h4><a ng-href="#/tool/{{item.id}}">#{{item.id}} {{item.title}}</a></h4>
   <a href="#/tools/{{item.id}}/edit">edit</a>
+  <a href="{{item.permalink}}" target="_blank">{{item.permalink}}</a>
+  <div class="content">{{item.abstract_raw}}</div>
+  <div class="tags">
+    <span class="tag" class="wd" ng-repeat="tag in item.tags" ng-click="setProperties('tags__slug__in', tag.slug)">
+      {{tag.name}}
+    </span>
+  </div>
 </div>

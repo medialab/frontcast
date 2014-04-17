@@ -164,6 +164,16 @@ class Device(models.Model):
   type = models.CharField(max_length=12, choices=TYPE_CHOICES)
 
 
+  def json(self, deep=False):
+    d = {
+      'id': self.working_document.id,
+      'type': self.type,
+      'slug': self.working_document.slug,
+      'title': self.working_document.title
+    }
+    return d
+  
+
   class Meta:
     unique_together = ("working_document", "document", "type")
 
@@ -196,6 +206,16 @@ class DocumentProfile(models.Model):
       'notes': self.notes,
       'owner': self.owner.username
     }
+
+    d['properties'] = []
+
+    properties = [p.type for p in self.properties.all()]
+
+    for t in Property.TYPE_CHOICES:
+      d['properties'].append({'label':t[1], 'value': t[0] in properties})
+
+
+
     return d
 
 

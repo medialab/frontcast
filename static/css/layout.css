@@ -692,7 +692,7 @@ div.fancy-select div.trigger-wrapper {
 
 div.fancy-select div.trigger {
   padding: 4px 12px;
-  
+  background: #ccc;
 }
 div.fancy-select div.trigger:after {
   content: "";

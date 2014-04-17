@@ -1,5 +1,17 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
+
+<div class="doc item" ng-class="item.status" ng-repeat="item in items">
+  <div class="inner">
+  <h4><a ng-href="#/doc/{{item.id}}/profile">#{{item.id}} {{item.title}}</a></h4>
+  
+  <div class="tags">
+    <span class="date">
+      <span class="tag date" ng-click="setProperties('tags__slug__in', tag.slug)" class="wd" ng-repeat="tag in item.tags.Date">
+        {{tag.name}}
+      </span>
+    </span>
+  </div>
+  <div class="devices">
+    <span class="tag device" ng-repeat="device in item.devices" ng-click="setProperties('devices__working_document__in', device.id)">{{device.title}}</span>
+  </div>
+  </div>
+</div>

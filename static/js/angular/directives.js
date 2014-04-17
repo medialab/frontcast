@@ -25,6 +25,17 @@ angular.module('walt.directives', [])
     };
     
   }])
+  .directive('fancySelect', function() {
+    var linkFn = function(scope, element, attrs) {
+      //alert(scope['orders'])
+      $(element).append('<option value="cc">sss</option>').fancySelect();
+    };
+    return {
+      restrict: 'A',
+      transclude: true,
+      link: linkFn
+    };
+  })
   /*
     Usage <div ghost-scroll >
     var y = $(document).scrollTop(),

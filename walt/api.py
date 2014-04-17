@@ -84,19 +84,19 @@ def documents_filters(request):
 def document(request, pk):
   epoxy = Epoxy(request)
 
+  q = Q(pk=pk) if is_number(pk) else Q(slug=pk) 
+
   try:
     if request.user.is_staff:
-      d = Document.objects.get(
-        Q(slug=pk)
-      )
+      d = Document.objects.get(q)
     elif request.user.is_authenticated():
       d = Document.objects.get(
-        Q(slug=pk),
+        q,
         Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)
       )
     else:
       if is_number(pk):
-        d = Document.objects.get(pk=pk, status=Document.PUBLIC)
+        d = Document.objects.get(q, status=Document.PUBLIC)
       else:
         d = Document.objects.get(slug=pk, status=Document.PUBLIC)
   except Document.DoesNotExist,e:
@@ -172,7 +172,7 @@ def working_document_attach_tags(request, pk):
   epoxy.item(d)
  
   if epoxy.is_POST():
-    is_valid, d = helper_free_tag(instance=d, append=False, epoxy=epoxy)
+    is_valid, d = helper_free_tag(instance=d, append=True, epoxy=epoxy)
     if not is_valid:
       return epoxy.throw_error(error=d, code=API_EXCEPTION_FORMERRORS).json()
 

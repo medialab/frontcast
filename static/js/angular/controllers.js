@@ -15,15 +15,81 @@ angular.module('walt.controllers', [])
   .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', function($scope, $rootScope, $location, $route) {
     $scope.filters = {};
     $scope.query = "";
-    $scope.limit = 25;
+    
+    $scope.limit = 10;
     $scope.offset = 0;
-    $scope.default_limit = 25;
+    $scope.default_limit = 10;
     $scope.default_offset = 0;
+    $scope.total_count = 0;
+
+    $scope.page = 0;
+    $scope.numofpages = 0;
+    $scope.pages = [];
+
+    $scope.viewname = '/overview';
+    $scope.showPaginator = false;
+
+    $scope.orders = [
+    {name:'black', shade:'dark'},
+    {name:'white', shade:'light'},
+    {name:'red', shade:'dark'},
+    {name:'blue', shade:'dark'},
+    {name:'yellow', shade:'light'}
+    ];
+    $scope.orderby = $scope.orders[2];
+
+    $scope.pageto = function(page) {
+      var page = Math.max(0, Math.min(page, $scope.numofpages));
+      console.log('page to', page);
+      $scope.offset = page * $scope.limit;
+      $scope.loadFilters();
+    };
+
+    $scope.nextPage = function() {
+      $scope.pageto(+$scope.page + 1);
+    };
+            
+    $scope.prevPage = function() {
+      $scope.pageto(+$scope.page - 1);
+    };
+
+
+    $scope.paginate = function(options) {
+      var options = options || {},
+          pages = [],
+          left = 0,
+          right = 0;
+
+      $scope.total_count = options.total_count;
+      
+      
+      $scope.numofpages = Math.floor($scope.total_count / $scope.limit );
+      $scope.page = Math.floor($scope.offset / $scope.limit);
+
+      if($scope.numofpages < 10) {
+        left = 0;
+        right = +$scope.numofpages;
+      } else{
+        right = Math.min($scope.numofpages, $scope.page<10?10:$scope.page + 5);
+        left = right - 10;
+      }
+
+      for(var i=left; i<right+1; i++)
+        pages.push(i+1);
+
+      $scope.pages = pages;
+      console.log('$scope.paginate', pages);
+    }
+
+
+    $scope.resetFilters = function() {
+      $location.search({
+        'filters': ''
+      });
+    }
 
     $scope.loadFilters = function(options) {
-      var candidates = $location.search().filters,
-          limit = +$location.search().limit,
-          offset = +$location.search().offset;
+      var candidates = $location.search().filters;
 
       if(candidates) {
         try{
@@ -36,10 +102,12 @@ angular.module('walt.controllers', [])
       } else
         $scope.filters = {};
 
-      $scope.limit = isNaN(limit)? $scope.default_limit: limit;
-      $scope.offset = isNaN(offset)? $scope.default_offset: offset;
+      // page computation
+
+      //$scope.page = 
+
       // limit and offset here
-      console.log("%c filters ", 'color:white; background-color:green', $scope.limit, $scope.offset);
+      console.log("%c loading filters ", 'color:white; background-color:green', $scope.limit, $scope.offset);
           
       $scope.$broadcast(CONTROLLER_PARAMS_UPDATED, options);
     };
@@ -51,12 +119,23 @@ angular.module('walt.controllers', [])
     });
 
     
+    $scope.setViewName = function(viewname) {
+      $scope.viewname = viewname;
+      $scope.showPaginator = viewname == "tools" || viewname == "documents";
+      
+    };
+
 
     // commont filter propertiues here
     $scope.setProperties = function(property, value) {
       $scope.filters[property] = [value];
       console.log('%c filters setProperties', 'background: crimson; color: white',property, value, $scope.filters);
-      $location.search('filters', JSON.stringify($scope.filters))
+      $scope.limit = $scope.default_limit;
+      $scope.offset = $scope.default_offset,
+        
+      $location.search({
+        'filters': JSON.stringify($scope.filters)
+      });
     };
 
     $scope.setProperty = function(property, value) {
@@ -84,15 +163,69 @@ angular.module('walt.controllers', [])
     console.log('%c overviewCtrl ', 'background: gold;');
   }])
 
+  /*
+    
+    Document List controller.
+    ===
+
+  */
+  .controller('documentsCtrl', ['$scope', 'DocumentListFactory', function($scope, DocumentListFactory){
+    $scope.setViewName('documents');
+
+    $scope.sync = function() {
+      DocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.filters}, function(data){
+        $scope.items = data.objects;
+        $scope.paginate({
+          total_count: data.meta.total_count
+        });
+      });
+    };
+
+    $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
+      console.log('received...');
+      $scope.sync();
+    });
+
+    $scope.sync();
+    console.log('%c documentsCtrl ', 'background: lime;');
+  }])
 
 
+  .controller('documentProfileCtrl', ['$scope', '$routeParams', 'DocumentFactory', 'DocumentProfileFactory', function($scope, $routeParams, DocumentFactory, DocumentProfileFactory){
+    $scope.setViewName('documents');
+
+    $scope.sync = function() {
+      DocumentFactory.get({id: $routeParams.id}, function(data){
+        $scope.document = data.object;
+        console.log(data);
+      });
+      DocumentProfileFactory.get({id: $routeParams.id}, function(data){
+        $scope.profile = data.object;
+        console.log(data);
+      });
+    };
+
+    $scope.sync();
+    console.log('%c documentProfileCtrl ', 'background: lime;');
+  }])
+
+  
+
+  /*
+    
+    WorkingDocument List of type tool controller.
+    ===
+
+  */
   .controller('toolsCtrl', ['$scope', 'WorkingDocumentListFactory', function($scope, WorkingDocumentListFactory){
-    $scope.name = 'tools';
+    $scope.setViewName('tools');
 
     $scope.sync = function() {
       WorkingDocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.extendFilters({type: 'T'})}, function(data){
         $scope.items = data.objects;
-        console.log(data);
+        $scope.paginate({
+          total_count: data.meta.total_count
+        });
       });
     };
 
@@ -107,11 +240,15 @@ angular.module('walt.controllers', [])
 
 
 
-  .controller('toolCtrl', ['$scope', '$route', '$routeParams', function($scope, $route, $routeParams){
+  .controller('toolCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory',function($scope, $route, $routeParams, WorkingDocumentFactory){
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
-
+    $scope.setViewName('tool');
     console.log('%c toolCtrl ', 'background: lime;', $routeParams.id, $routeParams);
-
+    
+    WorkingDocumentFactory.get({id: $routeParams.id}, function(data){
+      $scope.item = data.object;
+      console.log(data);
+    });
 
   }])
   /*

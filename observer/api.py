@@ -28,6 +28,7 @@ def document_profile(request, document_pk):
     return epoxy.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
   
   if epoxy.is_POST():
+    '''
     if not p.layout:
       return epoxy.throw_error(error='%s' % 'There is no Layout, babe', code=API_EXCEPTION_DOESNOTEXIST).json()
     
@@ -39,6 +40,8 @@ def document_profile(request, document_pk):
     for f in p.layout.questions.all():
       print f
     epoxy.meta('answ',form.cleaned_data)
+    '''
+    pass
   epoxy.item(p)
   return epoxy.json()
 

@@ -6,24 +6,31 @@
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('walt.services', ['ngResource'])
-  .factory('CorpusListFactory', function($resource) {
-    return $resource('/api/corpus', {}, {
-        query: { method: 'GET', isArray: false },
-        create: { method: 'POST' }
-    });
-  })
-  .factory('CorpusFactory', function($resource) {
-    return $resource('/api/corpus/:id', {}, {
-        query: { method: 'GET', params: {id: '@id'}},
-        update: { method: 'POST' }
+  .factory('DocumentFactory', function($resource) {
+    return $resource('/api/document/:id', {}, {
+        query: { method: 'GET',  params: {id: '@id'} },
+        update: { method: 'POST',  params: {id: '@id'} },
+        attach_tags: { method: 'POST',  params: {id: '@id/attach-tags'} }
     });
   })
   .factory('DocumentListFactory', function($resource) {
-    return $resource('/api/corpus/:id/document', {}, {
+    return $resource('/api/document', {}, {
         query: { method: 'GET', isArray: false },
         create: { method: 'POST' }
     });
   })
+
+
+  .factory('DocumentProfileFactory', function($resource) {
+    return $resource('/observer/api/document-profile/:id', {}, {
+        query: { method: 'GET',  params: {id: '@id'} },
+        update: { method: 'POST',  params: {id: '@id'} },
+        attach_tags: { method: 'POST',  params: {id: '@id/attach-tags'} }
+    });
+  })
+
+
+  
   .factory('WorkingDocumentFactory', function($resource) {
     return $resource('/api/working-document/:id', {}, {
         query: { method: 'GET',  params: {id: '@id'} },

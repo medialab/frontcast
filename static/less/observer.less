@@ -1,0 +1,292 @@
+//
+//
+//
+//     ______     ______     ______     ______     ______     __   __   ______     ______    
+//    /\  __ \   /\  == \   /\  ___\   /\  ___\   /\  == \   /\ \ / /  /\  ___\   /\  == \   
+//    \ \ \/\ \  \ \  __<   \ \___  \  \ \  __\   \ \  __<   \ \ \'/   \ \  __\   \ \  __<   
+//     \ \_____\  \ \_____\  \/\_____\  \ \_____\  \ \_\ \_\  \ \__|    \ \_____\  \ \_\ \_\ 
+//      \/_____/   \/_____/   \/_____/   \/_____/   \/_/ /_/   \/_/      \/_____/   \/_/ /_/ 
+//
+//
+//                                       *       +
+//                            *     '                  |
+//                              ()    .-.,-"``"-.    - o -
+//                                    '=/_       \     |
+//                                 *   |::'=._    ;      '
+//                            '         \::.  `=./`,   '
+//                              +    .   '-::..-'``'    *
+//                          jgs   O    *     .       +  .
+//                                   *     .       +
+//
+//
+//  Note: info on header, footer alignement are handled in an inline stylesheet, as stated by gugol
+//  Reset by YII purecss. This less stylesheet will contain the purecss layout.
+//  ---
+//
+/*
+
+  const
+  =====
+
+*/
+@red: #ec5148;
+@smoke: #f5f1e7;
+@creamy: rgb(124, 41,39);
+@white: #ffffff;
+@blue: #33cccc;
+@black: #181818;
+
+@ease-in-quint: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+@ease-in-out-quint: cubic-bezier(0.860, 0.000, 0.070, 1.000);
+
+@module: 6px;
+
+
+/*
+
+  mixins
+  ======
+
+*/
+.transition(@property:all, @duration:.4s, @easing:@ease-in-quint){
+   -webkit-transition: @arguments;
+    -moz-transition: @arguments;
+    -ms-transition: @arguments;
+    -o-transition: @arguments;
+    transition: @arguments; 
+}
+
+
+
+
+/*
+
+  header
+  ======
+
+*/
+.header{
+  background: @smoke;
+  border-bottom: 1px solid darken(@smoke, 6%);
+}
+
+
+
+/*
+
+  paginator
+  =========
+
+*/
+.paginator{
+  display: inline;
+  
+  .inner{
+    background: fade(@creamy, 4%);
+    border-radius: @module*3;
+    padding: @module 0;
+    display: inline-block;
+    margin: @module 0 0 0;
+  }
+  
+  .circle{
+    position: absolute;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    z-index: -1;
+  }
+
+  .prev, .next, .page{
+    font: @module*2/@module*4 'Source Code Pro';
+    color: @black;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 @module/2;
+    width: 24px;
+    height: 24px;
+  }
+
+  .prev:hover, .next:hover{
+    color: @red;
+  }
+
+  .prev{
+    border-right: 1px solid fade(@creamy, 15%);
+  }
+
+  .next{
+    border-left: 1px solid fade(@creamy, 15%);
+  }
+
+  .page{
+    &:hover, &.selected{
+      color: @white;
+    }
+
+    &:not(.selected):hover .circle{
+      background-color: @blue;
+    }
+
+    &.selected .circle{
+      background-color: @red;
+    }
+  }
+} // endof paginator
+
+
+
+/*
+
+  item and its properties
+  =======================
+
+*/
+.item{
+  max-width: 300px;
+}
+
+.big-item{
+  padding-top: @module*6;
+  font: 12px/24px 'Source Sans Pro';
+
+  .cover{
+    height: 300px;
+    padding: @module*2;
+    background: lighten(@creamy, 67.5%);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    
+    .box{
+      overflow: hidden;
+       height: 300px;
+    }
+  }
+
+  h2, h3{
+    font-weight: normal;
+    color: @black;
+    padding: 0;
+    margin: 0;
+  }
+
+  h3{
+    font: 1.4rem/24px 'Source Sans Pro';
+    margin-bottom: @module*2;
+    
+  }
+
+  h4{
+    font: 1.3rem/24px 'Source Sans Pro';
+    margin: 0 0 @module 0;
+  }
+
+  .abstract{
+    font: 1.5rem/24px 'Source Sans Pro';
+    margin: 0 @module*2;
+  }
+
+  .tags{
+    margin: 0 @module*3 @module*2 @module*3;
+    border-bottom: 1px solid fade(@black, 10%);
+    padding-bottom: @module*2;
+  }
+
+  .tag{
+    font: 12px/24px 'Source Code Pro';
+    padding: 5px 7px;
+    margin: 0 @module 0 0;
+
+    cursor: pointer;
+    background: fade(@creamy, 11%);
+    border-radius: 3px;
+    text-align: center;
+  }
+
+  .property{
+    margin: 0 @module*3 @module*2 @module*3;
+    border-bottom: 1px solid fade(@black, 10%);
+    padding: @module;
+    clear:both;
+
+    .value{
+      display: inline-block;
+      float:right;
+      text-align: right;
+      color: @black;
+    }
+  }
+}
+
+
+
+/*
+
+  Counter
+  =======
+
+*/
+.counter{
+  position: relative;
+  display: inline;
+  line-height: 36px;
+  margin-top: @module;
+  margin-right: @module*3;
+  font: 1.4rem/36px 'Source Sans Pro';
+    
+  .number{
+    font: 1.8rem/36px 'Source Code Pro';
+    color: @black;
+  }
+}
+
+
+/*
+
+  fancy select
+  ============
+
+*/
+div.fancy-select{
+  font: 12px/24px 'Source Code Pro';
+  color: @black;
+  display: inline-block;
+  text-transform: lowercase;
+  text-align: left;
+
+  div.trigger{
+    background-color: fade(@creamy, 4%);
+    border-width: 0px;
+    box-shadow: none;
+
+    &.open{
+      border-width: 0px;
+    }
+
+    &:after{ // fontawesome hack
+      display: inline-block;
+      font: 12px/24px 'FontAwesome';
+      color: @black;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\f105";
+      border-width: 0;
+      top: 16px;
+      right: 12px;
+    }
+  }
+
+  div.fancy-select ul.options{
+
+  }
+}

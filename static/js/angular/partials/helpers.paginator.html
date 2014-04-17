@@ -1,0 +1,8 @@
+<div class="inner">
+      <div class="prev"  ng-click="prevPage()"><i class="fa fa-angle-left"></i><div class="circle"></div></div>
+      <div ng-repeat="i in pages" class="page" ng-class="page + 1 == i?'selected':''" ng-click="pageto(i-1)">{{i}}<div class="circle"></div></div>
+      <div class="next"  ng-click="nextPage()"><i class="fa fa-angle-right"></i><div class="circle"></div></div>
+    </div>
+    <!-- select ng-model="orderby" ng-options="o.name for o in orders" fancy-select >
+      <option value="">-- choose color --</option>
+    </select -->

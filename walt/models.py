@@ -58,6 +58,8 @@ class Tag(models.Model):
   RATING = 'Ra'
   COURSE = 'Co'
 
+  COVER_URL = 'CU'
+
   FAMILY = 'CA' # type/value tag ! for working document
   COPYRIGHT = 'CP' # open source, for working document
   REMOTE = 'RE' # is remote or local for working document
@@ -74,6 +76,7 @@ class Tag(models.Model):
     (ACTION, 'ACTION'),
     (RATING, 'RATING'),
     (COURSE, 'course code'),
+    (COVER_URL, 'Cover URL (shorten url)'),
     (FAMILY, 'family of tags'),
     (COPYRIGHT, 'opensource or commercial?'),
     (REMOTE, 'local or remote?')
@@ -200,7 +203,7 @@ class WorkingDocument(AbstractDocument):
   TYPE_CHOICES = (
     (SEQUENCE, 'pedagogical sequence'),
     (TASK,     'pedagogical task'),
-    (TOOL,     'pedagogical tool'),
+    (TOOL,     'tool'),
     (COPY,     'carbon copy'),
     (DONTKNOW, 'I really don\'t know yet...'),
     (COURSE,   'course'), # ex tag cursus, it must be enlightened
@@ -226,6 +229,16 @@ class WorkingDocument(AbstractDocument):
 
   status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PRIVATE, blank=True, null=True)
   type = models.CharField(max_length=32, choices=TYPE_CHOICES)
+
+
+  def get_tags(self):
+    tags = {};
+    for t in self.tags.all():
+      t_type = '%s'%t.type
+      if t_type not in tags:
+        tags[t_type] = []
+      tags[t_type].append(t.json())
+    return tags
 
 
   class Meta:
@@ -297,8 +310,9 @@ class WorkingDocument(AbstractDocument):
         d.update({
           'copy_of': [{'id':c.id, 'type':c.type} for c in self.copies.all()]
         })
+
     d.update({
-      'tags': [t.json() for t in self.tags.all()]
+      'tags': self.get_tags()
     })
     return d
 
@@ -514,6 +528,8 @@ class Document(AbstractDocument):
         tags[t_type] = []
       tags[t_type].append(t)
     return tags
+
+
   
 
   def json(self, deep=False):
@@ -525,6 +541,10 @@ class Document(AbstractDocument):
       if t_type not in tags:
         tags[t_type] = []
       tags[t_type].append(t.json())
+
+    # attach working docs!
+    devices = [device.json() for device in self.devices.all()]
+
 
     # undesratnd remote/ locales file
     attachments = self.get_attachments(deep);
@@ -546,6 +566,7 @@ class Document(AbstractDocument):
       'reference': self.reference,
       'owner': self.owner.username,
       'tags': tags,
+      'devices': devices,
       'type': self.type,
       'attachments':attachments,
       'remote': self.remote,

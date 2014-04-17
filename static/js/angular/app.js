@@ -38,7 +38,9 @@ angular.module('walt', [
   'walt.services',
   'walt.directives',
   'walt.controllers',
-  'd3'
+  'd3',
+  'toggle-switch',
+  'ngSanitize',
 ]).
 config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider, $cookies) {
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -50,10 +52,16 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   // $routeProvider.when('/w/edit', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.edit.html', controller: 'workingdocumentCreateCtrl'});
   
   $routeProvider.when('/', {templateUrl: '/frontcast/static/js/angular/partials/overview.html', controller: 'overviewCtrl'});
+  
+  // documents
+  $routeProvider.when('/docs', {templateUrl: '/frontcast/static/js/angular/partials/document.list.html', controller: 'documentsCtrl', reloadOnSearch:false});
+  $routeProvider.when('/doc/:id/profile', {templateUrl: '/frontcast/static/js/angular/partials/document.profile.html', controller: 'documentProfileCtrl'});
+
+  // tools
   $routeProvider.when('/tools', {templateUrl: '/frontcast/static/js/angular/partials/items.list.html', controller: 'toolsCtrl'});
   $routeProvider.when('/tools/add', {templateUrl: '/frontcast/static/js/angular/partials/tool.add.html', controller: 'toolCtrl'});
   $routeProvider.when('/tools/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/tool.add.html', controller: 'toolCtrl'});
-    
+  $routeProvider.when('/tool/:id', {templateUrl: '/frontcast/static/js/angular/partials/tool.html', controller: 'toolCtrl'});
 
   $routeProvider.otherwise({redirectTo: '/'});
 
