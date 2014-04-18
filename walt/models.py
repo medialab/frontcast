@@ -193,7 +193,6 @@ class WorkingDocument(AbstractDocument):
   
   copies are symmetrical relationships between different forks.
   '''
-  COURSE    = 'C'
   SEQUENCE  = 'B'
   TASK      = 'I'
   TOOL      = 'T'
@@ -206,11 +205,33 @@ class WorkingDocument(AbstractDocument):
     (TOOL,     'tool'),
     (COPY,     'carbon copy'),
     (DONTKNOW, 'I really don\'t know yet...'),
-    (COURSE,   'course'), # ex tag cursus, it must be enlightened
+  )
+
+  # various course type, from lycee to Phd
+  COURSE_SECONDARY_SCHOOL = 'course_secondary_school'
+  COURSE_MASTER = 'course_master'
+  COURSE_PHD = 'course_phd'
+
+  COURSE_TYPE_CHOICES = (
+    (COURSE_SECONDARY_SCHOOL,  'secondary school course'),
+    (COURSE_MASTER,            'master course'), # ex tag cursus, it must be enlightened
+    (COURSE_PHD,            'phd course'), 
+  )
+  
+  # various sessions inside a course. feature to be tested.
+  SESSION_ATELIER = 'session_atelier'
+  SESSION_THEORY  = 'session_theory'
+  SESSION_DEBATE  = 'session_debate'
+
+  SESSION_TYPE_CHOICES = (
+    (SESSION_ATELIER, 'atelier'),
+    (SESSION_THEORY, 'theoric course'),
+    (SESSION_DEBATE, 'debate'),
   )
 
   TYPE_TREE = [SEQUENCE, TASK, TOOL]
 
+  # various status. feature to be tested, not used.
   WAITING_FOR_PUBLICATION = 'W' # ask for peer review !
   PUBLIC                  = 'P' # make the document publicly available
   PRIVATE                 = 'M' # read and edit only to owner
@@ -228,7 +249,7 @@ class WorkingDocument(AbstractDocument):
   documents = models.ManyToManyField('Document', null=True, blank=True) # internal links with existings documents
 
   status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PRIVATE, blank=True, null=True)
-  type = models.CharField(max_length=32, choices=TYPE_CHOICES)
+  type = models.CharField(max_length=32, choices=TYPE_CHOICES + COURSE_TYPE_CHOICES + SESSION_TYPE_CHOICES)
 
 
   def get_tags(self):
@@ -306,10 +327,13 @@ class WorkingDocument(AbstractDocument):
     }
 
     if deep:
+      d['documents'] = [doc.json() for doc in self.documents.all()]
       if self.type == WorkingDocument.COPY:
         d.update({
           'copy_of': [{'id':c.id, 'type':c.type} for c in self.copies.all()]
         })
+    else:
+      d['documents'] = self.documents.count()
 
     d.update({
       'tags': self.get_tags()

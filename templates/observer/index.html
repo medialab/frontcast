@@ -274,21 +274,24 @@ z-index: 1000;
             <ul>
                 <li><a href="#/">overview</a>
                 </li>
-                <li ng-class="viewname=='/documents' ? 'pure-menu-selected': ''"><a href="#/docs">documents</a></li>
+                <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''"><a href="#/docs">documents</a></li>
                 
-                <li ng-class="viewname=='/tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
+                <li ng-class="viewname=='tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#/tools">tools</a>
                 </li>
-
+                <li ng-class="viewname=='courses' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
+                    <a href="#/courses">courses</a>
+                </li>
             </ul>
         </div>
     </div>
 
     <div id="main">
         <div class="header">
-          <div class="inner" ng-if="showPaginator">
-            <div class="counter" ng-include src="'/frontcast/static/js/angular/partials/helpers.counter.html'"></div>
-  <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
+          <div class="inner">
+            <form class="pure-form" ng-submit="search()">
+            <input type="text" ng-model="query" class="pure-input"/>
+            </form>
           </div>
 
         </div>

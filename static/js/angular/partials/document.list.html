@@ -1,3 +1,7 @@
+<div class="menu">
+<div class="counter" ng-include src="'/frontcast/static/js/angular/partials/helpers.counter.html'"></div>
+  <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
+</div>
 
 <div class="doc item" ng-class="item.status" ng-repeat="item in items">
   <div class="inner">
@@ -9,6 +13,9 @@
         {{tag.name}}
       </span>
     </span>
+    <span class="tag date" ng-click="setProperties('type__in', item.type)">
+        {{item.type}}
+      </span>
   </div>
   <div class="devices">
     <span class="tag device" ng-repeat="device in item.devices" ng-click="setProperties('devices__working_document__in', device.id)">{{device.title}}</span>
