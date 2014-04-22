@@ -35,6 +35,7 @@
 @white: #ffffff;
 @blue: #33cccc;
 @black: #181818;
+@grey: #777777;
 
 @ease-in-quint: cubic-bezier(0.755, 0.050, 0.855, 0.060);
 @ease-in-out-quint: cubic-bezier(0.860, 0.000, 0.070, 1.000);
@@ -177,6 +178,7 @@
     margin: 0;
   }
 
+
   h3{
     font: 1.4rem/24px 'Source Sans Pro';
     margin-bottom: @module*2;
@@ -185,12 +187,26 @@
 
   h4{
     font: 1.3rem/24px 'Source Sans Pro';
-    margin: 0 0 @module 0;
+    margin: @module*2 @module*3;
+  }
+  h5{
+    font: 1.3rem/24px 'Source Sans Pro';
+    margin: @module;
+    font-style: italic;
+    color: #bbb;
+    text-align: center;
   }
 
   .abstract{
     font: 1.5rem/24px 'Source Sans Pro';
-    margin: 0 @module*2;
+    margin: 0 @module*4;
+    color: @black;
+  }
+  
+  .notes{
+    font: 1.3rem/24px 'Source Sans Pro';
+    margin: 0 @module*4;
+    color: @grey;
   }
 
   .tags{
@@ -220,7 +236,31 @@
       display: inline-block;
       float:right;
       text-align: right;
-      color: @black;
+      color: @grey;
+      display: inline-block;
+    }
+
+    &.boolean{
+      .value{
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+
+      &::before{
+        content: "\f10c";
+      }
+      }
+      &.has-value{
+        color: @black;
+          
+        .value::before{
+          color: @black;
+          content: "\f05d";
+        }
+      }
     }
   }
 }
@@ -289,4 +329,147 @@ div.fancy-select{
   div.fancy-select ul.options{
 
   }
+}
+
+
+
+/* ==== editable-form ==== */
+
+/* class for single editable element */
+.editable-wrap {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* remove bottom-margin for bootstrap */
+.editable-wrap .editable-controls,
+.editable-wrap .editable-error {
+  margin-bottom: 0;
+}
+
+/* remove bottom-margin of inputs */
+.editable-wrap .editable-controls > input,
+.editable-wrap .editable-controls > select,
+.editable-wrap .editable-controls > textarea {
+  margin-bottom: 0;
+}
+
+/* keep buttons on the same line */
+.editable-wrap .editable-input {
+  display: inline-block;
+}
+
+.editable-buttons {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.editable-buttons button {
+  margin-left: 5px;
+}
+
+/* in bootstrap width: 100% => buttons go outside the box */
+.editable-input.editable-has-buttons {
+  width: auto;
+}
+
+/* ==== editable-bstime ==== */
+
+/* workaround for bootstrap that sets width: 100% and inputs become too wide */
+.editable-bstime .editable-input input[type="text"] {
+
+}
+
+/* less padding for .well */
+.editable-bstime .well-small {
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+/* ==== editable-range ==== */
+
+.editable-range output {
+  display: inline-block;
+  min-width: 30px;
+  vertical-align: top;
+  text-align: center;
+}
+
+/* ==== editable-color ==== */
+
+.editable-color input[type="color"] {
+  width: 50px;
+}
+
+
+/* ==== editable-checkbox ==== */
+/* ==== editable-checklist ==== */
+/* ==== editable-radiolist ==== */
+
+.editable-checkbox label span,
+.editable-checklist label span,
+.editable-radiolist label span {
+  margin-left: 7px;
+  margin-right: 10px;
+}
+
+/* ==== element ==== */
+
+/* hiding element */
+.editable-hide {
+  display: none !important;
+}
+
+.editable-click,
+a.editable-click {
+  //text-decoration: none;
+  //color: #428bca;
+  //border-bottom: dashed 1px #428bca;
+}
+
+.editable-click:hover, 
+a.editable-click:hover {
+  //text-decoration: none;
+  //color: #2a6496;
+  //border-bottom-color: #2a6496;
+  background: fade(@blue, 10%);
+}
+
+/* editable-empty */
+.editable-empty, 
+.editable-empty:hover, 
+.editable-empty:focus,
+a.editable-empty, 
+a.editable-empty:hover, 
+a.editable-empty:focus {
+  //font-style: italic; 
+  //color: #DD1144;  
+  //text-decoration: none;
+}
+.editable-controls input[type="text"],
+.editable-controls input[type="password"],
+.editable-controls input[type="email"],
+.editable-controls input[type="url"],
+.editable-controls input[type="date"],
+.editable-controls input[type="month"],
+.editable-controls input[type="time"],
+.editable-controls input[type="datetime"],
+.editable-controls input[type="datetime-local"],
+.editable-controls input[type="week"],
+.editable-controls input[type="number"],
+.editable-controls input[type="search"],
+.editable-controls input[type="tel"],
+.editable-controls input[type="color"],
+.editable-controls select,
+.editable-controls textarea {
+  padding: 0.5em 0.6em;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font: 1.2rem/1.618 'Source Code Pro';
 }

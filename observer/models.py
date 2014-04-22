@@ -52,12 +52,14 @@ class Property(models.Model):
   METH_DETAILS_DATASETS   = 'details_data'
   METH_DETAILS_INTERVIEWS = 'details_inte'
   METH_DETAILS_NEWSPAPERS = 'details_news'
+  METH_DETAILS_SOCIALNETW = 'details_soci'
   METH_DETAILS_SITEVISIT  = 'details_site'
 
   TYPE_METH_DETAILS_CHOICES = ( # to be used as multiple choices inside the observer.forms.ProfileForm)
     (METH_DETAILS_DATASETS,   'they detail datasets'),
     (METH_DETAILS_INTERVIEWS, 'they detail interview'),
     (METH_DETAILS_NEWSPAPERS, 'they detail newspapers'),
+    (METH_DETAILS_SOCIALNETW, 'they detail social Network'),
     (METH_DETAILS_SITEVISIT,  'they detail site visit')
   )
   
@@ -208,12 +210,19 @@ class DocumentProfile(models.Model):
     }
 
     d['properties'] = []
+    d['properties_interviews'] = []
+    d['properties_meth_detail'] = []
 
     properties = [p.type for p in self.properties.all()]
 
     for t in Property.TYPE_CHOICES:
-      d['properties'].append({'label':t[1], 'value': t[0] in properties})
+      d['properties'].append({'label':t[1], 'name':t[0], 'value': t[0] in properties})
 
+    for t in Property.TYPE_INTERVIEW_CHOICES:
+      d['properties_interviews'].append({'label':t[1], 'name':t[0], 'value': t[0] in properties})
+
+    for t in Property.TYPE_METH_DETAILS_CHOICES:
+      d['properties_meth_detail'].append({'label':t[1], 'name':t[0], 'value': t[0] in properties})
 
 
     return d

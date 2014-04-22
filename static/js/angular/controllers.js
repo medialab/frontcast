@@ -126,7 +126,7 @@ angular.module('walt.controllers', [])
       } else {
         $scope.filters = {};
       }
-      console.log("%c loading filters ", 'color:white; background-color:green', $scope.query, $scope.offset, $scope.limit);   
+      console.log("%c loading filters ", 'color:white; background-color:green', 'query:',$scope.query, $scope.offset, $scope.limit);   
       $scope.$broadcast(CONTROLLER_PARAMS_UPDATED, options);
     };
 
@@ -207,8 +207,14 @@ angular.module('walt.controllers', [])
   }])
 
 
-  .controller('documentProfileCtrl', ['$scope', '$routeParams', 'DocumentFactory', 'DocumentProfileFactory', function($scope, $routeParams, DocumentFactory, DocumentProfileFactory){
+  .controller('documentProfileCtrl', ['$scope', '$routeParams', 'DocumentFactory', 'DocumentProfileFactory',  function($scope, $routeParams, DocumentFactory, DocumentProfileFactory){
     $scope.setViewName('documents');
+
+    $scope.document_types = [
+      {value: 'ControversyWeb', text: 'ControversyWeb'},
+      {value: 'ControversyVideo', text: 'ControversyVideo'},
+      {value: 'Ebook', text: 'Ebook'}
+    ]; 
 
     $scope.sync = function() {
       DocumentFactory.get({id: $routeParams.id}, function(data){
@@ -220,6 +226,17 @@ angular.module('walt.controllers', [])
         console.log(data);
       });
     };
+
+
+    $scope.updateDocument = function(field, value) {
+      console.log('%c documentProfileCtrl.updateDocument ', 'background: lime;', field, value);
+      var params = {};
+      params[field] = value;
+      return DocumentFactory.update({id: $routeParams.id}, params, function(data){
+        $scope.document = data.object;
+        console.log(data);
+      });
+    }
 
     $scope.sync();
     console.log('%c documentProfileCtrl ', 'background: lime;');

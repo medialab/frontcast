@@ -42,10 +42,11 @@ api_urlpatterns = patterns('walt.api',
     url(r'url/title$', 'url_title', name='walt_api_url_title'),
 
     url(r'document/$', 'documents', name='walt_api_documents'),
-    url(r'document/filters/$', 'documents_filters', name='walt_api_documents_filters'),
+    url(r'document/filters$', 'documents_filters', name='walt_api_documents_filters'),
     url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)/$', 'document', name='walt_api_document'),
     url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)/attach-tags/$', 'document_attach_tags', name='walt_api_document_attach_tags'),
-
+    url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'document', name='walt_api_update_document'),
+    
 
 
     url(r'biblib/$', 'biblib_proxy', name='walt_api_biblib_proxy'),

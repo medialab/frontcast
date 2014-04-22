@@ -41,6 +41,7 @@ angular.module('walt', [
   'd3',
   'toggle-switch',
   'ngSanitize',
+  'xeditable'
 ]).
 config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider, $cookies) {
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -56,6 +57,7 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   // documents
   $routeProvider.when('/docs', {templateUrl: '/frontcast/static/js/angular/partials/document.list.html', controller: 'documentsCtrl', reloadOnSearch:false});
   $routeProvider.when('/doc/:id/profile', {templateUrl: '/frontcast/static/js/angular/partials/document.profile.html', controller: 'documentProfileCtrl'});
+  $routeProvider.when('/doc/:id/profile/edit', {templateUrl: '/frontcast/static/js/angular/partials/document.profile.edit.html', controller: 'documentProfileCtrl'});
 
   // courses
   $routeProvider.when('/courses', {templateUrl: '/frontcast/static/js/angular/partials/course.list.html', controller: 'coursesCtrl', reloadOnSearch:false});

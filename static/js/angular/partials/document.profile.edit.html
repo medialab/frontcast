@@ -1,88 +1,93 @@
-<div class="pure-g">
+<div class="big-item">
+  <h2>{{document.title}}</h2>
+  <h3>{{document.type}}</h3>
+  {{document.reference}}
 
-  
-  <div class="pure-u-1-2">
-    <h2>{{document.title}}</h2>
-    <div class="tags">
-      <span class="date">
-        <span class="tag date" class="wd" ng-repeat="tag in document.tags.Date">
-          {{tag.name}}
-        </span>
-      </span>
-      <span class="tag institution" class="wd" ng-repeat="tag in document.tags.Institution">
-          {{tag.type}} {{tag.name}}
-      </span>
-    </div>
-    <span class="tag device" ng-repeat="device in document.devices" ng-click="setProperties('devices__working_document__in', device.id)">{{device.title}}</span>
-    
-  </div>
-  
-
-  <div class="pure-u-1-2">
-
-
-    <div>
-      <h3>Notes</h3>
-      <div class="author">by {{profile.owner}}</div>
-      <p>{{profile.notes}}</p>
-    </div>
-    <table class="pure-table" style="width:100%">
-      <thead>
-          <tr>
-            <th>property</th>
-            <th>yes / no</th>
-          </tr>
-      </thead>
-
-      <tbody>
-          <tr ng-repeat="property in profile.properties">
-            <td>{{property.label}}</td>
-            <td><div ng-if="property.value">x</div></td
-          </tr>
-      </tbody>
-</table>
-
+  <form class="pure-form">
     <div class="pure-g">
-    <div class="pure-u-1-2">aaa</div>
-    <div class="pure-u-1-2">bbb</div>
-  </div>
-    <!--
-    <form class="pure-form pure-form-stacked" name="editForm" ng-submit="addTool()">
-      <label class="required">notes</label>
-       <textarea type="text" class="pure-input-1" ng-model="profile.notes"></textarea>
-      <p>
-        <label class="required">title</label>
-        <input class="pure-input-1-2" required type="text" ng-model="title">
-      </p>
-      <p>
-        <label>type</label>
-        <input class="pure-input-1-2" required type="text" ng-model="name">
-      </p>
+      <div class="pure-u-1-2">
+    
+      <label>Notes</label>
+      <textarea class="pure-input-1" rows="4" placehodlers="comments or something interesting about this document" ng-model="profile.notes"></textarea>
+
+      <table class="pure-table" style="width: 100%; margin-top:18px">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>question</th>
+              <th>value</th>
+              <th>Yes</th>
+              <th>No</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="property in profile.properties">
+            <td></td>
+            <td>{{property.name}}</td>
+            <td>{{property.value}}</td>
+            <td>
+              <input type="radio" ng-model="property.value" ng-value="true"/>
+            </td>
+            <td>
+              <input type="radio" ng-model="property.value" ng-value="false" />
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
       
-      <p>
-        <label>some words about it (markdown syntax)</label>
-        <textarea type="text" class="pure-input-1-2" ng-model="workingdocument.abstract_raw"></textarea>
-      </p>
+      <table class="pure-table" style="width: 100%; margin-top:18px">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>question</th>
+              <th>value</th>
+              <th>Yes</th>
+              <th>No</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="property in profile.properties_interviews">
+            <td></td>
+            <td>{{property.name}}</td>
+            <td>{{property.value}}</td>
+            <td>
+              <input type="radio" ng-model="property.value" ng-value="true"/>
+            </td>
+            <td>
+              <input type="radio" ng-model="property.value" ng-value="false" />
+            </td>
+          </tr>
+        </tbody>
+        
+      </table>
+
+      <table class="pure-table" style="width: 100%; margin-top:18px">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>question</th>
+              <th>value</th>
+              <th>Yes</th>
+              <th>No</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="property in profile.properties_meth_detail">
+            <td></td>
+            <td>{{property.name}}</td>
+            <td>{{property.value}}</td>
+            <td>
+              <input type="radio" ng-model="property.value" ng-value="true"/>
+            </td>
+            <td>
+              <input type="radio" ng-model="property.value" ng-value="false" />
+            </td>
+          </tr>
+        </tbody>
+        
+      </table>
       
-      <fieldset class="pure-group">
-        <label>url address</label>
-            <input type="text" class="pure-input-1-2" placeholder="http://">
-            <input type="text" class="pure-input-1-2" placeholder="picture url">
-      </fieldset>
-      <p>
-        <label>comma separated tags</label>
-        <input type="text" ng-model="csv_tags">
-      </p>
-      <p>
-        <label>overall rating</label>
-        <angular-ratings ng-model="user_rating" notify-url="notify.json" notify-id="id">
-      </p>
-      <button ng-click="addTodo()" ng-disabled="status != 'available'" class="pure-button" value="add">
-        <span ng-if="status == 'available'">save modifications</span>
-        <span ng-if="status == 'busy'">working...</span>
-      </button>
-      
-    </form>
-  -->
-  </div>
+    </div>
+  </form>
 </div>

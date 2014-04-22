@@ -5,7 +5,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 
 from observer.models import DocumentProfile
-
+from walt.models import Document
 
 
 def index(request):
@@ -25,6 +25,10 @@ def document_profile(request, document_pk):
   try:
     p = DocumentProfile.objects.get(document__pk=document_pk)
   except DocumentProfile.DoesNotExist, e:
+    # create document profile
+    p = DocumentProfile(document=Document.objects.get(pk=document_pk), owner=request.user)
+    p.save()
+  except Document.DoesNotExist, e:
     return epoxy.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
   
   if epoxy.is_POST():

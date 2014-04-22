@@ -16,13 +16,13 @@
             </div>
           </div>
         
-          <div class="abstract" ng-bind-html="item.abstract">
-          
+          <div class="abstract">
+           <p ng-bind-html="item.abstract"></p>
           </div>
         </div>
         <div class="pure-u-1-2">
 
-          <div class="tags">
+          <div class="tags" >
             <h4>tags</h4>
             <span class="tag" class="wd" ng-repeat="tag in item.tags.CA">
               {{tag.name}}
@@ -46,7 +46,13 @@
   
 
   <div class="pure-u-1-4">
-    <div class="list">list of document
-    </div>
+    <div ng-repeat="thumb in item.documents">
+        <div ng-include src="'/frontcast/static/js/angular/partials/document.thumb.html'"></div>
+      </div>
   </div>
+
+  <div class="pure-u-1-2">
+      
+    </div>
+
 </div>

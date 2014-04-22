@@ -112,6 +112,7 @@ class Command(BaseCommand):
 
                 print "you chosen", doc.title
             doc.type  = document_type
+            doc.permalink = permalink
             doc.save()
             
             pro, created = DocumentProfile.objects.get_or_create(document=doc, defaults={'owner': owner})
@@ -134,14 +135,14 @@ class Command(BaseCommand):
             for device_type in Device.TYPE_CHOICES:
               if device_type[0] in row:
                 devices = [t.strip() for t in row[device_type[0]].strip().split(',')] if row[device_type[0]].strip() not in (u'NONE', u'RECHECK') else []
-                print 'device', device_type[0], len(devices)
+                #print 'device', device_type[0], len(devices)
                 for d in devices:
-                  print '  creating ', d
+                  #print '  creating ', d
                   wod, created = WorkingDocument.objects.get_or_create(title=d, type=WorkingDocument.TOOL, owner=owner)
-                  print '  created ', d
-                  print '  connectiong ', d, device_type[0][:12]
+                  #print '  created ', d
+                  #print '  connectiong ', d, device_type[0][:12]
                   device, created = Device.objects.get_or_create(document=doc, working_document=wod, type=device_type[0][:12])
-                  print '  connected ', d
+                  #print '  connected ', d
 
             # NORMAL PROPERTIES
             for property_type in Property.TYPE_CHOICES:
@@ -157,11 +158,47 @@ class Command(BaseCommand):
                   pro.properties.add(prop)
                   pro.save()
 
-            #MULTICHOICE PROPERTIES (to be translated!)
+            #MULTICHOICE PROPERTIES
+            translation_meth_details = {
+              u'datasets': Property.METH_DETAILS_DATASETS,
+              u'interviews': Property.METH_DETAILS_INTERVIEWS,
+              u'specific media (newspapers)': Property.METH_DETAILS_NEWSPAPERS,
+              u'social networks': Property.METH_DETAILS_SOCIALNETW,
+              u'site visits': Property.METH_DETAILS_SITEVISIT
+              
+            }
+
+
             meth_details = [t.strip() for t in row['meth_details'].strip().split(',')] if row['meth_details'].strip() not in (u'NONE', u'RECHECK') else []
             print 'meth_details',meth_details
-            if reference == 'uniman-hum3-2011-0004':
-              break
+            for meth_detail in meth_details:
+              meth_detail = meth_detail.lower()
+              if meth_detail in translation_meth_details:
+                prop = Property.objects.get(type=translation_meth_details[meth_detail])
+                pro.properties.add(prop)
+                pro.save()
+              else:
+                print 
+                raw_input('%s not found. press any key to continue' % meth_detail)
+
+            translation_interview_data = {
+              u'video interviews': Property.INTERVIEW_VIDEO,
+              u'audio interviews': Property.INTERVIEW_AUDIO,
+              
+            }
+
+            interview_data = [t.strip() for t in row['interview_data'].strip().split(',')] if row['interview_data'].strip() not in (u'NONE', u'RECHECK') else []
+            print 'interview_data',interview_data
+            
+            for interview in interview_data:
+              interview = interview.lower()
+              if interview in translation_interview_data:
+                prop = Property.objects.get(type=translation_interview_data[interview])
+                pro.properties.add(prop)
+                pro.save()
+              else:
+                print interview
+                raw_input('%s not found. press any key to continue' % interview)
 
           self.stdout.write("    done!")
           self.stdout.write('''
