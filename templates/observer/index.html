@@ -58,10 +58,12 @@
     background-color: #f9f7ed;
   }
 
-  #menu{
-    background-color: transparent;
-    
+  a{
+    font: 1.2rem/1.618em 'Source Sans Pro', sans-serif;
+    text-decoration: none;
+    color: #181818;
   }
+
 
   #menu a{
     color: #181818;
@@ -143,25 +145,7 @@
     text-align: left;
   }
 
-  .view{
-    margin-top: 36px;
-  }
-
-  .view .menu ul {
-    padding: 12px 0;
-    margin: 0;
-  }
-
-  .view .menu ul li{
-    display: inline-block;
-    padding: 6px;
-  }
-
-  .view .menu ul li a{
-    font: 1.2rem/1.618em 'Source Sans Pro', sans-serif;
-    text-decoration: none;
-    color: #181818;
-  }
+  
 
   label.required{
     font-weight: bold;
@@ -187,14 +171,9 @@
     color: white;
   }
 
-  .doc {
-    margin: 12px;
-  }
-  .doc h4{
-    margin: 0;
-  }
 
   #main{
+    margin: 0;
     padding: 48px 0;
   }
 
@@ -211,48 +190,7 @@ z-index: 1000;
   }
 
 
-  .doc, .item{
-    position: relative;
-    width: 30.555555555556%;
-    float: left;
-    padding: 0;
-    margin: 0 2.166666666667% 30px 0;
-
-
-  }
-
-  .doc .inner, .item .inner{
-    position: relative;
-    clear: left;
-    background: #fff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
-        height: 210px;
-  }
-
-  .doc h4, .item h4{
-    position: relative;
-    padding: 12px 18px;
-  }
-
-  .doc .devices{
-    margin: 0 18px;
-    word-break: break-word;
-  }
-
-  .doc h4 a, .item h4 a{
-    text-decoration: none;
-    font-weight: normal;
-    color: #181818;
-  }
-
-  .doc h4 a:hover, .doc h4 a:active {
-
-  }
+  
 
 </style>
 
@@ -340,6 +278,7 @@ z-index: 1000;
 {% block scripts %}
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <script src="{{ STATIC_URL }}/js/libs/jquery.fancyselect.js"></script>
+    <script src="{{ STATIC_URL }}/js/libs/jquery.scrolltofixed.js"></script>
     <!-- api endpoints are hardcoded inside services.js -->
     <!-- In production use: -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
