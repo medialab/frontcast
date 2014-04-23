@@ -9,8 +9,8 @@ angular.module('walt.filters', [])
   */
   .filter('excerpt', function() {
     return function(text) {
-
-      return String(text).split(/[\s\n]/).slice(0,10).join(" ") + ' [...]'
+      var contents = String(text).split(/[\s\n]/);
+      return contents.length > 9? contents.slice(0,10).join(" ") + ' [...]': String(text)
     };
   })
   .filter('interpolate', ['version', function(version) {
