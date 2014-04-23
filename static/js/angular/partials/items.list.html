@@ -1,14 +1,12 @@
-<div class="menu">
-<div class="counter" ng-include src="'/frontcast/static/js/angular/partials/helpers.counter.html'"></div>
-  <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
-</div>
+<div class="menu" scroll-to-fixed margin-top="48" ng-include src="'/frontcast/static/js/angular/partials/helpers.menu.html'"></div>
 
 <div class="doc item" ng-class="item.status" ng-repeat="item in items">
   <div class="inner">
   <h4><a ng-href="#/tool/{{item.id}}">#{{item.id}} {{item.title}}</a></h4>
-  <a href="#/tools/{{item.id}}/edit">edit</a>
-  <a href="{{item.permalink}}" target="_blank">{{item.permalink}}</a>
-  <div class="content">{{item.abstract_raw}}</div>
+  <div class="permalink">
+    <a href="{{item.permalink}}" target="_blank">{{item.permalink}}</a>
+  </div>
+  <div class="abstract">{{item.abstract_raw | excerpt}}</div>
   <div class="tags">
     <span class="tag" class="wd" ng-repeat="tag in item.tags" ng-click="setProperties('tags__slug__in', tag.slug)">
       {{tag.name}}

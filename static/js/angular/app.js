@@ -64,7 +64,7 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   $routeProvider.when('/course/:id', {templateUrl: '/frontcast/static/js/angular/partials/course.html', controller: 'courseCtrl'});
   
   // tools
-  $routeProvider.when('/tools', {templateUrl: '/frontcast/static/js/angular/partials/items.list.html', controller: 'toolsCtrl', reloadOnSearch:false});
+  $routeProvider.when('/tools', {templateUrl: '/frontcast/static/js/angular/partials/tool.list.html', controller: 'toolsCtrl', reloadOnSearch:false});
   $routeProvider.when('/tools/add', {templateUrl: '/frontcast/static/js/angular/partials/tool.add.html', controller: 'toolCtrl'});
   $routeProvider.when('/tools/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/tool.add.html', controller: 'toolCtrl'});
   $routeProvider.when('/tool/:id', {templateUrl: '/frontcast/static/js/angular/partials/tool.html', controller: 'toolCtrl'});

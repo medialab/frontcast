@@ -41,6 +41,7 @@ angular.module('walt.directives', [])
       }
     };
   })
+  
   .directive('fancySelect', function() {
     var linkFn = function(scope, element, attrs) {
       //alert(scope['orders'])
