@@ -1,8 +1,28 @@
-<div class="counter" ng-include src="'/frontcast/static/js/angular/partials/helpers.counter.html'"></div>
-  <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
-</div>
+<table>
+  <tr>
 
+    <td>
+      <div class="counter" ng-include src="'/frontcast/static/js/angular/partials/helpers.counter.html'"></div>
+    </td>
 
+    <td>
+      <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
+    </td>
+
+    <td>
+      <div class="dropdown">
+        <a class="dropdown-toggle">
+          ordered by <span class="orderby">{{orderby.label}}</span><i class="fa fa-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li ng-repeat="o in orders" ng-click="switchOrderby(o)">
+           {{o.label}}
+          </li>
+        </ul>
+      </div>
+    </td>
+  </tr>
+</table>
     <!-- select ng-model="orderby" ng-options="o.name for o in orders" fancy-select >
       <option value="">-- choose color --</option>
     </select -->

@@ -28,14 +28,7 @@ angular.module('walt.controllers', [])
 
     $scope.viewname = 'overview';
 
-    $scope.orders = [
-    {name:'black', shade:'dark'},
-    {name:'white', shade:'light'},
-    {name:'red', shade:'dark'},
-    {name:'blue', shade:'dark'},
-    {name:'yellow', shade:'light'}
-    ];
-    $scope.orderby = $scope.orders[2];
+   
 
 
     $scope.pageto = function(page) {
@@ -56,11 +49,6 @@ angular.module('walt.controllers', [])
     };
 
 
-    $scope.resetLimits = function(){
-      $scope.limit = $scope.default_limit;
-      $scope.offset = $scope.default_offset;
-      $scope.query = '';
-    }
 
     $scope.paginate = function(options) {
       var options = options || {},
@@ -89,7 +77,12 @@ angular.module('walt.controllers', [])
       console.log('$scope.paginate', pages);
     }
 
-
+    $scope.follow = function(link) {
+      //alert(link)
+      var path = Array.prototype.slice.call(arguments).join('/').replace(/\/+/g,'/');
+      $location.path(path);
+    }
+    
     $scope.search = function() {
       console.log("%c search ", 'color:white; background-color:#383838', $scope.query);
           
@@ -99,13 +92,12 @@ angular.module('walt.controllers', [])
     }
 
 
-    $scope.resetFilters = function() {
-      $location.search({
-        'filters': '',
-        'search': ''
-      });
-    }
 
+
+    $scope.switchOrderby = function(o) {
+      console.log($scope);
+      $scope.orderby = o;
+    }
 
     $scope.loadFilters = function(options) {
       var candidates = $location.search().filters,
@@ -126,6 +118,7 @@ angular.module('walt.controllers', [])
       } else {
         $scope.filters = {};
       }
+
       console.log("%c loading filters ", 'color:white; background-color:green', 'query:',$scope.query, $scope.offset, $scope.limit);   
       $scope.$broadcast(CONTROLLER_PARAMS_UPDATED, options);
     };
@@ -135,6 +128,12 @@ angular.module('walt.controllers', [])
       $scope.loadFilters({controller: r.$$route.controller}); // push current controllername
     });
 
+    $rootScope.$on('$routeChangeSuccess', function(e, r){
+      $scope.filters = {};
+      $scope.limit = $scope.default_limit;
+      $scope.offset = $scope.default_offset;
+      $scope.query = '';
+    });
     
     $scope.setViewName = function(viewname) {
       $scope.viewname = viewname;
@@ -158,6 +157,14 @@ angular.module('walt.controllers', [])
       console.log('%c filters setProperty', 'background: crimson; color: white',property, value, $scope.filters);
       $location.search('filters', JSON.stringify($scope.filters))
     };
+
+    $scope.removeProperty = function(property, value) {
+      console.log('removing', property, value, 'from filters');
+      delete $scope.filters[property];
+      $location.search({
+        'filters': JSON.stringify($scope.filters)
+      });
+    }
 
     $scope.extendFilters = function(filter) {
       var filters = angular.extend({}, $scope.filters, filter);
@@ -185,7 +192,6 @@ angular.module('walt.controllers', [])
 
   */
   .controller('documentsCtrl', ['$scope', 'DocumentListFactory', function($scope, DocumentListFactory){
-    $scope.resetLimits();
     $scope.setViewName('documents');
 
     $scope.sync = function() {
@@ -251,8 +257,13 @@ angular.module('walt.controllers', [])
 
   */
   .controller('toolsCtrl', ['$scope', 'WorkingDocumentListFactory', function($scope, WorkingDocumentListFactory){
-    $scope.resetLimits();
     $scope.setViewName('tools');
+
+    $scope.orders = [
+      {label:'black', value:'dark'},
+      {label:'white', value:'light'}
+    ];
+    $scope.orderby = $scope.orders[1];
 
     $scope.sync = function() {
       WorkingDocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.extendFilters({type: 'T'})}, function(data){

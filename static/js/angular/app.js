@@ -41,7 +41,8 @@ angular.module('walt', [
   'd3',
   'toggle-switch',
   'ngSanitize',
-  'xeditable'
+  'xeditable',
+  'ui.bootstrap'
 ]).
 config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider, $cookies) {
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
