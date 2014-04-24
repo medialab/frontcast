@@ -27,11 +27,12 @@
       </div>
     </div>
     <div class="pure-u-1-4">
+      <a class="pure-button" ng-href="#/doc/{{document.id}}/profile/edit">edit</a>
       <div class="property"  >
         <i class="fa fa-globe" editable-text="document.permalink"></i><div class="value"><a ng-href="{{document.permalink}}" target="_blank">external link</a></div>
       </div>
 
-      <h4>presence of interviews</h4>
+      <h4 ng-if="profile.properties_interviews.length">presence of interviews</h4>
         
       <div class="tags" >
         <a class="tag" class="wd" ng-if="tag.value" ng-repeat="tag in profile.properties_interviews">
@@ -39,7 +40,7 @@
         </a>
       </div>
 
-      <h4>presence of methodology detail </h4>
+      <h4 ng-hide="!profile.properties_meth_detail.length">presence of methodology detail </h4>
         
       <div class="tags" >
         <a class="tag" class="wd" ng-if="tag.value" ng-repeat="tag in profile.properties_meth_detail">
