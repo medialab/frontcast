@@ -3,7 +3,10 @@
 /* Controllers */
 var CONTROLLER_STATUS_AVAILABLE = 'available',
     CONTROLLER_STATUS_WORKING = 'busy',
-    CONTROLLER_PARAMS_UPDATED = "CONTROLLER_PARAMS_UPDATED";
+    CONTROLLER_PARAMS_UPDATED = "CONTROLLER_PARAMS_UPDATED",
+
+    STYLE_INFO = 'color: #b8b8b8';
+
 
 angular.module('walt.controllers', [])
   /*
@@ -85,7 +88,8 @@ angular.module('walt.controllers', [])
     
     $scope.search = function() {
       console.log("%c search ", 'color:white; background-color:#383838', $scope.query);
-          
+      $scope.limit = $scope.default_limit;
+      $scope.offset = $scope.default_offset;
       $location.search({
         'search': $scope.query
       });
@@ -124,15 +128,16 @@ angular.module('walt.controllers', [])
     };
 
     $rootScope.$on('$routeUpdate', function(e, r){
-      console.log("%c! route updated ", 'color:white; background-color:crimson', e.message);
+      console.log("%c route updated", STYLE_INFO);
       $scope.loadFilters({controller: r.$$route.controller}); // push current controllername
     });
 
     $rootScope.$on('$routeChangeSuccess', function(e, r){
+      console.log("%c    route change success", STYLE_INFO);
       $scope.filters = {};
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;
-      $scope.query = '';
+      $scope.query = $location.search().search;
     });
     
     $scope.setViewName = function(viewname) {
@@ -143,7 +148,7 @@ angular.module('walt.controllers', [])
     // commont filter propertiues here
     $scope.setProperties = function(property, value) {
       $scope.filters[property] = [value];
-      console.log('%c filters setProperties', 'background: crimson; color: white',property, value, $scope.filters);
+      console.log('%c filters setProperties', STYLE_INFO, property, value, $scope.filters);
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset,
         
@@ -300,7 +305,6 @@ angular.module('walt.controllers', [])
 
   */
   .controller('coursesCtrl', ['$scope', 'WorkingDocumentListFactory', function($scope, WorkingDocumentListFactory){
-    $scope.resetLimits();
     $scope.setViewName('courses');
 
     $scope.sync = function() {

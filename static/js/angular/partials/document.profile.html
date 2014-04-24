@@ -10,12 +10,12 @@
         </div>
       </div>
       <div class="tags"  style="margin-top: 15px">
-        <span class="tag date" class="wd" ng-repeat="tag in document.tags.Date">
+        <a class="tag date" class="wd" ng-repeat="tag in document.tags.Date">
             {{tag.name}}
-        </span>
-        <span class="tag institution" class="wd" ng-repeat="tag in document.tags.Institution">
+        </a>
+        <a class="tag institution" class="wd" ng-repeat="tag in document.tags.Institution">
       {{tag.type}} {{tag.name}}
-        </span>
+        </a>
       </div>
       <div ng-if="document.abstract" class="abstract" onbeforesave="updateDocument('abstract', $data)" editable-textarea="document.abstract_raw" e-rows="7" e-cols="40" ng-bind-html="document.abstract">
       </div>
@@ -34,17 +34,17 @@
       <h4>presence of interviews</h4>
         
       <div class="tags" >
-        <span class="tag" class="wd" ng-if="tag.value" ng-repeat="tag in profile.properties_interviews">
+        <a class="tag" class="wd" ng-if="tag.value" ng-repeat="tag in profile.properties_interviews">
           {{tag.name}}
-        </span>
+        </a>
       </div>
 
       <h4>presence of methodology detail </h4>
         
       <div class="tags" >
-        <span class="tag" class="wd" ng-if="tag.value" ng-repeat="tag in profile.properties_meth_detail">
+        <a class="tag" class="wd" ng-if="tag.value" ng-repeat="tag in profile.properties_meth_detail">
           {{tag.name}}
-        </span>
+        </a>
       </div>
 
       <h4>properties</h4>
@@ -54,6 +54,7 @@
     </div>
 
     <div class="pure-u-1-4">
+      <h4>devices</h4>
       <div ng-repeat="thumb in document.devices">
         <div ng-include src="'/frontcast/static/js/angular/partials/tool.thumb.html'"></div>
       </div>
