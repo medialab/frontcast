@@ -1,18 +1,23 @@
-<div class="menu">
-<div class="counter" ng-include src="'/frontcast/static/js/angular/partials/helpers.counter.html'"></div>
-  <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
-</div>
+<div class="menu" scroll-to-fixed margin-top="48" ng-include src="'/frontcast/static/js/angular/partials/helpers.menu.html'"></div>
 
-<div class="doc item" ng-class="item.status" ng-repeat="item in items">
-  <div class="inner">
-  <h4><a ng-href="#/course/{{item.id}}">#{{item.id}} {{item.title}}</a></h4>
-  <a href="#/tools/{{item.id}}/edit">edit</a>
-  <a href="{{item.permalink}}" target="_blank">{{item.permalink}}</a>
-  {{item.documents}}
-  <div class="content">{{item.abstract_raw}}</div>
-  <div class="tags">
-    <span class="tag" class="wd" ng-repeat="tag in item.tags" ng-click="setProperties('tags__slug__in', tag.slug)">
-      {{tag.name}}
-    </span>
+<div class="list">
+  <div class="item" ng-class="item.status" ng-repeat="item in items">
+    <div class="inner">
+      <h4><a ng-href="#/course/{{item.id}}">{{item.abstract_raw || 'untitled'}}</a></h4>
+      <div class="title">{{item.title}}</div>
+      <div class="tags">
+        <span class="date">
+          <span class="tag date" ng-click="setProperties('tags__slug__in', tag.slug)" class="wd" ng-repeat="tag in item.tags.Date">
+            {{tag.name}}
+          </span>
+        </span>
+        <span class="tag date" ng-click="setProperties('type__in', item.type)">
+            {{item.type}}
+          </span>
+      </div>
+
+      
+
+    </div>
   </div>
 </div>

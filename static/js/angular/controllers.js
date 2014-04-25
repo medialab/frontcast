@@ -95,8 +95,12 @@ angular.module('walt.controllers', [])
       });
     }
 
+    $scope.selected = undefined;
+    $scope.states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
 
-
+    $scope.typeaheadOpts = {
+      templateUrl: 'bower_components/bootstrap/template/typeahead/typeahead-popup.html'
+    };
 
     $scope.switchOrderby = function(o) {
       console.log($scope);
@@ -157,11 +161,13 @@ angular.module('walt.controllers', [])
       });
     };
 
+
     $scope.setProperty = function(property, value) {
       $scope.filters[property] = value;
       console.log('%c filters setProperty', 'background: crimson; color: white',property, value, $scope.filters);
       $location.search('filters', JSON.stringify($scope.filters))
     };
+
 
     $scope.removeProperty = function(property, value) {
       console.log('removing', property, value, 'from filters');
@@ -170,6 +176,7 @@ angular.module('walt.controllers', [])
         'filters': JSON.stringify($scope.filters)
       });
     }
+
 
     $scope.extendFilters = function(filter) {
       var filters = angular.extend({}, $scope.filters, filter);
@@ -218,7 +225,7 @@ angular.module('walt.controllers', [])
   }])
 
 
-  .controller('documentProfileCtrl', ['$scope', '$routeParams', 'DocumentFactory', 'DocumentProfileFactory',  function($scope, $routeParams, DocumentFactory, DocumentProfileFactory){
+  .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory',  function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory){
     $scope.setViewName('documents');
 
     $scope.document_types = [
@@ -248,6 +255,30 @@ angular.module('walt.controllers', [])
         console.log(data);
       });
     }
+
+
+    $scope.saveDevice = function() {
+      console.log(arguments);
+    }
+
+    $scope.getLocation = function(val) {
+      var suggestions = WorkingDocumentFactory.query({
+        limit:5,
+        filters: JSON.stringify({
+          type:'T'
+        }),
+        search: val
+      });
+      
+      return suggestions.$promise.then(function (result) {
+        console.log(result);
+        var titles = [];
+        angular.forEach(result.objects, function(item){
+          titles.push(item)
+        });
+        return titles;
+      });
+    };
 
     $scope.sync();
     console.log('%c documentProfileCtrl ', 'background: lime;');
@@ -313,7 +344,7 @@ angular.module('walt.controllers', [])
         limit: $scope.limit,
         offset: $scope.offset,
         filters: $scope.extendFilters({
-          type__in: ['course_secondary_school', 'course_master', 'course_phd']
+          type__in: ['course_secondary_school', 'course_master', 'course_phd', 'course']
         })}, function(data) {
         $scope.items = data.objects;
         $scope.paginate({

@@ -212,6 +212,7 @@ class DocumentProfile(models.Model):
     d['properties'] = []
     d['properties_interviews'] = []
     d['properties_meth_detail'] = []
+    d['devices'] = [] # just labels in order to fill the form
 
     properties = [p.type for p in self.properties.all()]
 
@@ -223,6 +224,9 @@ class DocumentProfile(models.Model):
 
     for t in Property.TYPE_METH_DETAILS_CHOICES:
       d['properties_meth_detail'].append({'label':t[1], 'name':t[0], 'value': t[0] in properties})
+
+    for t in Device.TYPE_CHOICES:
+      d['devices'].append({'label':t[1], 'name':t[0]})
 
 
     return d

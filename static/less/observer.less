@@ -375,14 +375,19 @@
 };
 
 .tag{
-  font: 11px/24px 'Source Code Pro';
+  font: 11px/36px 'Source Code Pro';
   padding: 5px 7px;
   margin: 0 @module 0 0;
 
   cursor: pointer;
-  background: fade(@creamy, 11%);
+  background: fade(@creamy, 6%);
   border-radius: 3px;
   
+  &.action{
+    background: transparent;
+    
+  }
+
   &:hover{
     background:@blue;
     color: white;
@@ -689,7 +694,6 @@ ul.dropdown-menu{
   margin:0;
   color: @white;
   display: none;
-  width: 100%;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -708,4 +712,11 @@ ul.dropdown-menu{
       color: @white;
     }
   }
+}
+
+
+
+
+.typeahead-multi-input{
+  //display:none;
 }

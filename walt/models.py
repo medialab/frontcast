@@ -211,11 +211,13 @@ class WorkingDocument(AbstractDocument):
   COURSE_SECONDARY_SCHOOL = 'course_secondary_school'
   COURSE_MASTER = 'course_master'
   COURSE_PHD = 'course_phd'
+  COURSE = 'course' # generic course
 
   COURSE_TYPE_CHOICES = (
     (COURSE_SECONDARY_SCHOOL,  'secondary school course'),
     (COURSE_MASTER,            'master course'), # ex tag cursus, it must be enlightened
     (COURSE_PHD,            'phd course'), 
+    (COURSE,            'generic course'), 
   )
   
   # various sessions inside a course. feature to be tested.
@@ -567,7 +569,13 @@ class Document(AbstractDocument):
       tags[t_type].append(t.json())
 
     # attach working docs!
-    devices = [device.json() for device in self.devices.all()]
+    devices = [d for d in self.devices.all()]
+    devices_by_type = {}
+
+    for d in devices:
+      if str(d.type) not in devices_by_type:
+        devices_by_type[str(d.type)] = []
+      devices_by_type[str(d.type)].append(d.json())
 
 
     # undesratnd remote/ locales file
@@ -590,7 +598,7 @@ class Document(AbstractDocument):
       'reference': self.reference,
       'owner': self.owner.username,
       'tags': tags,
-      'devices': devices,
+      'devices': devices_by_type,
       'type': self.type,
       'attachments':attachments,
       'remote': self.remote,
