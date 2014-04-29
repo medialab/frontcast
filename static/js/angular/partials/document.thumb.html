@@ -13,7 +13,9 @@
       </span>
   </div>
   <div class="devices">
-    <span class="tag device" ng-repeat="device in thumb.devices" ng-click="setProperties('devices__working_document__in', device.id)">{{device.title}}</span>
+    <span ng-repeat="(device_type, devices) in thumb.devices">
+    <span class="tag device" ng-repeat="device in devices" ng-click="setProperties('devices__working_document__in', device.id)">{{device.title}}</span>
+    </span>
   </div>
   </div>
 </div>

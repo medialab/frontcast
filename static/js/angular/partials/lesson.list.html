@@ -3,7 +3,7 @@
 <div class="list">
   <div class="item" ng-class="item.status" ng-repeat="item in items">
     <div class="inner">
-      <h4><a ng-href="#/course/{{item.id}}">{{item.abstract_raw || 'untitled'}}</a></h4>
+      <h4><a ng-href="#/course/{{item.id}}">{{item.title || 'untitled'}}</a></h4>
       <div class="tags">
         <span class="date">
           <span class="tag date" ng-click="setProperties('tags__slug__in', tag.slug)" class="wd" ng-repeat="tag in item.tags.Date">
@@ -14,8 +14,7 @@
             {{item.type}}
           </span>
       </div>
-
-      <div class="abstract">{{item.title}}</div>
+      <div class="abstract">{{item.abstract_raw}}</div>
       
       
 

@@ -53,7 +53,7 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   $routeProvider.when('/w/bookmark', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.bookmark.html', controller: 'workingdocumentCreateCtrl'});
   // $routeProvider.when('/w/edit', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.edit.html', controller: 'workingdocumentCreateCtrl'});
   
-  $routeProvider.when('/', {templateUrl: '/frontcast/static/js/angular/partials/overview.html', controller: 'overviewCtrl'});
+  //$routeProvider.when('/', {templateUrl: '/frontcast/static/js/angular/partials/overview.html', controller: 'overviewCtrl'});
   
   // documents
   $routeProvider.when('/docs', {templateUrl: '/frontcast/static/js/angular/partials/document.list.html', controller: 'documentsCtrl', reloadOnSearch:false});
@@ -64,13 +64,17 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   $routeProvider.when('/courses', {templateUrl: '/frontcast/static/js/angular/partials/course.list.html', controller: 'coursesCtrl', reloadOnSearch:false});
   $routeProvider.when('/course/:id', {templateUrl: '/frontcast/static/js/angular/partials/course.html', controller: 'courseCtrl'});
   
+  // seances
+  $routeProvider.when('/lessons', {templateUrl: '/frontcast/static/js/angular/partials/lesson.list.html', controller: 'lessonsCtrl', reloadOnSearch:false});
+  $routeProvider.when('/lesson/:id', {templateUrl: '/frontcast/static/js/angular/partials/lesson.html', controller: 'lessonCtrl'});
+
   // tools
   $routeProvider.when('/tools', {templateUrl: '/frontcast/static/js/angular/partials/tool.list.html', controller: 'toolsCtrl', reloadOnSearch:false});
   $routeProvider.when('/tools/add', {templateUrl: '/frontcast/static/js/angular/partials/tool.add.html', controller: 'toolCtrl'});
   $routeProvider.when('/tools/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/tool.add.html', controller: 'toolCtrl'});
   $routeProvider.when('/tool/:id', {templateUrl: '/frontcast/static/js/angular/partials/tool.html', controller: 'toolCtrl'});
 
-  $routeProvider.otherwise({redirectTo: '/'});
+  $routeProvider.otherwise({redirectTo: '/docs'});
 
   //$locationProvider.html5Mode(true);
 }]);

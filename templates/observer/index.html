@@ -208,6 +208,9 @@ z-index: 1000;
                 <li ng-class="viewname=='courses' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#/courses">courses</a>
                 </li>
+                <li ng-class="viewname=='lessons' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
+                    <a href="#/lessons">lessons</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -215,9 +218,12 @@ z-index: 1000;
     <div id="main">
         <div class="header">
           <div class="inner">
-            <form class="pure-form" ng-submit="search()">
-            <input type="text" ng-model="query" class="pure-input"/>
-            </form>
+            <div id="search-form">
+              <form class="pure-form" ng-submit="search()">
+                <input type="text" id="search-input" placeholder="search ..." ng-model="query" class="pure-input"/>
+                <button class="pure-button"  ng-click="search()">search in {%verbatim%}{{viewname}}{% endverbatim%}</button>
+              </form>
+            </div>
           </div>
 
         </div>

@@ -1,23 +1,41 @@
 <div class="menu" scroll-to-fixed margin-top="48" ng-include src="'/frontcast/static/js/angular/partials/helpers.menu.html'"></div>
 
 <div class="list">
-<div class="doc item" ng-class="item.status" ng-repeat="item in items">
-  <div class="inner">
-  <h4><a ng-href="#/doc/{{item.id}}/profile">#{{item.id}} {{item.title}}</a></h4>
-  
-  <div class="tags">
-    <span class="date">
-      <span class="tag date" ng-click="setProperties('tags__slug__in', tag.slug)" class="wd" ng-repeat="tag in item.tags.Date">
-        {{tag.name}}
+  <div class="doc item" ng-class="item.status" ng-repeat="item in items">
+    <div class="inner">
+    <h4><a ng-href="#/doc/{{item.id}}/profile">#{{item.id}} {{item.title}}</a></h4>
+    
+    <div class="tags">
+      <span class="tag institution" ng-click="setProperties('tags__slug__in', tag.slug)" class="wd" ng-repeat="tag in item.tags.Institution">
+          {{tag.name}}</span>
+      <span class="date">
+        <span class="tag date" ng-click="setProperties('tags__slug__in', tag.slug)" class="wd" ng-repeat="tag in item.tags.Date">
+          {{tag.name}}
+        </span>
       </span>
-    </span>
-    <span class="tag date" ng-click="setProperties('type__in', item.type)">
-        {{item.type}}
+      
+    </div>
+    <div class="devices">
+      <span ng-repeat="(device_type, devices) in item.devices">
+      <span class="tag device" ng-repeat="device in devices" ng-click="setProperties('devices__working_document__in', device.working_document_id)">{{device.title}}</span>
       </span>
+    </div>
+    </div>
+
+    <div class="below">
+      <div class="pure-g">
+        <div class="pure-u-1-4">
+          <span class="type" ng-click="setProperties('type__in', item.type)" ng-switch="item.type">
+            <span ng-switch-when="ControversyVideo" tooltip="controversy video"><i class="fa fa-film"></i></span>
+            <span ng-switch-when="ControversyEbook" tooltip="controversy book"><i class="fa fa-book"></i></span>
+            <span ng-switch-when="ControversyWeb" tooltip="controversy website"><i class="fa fa-globe"></i></span>
+          </span>
+                  </div>
+        
+        <div class="pure-u-1-4">
+          <span class="fa fa-star" tooltip="rating: {{item.rating}}">{{item.rating}}</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="devices">
-    <span class="tag device" ng-repeat="device in item.devices" ng-click="setProperties('devices__working_document__in', device.id)">{{device.title}}</span>
-  </div>
-  </div>
-</div>
 </div>

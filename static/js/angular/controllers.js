@@ -62,7 +62,7 @@ angular.module('walt.controllers', [])
       $scope.total_count = options.total_count;
       
       
-      $scope.numofpages = Math.floor($scope.total_count / $scope.limit );
+      $scope.numofpages = Math.floor(($scope.total_count-1) / $scope.limit );
       $scope.page = Math.floor($scope.offset / $scope.limit);
 
       if($scope.numofpages < 10) {
@@ -355,6 +355,49 @@ angular.module('walt.controllers', [])
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
     $scope.setViewName('tool');
     console.log('%c toolCtrl ', 'background: lime;', $routeParams.id, $routeParams);
+    
+    WorkingDocumentFactory.get({id: $routeParams.id}, function(data){
+      $scope.item = data.object;
+      console.log(data);
+    });
+
+  }])
+  /*
+    
+    WorkingDocument List of type tool controller.
+    ===
+
+  */
+  .controller('lessonsCtrl', ['$scope', 'WorkingDocumentListFactory', function($scope, WorkingDocumentListFactory){
+    $scope.setViewName('lessons');
+
+    $scope.orders = [
+      {label:'black', value:'dark'},
+      {label:'white', value:'light'}
+    ];
+    $scope.orderby = $scope.orders[1];
+
+    $scope.sync = function() {
+      WorkingDocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.extendFilters({type: 'session_atelier'})}, function(data){
+        $scope.items = data.objects;
+        $scope.paginate({
+          total_count: data.meta.total_count
+        });
+      });
+    };
+
+    $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
+      console.log('received...', $scope.offset, $scope.limit);
+      $scope.sync();
+    });
+
+    $scope.sync();
+    console.log('%c lessonsCtrl ', 'background: lime;');
+  }])
+  .controller('lessonCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory',function($scope, $route, $routeParams, WorkingDocumentFactory){
+    $scope.status = CONTROLLER_STATUS_AVAILABLE;
+    $scope.setViewName('tool');
+    console.log('%c lessonCtrl ', 'background: lime;', $routeParams.id, $routeParams);
     
     WorkingDocumentFactory.get({id: $routeParams.id}, function(data){
       $scope.item = data.object;
