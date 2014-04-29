@@ -55,10 +55,12 @@
     </div>
 
     <div class="pure-u-1-4">
-      <h4>devices</h4>
       
-      <div ng-repeat="thumb in document.devices">
-        <div ng-include src="'/frontcast/static/js/angular/partials/tool.thumb.html'"></div>
+      <div ng-repeat="(type, devices) in document.devices">
+        <h4>{{type}}</h4>
+        <div ng-repeat="thumb in devices"
+          <div ng-include src="'/frontcast/static/js/angular/partials/tool.thumb.html'"></div>
+        </div>
       </div>
     </div>
 
