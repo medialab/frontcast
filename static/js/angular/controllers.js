@@ -225,7 +225,7 @@ angular.module('walt.controllers', [])
   }])
 
 
-  .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory',  function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory){
+  .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory', 'DeviceFactory', 'DeviceListFactory', function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory, DeviceFactory, DeviceListFactory){
     $scope.setViewName('documents');
 
     $scope.document_types = [
@@ -257,8 +257,40 @@ angular.module('walt.controllers', [])
     }
 
 
-    $scope.saveDevice = function() {
-      console.log(arguments);
+    $scope.removeDevice = function(device_id) {
+      if (confirm('are you really sure')){
+        DeviceFactory.delete({id: device_id}, function(res){
+          console.log(res);
+        });
+        $scope.sync();
+      }
+      
+    }
+
+    $scope.saveDevice = function(device_type, doc) {
+      
+      DeviceListFactory.save({}, {
+        type: device_type,
+        document: $routeParams.id,
+        working_document: doc.id
+      }, function(res){
+
+        console.log(res, $scope.document.devices);
+        var is_already_in_place = false;
+        if($scope.document.devices[device_type]) {
+          for (var d in $scope.document.devices[device_type]) {
+            console.log("compare ", d, doc)
+            if($scope.document.devices[device_type][d].slug == doc.slug){
+              is_already_in_place = true;
+              break;
+            }
+          };
+          !is_already_in_place && $scope.document.devices[device_type].push(doc)
+        } else
+          $scope.document.devices[device_type] = [doc];
+      })
+
+      return "";
     }
 
     $scope.getLocation = function(val) {
@@ -274,8 +306,9 @@ angular.module('walt.controllers', [])
         console.log(result);
         var titles = [];
         angular.forEach(result.objects, function(item){
-          titles.push(item)
+          titles.push(item);
         });
+        console.log(titles);
         return titles;
       });
     };

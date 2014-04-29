@@ -21,6 +21,19 @@ angular.module('walt.services', ['ngResource'])
   })
 
 
+  .factory('DeviceFactory', function($resource) {
+    return $resource('/observer/api/device/:id', {}, {
+      delete: { method: 'DELETE', params: {id: '@id'}}
+    });
+  })
+  .factory('DeviceListFactory', function($resource) {
+    return $resource('/observer/api/device', {}, {
+        query: { method: 'GET' },
+    });
+  })
+        
+
+
   .factory('DocumentProfileFactory', function($resource) {
     return $resource('/observer/api/document-profile/:id', {}, {
         query: { method: 'GET',  params: {id: '@id'} },
@@ -28,6 +41,8 @@ angular.module('walt.services', ['ngResource'])
         attach_tags: { method: 'POST',  params: {id: '@id/attach-tags'} }
     });
   })
+
+
 
 
   

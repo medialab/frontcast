@@ -4,7 +4,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 
-from observer.models import DocumentProfile
+from observer.models import DocumentProfile, Device
+from observer.forms import DeviceForm
 from walt.models import Document
 
 
@@ -47,6 +48,37 @@ def document_profile(request, document_pk):
     '''
     pass
   epoxy.item(p)
+  return epoxy.json()
+
+
+
+@staff_member_required
+def devices(request):
+  epoxy = Epoxy(request)
+  
+  if epoxy.is_POST():
+    form = DeviceForm(epoxy.data)
+    if form.is_valid():
+      dev = form.save()
+      epoxy.item(dev)
+      return epoxy.json()
+    else:
+      return epoxy.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS).json()
+  
+  epoxy.queryset(Device.objects.filter())
+  return epoxy.json()
+
+
+
+@staff_member_required
+def device(request, pk):
+  epoxy = Epoxy(request)
+
+  if epoxy.is_DELETE:
+    try:
+      Device.objects.get(pk=pk).delete()
+    except Device.DoesNotExist, e:
+      return epoxy.json()
   return epoxy.json()
 
 

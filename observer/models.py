@@ -163,12 +163,14 @@ class Device(models.Model):
 
   working_document = models.ForeignKey(WorkingDocument, related_name="supports")
   document = models.ForeignKey(Document, related_name="devices") # directly through a document
-  type = models.CharField(max_length=12, choices=TYPE_CHOICES)
+  type = models.CharField(max_length=24, choices=TYPE_CHOICES)
 
 
   def json(self, deep=False):
     d = {
-      'id': self.working_document.id,
+      'id': self.id,
+      'working_document_id': self.working_document.id,
+      'document_id': self.document.id,
       'type': self.type,
       'slug': self.working_document.slug,
       'title': self.working_document.title
