@@ -169,12 +169,12 @@
 
   .footer{
     background-color: #ec5148;
-color: #ffffff;
-clear: both;
-position: fixed;
-bottom: 0px;
-width: 100%;
-z-index: 1000;
+    color: #ffffff;
+    clear: both;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    z-index: 1000;
   }
 
 
@@ -233,15 +233,55 @@ z-index: 1000;
         </div>
     </div>
 
-    <div class="footer" ng-class="">
+    <div class="footer" ng-controller="filtersCtrl" ng-class="">
       {% verbatim %}
+
+
       <div class="inner">
-        <span ng-repeat="(key, value) in filters" ng-click="removeProperty(key, value)">  <span class="tag" ng-repeat="v in value">{{v}}</span>
-        </span>
-        <span ng-if="query.length">{{query}}</span>
-      </div>
+        
+
+        
+        <div id="facets-manager" ng-class="showfm? 'panel opened': 'panel'">
+          <div class="toggler"  ng-click="showfm = !showfm">
+            <div class="label">open filters
+              <div class="circle" ng-if="howmanyfilters > 0">{{howmanyfilters}}</div>
+            </div>
+          </div>
+          <div class="inner">
+          <!-- open/close facets: opened by default, close by toggle -->
+          
+           <span ng-if="query.length">{{query}}</span>
+            <span ng-repeat="(key, value) in filters"> 
+              <span class="tag" ng-repeat="v in value">{{v}}
+                <span class="fa fa-times" tooltip="deactivate this filter" ng-click="removeProperty(key, value)"></span>
+              </span>
+              
+            </span>
+           
+          </div>
+        </div>
+
+        <div id="query-manager" ng-class="showqm? 'panel opened': 'panel'">
+          <div class="toggler" ng-click="showqm = !showqm">
+            <div class="label">open query manager</div>
+          </div>
+          <div class="inner">
+            Query manager
+            a lot of stuff
+            a very lot
+            a lot a lot
+            <div>filter 1</div>
+            <div>filter 1</div>
+            <div>filter 1</div>
+            <div>filter 1</div>
+            <div>filter 1</div>
+            <div>filter 1</div>
+          </div>
+        </div>
       {% endverbatim %}
     </div>
+
+
 </div>
 
 

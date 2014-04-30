@@ -5,7 +5,20 @@ var CONTROLLER_STATUS_AVAILABLE = 'available',
     CONTROLLER_STATUS_WORKING = 'busy',
     CONTROLLER_PARAMS_UPDATED = "CONTROLLER_PARAMS_UPDATED",
 
-    STYLE_INFO = 'color: #b8b8b8';
+    STYLE_INFO = 'color: #b8b8b8',
+
+    gimmesize = function(obj) {
+      var obj = angular.copy(obj),
+          size = 0,
+          key;
+
+      for (key in obj) {
+        if (obj.hasOwnProperty(key))
+          size++;
+      };
+      return size;
+    };
+
 
 
 angular.module('walt.controllers', [])
@@ -17,6 +30,7 @@ angular.module('walt.controllers', [])
   */
   .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', function($scope, $rootScope, $location, $route) {
     $scope.filters = {};
+    $scope.howmanyfilters = 0;
     $scope.query = "";
     
     $scope.limit = 10;
@@ -127,6 +141,8 @@ angular.module('walt.controllers', [])
         $scope.filters = {};
       }
 
+      $scope.howmanyfilters = gimmesize($scope.filters);
+
       console.log("%c loading filters ", 'color:white; background-color:green', 'query:',$scope.query, $scope.offset, $scope.limit);   
       $scope.$broadcast(CONTROLLER_PARAMS_UPDATED, options);
     };
@@ -141,7 +157,7 @@ angular.module('walt.controllers', [])
       $scope.filters = {};
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;
-      $scope.query = $location.search().search;
+      $scope.loadFilters(); // reload filters directly form the params
     });
     
     $scope.setViewName = function(viewname) {
@@ -184,8 +200,25 @@ angular.module('walt.controllers', [])
     };
 
     console.log('%c layoutCtrl ', 'background: #151515; color: white', $scope.filters);
-    $scope.loadFilters();
+    //$scope.loadFilters();
 
+  }])
+  /*
+    
+    Query manager and facets controller
+    ===
+
+  */
+  .controller('filtersCtrl',['$scope', 'DocumentFiltersFactory', function($scope, DocumentFiltersFactory) {
+    $scope.showqm = false; // show query manager
+    $scope.showfm = true; // show facets manager
+    $scope.base = {};
+
+    DocumentFiltersFactory.query({}, function(data){
+       console.log(data);
+    });
+
+    console.log('%c filtersCtrl ', 'background: lime;');
   }])
   /*
     
@@ -196,6 +229,7 @@ angular.module('walt.controllers', [])
   .controller('overviewCtrl', ['$scope', function($scope){
     console.log('%c overviewCtrl ', 'background: gold;');
   }])
+
 
   /*
     
@@ -447,15 +481,6 @@ angular.module('walt.controllers', [])
       console.log(data);
     });
 
-  }])
-  /*
-    
-    Filters and co.
-    ===
-
-  */
-  .controller('filtersCtrl', ['$rootScope', '$scope', '$routeParams', '$location', function($rootScope, $scope, $routeParams, $location) {
-    
   }])
   /*
 

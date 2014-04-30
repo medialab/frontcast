@@ -143,7 +143,9 @@ angular.module('walt.directives', [])
   .directive('d3Bars', ['d3Service',  function(d3Service) {
     return  {
       restrict: 'EA',
-      scope: {},
+      scope: {
+        data: '=data'
+      },
       link: function(scope, element, attrs) {
         d3Service.d3().then(function(d3) {
           // our d3 code will go here
@@ -177,6 +179,7 @@ angular.module('walt.directives', [])
             scope.render(scope.data);
           });
 
+          // watch for data changes. just remove?
           scope.render = function(data) {
             svg.selectAll('*').remove();
             if (!data) return;

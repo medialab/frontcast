@@ -17,7 +17,7 @@
     </div>
     <div class="devices">
       <span ng-repeat="(device_type, devices) in item.devices">
-      <span class="tag device" ng-repeat="device in devices" ng-click="setProperties('devices__working_document__in', device.working_document_id)">{{device.title}}</span>
+      <span class="tag device" ng-repeat="device in devices" ng-click="setProperties('devices__working_document__slug__in', device.working_document_slug)">{{device.title}}</span>
       </span>
     </div>
     </div>
@@ -38,4 +38,5 @@
       </div>
     </div>
   </div>
+  <div class="clear"></div>
 </div>

@@ -21,6 +21,15 @@ angular.module('walt.services', ['ngResource'])
   })
 
 
+
+  .factory('DocumentFiltersFactory', function($resource) {
+    return $resource('/api/document/filters', {}, {
+        query: { method: 'GET', isArray: false },
+    });
+  })
+
+  
+
   .factory('DeviceFactory', function($resource) {
     return $resource('/observer/api/device/:id', {}, {
       delete: { method: 'DELETE', params: {id: '@id'}}

@@ -127,6 +127,7 @@ class Property(models.Model):
 class Device(models.Model):
   '''
   When A tool has been used for a specific document?
+  @todo maybe in @save restrict to workingdocument of type tools ?
   Json property: cfr DocumentProfile
   '''
   DATABASE = 'database'
@@ -170,6 +171,7 @@ class Device(models.Model):
     d = {
       'id': self.id,
       'working_document_id': self.working_document.id,
+      'working_document_slug': self.working_document.slug,
       'document_id': self.document.id,
       'type': self.type,
       'slug': self.working_document.slug,

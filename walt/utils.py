@@ -5,7 +5,7 @@ import csv
 from django.db.models import Count, Q
 from django.conf import settings
 from django.utils.text import slugify
-from walt.models import Assignment, Task, Tag, Document
+from walt.models import Assignment, Task, Tag, Document, WorkingDocument
 
 
 
@@ -82,7 +82,7 @@ def get_available_documents(request):
 
 
 def get_document_filters(queryset):
-  filters = {'type': {}, 'year': {}, 'tags':{} }
+  filters = {'type': {}, 'year': {}, 'tags':{}, 'tools':{} }
   ids = []
 
   for t in queryset.order_by().values('type').annotate(count=Count('id')):
@@ -99,8 +99,10 @@ def get_document_filters(queryset):
   for d in queryset:
     ids.append(d.id)
 
-  # 3. get document tags. @TODO imporve performances
-  
+  print 'IDS', ids, ','.join(str(v) for v in ids)
+  # 3. get document tags. @TODO imporve performances.
+  # TOO MANY VALUE ERROR POSSIBLE. TO be reviewed!!!!!!
+  # possible solution: split ids in array of 50.
   tag_queryset = Tag.objects.filter(document__id__in=ids)
   
   for t in tag_queryset:
@@ -121,4 +123,34 @@ def get_document_filters(queryset):
     # for debug purpose only, normally document-tag relationships are unique for each type and slug. filters['tags'][_type][_slug]['ids'].append(t.doc_id)
     filters['tags'][_type][_slug]['count'] += 1
 
+
+  tools = WorkingDocument.objects.raw('''
+    SELECT 
+    COUNT(od.document_id) as distribution,
+    wd.id,
+    wd.slug,
+    wd.title
+    FROM observer_device od
+    JOIN walt_workingdocument wd ON od.working_document_id = wd.id
+    JOIN walt_document d ON od.document_id = d.id
+    WHERE d.id in (%s)
+    GROUP BY working_document_id
+    ORDER BY distribution DESC
+    ''' % ','.join(str(v) for v in ids)
+  )
+
+  for t in tools:
+    _slug = '%s' % t.slug
+    print t.slug
+    filters['tools'][_slug] = {
+      'id':    t.id, 
+      'slug':  t.slug,
+      'title': t.title,
+      'count': t.distribution
+    }
+
+   
+
   return filters
+
+
