@@ -212,10 +212,24 @@ angular.module('walt.controllers', [])
   .controller('filtersCtrl',['$scope', 'DocumentFiltersFactory', function($scope, DocumentFiltersFactory) {
     $scope.showqm = false; // show query manager
     $scope.showfm = true; // show facets manager
-    $scope.base = {};
+    
+    $scope.overallfacets = {};
+    $scope.facets = {};
 
     DocumentFiltersFactory.query({}, function(data){
-       console.log(data);
+      $scope.overallfacets = data.objects;
+    });
+
+    $scope.sync = function() {
+      // according to viewname !!!!!!!!!!!
+      DocumentFiltersFactory.query({search: $scope.query, filters: $scope.filters}, function(data){
+        $scope.facets = data.objects;
+      });
+    };
+    
+    $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
+      console.log('received...');
+      $scope.sync();
     });
 
     console.log('%c filtersCtrl ', 'background: lime;');

@@ -38,7 +38,7 @@
 @blue: #33cccc;
 @black: #181818;
 @grey: #777777;
-@brown: #AB4A37;
+@brown: #aa3735;
 @darkgrey: #4F514E;
 
 
@@ -151,7 +151,6 @@
     }
 
     >.inner{
-      background: @darkgrey;
       height: 100%;
     }
   }
@@ -160,20 +159,49 @@
     position: relative;
     z-index: 1;
   }
+
+  .tag{
+    background-color: @brown;
+
+  }
 }
+
+
 
 #query-manager{ 
   
+  .toggler{
+    background-color: @brown;
+  }
 }
 
+
 #facets-manager{
+  background-color: #d84744;
+  
+
   .toggler{
     background: @red;
   }
+
+  #active-filters{
+    height: 36px;
+    border-bottom: 1px solid fade(@creamy, 30%);
+    padding: 0 @module;
+  }
+  
+  .facet{
+    padding: 0 @module;
+  }
+
   >.inner{
-    background-color: #d84744;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
   }
 }
+
+
 /*
 
   Current View

@@ -140,7 +140,7 @@ angular.module('walt.directives', [])
       }
     };
   })
-  .directive('d3Bars', ['d3Service',  function(d3Service) {
+  .directive('d3Bars', ['d3Service', '$compile',  function(d3Service, $compile) {
     return  {
       restrict: 'EA',
       scope: {
@@ -148,53 +148,39 @@ angular.module('walt.directives', [])
       },
       link: function(scope, element, attrs) {
         d3Service.d3().then(function(d3) {
-          // our d3 code will go here
-          var svg = d3.select(element[0])
-            .append('svg')
-            .style('width', '100%');
 
-          console.log(d3);
+          // our d3 code will go here
+          var svg = d3.select(element[0]).append('svg')
+            .style('width', '100%')
+            .style('margin-top', '6px');
+              
 
           var margin = parseInt(attrs.margin) || 20,
               barHeight = parseInt(attrs.barHeight) || 20,
-              barPadding = parseInt(attrs.barPadding) || 5;
+              barPadding = 0;
 
           // Browser onresize event
-          window.onresize = function() {
-            scope.$apply();
-          };
-
-          // hard-code data
-          scope.data = [
-            {name: "Greg", score: 98},
-            {name: "Ari", score: 96},
-            {name: 'Q', score: 75},
-            {name: "Loser", score: 48}
-          ];
+          
 
           // Watch for resize event
-          scope.$watch(function() {
-            return angular.element(window)[0].innerWidth;
-          }, function() {
-            scope.render(scope.data);
-          });
+           scope.$watch('data', function(){
+            scope.render(d3.values(scope.data))
+           });
 
           // watch for data changes. just remove?
           scope.render = function(data) {
             svg.selectAll('*').remove();
             if (!data) return;
             // setup variables
-            var width = d3.select(element[0]).node().offsetWidth - margin,
-                // calculate the height
-                height = scope.data.length * (barHeight + barPadding),
-                // Use the category20() scale function for multicolor support
+            var width = d3.select(element[0]).node().offsetWidth,
+                height = 36,
                 color = d3.scale.category20(),
-                // our xScale
+                col = 12,//width/data.length - data.length*2,
                 xScale = d3.scale.linear()
                   .domain([0, d3.max(data, function(d) {
-                    return d.score;
+                    return d.count;
                   })])
-                  .range([0, width]);
+                  .range([2, height]);
 
             // set the height based on the calculations above
             svg.attr('height', height);
@@ -203,20 +189,31 @@ angular.module('walt.directives', [])
             svg.selectAll('rect')
               .data(data).enter()
                 .append('rect')
-                .attr('height', barHeight)
-                .attr('width', 140)
-                .attr('x', Math.round(margin/2))
-                .attr('y', function(d,i) {
-                  return i * (barHeight + barPadding);
+                .attr('width', col)
+                .attr('x', function(d,i){
+                  return i*(col + 2)
                 })
-                .attr('fill', function(d) { return color(d.score); })
+                .attr('y', function(d) {
+                  return height - xScale(d.count);
+                })
+                .attr('fill', '#fff')
+                
                 //.transition()
                 //.duration(1000)
-                  .attr('width', function(d) {
-                    return xScale(d.score);
-                  });
-            }
+                .attr('height', function(d) {
+                  return xScale(d.count);
+                })
 
+                .attr("tooltip-append-to-body", true)
+               .attr("title", function(d){
+                   return d.name;
+               });
+
+            
+          }; // end of renderer
+
+          scope.render(d3.values(scope.data));
+          $compile(element)
         });
       }};
   }]);

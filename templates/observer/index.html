@@ -249,14 +249,28 @@
           </div>
           <div class="inner">
           <!-- open/close facets: opened by default, close by toggle -->
-          
-           <span ng-if="query.length">{{query}}</span>
-            <span ng-repeat="(key, value) in filters"> 
-              <span class="tag" ng-repeat="v in value">{{v}}
-                <span class="fa fa-times" tooltip="deactivate this filter" ng-click="removeProperty(key, value)"></span>
+            <div id="active-filters">
+             <span ng-if="query.length">{{query}}</span>
+              <span ng-repeat="(key, value) in filters"> 
+                <span class="tag" ng-repeat="v in value">{{v}}
+                  <span class="fa fa-times-circle" tooltip="deactivate this filter" ng-click="removeProperty(key, value)"></span>
+                </span>
+                
               </span>
-              
-            </span>
+            </div>
+
+            <div class="pure-g">
+              <div class="pure-u-1-4">
+                <div d3-bars data="facets.tags.Da" overall-data="overallfacets.tags.Da"></div>
+              </div>
+              <div class="pure-u-1-4">
+                <div d3-bars data="facets.tags.In" overall-data="overallfacets.tags.In"></div>
+              </div>
+              <div class="pure-u-1-2">
+                <div d3-bars data="facets.tools" overall-data="overallfacets.tools"></div>
+              </div>
+            </div>
+
            
           </div>
         </div>
