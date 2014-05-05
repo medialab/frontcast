@@ -144,6 +144,7 @@ angular.module('walt.directives', [])
     return  {
       restrict: 'EA',
       scope: {
+        initdata: '=overallData',
         data: '=data'
       },
       link: function(scope, element, attrs) {
@@ -153,67 +154,207 @@ angular.module('walt.directives', [])
           var svg = d3.select(element[0]).append('svg')
             .style('width', '100%')
             .style('margin-top', '6px');
-              
+          
+
+          console.log('INITDATA');
 
           var margin = parseInt(attrs.margin) || 20,
               barHeight = parseInt(attrs.barHeight) || 20,
-              barPadding = 0;
+              barPadding = 0,
+              maximum;
+              
 
-          // Browser onresize event
           
-
-          // Watch for resize event
-           scope.$watch('data', function(){
-            scope.render(d3.values(scope.data))
-           });
-
-          // watch for data changes. just remove?
           scope.render = function(data) {
-            svg.selectAll('*').remove();
-            if (!data) return;
-            // setup variables
             var width = d3.select(element[0]).node().offsetWidth,
-                height = 36,
+                height = 60,
                 color = d3.scale.category20(),
-                col = 12,//width/data.length - data.length*2,
-                xScale = d3.scale.linear()
-                  .domain([0, d3.max(data, function(d) {
-                    return d.count;
-                  })])
-                  .range([2, height]);
-
-            // set the height based on the calculations above
-            svg.attr('height', height);
-
-            //create the rectangles for the bar chart
-            svg.selectAll('rect')
-              .data(data).enter()
-                .append('rect')
-                .attr('width', col)
-                .attr('x', function(d,i){
-                  return i*(col + 2)
-                })
-                .attr('y', function(d) {
-                  return height - xScale(d.count);
-                })
-                .attr('fill', '#fff')
+                col = 12,// min max?width/data.length - data.length*2,
                 
-                //.transition()
-                //.duration(1000)
-                .attr('height', function(d) {
-                  return xScale(d.count);
-                })
+                max = d3.max(data, function(d) {
+                  return d.count;
+                }),
 
-                .attr("tooltip-append-to-body", true)
-               .attr("title", function(d){
-                   return d.name;
-               });
+                overallmax = maximum || max,
+                
+
+                node_selection,
+                enter_selection,
+                exit_selection;
 
             
-          }; // end of renderer
 
-          scope.render(d3.values(scope.data));
-          $compile(element)
+            var scale = d3.scale.linear()
+                  .domain([0, max])
+                  .range([0, 60]);
+            
+            console.log("DATA MAX", max, data)
+
+            svg.attr('height', height); // set the height based on the calculations above
+
+            var selection = svg.selectAll('rect').data(data, function(d) {
+              return d.slug; // unique shared identifier :D
+            });
+
+            selection.transition()
+              .duration(500)
+              .attr('y', function(d) {
+                return height - scale(d.count);
+              })
+              .attr('height', function(d) {
+                return scale(d.count);
+              })
+              .attr('width', col)
+              .attr('title', function(d) {
+                return d.count
+              })
+              .attr('fill', '#fff')
+
+
+            
+
+            selection.enter().append('rect')
+              .attr('x', function(d,i){
+                return i*(col + 2)
+              })
+              .transition()
+              .duration(500)
+              .attr('y', function(d) {
+                return height - scale(d.count);
+              })
+              .attr('height', function(d) {
+                return scale(d.count);
+              })
+              .attr('width', col)
+              .attr('fill', '#fff')
+
+            selection.exit()
+              .transition()
+              .duration(500)
+              .attr('y', height - 2)
+              .attr('height', 2)
+              .attr('fill', '#aa3735')
+
+            /*  
+            g.append('text')
+              .attr('x', function(d,i){
+                return i*(col + 2)
+              })
+              .attr('y', height)
+              .attr('display', function(d) {
+                return d.count >= max? 'block': 'none'
+              })
+              .text(function(d){return 'h' + d.count})
+
+            g.select("rect")
+              .transition()
+              .duration(750)
+              
+              .attr('y', function(d) {
+                return height - scale(d.count);
+              })
+              .attr('height', function(d) {
+                return scale(d.count);
+              })
+              .attr('fill', '#fff')
+
+            /* on update: what to be updated?
+            node_selection.each(function(d, i) {
+              var el = d3.select(this); 
+              console.log('node updating is the', max, data);
+              el.selectAll("rect")
+                  .transition()
+                  .duration(300)
+                  .attr('y', function(d) {
+                    return height - scale(d.count);
+                  })
+                  .attr('height', function(d) {
+                    return scale(d.count);
+                  })
+                  .attr('fill', '#fff')
+                  .attr('title', function(d) {
+                    return d.slug + ' ' + d.count + ' ' + max
+                  })
+
+              el.selectAll("text")
+                .attr('y', 20)
+                .attr('display', function(d) {
+                  return d.count >= max? 'block': 'none'
+                })
+                .text(function(d){return d.count})
+            });
+
+            // entering
+            enter_selection = node_selection.enter().append("g")
+                
+            
+
+            //exiting
+            exit_selection = node_selection.exit().each(function(d, i) {
+              var el = d3.select(this);
+              el.selectAll("rect")
+                .transition()
+                .duration(300)
+                .attr('y', height - 2)
+                .attr('height', 2)
+                .attr('fill', '#aa3735')
+                .attr('title', 0)
+
+               el.selectAll("text")
+                .attr('y', height)
+                .attr('display', function(d) {
+                  return d.count >= max? 'block': 'none'
+                })
+                .text(function(d){return d.count})
+            });
+            /*
+            enter.append('text')
+              .attr('x', function(d,i){
+                return i*(col + 2)
+              })
+              .attr('y', function(d) {
+                return height - scale(d.count);
+              })
+              .attr('display', function(d) {
+                return d.count == max? 'block': 'none'
+              })
+              .text(function(d){return 'h' + d.count})
+
+            // update
+            selection.transition().duration(1000).
+              .attr('y', function(d) {
+                return height - scale(d.count);
+              })
+              .attr('height', function(d) {
+                return scale(d.count);
+              })
+
+            selection.transition()
+              .duration(1000)
+              .attr('y', function(d) {
+                return height - scale(d.count);
+              })
+              .attr('height', function(d) {
+                return scale(d.count);
+              })
+
+            selection.exit()
+            .transition()
+              .duration(1000)
+              .attr('height', 2)
+              .attr('y', height - 2);
+            */
+            $compile(element)
+          }; // end of render er
+
+          // Watch for resize event
+          
+
+          scope.render(d3.values(scope.initdata));
+          scope.$watch('data', function(){
+            scope.render(d3.values(scope.data))
+          });
+          
         });
       }};
   }]);
