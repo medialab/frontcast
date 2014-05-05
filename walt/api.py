@@ -61,7 +61,65 @@ def documents_filters(request):
   Get every tag associated with global collection in order to provide filtering features.
   '''
   epoxy = Epoxy(request)
- 
+
+  querymanager = [
+    {
+      'field':'title',
+      'options': [
+        {
+          'label' : 'contains',
+          'value' : 'title__icontains',
+          'expect': 'text'
+        },
+        {
+          'label' : 'AND contains',
+          'value' : 'title__icontains__REDUCE',
+          'expect': 'text'
+        },
+        {
+          'name': 'equals',
+          'value' : 'title__iexact',
+          'expect': 'text'
+        }
+      ],
+    },
+     {
+      'field': 'institution',
+      'options': [
+        {
+          'label' : 'name contains',
+          'value' : 'tags__slug__icontains',
+          'expect': 'text'
+        },
+        {
+          'label' : 'IS',
+          'value' : 'tags__slug',
+          'expect': 'tags.In'
+        },
+      ],
+    },
+    {
+      'field': 'tags',
+      'options': [
+        {
+          'label' : 'contains',
+          'value' : 'tags__slug__icontains',
+          'expect': 'text'
+        },
+        {
+          'label' : 'AND contains',
+          'value' : 'tags__slug__icontains__REDUCE',
+          'expect': 'text'
+        },
+        {
+          'name': 'equals',
+          'value' : 'tags__slug__iexact',
+          'expect': 'text'
+        }
+      ],
+    }
+  ]
+  epoxy.meta('manager',querymanager)
   queryset = get_available_documents(request).filter(**epoxy.filters)
   # deal with reduce and search field
   if epoxy.reduce:

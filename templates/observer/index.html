@@ -250,48 +250,90 @@
           <div class="inner">
           <!-- open/close facets: opened by default, close by toggle -->
             <div id="active-filters">
-             <span ng-if="query.length">{{query}}</span>
-              <span ng-repeat="(key, value) in filters"> 
-                <span class="tag" ng-repeat="v in value">{{v}}
+              <span ng-if="query.length" class="tag">{{query}}&nbsp; </span>
+              </span>
+              <span ng-repeat="(key, value) in filters">
+                <span ng-if="isStringProperty(value)">
+                   <span  class="tag">{{key}}: {{value}}
+                    <span class="fa fa-times-circle" tooltip="deactivate this filter" ng-click="removeProperty(key, value)"></span>
+                  </span>
+                </span>
+                <span ng-if="!isStringProperty(value)">
+                <span  class="tag" ng-repeat="v in value">{{v}}
                   <span class="fa fa-times-circle" tooltip="deactivate this filter" ng-click="removeProperty(key, value)"></span>
                 </span>
-                
+                </span>
               </span>
             </div>
 
-            <div class="pure-g">
-              <div class="pure-u-1-4">
-                <div d3-bars data="facets.tags.Da" overall-data="overallfacets.tags.Da"></div>
-              </div>
-              <div class="pure-u-1-4">
-                <div d3-bars data="facets.tags.In" overall-data="overallfacets.tags.In"></div>
-              </div>
-              <div class="pure-u-1-2">
-                <div d3-bars data="facets.tools" overall-data="overallfacets.tools"></div>
+            <div id="facets">
+              <div class="pure-g">
+                <div class="pure-u-1-4">
+                  
+                  <div d3-bars data="facets.tags.Da" overall-data="overallfacets.tags.Da"></div>
+                
+                </div>
+                <div class="pure-u-1-4">
+                  
+                  <div d3-bars data="facets.tags.In" overall-data="overallfacets.tags.In"></div>
+                
+                </div>
+                <div class="pure-u-1-2">
+                  
+                  <div d3-bars data="facets.tools" overall-data="overallfacets.tools"></div>
+                
+                </div>
               </div>
             </div>
 
-           
+            <div id="query-manager">
+              <div class="pure-g">
+                <div class="pure-u-1-4">
+                  
+                  <label>field</label>
+                  <div>  
+                    <select ng-model="__field" ng-options='m.field for m in manager'></select>
+                  </div>
+                
+                </div>
+                <div class="pure-u-1-4">
+                  
+                  <label>expression</label>  
+                  <div ng-show="__field">
+                    <div>
+                      <select ng-model="__fieldoption" ng-options='opt as opt.label for opt in __field.options'></select>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="pure-u-1-4">
+
+                  <label>value</label>
+                  <div>
+                    <div ng-show="__fieldoption" ng-switch="__fieldoption.expect">
+                      <div ng-switch-when="text">
+                        <input type="text" ng-model='__fieldoption.__selected'>{{__fieldvalue}}
+                      </div>
+                      <div ng-switch-when="tags.In">
+                        <select ng-model="__fieldoption.__selected" ng-options="key as value.name for (key, value) in overallfacets.tags.In"></select>
+                        
+                      </div>
+                      <div ng-switch-default>ouch...</div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="pure-u-1-4">
+                  {{__fieldoption.__selected}}
+                  <button ng-show="__fieldoption.__selected" class="boo-line pure-button" ng-click='setProperty(__fieldoption.value, __fieldoption.__selected)'>add filter</button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div id="query-manager" ng-class="showqm? 'panel opened': 'panel'">
-          <div class="toggler" ng-click="showqm = !showqm">
-            <div class="label">open query manager</div>
-          </div>
-          <div class="inner">
-            Query manager
-            a lot of stuff
-            a very lot
-            a lot a lot
-            <div>filter 1</div>
-            <div>filter 1</div>
-            <div>filter 1</div>
-            <div>filter 1</div>
-            <div>filter 1</div>
-            <div>filter 1</div>
-          </div>
-        </div>
+        
       {% endverbatim %}
     </div>
 

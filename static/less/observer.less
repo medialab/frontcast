@@ -86,7 +86,10 @@
 
   }
 
-  button.pure-button {
+ 
+}
+
+ button.pure-button {
     background-color: @smoke;
     font: 13px/32px 'Source Code pro';
     padding: 0 @module*2;
@@ -102,8 +105,12 @@
       background-image: none;
     }
   }
-}
 
+.boo-line.pure-button{
+  border: 2px solid @creamy;
+  color: @creamy;
+  background: transparent;
+}
 /*
 
   footer
@@ -147,7 +154,7 @@
     }
 
     &.opened{
-      height: 120px;
+      height: 240px;
     }
 
     >.inner{
@@ -167,9 +174,25 @@
 }
 
 
+#facets{
+  height: 86px;
+}
 
 #query-manager{ 
-  
+  background-color: #d84744;
+  padding: 12px;
+  border-top: 1px solid rgba(124, 41, 39, 0.3);
+  text-align: center;
+
+  label{
+    font: 11px/24px 'Source Code Pro';
+    border-top: 1px solid rgba(124, 41, 39, 0.3);
+    
+    border-bottom: 1px solid rgba(124, 41, 39, 0.3);
+    display: block;
+    margin: @module;
+  }
+
   .toggler{
     background-color: @brown;
   }
@@ -260,7 +283,7 @@
   }
 
   .prev, .next, .page{
-    font: @module*2/@module*4 'Source Code Pro';
+    font: 12px/24px 'Source Code Pro';
     color: @black;
     position: relative;
     display: inline-block;
@@ -352,7 +375,7 @@
     text-decoration: none;
     font-weight: normal;
     color: #181818;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 
   .permalink{

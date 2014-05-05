@@ -164,11 +164,14 @@ angular.module('walt.controllers', [])
       $scope.viewname = viewname;
     };
 
+    $scope.isStringProperty = function(value){
+      return typeof value == "string";
+    }
 
     // commont filter propertiues here
     $scope.setProperties = function(property, value) {
       $scope.filters[property] = [value];
-      console.log('%c filters setProperties', STYLE_INFO, property, value, $scope.filters);
+      console.log('%c filters setProperties', STYLE_INFO, '"',property, ':', value,'"', $scope.filters);
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset,
         
@@ -180,7 +183,7 @@ angular.module('walt.controllers', [])
 
     $scope.setProperty = function(property, value) {
       $scope.filters[property] = value;
-      console.log('%c filters setProperty', 'background: crimson; color: white',property, value, $scope.filters);
+      console.log('%c filters setProperty', STYLE_INFO, '"',property, ':', value,'"', $scope.filters);
       $location.search('filters', JSON.stringify($scope.filters))
     };
 
@@ -199,6 +202,20 @@ angular.module('walt.controllers', [])
       return JSON.stringify(filters)
     };
 
+
+    $scope.resetFilters = function() {
+      $location.search({
+        'filters': ''
+      });
+    };
+
+    $scope.resetQuery = function() {
+      $location.search({
+        'search': ''
+      });
+    };
+
+
     console.log('%c layoutCtrl ', 'background: #151515; color: white', $scope.filters);
     //$scope.loadFilters();
 
@@ -212,12 +229,15 @@ angular.module('walt.controllers', [])
   .controller('filtersCtrl',['$scope', 'DocumentFiltersFactory', function($scope, DocumentFiltersFactory) {
     $scope.showqm = false; // show query manager
     $scope.showfm = true; // show facets manager
-    
+    $scope.manager = [];
+
     $scope.overallfacets = {};
     $scope.facets = {};
 
     DocumentFiltersFactory.query({}, function(data){
       $scope.overallfacets = data.objects;
+      console.log(data)
+      $scope.manager = data.meta.manager;
     });
 
     $scope.sync = function() {
