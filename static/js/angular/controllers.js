@@ -52,7 +52,7 @@ angular.module('walt.controllers', [])
       var page = Math.max(0, Math.min(page, $scope.numofpages));
       console.log('page to', page);
       $scope.offset = page * $scope.limit;
-      $scope.loadFilters();
+      $scope.loadFilters({controller: $rootScope.controllerName});
     };
 
 
@@ -158,7 +158,9 @@ angular.module('walt.controllers', [])
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;
       $scope.query = '';
+
       $scope.loadFilters({controller: r.$$route.controller}); // reload filters directly form the params
+      $rootScope.controllerName = r.$$route.controller; // maybe $route. something ?
     });
     
     $scope.setViewName = function(viewname) {

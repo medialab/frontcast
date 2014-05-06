@@ -6,15 +6,17 @@
       <h4><a ng-href="#/course/{{item.id}}">{{item.title || 'untitled'}}</a></h4>
       <div class="tags">
         <span class="date">
-          <span class="tag date" ng-click="setProperties('tags__slug__in', tag.slug)" class="wd" ng-repeat="tag in item.tags.Date">
-            {{tag.name}}
+          <span class="tag date" ng-click="setProperty('date', item.date)">
+            {{item.date}}
           </span>
         </span>
         <span class="tag date" ng-click="setProperties('type__in', item.type)">
             {{item.type}}
           </span>
       </div>
-      <div class="abstract">{{item.abstract_raw}}</div>
+      <div class="abstract"> course: {{item.parent.title}}
+
+        {{item.abstract_raw}}</div>
       
       
 

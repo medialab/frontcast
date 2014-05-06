@@ -1,0 +1,51 @@
+course_code,tag_semester,date,tag_session_code,title,type,tag_duration,tag_format,tag_teacher,tag_tutor,tag_guest,Observation
+scpo-adev1205-2013,1,09/10/2012,1,(WHY) Pourquoi les sciences et les techniques ne nous libéreront pas des controverses et comment en tirer profit,session_magistral,120,plénière,Tommaso Venturini,,,
+scpo-adev1205-2013,1,09/17/2012,2a,"Débat et jeu de rôle sur le relativisme, positivisme, et constructivisme",session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,1,09/17/2012,2b,"Débat et jeu de rôle sur le relativisme, positivisme, et constructivisme",session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,1,09/17/2012,2c,"Débat et jeu de rôle sur le relativisme, positivisme, et constructivisme",session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,1,09/24/2012,3,(WHAT) Qu’est-ce que c’est une controverse sociotechnique?,session_magistral,120,plénière,Tommaso Venturini,,,
+scpo-adev1205-2013,1,10/01/2012,4a,Discussion des textes et choix du sujet,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,1,10/01/2012,4b,Discussion des textes et choix du sujet,session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,1,10/01/2012,4c,Discussion des textes et choix du sujet,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,1,10/08/2012,5,(HOW) Les terrains d’exploration et Ie choix d’une bonne controverse,session_magistral,120,plénière,Tommaso Venturini,,,
+scpo-adev1205-2013,1,10/15/2012,6a,Présentation du dossier,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,1,10/15/2012,6b,Présentation du dossier,session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,1,10/15/2012,6c,Présentation du dossier,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,1,10/22/2012,7,(WHO) Qui sont les acteurs des controverses,session_magistral,120,plénière,Tommaso Venturini,,,
+scpo-adev1205-2013,1,11/05/2012,8a,Discussion des textes,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,1,11/05/2012,8b,Discussion des textes,session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,1,11/05/2012,8c,Discussion des textes,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,1,11/12/2012,9,(WHERE) Pourquoi on ne peut pas séparer la science de la société,session_magistral,120,plénière,Tommaso Venturini,,,
+scpo-adev1205-2013,1,11/19/2012,10a,Travail en groupe,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,1,11/19/2012,10b,Travail en groupe,session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,1,11/19/2012,10c,Travail en groupe,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,1,11/26/2012,11,(HOW) Données ouverts et visualisation des données,session_magistral,120,plénière,Tommaso Venturini,,,
+scpo-adev1205-2013,1,12/03/2012,12a,Travail en groupe,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,1,12/03/2012,12b,Travail en groupe,session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,1,12/03/2012,12c,Travail en groupe,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,2,01/21/2013,1,(HOW) Comment entrer dans une controverse et comment s’en sortir,session_magistral,120,plénière,Tommaso Venturini,,,
+scpo-adev1205-2013,2,01/28/2013,2a,Discussion des textes et le plan de l'enquête,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,2,01/28/2013,2b,Discussion des textes et le plan de l'enquête,session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,2,01/28/2013,2c,Discussion des textes et le plan de l'enquête,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,2,02/04/2013,3,(HOW) Scientométrie et analyse des réseaux,session_magistral,120,plénière,Tommaso Venturini,,,VRAI
+scpo-adev1205-2013,2,02/11/2013,4a,Travail en groupe,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,2,02/11/2013,4b,Travail en groupe,session_atelier,120,groupes,,Nicolas Baya-Laffite,,VRAI
+scpo-adev1205-2013,2,02/11/2013,4c,Travail en groupe,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,2,02/18/2013,5,(How) Cartographie du web,session_magistral,120,plénière,Tommaso Venturini,,,VRAI
+scpo-adev1205-2013,2,02/25/2013,6a,Travail en groupe et le réseau des citations,session_atelier,120,groupes,,Mathieu Jacomy,,VRAI
+scpo-adev1205-2013,2,02/25/2013,6b,Travail en groupe et le réseau des citations,session_atelier,120,groupes,,Nicolas Baya-Laffite,,VRAI
+scpo-adev1205-2013,2,02/25/2013,6c,Travail en groupe et le réseau des citations,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,2,03/11/2013,7,(How) Narration visuelle,session_magistral,120,plénière,Tommaso Venturini,,,VRAI
+scpo-adev1205-2013,2,03/18/2013,8a,Travail en groupe,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,2,03/18/2013,8b,Travail en groupe,session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,2,03/18/2013,8c,Travail en groupe,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,2,03/25/2013,9,[HOW) Architecture de l’information et montage (vidéo),session_magistral,120,plénière,Tommaso Venturini,,Benjamin Sylvand,
+scpo-adev1205-2013,2,04/08/2013,10a,Travail en groupe,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,2,04/08/2013,10b,Travail en groupe,session_atelier,120,groupes,,Nicolas Baya-Laffite,,VRAI
+scpo-adev1205-2013,2,04/08/2013,10c,Travail en groupe,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,2,04/15/2013,11a,Finalisation de la vidéo et de la page d'introduction,session_atelier,120,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,2,04/15/2013,11b,Finalisation de la vidéo et de la page d'introduction,session_atelier,120,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,2,04/15/2013,11c,Finalisation de la vidéo et de la page d'introduction,session_atelier,120,groupes,,Thomas Tari,,
+scpo-adev1205-2013,2,04/22/2013,12a,Finalisation de la vidéo et de la page d'introduction,session_atelier,119,groupes,,Mathieu Jacomy,,
+scpo-adev1205-2013,2,04/22/2013,12b,Finalisation de la vidéo et de la page d'introduction,session_atelier,119,groupes,,Nicolas Baya-Laffite,,
+scpo-adev1205-2013,2,04/22/2013,12c,Finalisation de la vidéo et de la page d'introduction,session_atelier,119,groupes,,Thomas Tari,,VRAI

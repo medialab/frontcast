@@ -224,14 +224,16 @@ class WorkingDocument(AbstractDocument):
   SESSION_ATELIER = 'session_atelier'
   SESSION_THEORY  = 'session_theory'
   SESSION_DEBATE  = 'session_debate'
+  SESSION_MASTER  = 'session_magistral'
 
   SESSION_TYPE_CHOICES = (
     (SESSION_ATELIER, 'atelier'),
-    (SESSION_THEORY, 'theoric course'),
     (SESSION_DEBATE, 'debate'),
+    (SESSION_THEORY, 'theoric course'),
+    (SESSION_MASTER, 'cours magistral'),
   )
 
-  TYPE_TREE = [SEQUENCE, TASK, TOOL]
+  TYPE_TREE = (SEQUENCE, TASK, TOOL, COURSE_MASTER)
 
   # various status. feature to be tested, not used.
   WAITING_FOR_PUBLICATION = 'W' # ask for peer review !
@@ -290,6 +292,7 @@ class WorkingDocument(AbstractDocument):
     
     if self.parent:
       if self.parent.type not in WorkingDocument.TYPE_TREE:
+        print WorkingDocument.TYPE_TREE
         raise IntegrityError("WoringDocumentparent is not of the type SEQUENCE, TASK or TOOL") #print self.slug, self.type,' child of', self.parent.slug, self.parent.type, '?'
       if self.type == WorkingDocument.SEQUENCE or self.type == WorkingDocument.COURSE:
         raise IntegrityError("WoringDocument of type SEQUENCE or COURSE Can't have parents")
@@ -328,6 +331,8 @@ class WorkingDocument(AbstractDocument):
       
     }
 
+    if self.parent:
+      d['parent'] = self.parent.json() # simple. just id and title
     if deep:
       d['documents'] = [doc.json() for doc in self.documents.all()]
       if self.type == WorkingDocument.COPY:
