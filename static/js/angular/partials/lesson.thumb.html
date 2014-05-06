@@ -1,0 +1,17 @@
+<div class="thumb" ng-class="thumb.status">
+  <div class="inner">
+  <h4><a ng-href="#/lesson/{{thumb.id}}">#{{thumb.id}} {{thumb.title}}</a></h4>
+  
+  <div class="tags">
+    <span class="date">
+      <span class="tag date" ng-click="setProperties('tags__slug__in', tag.slug)" class="wd" ng-repeat="tag in thumb.tags.Date">
+        {{tag.name}}
+      </span>
+    </span>
+    <span class="tag date" ng-click="setProperties('type__in', thumb.type)">
+        {{thumb.type}}
+      </span>
+  </div>
+  
+  </div>
+</div>

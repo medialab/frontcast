@@ -333,8 +333,11 @@ class WorkingDocument(AbstractDocument):
 
     if self.parent:
       d['parent'] = self.parent.json() # simple. just id and title
+    
     if deep:
       d['documents'] = [doc.json() for doc in self.documents.all()]
+      d['children'] = [doc.json() for doc in self.children.all()]
+      
       if self.type == WorkingDocument.COPY:
         d.update({
           'copy_of': [{'id':c.id, 'type':c.type} for c in self.copies.all()]
