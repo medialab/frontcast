@@ -156,7 +156,7 @@ angular.module('walt.directives', [])
             .style('margin-top', '6px');
           
 
-          console.log('INITDATA');
+          //console.log('INITDATA');
 
           var margin = parseInt(attrs.margin) || 20,
               barHeight = parseInt(attrs.barHeight) || 20,
@@ -188,7 +188,7 @@ angular.module('walt.directives', [])
                   .domain([0, max])
                   .range([0, 60]);
             
-            console.log("DATA MAX", max, data)
+            //console.log("DATA MAX", max, data)
 
             svg.attr('height', height); // set the height based on the calculations above
 

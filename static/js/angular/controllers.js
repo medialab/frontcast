@@ -157,7 +157,8 @@ angular.module('walt.controllers', [])
       $scope.filters = {};
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;
-      $scope.loadFilters(); // reload filters directly form the params
+      $scope.query = '';
+      $scope.loadFilters({controller: r.$$route.controller}); // reload filters directly form the params
     });
     
     $scope.setViewName = function(viewname) {
@@ -284,7 +285,9 @@ angular.module('walt.controllers', [])
     };
 
     $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
-      console.log('received...');
+      if(options.controller != 'documentsCtrl')
+        return;
+      console.log('%c documentsCtrl ', STYLE_INFO, 'received...', options);
       $scope.sync();
     });
 
@@ -403,6 +406,7 @@ angular.module('walt.controllers', [])
     $scope.orderby = $scope.orders[1];
 
     $scope.sync = function() {
+      console.log('%c toolsCtrl ', STYLE_INFO, '@sync');
       WorkingDocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.extendFilters({type: 'T'})}, function(data){
         $scope.items = data.objects;
         $scope.paginate({
@@ -412,12 +416,13 @@ angular.module('walt.controllers', [])
     };
 
     $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
-      console.log('received...', $scope.offset, $scope.limit);
+      if(options.controller != 'toolsCtrl')
+        return;
       $scope.sync();
     });
 
-    $scope.sync();
     console.log('%c toolsCtrl ', 'background: lime;');
+    $scope.sync();
   }])
   .controller('toolCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory',function($scope, $route, $routeParams, WorkingDocumentFactory){
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
@@ -446,6 +451,7 @@ angular.module('walt.controllers', [])
     $scope.orderby = $scope.orders[1];
 
     $scope.sync = function() {
+      console.log('%c lessonsCtrl ', STYLE_INFO, '@sync');
       WorkingDocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.extendFilters({type: 'session_atelier'})}, function(data){
         $scope.items = data.objects;
         $scope.paginate({
@@ -455,12 +461,13 @@ angular.module('walt.controllers', [])
     };
 
     $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
-      console.log('received...', $scope.offset, $scope.limit);
+      if(options.controller != 'lessonsCtrl')
+        return;
       $scope.sync();
     });
 
-    $scope.sync();
     console.log('%c lessonsCtrl ', 'background: lime;');
+    $scope.sync();
   }])
   .controller('lessonCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory',function($scope, $route, $routeParams, WorkingDocumentFactory){
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
@@ -483,6 +490,7 @@ angular.module('walt.controllers', [])
     $scope.setViewName('courses');
 
     $scope.sync = function() {
+      console.log('%c coursesCtrl ', STYLE_INFO, '@sync');
       WorkingDocumentListFactory.query({
         search: $scope.query,
         limit: $scope.limit,
@@ -498,12 +506,15 @@ angular.module('walt.controllers', [])
     };
 
     $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
-      console.log('received...', $scope.offset, $scope.limit);
+      if(options.controller != 'coursesCtrl')
+        return;
+      console.log(options);
+      console.log('%c coursesCtrl received...', STYLE_INFO, $scope.offset, $scope.limit);
       $scope.sync();
     });
 
-    $scope.sync();
     console.log('%c coursesCtrl ', 'background: lime;');
+    $scope.sync();
   }])
   .controller('courseCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory',function($scope, $route, $routeParams, WorkingDocumentFactory){
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
