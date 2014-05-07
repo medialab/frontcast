@@ -429,6 +429,9 @@ angular.module('walt.controllers', [])
     console.log('%c toolsCtrl ', 'background: lime;');
     $scope.sync();
   }])
+
+
+
   .controller('toolCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory', '$location', function($scope, $route, $routeParams, WorkingDocumentFactory, $location){
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
     $scope.setViewName('tools');
@@ -441,6 +444,9 @@ angular.module('walt.controllers', [])
 
     console.log('%c toolCtrl ', 'background: lime;', $routeParams.id, $routeParams);
     
+    $scope.rate = function(){
+      console.log('eurioeuroieuroieuroieuoir')
+    }
     $scope.save = function() {
       var params = angular.copy($scope.item);
       params.abstract = params.abstract_raw; // raw is 
@@ -448,7 +454,7 @@ angular.module('walt.controllers', [])
       if($scope.item.id) {
         console.log('params', params);
         WorkingDocumentFactory.save({id: $scope.item.id}, params, function(data) {
-          console.log('hey', data);
+          $location.path("/tool/" + $scope.item.id);
         });
       } else {
         params.type = 'T';

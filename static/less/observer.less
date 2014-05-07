@@ -360,6 +360,11 @@
     background-color: fade(@smoke, 40%);
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
+
+    a{
+      color: darken(@smoke, 12%);
+      .transition(color);
+    }
   }
 
   h4{
@@ -401,6 +406,10 @@
     .below{
       color: @creamy;
       background-color: @smoke;
+
+      a{
+        color: @creamy;
+      }
     }
   }
   

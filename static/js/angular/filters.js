@@ -13,6 +13,12 @@ angular.module('walt.filters', [])
       return contents.length > 9? contents.slice(0,10).join(" ") + ' [...]': String(text)
     };
   })
+  .filter('crop', function() {
+    return function(text) {
+      var contents = String(text);
+      return contents.length > 32? contents.substring(0,32) + ' [...]': contents
+    };
+  })
   .filter('interpolate', ['version', function(version) {
     return function(text) {
       return String(text).replace(/\%VERSION\%/mg, version);
