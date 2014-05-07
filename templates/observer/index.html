@@ -315,7 +315,11 @@
                         <input type="text" ng-model='__fieldoption.__selected'>{{__fieldvalue}}
                       </div>
                       <div ng-switch-when="tags.In">
-                        <select ng-model="__fieldoption.__selected" ng-options="key as value.name for (key, value) in overallfacets.tags.In"></select>
+                        <select ng-model="__fieldoption.__selected" ng-options="key as value.name for (key, value) in facets.tags.In"></select>
+                        
+                      </div>
+                       <div ng-switch-when="tools">
+                        <select ng-model="__fieldoption.__selected" ng-options="key as value.title for (key, value) in facets.tools"></select>
                         
                       </div>
                       <div ng-switch-default>ouch...</div>

@@ -49,13 +49,13 @@
   
 
   <div class="pure-u-1-4">
-    <div ng-repeat="thumb in item.documents">
+    <div style="height: 300px; overflow:scroll">
+      <div ng-repeat="thumb in item.supports">
         <div ng-include src="'/frontcast/static/js/angular/partials/document.thumb.html'"></div>
       </div>
+    </div>
   </div>
 
-  <div class="pure-u-1-2">
-      
-    </div>
+  
 
 </div>

@@ -328,14 +328,17 @@ class WorkingDocument(AbstractDocument):
       'permalink': self.permalink,
       'owner': self.owner.username,
       'date': self.date.strftime('%Y-%m-%d') if self.date else None,
-      
+      'count': {
+        'documents': self.supports.count()
+      }
     }
 
     if self.parent:
       d['parent'] = self.parent.json() # simple. just id and title
     
     if deep:
-      d['documents'] = [doc.json() for doc in self.documents.all()]
+      d['supports'] = [doc.document.json() for doc in self.supports.all()]
+      
       d['children'] = [doc.json() for doc in self.children.all()]
       
       if self.type == WorkingDocument.COPY:

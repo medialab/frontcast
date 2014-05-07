@@ -79,12 +79,12 @@ angular.module('walt.controllers', [])
       $scope.numofpages = Math.floor(($scope.total_count-1) / $scope.limit );
       $scope.page = Math.floor($scope.offset / $scope.limit);
 
-      if($scope.numofpages < 10) {
+      if($scope.numofpages < 5) {
         left = 0;
         right = +$scope.numofpages;
       } else{
-        right = Math.min($scope.numofpages, $scope.page<10?10:$scope.page + 5);
-        left = right - 10;
+        right = Math.min($scope.numofpages, $scope.page<5?5:$scope.page + 3);
+        left = right - 5;
       }
 
       for(var i=left; i<right+1; i++)

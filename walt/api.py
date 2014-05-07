@@ -77,13 +77,13 @@ def documents_filters(request):
           'expect': 'text'
         },
         {
-          'name': 'equals',
+          'label': 'equals',
           'value' : 'title__iexact',
           'expect': 'text'
         }
       ],
     },
-     {
+    {
       'field': 'institution',
       'options': [
         {
@@ -96,6 +96,26 @@ def documents_filters(request):
           'value' : 'tags__slug',
           'expect': 'tags.In'
         },
+      ],
+    },
+    {
+      'field': 'tool',
+      'options': [
+        {
+          'label' : 'name contains',
+          'value' : 'tags__slug__icontains',
+          'expect': 'text'
+        },
+        {
+          'label' : 'is',
+          'value' : 'devices__working_document__slug',
+          'expect': 'tools'
+        },
+        {
+          'label' : 'AND is',
+          'value' : 'devices__working_document__slug__REDUCE',
+          'expect': 'tools'
+        }
       ],
     },
     {
