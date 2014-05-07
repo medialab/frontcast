@@ -89,15 +89,17 @@
  
 }
 
- button.pure-button {
+ button.pure-button, a.pure-button {
     background-color: @smoke;
-    font: 13px/32px 'Source Code pro';
+    font: 12px/30px 'Source Code pro';
     padding: 0 @module*2;
-    border-width: 0;
-
+    border: 1px solid darken(@smoke, 9%);
+    border-radius: @module;
     &:hover{
       background-color: @blue;
       background-image: none;
+      color: @white;
+      border-color: darken(@blue, 10%);
     }
 
     &:active, &:focus{
@@ -780,7 +782,6 @@ a.editable-empty:focus {
     padding-left:150px;
   }
   #main{
-    width: 800px;
     margin: 0;
   }
   #menu {
@@ -791,7 +792,6 @@ a.editable-empty:focus {
 
 @media (min-width: 1280px){
   #main{
-    width: 1060px;
     margin: 0 auto;
   }
   #menu{
@@ -801,7 +801,6 @@ a.editable-empty:focus {
 
 @media (min-width:1400px){
   #main{
-    width: 1234px;
     margin: 0 auto;
   }
 }
@@ -818,7 +817,7 @@ a.editable-empty:focus {
   margin: 0 @module*2;
 
   .dropdown-toggle{
-    display: block;
+    display: inline-block;
     background: @smoke;
     position: relative;
     z-index: 1001;
@@ -827,7 +826,7 @@ a.editable-empty:focus {
     -moz-border-radius: 36px;
     border-radius: 36px;
     padding: 0 @module*2;
-    margin: @module;
+    margin: 0;
     font: 13px/36px 'Source Code pro';
     color: @grey;
     .transition(background-color, .2s, linear);
@@ -962,6 +961,31 @@ ul.dropdown-menu{
     width:0;
     height:0
 }
+
+
+/*
+
+  Bootstrap rating
+  ======
+*/
+.glyphicon{
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-right: @module/2;
+  &.glyphicon-star:before{
+    content: "\f005";
+  }
+  &.glyphicon-star-empty:before{
+    content: "\f006";
+  }
+}
+
+
 
 .clear{
   clear: both;

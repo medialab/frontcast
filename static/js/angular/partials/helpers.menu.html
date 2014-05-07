@@ -1,15 +1,12 @@
-<table>
-  <tr>
+<div class="pure-g">
 
-    <td>
+    <div class="pure-u-1-8">
       <div class="counter" ng-include src="'/frontcast/static/js/angular/partials/helpers.counter.html'"></div>
-    </td>
-
-    <td>
+    </div>
+    <div class="pure-u-3-8">
       <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
-    </td>
-
-    <td>
+    </div>
+    <div class="pure-u-3-8">
       <div class="dropdown">
         <a class="dropdown-toggle">
           ordered by <span class="orderby">{{orderby.label}}</span><i class="fa fa-angle-down"></i>
@@ -20,9 +17,12 @@
           </li>
         </ul>
       </div>
-    </td>
-  </tr>
-</table>
+    </div>
+    <div class="pure-u-1-8">
+
+      <a class="pure-button" ng-href="#/{{viewname}}/add">add {{viewname}} <i class="fa fa-plus"></i></a>
+    </div>
+</div>
     <!-- select ng-model="orderby" ng-options="o.name for o in orders" fancy-select >
       <option value="">-- choose color --</option>
     </select -->

@@ -159,8 +159,10 @@ angular.module('walt.controllers', [])
       $scope.offset = $scope.default_offset;
       $scope.query = '';
 
-      $scope.loadFilters({controller: r.$$route.controller}); // reload filters directly form the params
-      $rootScope.controllerName = r.$$route.controller; // maybe $route. something ?
+      if(r.$$route){
+        $scope.loadFilters({controller: r.$$route.controller}); // reload filters directly form the params
+        $rootScope.controllerName = r.$$route.controller; // maybe $route. something ?
+      }
     });
     
     $scope.setViewName = function(viewname) {
@@ -231,7 +233,7 @@ angular.module('walt.controllers', [])
   */
   .controller('filtersCtrl',['$scope', 'DocumentFiltersFactory', function($scope, DocumentFiltersFactory) {
     $scope.showqm = false; // show query manager
-    $scope.showfm = true; // show facets manager
+    $scope.showfm = false; // show facets manager
     $scope.manager = [];
 
     $scope.overallfacets = {};
@@ -409,7 +411,8 @@ angular.module('walt.controllers', [])
 
     $scope.sync = function() {
       console.log('%c toolsCtrl ', STYLE_INFO, '@sync');
-      WorkingDocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.extendFilters({type: 'T'})}, function(data){
+      WorkingDocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.extendFilters({type: 'T'}), order_by: '["-rating"]'}, function(data){
+        console.log('ciao', data)
         $scope.items = data.objects;
         $scope.paginate({
           total_count: data.meta.total_count
@@ -426,15 +429,47 @@ angular.module('walt.controllers', [])
     console.log('%c toolsCtrl ', 'background: lime;');
     $scope.sync();
   }])
-  .controller('toolCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory',function($scope, $route, $routeParams, WorkingDocumentFactory){
+  .controller('toolCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory', '$location', function($scope, $route, $routeParams, WorkingDocumentFactory, $location){
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
-    $scope.setViewName('tool');
+    $scope.setViewName('tools');
+
+    $scope.tool_types = [
+      {value: 'ControversyWeb', text: 'ControversyWeb'},
+      {value: 'ControversyVideo', text: 'ControversyVideo'},
+      {value: 'Ebook', text: 'Ebook'}
+    ]; 
+
     console.log('%c toolCtrl ', 'background: lime;', $routeParams.id, $routeParams);
     
-    WorkingDocumentFactory.get({id: $routeParams.id}, function(data){
-      $scope.item = data.object;
-      console.log(data);
-    });
+    $scope.save = function() {
+      var params = angular.copy($scope.item);
+      params.abstract = params.abstract_raw; // raw is 
+     
+      if($scope.item.id) {
+        console.log('params', params);
+        WorkingDocumentFactory.save({id: $scope.item.id}, params, function(data) {
+          console.log('hey', data);
+        });
+      } else {
+        params.type = 'T';
+        params.rating = params.rating || 1;
+        WorkingDocumentFactory.save(params, function(data) {
+          console.log('hey', data);
+          $scope.item = data.object;
+          //redirect!
+          $location.path("/tool/" + $scope.item.id);
+        });
+      };
+    }
+
+    if($routeParams.id) { // edit or view
+      WorkingDocumentFactory.get({id: $routeParams.id}, function(data){
+        $scope.item = data.object;
+        console.log('getting ', data);
+      });
+    } else { // add new
+
+    }
 
   }])
   /*

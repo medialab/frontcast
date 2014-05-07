@@ -1,18 +1,31 @@
 <div class="menu" scroll-to-fixed margin-top="48" ng-include src="'/frontcast/static/js/angular/partials/helpers.menu.html'"></div>
 
 <div class="list">
-<div class="item" ng-class="item.status" ng-repeat="item in items" >
-  <div class="inner">
-  <h4><a ng-href="#/tool/{{item.id}}">{{item.title}}</a></h4>
-  <div class="tags">
-    <span class="tag" class="wd" ng-repeat="tag in item.tags.CA" ng-click="setProperties('tags__slug__in', tag.slug)">
-      {{tag.name}}
-    </span>
+  <div class="item" ng-class="item.status" ng-repeat="item in items" >
+    <div class="inner">
+      <h4><a ng-href="#/tool/{{item.id}}">{{item.title}}</a></h4>
+      <div class="tags">
+        <span class="tag" class="wd" ng-repeat="tag in item.tags.CA" ng-click="setProperties('tags__slug__in', tag.slug)">
+          {{tag.name}}
+        </span>
+      </div>
+      <div class="permalink">
+        <a href="{{item.permalink}}" target="_blank">{{item.permalink}}</a>
+      </div>
+      <div class="abstract" ng-click="follow('/tool/',item.id)">{{item.abstract_raw | excerpt}}</div>
+    
+    </div>
+
+    <div class="below">
+      <div class="pure-g">
+        <div class="pure-u-1-4">
+          
+          <span class="fa fa-star" tooltip="rating: {{item.rating}}">{{item.rating}}</span>
+        
+        </div>
+        
+      </div>
+    </div>
+
   </div>
-  <div class="permalink">
-    <a href="{{item.permalink}}" target="_blank">{{item.permalink}}</a>
-  </div>
-  <div class="abstract" ng-click="follow('/tool/',item.id)">{{item.abstract_raw | excerpt}}</div>
-  
-</div>
 </div>

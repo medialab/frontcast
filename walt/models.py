@@ -267,7 +267,7 @@ class WorkingDocument(AbstractDocument):
 
 
   class Meta:
-    ordering = ('-type', '-id',)
+    ordering = ('-type', '-rating', '-id',)
 
 
   def __unicode__(self):
@@ -319,7 +319,7 @@ class WorkingDocument(AbstractDocument):
     d = {
       'id': self.id,
       'slug':self.slug,
-      'title':self.rating,
+      'rating':self.rating,
       'type': self.type,
       'type_label': self.get_type_display(),
       'title': self.title,

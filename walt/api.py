@@ -199,12 +199,16 @@ def working_documents(request):
 
 @staff_member_required
 def working_document(request, pk):
-  if is_number(pk):
-    d = WorkingDocument.objects.get(pk=pk)
-  else: 
-    d = WorkingDocument.objects.get(slug=pk)
-
   epoxy = Epoxy(request)
+  try:
+    if is_number(pk):
+      d = WorkingDocument.objects.get(pk=pk)
+    else: 
+      d = WorkingDocument.objects.get(slug=pk)
+  except WorkingDocument.DoesNotExist, e:
+    return epoxy.throw_error(error='%s'%e, code=API_EXCEPTION_DOESNOTEXIST).json()
+
+  
 
   if epoxy.is_POST():
     is_valid, d = edit_object(instance=d, Form=WorkingDocumentForm, request=request, epoxy=epoxy)
