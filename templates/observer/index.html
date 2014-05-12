@@ -200,7 +200,7 @@
             <ul>
                 <li><a href="#/">overview</a>
                 </li>
-                <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''"><a href="#/docs">documents</a></li>
+                <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''"><a href="#/docs">student works</a></li>
                 
                 <li ng-class="viewname=='tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#/tools">tools</a>
@@ -253,15 +253,15 @@
               <span ng-if="query.length" class="tag">{{query}}&nbsp; </span>
               </span>
               <span ng-repeat="(key, value) in filters">
-                <span ng-if="isStringProperty(value)">
-                   <span  class="tag">{{key}}: {{value}}
-                    <span class="fa fa-times-circle" tooltip="deactivate this filter" ng-click="removeProperty(key, value)"></span>
-                  </span>
+                <span class="tag" ng-if="isStringProperty(value)">
+                   <span  tooltip="{{key|embellish}}: {{value}}">{{value}}</span>&nbsp;<span class="fa fa-times-circle" tooltip="deactivate this filter" ng-click="removeProperty(key, value)"></span>
+                  
                 </span>
                 <span ng-if="!isStringProperty(value)">
-                <span  class="tag" ng-repeat="v in value">{{v}}
-                  <span class="fa fa-times-circle" tooltip="deactivate this filter" ng-click="removeProperty(key, value)"></span>
-                </span>
+                  <span  class="tag" ng-repeat="v in value">
+                     <span  tooltip="{{key|embellish}}: {{v}}">{{v}}</span>&nbsp;
+                    <span class="fa fa-times-circle" tooltip="deactivate this filter" ng-click="removeProperty(key, value)">
+                  </span>
                 </span>
               </span>
             </div>

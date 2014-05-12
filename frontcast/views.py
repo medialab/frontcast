@@ -80,7 +80,7 @@ def storage( request, folder=None, index=None, extension=None ):
       return HttpResponseNotFound('resource not found')
 
   # serve file (via XACCEL or XSENDFILE or similar)  
-  if settings.ENABLE_XACCEL and extension in ['mp4', 'ogg']:
+  if settings.ENABLE_XACCEL and extension in ['mp4', 'ogg', 'mpa']:
     hidden_filepath = os.path.join('/videos/protected/', folder, filename) ## set /videos/protected as protected for streaming
     response = HttpResponse()
     response['X-Accel-Redirect'] = hidden_filepath
