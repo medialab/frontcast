@@ -50,6 +50,8 @@ api_urlpatterns = patterns('walt.api',
     url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'document', name='walt_api_update_document'),
     
 
+    url(r'tag/$', 'tags', name='walt_api_tags'),
+    
 
     url(r'biblib/$', 'biblib_proxy', name='walt_api_biblib_proxy'),
     url(r'biblib-safe/$', 'biblib_proxy_safe', name='walt_api_biblib_proxy_safe'), # user is not logged in! but requests are safe enough

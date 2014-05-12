@@ -77,7 +77,6 @@ angular.module('walt.services', ['ngResource'])
   .factory('WorkingDocumentDetachTagFactory', function($resource) {
     return $resource('/api/working-document/:id/detach-tag/:tag_id', {}, {
       delete: { method: 'POST',  params: {id: '@id', tag_id: '@tag_id'} },
-      
     });
   })
 
@@ -88,6 +87,14 @@ angular.module('walt.services', ['ngResource'])
         }
     });
   })
+
+  .factory('TagsFactory', function($resource) {
+    return $resource('/api/tag', {}, {
+        query: { method: 'GET', isArray: false },
+        suggest: { method: 'GET'}
+    });
+  })
+
   .factory('URLFactory', function($resource) {
     return $resource('/api/url/title', {}, {
         query: { method: 'GET', isArray: false }

@@ -199,6 +199,13 @@ def document(request, pk):
 
 
 
+def tags(request):
+  epoxy = Epoxy(request)
+  epoxy.queryset(Tag.objects.filter())
+  return epoxy.json()
+
+
+
 @staff_member_required
 def working_documents(request):
   epoxy = Epoxy(request)

@@ -96,6 +96,15 @@ class Tag(models.Model):
     super(Tag, self).save()
 
 
+  @staticmethod
+  def search(query):
+    argument_list =[
+      Q(name__icontains=query),
+      Q(slug__icontains=query),   # add this only when there are non ascii chars in query. transform query into a sluggish field. @todo: prepare query as a slug
+    ]
+    return reduce(operator.or_, argument_list)
+
+
   def __unicode__(self):
     return "%s : %s"% (self.get_type_display(), self.name)
 

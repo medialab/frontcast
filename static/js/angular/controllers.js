@@ -234,10 +234,25 @@ angular.module('walt.controllers', [])
     };
 
 
-    $scope.suggestTags = function(val) {
+    $scope.suggestTags = function(tag_type, tag_val) {
+      return $http.get('/api/tag', {
+        params: {
+          filters:'{"type":"CA"}',
+          search:tag_val
+        }
+      }).then(function(res) {
+        return res.data.objects;
+        var addresses = [];
+
+        angular.forEach(res.data.objects, function(item){
+          addresses.push(item.name);
+        });
+        console.log(res.data, addresses)
+        return addresses;
+      });
       return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
         params: {
-          address: val,
+          address: tag_val,
           sensor: false
         }
       }).then(function(res){
@@ -522,12 +537,12 @@ angular.module('walt.controllers', [])
     };
 
 
-    $scope.attachTag = function(tag_type, tag_value, item) {
+    $scope.attachTag = function(tag_type, tag, item) {
       $scope.__tag_candidate = "";
       WorkingDocumentTagsFactory.save({
         id: item.id
       }, {
-        tags: tag_value,
+        tags: tag.name || tag,
         type: tag_type
       },function(data){
         $scope.item = data.object;       

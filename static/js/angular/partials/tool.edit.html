@@ -34,7 +34,7 @@
       </span>
       <input type="text" ng-model="__tag_candidate"
               typeahead-loading="loadingLocations"
-              typeahead="address for address in suggestTags($viewValue)"
+              typeahead="address as address.name for address in suggestTags('CA', $viewValue)"
               class="form-control typeahead-multi-input"
               typeahead-on-select="attachTag('CA', __tag_candidate, item)" 
               typeahead-wait-ms="150">
