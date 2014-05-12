@@ -1,7 +1,7 @@
 <div class="menu" scroll-to-fixed margin-top="48" ng-include src="'/frontcast/static/js/angular/partials/helpers.menu.html'"></div>
 
 <div class="list">
-  <div class="doc item" ng-class="item.status" ng-repeat="item in items">
+  <div class="doc item" ng-class="view_as_list? 'list-item' : ''" ng-repeat="item in items">
     <div class="inner">
     <h4><a ng-href="#/doc/{{item.id}}/profile">#{{item.id}} {{item.title}}</a></h4>
     
@@ -15,11 +15,11 @@
       </span>
       
     </div>
-    <div class="devices">
+    <!-- div class="devices">
       <span ng-repeat="(device_type, devices) in item.devices">
       <span class="tag device" ng-repeat="device in devices" ng-click="setProperties('devices__working_document__slug__in', device.working_document_slug)">{{device.title}}</span>
       </span>
-    </div>
+    </div -->
     </div>
 
     <div class="below">

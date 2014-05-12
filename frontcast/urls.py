@@ -36,9 +36,11 @@ api_urlpatterns = patterns('walt.api',
 
      # staff only: working documents
     url(r'working-document$', 'working_documents', name='walt_api_working_documents'),
+    url(r'working-document/filters$', 'working_documents_filters', name='walt_api_working_documents_filters'),
     url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'working_document', name='walt_api_working_document'),
     url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)/attach-tags$', 'working_document_attach_tags', name='walt_api_working_document_attach_tags'),
-
+    url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)/detach-tag/(?P<tag_pk>[:a-zA-Z\.\-\d]+)$', 'working_document_detach_tags', name='walt_api_working_document_attach_tags'),
+    
     url(r'url/title$', 'url_title', name='walt_api_url_title'),
 
     url(r'document/$', 'documents', name='walt_api_documents'),

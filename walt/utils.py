@@ -81,6 +81,17 @@ def get_available_documents(request):
 
 
 
+def get_available_working_documents(request):
+  '''
+  Return a queryset according to user auth level and document status
+  @param request
+  @return <django.model.Queryset>
+  '''
+  queryset = WorkingDocument.objects.filter().distinct()
+  return queryset
+  
+
+
 def get_document_filters(queryset):
   filters = {'type': {}, 'year': {}, 'tags':{}, 'tools':{} }
   ids = []
@@ -99,7 +110,7 @@ def get_document_filters(queryset):
   for d in queryset:
     ids.append(d.id)
 
-  print 'IDS', ids, ','.join(str(v) for v in ids)
+  #print 'IDS', ids, ','.join(str(v) for v in ids)
   # 3. get document tags. @TODO imporve performances.
   # TOO MANY VALUE ERROR POSSIBLE. TO be reviewed!!!!!!
   # possible solution: split ids in array of 50.
@@ -154,3 +165,37 @@ def get_document_filters(queryset):
   return filters
 
 
+
+def get_working_document_filters(queryset):
+  filters = {'type': {}, 'year': {}, 'tags':{}, 'tools':{} }
+  ids = []
+
+  # 2. get document ids involved
+  for d in queryset:
+    ids.append(d.id)
+
+  #print 'IDS', ids, ','.join(str(v) for v in ids)
+  # 3. get document tags. @TODO imporve performances.
+  # TOO MANY VALUE ERROR POSSIBLE. TO be reviewed!!!!!!
+  # possible solution: split ids in array of 50.
+  tag_queryset = Tag.objects.filter(workingdocument__id__in=ids)
+  print tag_queryset.query
+  for t in tag_queryset:
+    _type = '%s' % t.type
+    _slug = '%s' % t.slug
+
+    if _type not in filters['tags']:
+      filters['tags'][_type] = {}
+
+    if _slug not in filters['tags'][_type]:
+      filters['tags'][_type][_slug] = {
+        'name': t.name,
+        'slug': t.slug,
+        'ids':[],
+        'count': 0
+      }
+    
+    # for debug purpose only, normally document-tag relationships are unique for each type and slug. filters['tags'][_type][_slug]['ids'].append(t.doc_id)
+    filters['tags'][_type][_slug]['count'] += 1
+
+  return filters

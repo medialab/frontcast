@@ -413,6 +413,27 @@
     }
   }
   
+  &.list-item{
+    float: none;
+    width: auto;
+    max-width: none;
+    display: block;
+    margin-bottom: @module;
+
+    .inner{
+      height: auto;
+        
+      h4{
+        display: inline;
+      }
+      .tags, .devices{
+        display: inline;
+        margin: 0;
+        padding: 0;
+        border-bottom: none;
+      }
+    }
+  }
 }
 
 
@@ -573,6 +594,12 @@
   
   }
 }
+
+.pseudo-tag{
+  font: 11px/24px 'Source Code Pro';
+  background: fade(@creamy, 6%);
+}
+
 
 /*
 

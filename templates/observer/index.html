@@ -198,8 +198,7 @@
             <a class="pure-menu-heading" href="#"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 
             <ul>
-                <li><a href="#/">overview</a>
-                </li>
+               
                 <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''"><a href="#/docs">student works</a></li>
                 
                 <li ng-class="viewname=='tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
@@ -266,10 +265,9 @@
               </span>
             </div>
 
-            <div id="facets">
-              <div class="pure-g">
+            <div id="facets" ng-switch="viewname">
+              <div ng-switch-when="documents" class="pure-g">
                 <div class="pure-u-1-4">
-                  
                   <div d3-bars data="facets.tags.Da" overall-data="overallfacets.tags.Da"></div>
                 
                 </div>
@@ -280,10 +278,14 @@
                 </div>
                 <div class="pure-u-1-2">
                   
-                  <div d3-bars data="facets.tools" overall-data="overallfacets.tools"></div>
+                  <span class="pseudo-tag" tooltip="filter by {{tool.slug}}" ng-click="setProperty('devices__working_document__slug__REDUCE', tool.slug)" ng-repeat="tool in facets.tools">
+                    {{tool.title}}&nbsp;{{tool.count}}
+                  </span>
+                  <!--div d3-bars data="facets.tools" overall-data="overallfacets.tools"></div -->
                 
                 </div>
               </div>
+              <div ng-switch-default></div>
             </div>
 
             <div id="query-manager">
@@ -322,13 +324,13 @@
                         <select ng-model="__fieldoption.__selected" ng-options="key as value.title for (key, value) in facets.tools"></select>
                         
                       </div>
-                      <div ng-switch-default>ouch...</div>
+                      <div ng-switch-default></div>
                     </div>
                   </div>
 
                 </div>
                 <div class="pure-u-1-4">
-                  {{__fieldoption.__selected}}
+                  
                   <button ng-show="__fieldoption.__selected" class="boo-line pure-button" ng-click='setProperty(__fieldoption.value, __fieldoption.__selected)'>add filter</button>
                 </div>
               </div>

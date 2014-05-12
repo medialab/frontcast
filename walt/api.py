@@ -21,7 +21,7 @@ from networkx.readwrite import json_graph
 
 from walt.models import Assignment, Profile, Document, Tag, Task, WorkingDocument
 from walt.forms import DocumentForm, FullDocumentForm, DocumentTagsForm, TagsForm, WorkingDocumentForm, URLForm
-from walt.utils import get_document_filters, get_available_documents, get_available_document, is_number
+from walt.utils import get_document_filters, get_available_documents, get_available_document, get_working_document_filters, get_available_working_documents, is_number
 
 
 
@@ -216,6 +216,109 @@ def working_documents(request):
   return epoxy.json()
 
 
+@staff_member_required
+def working_documents_filters(request):
+  '''
+  Get every tag associated with global collection in order to provide filtering features.
+  '''
+  epoxy = Epoxy(request)
+
+  querymanager = [
+    {
+      'field':'title',
+      'options': [
+        {
+          'label' : 'contains',
+          'value' : 'title__icontains',
+          'expect': 'text'
+        },
+        {
+          'label' : 'AND contains',
+          'value' : 'title__icontains__REDUCE',
+          'expect': 'text'
+        },
+        {
+          'label': 'equals',
+          'value' : 'title__iexact',
+          'expect': 'text'
+        }
+      ],
+    },
+    {
+      'field': 'institution',
+      'options': [
+        {
+          'label' : 'name contains',
+          'value' : 'tags__slug__icontains',
+          'expect': 'text'
+        },
+        {
+          'label' : 'IS',
+          'value' : 'tags__slug',
+          'expect': 'tags.In'
+        },
+      ],
+    },
+    {
+      'field': 'tool',
+      'options': [
+        {
+          'label' : 'name contains',
+          'value' : 'tags__slug__icontains',
+          'expect': 'text'
+        },
+        {
+          'label' : 'is',
+          'value' : 'devices__working_document__slug',
+          'expect': 'tools'
+        },
+        {
+          'label' : 'AND is',
+          'value' : 'devices__working_document__slug__REDUCE',
+          'expect': 'tools'
+        }
+      ],
+    },
+    {
+      'field': 'tags',
+      'options': [
+        {
+          'label' : 'contains',
+          'value' : 'tags__slug__icontains',
+          'expect': 'text'
+        },
+        {
+          'label' : 'AND contains',
+          'value' : 'tags__slug__icontains__REDUCE',
+          'expect': 'text'
+        },
+        {
+          'name': 'equals',
+          'value' : 'tags__slug__iexact',
+          'expect': 'text'
+        }
+      ],
+    }
+  ]
+  epoxy.meta('manager',querymanager)
+  queryset = get_available_working_documents(request).filter(**epoxy.filters)
+  # deal with reduce and search field
+  if epoxy.reduce:
+    for r in epoxy.reduce:
+      queryset = queryset.filter(r)
+
+  if epoxy.search:
+    queryset = queryset.filter(WorkingDocument.search(epoxy.search)).distinct()
+
+  c = queryset.count()
+  epoxy.meta('total_count', c)
+
+  filters = get_working_document_filters(queryset=queryset)
+  filters['total_count'] =c # I know, I know... copy for god's sake
+  epoxy.add('objects', filters); # docuemnt connected
+  return epoxy.json()
+
+
 
 @staff_member_required
 def working_document(request, pk):
@@ -260,6 +363,28 @@ def working_document_attach_tags(request, pk):
 
   epoxy.item(d, deep=True)
   return epoxy.json()
+
+
+
+@staff_member_required
+def working_document_detach_tags(request, pk, tag_pk):
+  if is_number(pk):
+    d = WorkingDocument.objects.get(pk=pk)
+  else: 
+    d = WorkingDocument.objects.get(slug=pk)
+
+
+  epoxy = Epoxy(request)
+  epoxy.item(d)
+
+  #get tag
+  t = Tag.objects.get(pk=tag_pk)
+  d.tags.remove(t)
+  
+  epoxy.item(d, deep=True)
+  return epoxy.json()
+
+  
 
 
 

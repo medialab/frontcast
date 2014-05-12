@@ -27,6 +27,18 @@
     <input type="number" ng-model="item.rating" class="pure-input-1-2">
     <!-- rating bind="item.rating" ng-model="item.rating" max="10" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating -->
   </p>
+  <p>
+    <label>tags</label>
+      <span class="tag" ng-repeat="tag in item.tags.CA">
+        {{tag.name}}&nbsp;<span class="fa fa-times" tooltip="remove me" ng-click="detachTag(tag, item)"></span>
+      </span>
+      <input type="text" ng-model="__tag_candidate"
+              typeahead-loading="loadingLocations"
+              typeahead="address for address in suggestTags($viewValue)"
+              class="form-control typeahead-multi-input"
+              typeahead-on-select="attachTag('CA', __tag_candidate, item)" 
+              typeahead-wait-ms="150">
+  </p>
   <button ng-disabled="status != 'available'" class="pure-button" value="add">
     <span ng-if="status == 'available'">save modifications</span>
     <span ng-if="status == 'busy'">working...</span>

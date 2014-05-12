@@ -6,7 +6,7 @@
     <div class="pure-u-3-8">
       <div class="paginator" ng-include src="'/frontcast/static/js/angular/partials/helpers.paginator.html'"></div>
     </div>
-    <div class="pure-u-3-8">
+    <div class="pure-u-1-4">
       <div class="dropdown">
         <a class="dropdown-toggle">
           ordered by <span class="orderby">{{orderby.label}}</span><i class="fa fa-angle-down"></i>
@@ -17,6 +17,12 @@
           </li>
         </ul>
       </div>
+    </div>
+    <div class="pure-u-1-8">
+      <button class="pure-button" ng-click="toggleViewAsList()">
+        <span ng-if="!view_as_list">as list</span>
+        <span ng-if="view_as_list">as pins</span>
+      </button>
     </div>
     <div class="pure-u-1-8">
 
