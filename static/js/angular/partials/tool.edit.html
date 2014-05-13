@@ -3,7 +3,7 @@
   {{item.title}}
 </h2>
 
-<form class="pure-form pure-form-stacked" name="editForm" ng-submit="save()">
+<form class="pure-form pure-form-stacked" name="editForm" >
   <p>
     <label class="required">title</label>
     <input class="pure-input-1-2" required type="text" ng-model="item.title">
@@ -38,8 +38,10 @@
               class="form-control typeahead-multi-input"
               typeahead-on-select="attachTag('CA', __tag_candidate, item)" 
               typeahead-wait-ms="150">
+
+
   </p>
-  <button ng-disabled="status != 'available'" class="pure-button" value="add">
+  <button ng-click="save()" ng-disabled="status != 'available'" class="pure-button" value="add">
     <span ng-if="status == 'available'">save modifications</span>
     <span ng-if="status == 'busy'">working...</span>
   </button>

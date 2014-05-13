@@ -93,13 +93,14 @@ def get_available_working_documents(request):
 
 
 def get_document_filters(queryset):
-  filters = {'type': {}, 'year': {}, 'tags':{}, 'tools':{} }
+  filters = {'type': [], 'year': {}, 'tags':{}, 'tools':[] }
   ids = []
 
   for t in queryset.order_by().values('type').annotate(count=Count('id')):
-    filters['type']['%s'%t['type']] = {
+    filters['type'].append({
+      'name': '%s'%t['type'],
       'count': t['count']
-    }
+    })
 
   for t in queryset.order_by().values('date').annotate(count=Count('id')):
     filters['year']['%s'%t['date']] = {
@@ -134,31 +135,34 @@ def get_document_filters(queryset):
     # for debug purpose only, normally document-tag relationships are unique for each type and slug. filters['tags'][_type][_slug]['ids'].append(t.doc_id)
     filters['tags'][_type][_slug]['count'] += 1
 
+  for t in filters['tags']:
+    filters['tags'][t] = filters['tags'][t].values()
 
   tools = WorkingDocument.objects.raw('''
     SELECT 
     COUNT(od.document_id) as distribution,
     wd.id,
     wd.slug,
-    wd.title
+    wd.title,
+    od.type as devicetype
     FROM observer_device od
     JOIN walt_workingdocument wd ON od.working_document_id = wd.id
     JOIN walt_document d ON od.document_id = d.id
     WHERE d.id in (%s)
-    GROUP BY working_document_id
+    GROUP BY working_document_id,od.type
     ORDER BY distribution DESC
     ''' % ','.join(str(v) for v in ids)
   )
 
   for t in tools:
     _slug = '%s' % t.slug
-    print t.slug
-    filters['tools'][_slug] = {
+    #print t.slug
+    filters['tools'].append({
       'id':    t.id, 
       'slug':  t.slug,
-      'title': t.title,
+      'title': '%s (%s)' % (t.title, t.devicetype),
       'count': t.distribution
-    }
+    })
 
    
 

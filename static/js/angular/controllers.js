@@ -35,9 +35,9 @@ angular.module('walt.controllers', [])
     $scope.howmanyfilters = 0;
     $scope.query = "";
     
-    $scope.limit = 25;
+    $scope.limit = 12;
     $scope.offset = 0;
-    $scope.default_limit = 25;
+    $scope.default_limit = 12;
     $scope.default_offset = 0;
     $scope.total_count = 0;
 
@@ -185,7 +185,11 @@ angular.module('walt.controllers', [])
 
     // commont filter propertiues here
     $scope.setProperties = function(property, value) {
-      $scope.filters[property] = [value];
+      if(!$scope.filters[property])
+        $scope.filters[property] = [value];
+      else if ($scope.filters[property].indexOf(value) == -1)
+        $scope.filters[property].push(value)
+
       console.log('%c filters setProperties', STYLE_INFO, '"',property, ':', value,'"', $scope.filters);
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;

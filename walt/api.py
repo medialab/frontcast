@@ -84,6 +84,21 @@ def documents_filters(request):
       ],
     },
     {
+      'field':'type',
+      'options': [
+        {
+          'label' : 'contains',
+          'value' : 'type__icontains__REDUCE',
+          'expect': 'text'
+        },
+        {
+          'label': 'IS',
+          'value' : 'type',
+          'expect': 'type'
+        }
+      ],
+    },
+    {
       'field': 'institution',
       'options': [
         {
