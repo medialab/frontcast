@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-15 14:57+0200\n"
+"POT-Creation-Date: 2014-05-15 18:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,34 @@ msgstr ""
 #: frontcast/views.py:178 frontcast/views.py:181 walt/views.py:51
 #: walt/views.py:54
 msgid "invalid credentials"
+msgstr ""
+
+#: observer/models.py:27
+msgid "analysis"
+msgstr ""
+
+#: observer/models.py:28
+msgid "exploration"
+msgstr ""
+
+#: observer/models.py:29
+msgid "methodology"
+msgstr ""
+
+#: observer/models.py:30
+msgid "participation"
+msgstr ""
+
+#: observer/models.py:31
+msgid "presentation"
+msgstr ""
+
+#: observer/models.py:32
+msgid "sources"
+msgstr ""
+
+#: observer/models.py:33
+msgid "statistics"
 msgstr ""
 
 #: observer/models.py:60
@@ -127,9 +155,65 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: observer/models.py:229
+#: observer/models.py:150
+msgid "Databases"
+msgstr ""
+
+#: observer/models.py:151
+msgid "Actor diagrams"
+msgstr ""
+
+#: observer/models.py:152
+msgid "Specialised analysis Tools"
+msgstr "Outils specialisés"
+
+#: observer/models.py:153
+msgid "Controversy Timeline"
+msgstr ""
+
+#: observer/models.py:154
+msgid "Web crawling maps"
+msgstr ""
+
+#: observer/models.py:155
+msgid "Specialised Search and Exploration Tools"
+msgstr ""
+
+#: observer/models.py:156
+msgid "Media and public opinion analysis"
+msgstr ""
+
+#: observer/models.py:157
+msgid "Presentation of the disagreement"
+msgstr ""
+
+#: observer/models.py:158
+msgid "External content"
+msgstr ""
+
+#: observer/models.py:159
+msgid "Geographical maps"
+msgstr ""
+
+#: observer/models.py:160
+msgid "Web-site building tools"
+msgstr ""
+
+#: observer/models.py:161
+msgid "Social Network Analysis Tools"
+msgstr ""
+
+#: observer/models.py:162
+msgid "Tag clouds"
+msgstr ""
+
+#: observer/models.py:163
+msgid "Textual analysis"
+msgstr ""
+
+#: observer/models.py:230
 #, python-format
-msgid "question - %s"
+msgid "question_%s"
 msgstr ""
 
 #: templates/dusk/index.html:61 templates/dusk/scenario.html:42
@@ -211,6 +295,3 @@ msgstr ""
 #: walt/forms.py:24 walt/forms.py:29
 msgid "tags"
 msgstr ""
-
-#~ msgid "test-lang"
-#~ msgstr "le test du language"

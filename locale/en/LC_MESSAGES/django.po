@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-15 14:57+0200\n"
+"POT-Creation-Date: 2014-05-15 15:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,9 +126,65 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
+#: observer/models.py:150
+msgid "Databases"
+msgstr ""
+
+#: observer/models.py:151
+msgid "Actor diagrams"
+msgstr ""
+
+#: observer/models.py:152
+msgid "Specialised analysis Tools"
+msgstr ""
+
+#: observer/models.py:153
+msgid "Controversy Timeline"
+msgstr ""
+
+#: observer/models.py:154
+msgid "Web crawling maps"
+msgstr ""
+
+#: observer/models.py:155
+msgid "Specialised Search and Exploration Tools"
+msgstr ""
+
+#: observer/models.py:156
+msgid "Media and public opinion analysis"
+msgstr ""
+
+#: observer/models.py:157
+msgid "Presentation of the disagreement"
+msgstr ""
+
+#: observer/models.py:158
+msgid "External content"
+msgstr ""
+
+#: observer/models.py:159
+msgid "Geographical maps"
+msgstr ""
+
+#: observer/models.py:160
+msgid "Web-site building tools"
+msgstr ""
+
+#: observer/models.py:161
+msgid "Social Network Analysis Tools"
+msgstr ""
+
+#: observer/models.py:162
+msgid "Tag clouds"
+msgstr ""
+
+#: observer/models.py:163
+msgid "Textual analysis"
+msgstr ""
+
 #: observer/models.py:229
 #, python-format
-msgid "question - %s"
+msgid "question_%s"
 msgstr ""
 
 #: templates/dusk/index.html:61 templates/dusk/scenario.html:42
@@ -211,9 +267,54 @@ msgstr ""
 msgid "tags"
 msgstr ""
 
-# do not change
-#~ msgid "zadig"
-#~ msgstr "zipdig"
 
-#~ msgid "test-lang"
-#~ msgstr "language testing"
+
+
+
+
+
+
+#~ msgid "question_actor_table"
+#~ msgstr ""
+
+#~ msgid "question_arg_tree"
+#~ msgstr ""
+
+#~ msgid "question_cosmography"
+#~ msgstr ""
+
+#~ msgid "question_diagram"
+#~ msgstr ""
+
+#~ msgid "question_sc_lit"
+#~ msgstr ""
+
+#~ msgid "question_scientometri"
+#~ msgstr ""
+
+#~ msgid "question_tmethodology"
+#~ msgstr ""
+
+#~ msgid "question_qual_da"
+#~ msgstr ""
+
+#~ msgid "question_sources_deta"
+#~ msgstr ""
+
+#~ msgid "question_comments"
+#~ msgstr ""
+
+#~ msgid "question_animation"
+#~ msgstr ""
+
+#~ msgid "question_comic"
+#~ msgstr ""
+
+#~ msgid "question_glossary"
+#~ msgstr ""
+
+#~ msgid "question_viz_analogy"
+#~ msgstr ""
+
+#~ msgid "question_stats"
+#~ msgstr ""

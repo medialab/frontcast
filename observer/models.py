@@ -24,13 +24,13 @@ class Property(models.Model):
   STATISTICS    = 'statistics'
 
   PHASE_CHOICES = (
-    (ANALYSIS,      'analysis'),
-    (EXPLORATION,   'exploration'),
-    (METHODOLOGY,   'methodology'),
-    (PARTICIPATION, 'participation'), # max length 12 reached here
-    (PRESENTATION,  'presentation'),
-    (SOURCES,       'sources'),
-    (STATISTICS,    'statistics'),
+    (ANALYSIS,      _('analysis')),
+    (EXPLORATION,   _('exploration')),
+    (METHODOLOGY,   _('methodology')),
+    (PARTICIPATION, _('participation')), # max length 12 reached here
+    (PRESENTATION,  _('presentation')),
+    (SOURCES,       _('sources')),
+    (STATISTICS,    _('statistics')),
   )
   # 3. property type. to be coupled with the question!
   
@@ -133,7 +133,7 @@ class Device(models.Model):
   '''
   DATABASE = 'database'
   ACTOR_DIAG = 'actor_diag'
-  ANALYSIS_SPECIAL = 'analysis_special'
+  ANALYSIS_SPECIAL = 'analysis_spe'
   CHRONOLOGY = 'chronology'
   CRAWL      = 'crawl'
   EXPLORE_SPECIAL = 'explore_special'
@@ -147,20 +147,20 @@ class Device(models.Model):
   TEXT_ANALYSIS = 'text_analysis'
 
   TYPE_CHOICES = (
-    (DATABASE, 'Databases'),
-    (ACTOR_DIAG, 'Actor diagrams'),
-    (ANALYSIS_SPECIAL, 'Specialised analysis Tools'),
-    (CHRONOLOGY, 'Controversy Timeline'),
-    (CRAWL,           'Web crawling maps'),
-    (EXPLORE_SPECIAL, 'Specialised Search and Exploration Tools'),
-    (MEDIA_ANALYSIS, 'Media and public opinion analysis '),
-    (DISAGREEMENT, 'Presentation of the disagreement'),
-    (EXT_CONTENT, 'External content'),
-    (GEOLOCATION, 'Geographical maps'),
-    (WEBTOOL, 'Web-site building tools'),
-    (SNA, 'Social Network Analysis Tools'),
-    (TAGCLOUD, 'Tag clouds'),
-    (TEXT_ANALYSIS, 'Textual analysis'),
+    (DATABASE, _('Databases')),
+    (ACTOR_DIAG, _('Actor diagrams')),
+    (ANALYSIS_SPECIAL, _('Specialised analysis Tools')),
+    (CHRONOLOGY, _('Controversy Timeline')),
+    (CRAWL,           _('Web crawling maps')),
+    (EXPLORE_SPECIAL, _('Specialised Search and Exploration Tools')),
+    (MEDIA_ANALYSIS, _('Media and public opinion analysis')),
+    (DISAGREEMENT, _('Presentation of the disagreement')),
+    (EXT_CONTENT, _('External content')),
+    (GEOLOCATION, _('Geographical maps')),
+    (WEBTOOL, _('Web-site building tools')),
+    (SNA, _('Social Network Analysis Tools')),
+    (TAGCLOUD, _('Tag clouds')),
+    (TEXT_ANALYSIS, _('Textual analysis')),
   )
 
   working_document = models.ForeignKey(WorkingDocument, related_name="supports")
@@ -175,6 +175,7 @@ class Device(models.Model):
       'working_document_slug': self.working_document.slug,
       'document_id': self.document.id,
       'type': self.type,
+      'type_label': _(self.get_type_display()),
       'slug': self.working_document.slug,
       'title': self.working_document.title
     }
