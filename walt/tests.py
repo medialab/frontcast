@@ -12,6 +12,8 @@ from walt import api
 
 
 
+
+
 class ApiUtilsTest(TestCase):
   def setUp(self):
     # Every test needs access to the request factory.
@@ -28,6 +30,7 @@ class ApiUtilsTest(TestCase):
     req = self.factory.get('/api/url/title/',{
       'url': 'http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/'
     })
+    req.LANGUAGE_CODE = 'en-us'
     req.user = self.admin
 
     response = json.loads(api.url_title(req).content)
@@ -66,11 +69,13 @@ class WorkingDocumentTest(TestCase):
     '''
     Creation of a working document via api.
     '''
+
     request = self.factory.post('/api/working-document/',{
       'type': '?',
       'title': '@Don’t Just Visualize Data—Visçeralize It!',
       'permalink': 'http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/'
     })
+    request.LANGUAGE_CODE = 'en-us'
     request.user = self.admin
 
     response = json.loads(api.working_documents(request).content)
@@ -93,6 +98,7 @@ class WorkingDocumentTest(TestCase):
       'permalink': 'http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/'
     })
     req_1.user = self.admin
+    req_1.LANGUAGE_CODE = 'en-us'
     res_1 = json.loads(api.working_documents(req_1).content)
 
     req_2 = self.factory.post('/api/working-document/',{
@@ -101,6 +107,7 @@ class WorkingDocumentTest(TestCase):
       'permalink': 'http://blogs.scientificamerican.com/sa-visual/2014/02/18/dont-just-visualize-datavisceralize-it/'
     })
     req_2.user = self.admin
+    req_2.LANGUAGE_CODE = 'en-us'
     res_2 = json.loads(api.working_documents(req_2).content)
 
     self.assertEqual('ok--jacob--dont-just-visualize-datavisceralize-it-1--2--1', '--'.join(str(v) for v in [
@@ -173,5 +180,5 @@ class DocumentTest(TestCase):
     '''
     request = self.factory.get('/api/graph/bipartite/document/tags/?indent&v-filters={"type__in":["Ke"]}&u-filters={"slug__icontains":"mort"}')
     request.user = self.admin
-
+    request.LANGUAGE_CODE = 'en-us'
     self.assertEqual(True, True)

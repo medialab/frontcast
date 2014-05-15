@@ -421,13 +421,13 @@ def url_title(request):
   if form.is_valid():
     import urllib2
     from bs4 import BeautifulSoup
-    print form.cleaned_data['url']
+    #print form.cleaned_data['url']
     try:
       soup = BeautifulSoup(urllib2.urlopen(form.cleaned_data['url']).read())
     except urllib2.HTTPError, e:
       soup = BeautifulSoup(e.read())
       #return epoxy.throw_error(error='%s' % e, code=API_EXCEPTION_HTTPERROR).json()
-    print soup
+    #print soup
     epoxy.add('object',{
       'title': soup.title.string
     })
