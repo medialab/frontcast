@@ -138,6 +138,10 @@ class Unit(models.Model):
 
 
 class Profile(models.Model):
+  '''
+  A simple custom profile class, created on first LDAP access.
+  Cfr frontcast/ldap.py
+  '''
   user = models.OneToOneField(User)
   accept_cookies = models.BooleanField(default=False)
   language = models.CharField(max_length=2, default='EN', choices=settings.LANGUAGES) # favourite user language

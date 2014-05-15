@@ -1,0 +1,219 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-05-15 14:57+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: frontcast/views.py:124
+msgid "unauthorized request"
+msgstr ""
+
+#: frontcast/views.py:176 walt/views.py:49
+msgid "user has been disabled"
+msgstr ""
+
+#: frontcast/views.py:178 frontcast/views.py:181 walt/views.py:51
+#: walt/views.py:54
+msgid "invalid credentials"
+msgstr ""
+
+#: observer/models.py:60
+msgid "they detail datasets"
+msgstr ""
+
+#: observer/models.py:61
+msgid "they detail interview"
+msgstr ""
+
+#: observer/models.py:62
+msgid "they detail newspapers"
+msgstr ""
+
+#: observer/models.py:63
+msgid "they detail social Network"
+msgstr ""
+
+#: observer/models.py:64
+msgid "they detail site visit"
+msgstr ""
+
+#: observer/models.py:73
+msgid "video interview"
+msgstr ""
+
+#: observer/models.py:74
+msgid "audio interview"
+msgstr ""
+
+#: observer/models.py:75
+msgid "interview transcripted"
+msgstr ""
+
+#: observer/models.py:76
+msgid "interview detailed notes"
+msgstr ""
+
+#: observer/models.py:80
+msgid "actor table"
+msgstr ""
+
+#: observer/models.py:81
+msgid "Argument Trees"
+msgstr ""
+
+#: observer/models.py:82
+msgid "cosmography"
+msgstr ""
+
+#: observer/models.py:83
+msgid "Schematic process diagrams"
+msgstr ""
+
+#: observer/models.py:84
+msgid "Analysis of scientific literature"
+msgstr "Analysis of scientific literature"
+
+#: observer/models.py:85
+msgid "Scientometric maps"
+msgstr "Scientometric maps"
+
+#: observer/models.py:86
+msgid "Methodology section"
+msgstr ""
+
+#: observer/models.py:87
+msgid "Qualitative data analysis"
+msgstr ""
+
+#: observer/models.py:88
+msgid "Index or list of sources"
+msgstr ""
+
+#: observer/models.py:89
+msgid "Debate space"
+msgstr ""
+
+#: observer/models.py:90
+msgid "animation"
+msgstr ""
+
+#: observer/models.py:91
+msgid "Comics and Vignettes"
+msgstr ""
+
+#: observer/models.py:92
+msgid "Glossary"
+msgstr ""
+
+#: observer/models.py:93
+msgid "Visual Analogies"
+msgstr ""
+
+#: observer/models.py:94
+msgid "Statistics"
+msgstr ""
+
+#: observer/models.py:229
+#, python-format
+msgid "question - %s"
+msgstr ""
+
+#: templates/dusk/index.html:61 templates/dusk/scenario.html:42
+msgid "index"
+msgstr ""
+
+#: templates/dusk/index.html:63 templates/dusk/scenario.html:44
+msgid "'s space"
+msgstr ""
+
+#: templates/dusk/index.html:64 templates/dusk/scenario.html:45
+#: templates/frontcast/middle.html:54 templates/frontcast/middle.html.py:59
+#: templates/walt/middle.html:54 templates/walt/middle.html.py:59
+#: templates/walt_bkp/middle.html:54 templates/walt_bkp/middle.html.py:59
+msgid "logout"
+msgstr ""
+
+#: templates/dusk/index.html:66 templates/dusk/login.html:11
+#: templates/dusk/login.html.py:36 templates/dusk/scenario.html:47
+#: templates/frontcast/middle.html:74 templates/walt/login.html:9
+#: templates/walt/login.html.py:22 templates/walt/middle.html:74
+#: templates/walt_bkp/login.html:9 templates/walt_bkp/login.html.py:22
+#: templates/walt_bkp/middle.html:74 walt/forms.py:11
+msgid "login"
+msgstr ""
+
+#: templates/dusk/login.html:29 templates/walt/login.html:15
+#: templates/walt_bkp/login.html:15
+msgid "username"
+msgstr ""
+
+#: templates/dusk/login.html:33 templates/walt/login.html:19
+#: templates/walt_bkp/login.html:19 walt/forms.py:12
+msgid "password"
+msgstr ""
+
+#: templates/frontcast/middle.html:31 templates/walt/middle.html:31
+#: templates/walt_bkp/middle.html:31
+msgid "intro"
+msgstr ""
+
+#: templates/frontcast/middle.html:39 templates/walt/middle.html:39
+#: templates/walt_bkp/middle.html:39
+msgid "public"
+msgstr ""
+
+#: templates/frontcast/middle.html:48 templates/frontcast/middle.html.py:79
+#: templates/walt/middle.html:48 templates/walt/middle.html.py:79
+#: templates/walt_bkp/middle.html:48 templates/walt_bkp/middle.html.py:79
+msgid "worksp."
+msgstr ""
+
+#: templates/frontcast/middle.html:64 templates/walt/middle.html:64
+#: templates/walt_bkp/middle.html:64
+msgid "view all drafts"
+msgstr ""
+
+#: templates/frontcast/middle.html:69 templates/walt/middle.html:69
+#: templates/walt_bkp/middle.html:69
+msgid "drafts"
+msgstr ""
+
+#: templates/milk/partials/header.html:37
+msgid "search"
+msgstr ""
+
+#: templates/observer/index.html:9 templates/observer/index.html.py:247
+msgid "The Frontcast Observer"
+msgstr "The FORCCAST Observer"
+
+#: templates/observer/index.html:227
+msgid "change"
+msgstr ""
+
+#: templates/walt/tasks/middle.html:8 templates/walt_bkp/tasks/middle.html:8
+msgid "deliver task"
+msgstr ""
+
+#: walt/forms.py:24 walt/forms.py:29
+msgid "tags"
+msgstr ""
+
+# do not change
+#~ msgid "zadig"
+#~ msgstr "zipdig"
+
+#~ msgid "test-lang"
+#~ msgstr "language testing"

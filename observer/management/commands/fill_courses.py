@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os, csv
+import os, csv, re
 from optparse import make_option
 from datetime import datetime
 
@@ -65,6 +65,7 @@ class Command(BaseCommand):
 
         f = open(options['csv'], 'rb')
         d = unicode_dict_reader(f, quotechar='"', delimiter = ',')
+        p = re.compile(r'[,;]') # csv cell values split with regex pattern
 
         with transaction.atomic():
           for i,row in enumerate(d):
@@ -84,13 +85,13 @@ class Command(BaseCommand):
 
             for key in row:
               if key.startswith('tag_'):
-                tag_value = row[key]
+                tag_values = filter(None, p.split(row[key]))
                 tag_type = key.replace('tag_','').upper()
-                tag, created = Tag.objects.get_or_create(slug=slugify(tag_value), type=Tag.INSTITUTION, defaults={
-                  'name': tag_value
-                })
-                wod.tags.add(tag)
-                print 'tag: ', key, row[key], key.startswith('tag_'), created
+                
+                for tag_value in tag_values:
+                  tag, created = Tag.objects.get_or_create(name=tag_value, type=tag_type)
+                  wod.tags.add(tag)
+                  print 'tag: ', key, row[key], key.startswith('tag_'), created
             
             wod.save()
             continue

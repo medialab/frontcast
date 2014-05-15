@@ -1,3 +1,5 @@
+
+
 FRONTCAST_HOME = "/path/to/frontcast"
 
 DB_BACKEND	= 'django.db.backends.sqlite3'

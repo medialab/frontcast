@@ -1,5 +1,5 @@
 from django.contrib import admin
-from walt.models import Document, Tag, WorkingDocument
+from walt.models import Document, Tag, WorkingDocument, Profile
 
 
 
@@ -9,16 +9,19 @@ class DocumentAdmin(admin.ModelAdmin):
 
 
 class TagAdmin(admin.ModelAdmin):
-	search_fields = ['name']
+  search_fields = ['name']
+  list_filter = ('type',)
 
 
 
 class WorkingDocumentAdmin(admin.ModelAdmin):
   search_fields = ['title', 'slug']
   fields = ['title', 'type', 'abstract', 'parent', 'dependencies', 'documents', 'owner', ]
+  list_filter = ('type',)
 
 
 
+admin.site.register(Profile)
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(WorkingDocument, WorkingDocumentAdmin)

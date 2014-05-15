@@ -2,6 +2,7 @@ import json
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.translation import ugettext as _
 
 from walt.models import uuslug, WorkingDocument, Document
 
@@ -56,11 +57,11 @@ class Property(models.Model):
   METH_DETAILS_SITEVISIT  = 'details_site'
 
   TYPE_METH_DETAILS_CHOICES = ( # to be used as multiple choices inside the observer.forms.ProfileForm)
-    (METH_DETAILS_DATASETS,   'they detail datasets'),
-    (METH_DETAILS_INTERVIEWS, 'they detail interview'),
-    (METH_DETAILS_NEWSPAPERS, 'they detail newspapers'),
-    (METH_DETAILS_SOCIALNETW, 'they detail social Network'),
-    (METH_DETAILS_SITEVISIT,  'they detail site visit')
+    (METH_DETAILS_DATASETS,   _('they detail datasets')),
+    (METH_DETAILS_INTERVIEWS, _('they detail interview')),
+    (METH_DETAILS_NEWSPAPERS, _('they detail newspapers')),
+    (METH_DETAILS_SOCIALNETW, _('they detail social Network')),
+    (METH_DETAILS_SITEVISIT,  _('they detail site visit')),
   )
   
   INTERVIEW_VIDEO      = 'interview_vi'
@@ -69,28 +70,28 @@ class Property(models.Model):
   INTERVIEW_NOTE       = 'interview_no'
 
   TYPE_INTERVIEW_CHOICES = (
-    (INTERVIEW_VIDEO,      'video interview'),
-    (INTERVIEW_AUDIO,      'audio interview'),
-    (INTERVIEW_TRANSCRIPT, 'interview transcripted'),
-    (INTERVIEW_NOTE,       'interview detailed notes'),
+    (INTERVIEW_VIDEO,      _('video interview')),
+    (INTERVIEW_AUDIO,      _('audio interview')),
+    (INTERVIEW_TRANSCRIPT, _('interview transcripted')),
+    (INTERVIEW_NOTE,       _('interview detailed notes')),
   )
 
   TYPE_CHOICES = (
-    (ACTOR_TABLE,     'actor table'),
-    (ARG_TREE,        'Argument Trees'),
-    (COSMOGRAPHY,     'cosmography'),
-    (DIAGRAM,         'Schematic process diagrams'),
-    (SC_LIT,          'Analysis of scientific literature'),
-    (SCIENTOMETRICS,  'Scientometric maps'),
-    (METHODOLOGY,     'Methodology section'),
-    (QUAL_DA,         'Qualitative data analysis'),
-    (SOURCES_DETAILS, 'Index or list of sources'),
-    (COMMENTS,        'Debate space'),
-    (ANIMATION,       'animation'),
-    (COMIC,           'Comics and Vignettes'),
-    (GLOSSARY,        'Glossary'),
-    (VIZ_ANALOGY,     'Visual Analogies'),
-    (STATS,           'Statistics'),
+    (ACTOR_TABLE,     _('actor table')),
+    (ARG_TREE,        _('Argument Trees')),
+    (COSMOGRAPHY,     _('cosmography')),
+    (DIAGRAM,         _('Schematic process diagrams')),
+    (SC_LIT,          _('Analysis of scientific literature')),
+    (SCIENTOMETRICS,  _('Scientometric maps')),
+    (METHODOLOGY,     _('Methodology section')),
+    (QUAL_DA,         _('Qualitative data analysis')),
+    (SOURCES_DETAILS, _('Index or list of sources')),
+    (COMMENTS,        _('Debate space')),
+    (ANIMATION,       _('animation')),
+    (COMIC,           _('Comics and Vignettes')),
+    (GLOSSARY,        _('Glossary')),
+    (VIZ_ANALOGY,     _('Visual Analogies')),
+    (STATS,           _('Statistics')),
   )
 
   type     = models.CharField(max_length=12, choices=TYPE_CHOICES + TYPE_METH_DETAILS_CHOICES + TYPE_INTERVIEW_CHOICES, null=True, blank=True) # e.g. 'author' or 'institution'
@@ -221,7 +222,12 @@ class DocumentProfile(models.Model):
     properties = [p.type for p in self.properties.all()]
 
     for t in Property.TYPE_CHOICES:
-      d['properties'].append({'label':t[1], 'name':t[0], 'value': t[0] in properties})
+      d['properties'].append({
+        'label':_(t[1]),
+        'name':t[0],
+        'value': t[0] in properties,
+        'question': _('question_%s' % t[0])
+      })
 
     for t in Property.TYPE_INTERVIEW_CHOICES:
       d['properties_interviews'].append({'label':t[1], 'name':t[0], 'value': t[0] in properties})

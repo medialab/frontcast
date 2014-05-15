@@ -13,6 +13,7 @@ admin.autodiscover()
 
 api_urlpatterns = patterns('walt.api',
     url(r'^$', 'index'),
+
     url(r'access-denied/$', 'access_denied'),
 
 
@@ -121,5 +122,6 @@ urlpatterns = patterns('frontcast.views',
   url(r'^login/$', 'login_view', name='frontcast_login'),
   url(r'^admin/', include(admin.site.urls)),
   url(r'^observer/', include('observer.urls')),
+  url(r'^i18n/', include('django.conf.urls.i18n')),
  # url(r'^ouch/$', 'not_found', name='not_found'),
 )
