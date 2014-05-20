@@ -17,6 +17,7 @@
       {{tag.type}} {{tag.name}}
         </a>
       </div>
+      <div class="reference" ng-bind-html="document.bib.mla"></div>
       <div ng-if="document.abstract" class="abstract" onbeforesave="updateDocument('abstract', $data)" editable-textarea="document.abstract_raw" e-rows="7" e-cols="40" ng-bind-html="document.abstract">
       </div>
       <div class="abstract" editable-textarea="document.abstract" onbeforesave="updateDocument('abstract', $data)" ng-if="document.abstract == ''">

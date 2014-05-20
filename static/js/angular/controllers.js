@@ -372,7 +372,7 @@ angular.module('walt.controllers', [])
   }])
 
 
-  .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory', 'DeviceFactory', 'DeviceListFactory', function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory, DeviceFactory, DeviceListFactory){
+  .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory', 'DeviceFactory', 'DeviceListFactory', 'ReferenceFactory', function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory, DeviceFactory, DeviceListFactory, ReferenceFactory){
     $scope.setViewName('documents');
 
     $scope.document_types = [
@@ -381,15 +381,21 @@ angular.module('walt.controllers', [])
       {value: 'Ebook', text: 'Ebook'}
     ]; 
 
+
     $scope.sync = function() {
       DocumentFactory.get({id: $routeParams.id}, function(data){
         $scope.document = data.object;
         console.log(data);
+        // load biblib
+        ReferenceFactory.citation_by_rec_ids(["forccast",[$scope.document.reference]]).success(function(data) {
+          $scope.document.bib = data.result[0];
+        })
       });
       DocumentProfileFactory.get({id: $routeParams.id}, function(data){
         $scope.profile = data.object;
         console.log(data);
       });
+
     };
 
 
