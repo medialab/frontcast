@@ -100,4 +100,30 @@ angular.module('walt.services', ['ngResource'])
         query: { method: 'GET', isArray: false }
     });
   })
+
+  .factory('ReferenceFactory', function($http){
+    var endpoint = "/api/biblib-proxy";
+
+    return {
+        citation_by_rec_ids: function(params) {
+          return $http({
+            url: endpoint,
+            method: 'GET',
+            params: {
+              action: 'citation_by_rec_ids',
+              params: JSON.stringify(params)}
+          })
+        },
+        save: function(params) {
+          return $http({
+            url: endpoint,
+            method: 'POST',
+            params: {
+              action: 'save',
+              params: JSON.stringify(params)}
+          })
+        }
+    };
+  })
+
   .value('version', '0.1');

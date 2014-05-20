@@ -3,6 +3,7 @@
 import json
 
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import IntegrityError
 from django.test import TestCase
 from django.test.client import RequestFactory
@@ -10,6 +11,33 @@ from django.utils.translation import activate
 
 from observer.models import DocumentProfile
 from walt.models import Document, WorkingDocument
+
+import urllib2, json
+
+
+
+class BiblibTest(TestCase):
+
+  def test_endpoint(self):
+    '''
+    Test biblib connection and settings stuff
+    '''
+    print settings.BIBLIB_ENDPOINT
+    data = {
+      "id":1,
+      "jsonrpc":"2.0",
+      "method":"metadata_by_rec_ids",
+      "params":["forccast",["scpo-icom2040-2013-0002"]]
+    }
+
+    req = urllib2.Request(settings.BIBLIB_ENDPOINT, json.dumps(data))
+    try:
+      response = urllib2.urlopen(req)
+    except Exception, e:
+      print '%s'%response.read()
+      print '%s' % e
+    rs = '%s'%response.read()
+    print rs
 
 
 

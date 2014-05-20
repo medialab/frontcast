@@ -807,6 +807,76 @@ def biblib_proxy_safe(request):
   return HttpResponse(rs)
 
 
+
+def biblib_proxy_guess(request):
+  '''
+  usage sample:
+  angularjs
+  angular.element(document.body).injector().get('ReferenceFactory').citation_by_rec_ids(["forccast",["scpo-icom2040-2013-0002"]]]).success(function(data){console.log(data.meta)})
+  or point your broswer urlat :
+  http://localhost:8000/api/biblib-proxy?indent&action=citation_by_rec_ids&params=[%22forccast%22,[%22scpo-icom2040-2013-0002%22]]
+  '''
+  import urllib2, json
+
+  epoxy = Epoxy(request)
+
+  #todo: form check action and params
+  data = {
+    "id": 1,
+    "jsonrpc": "2.0",
+    "method": epoxy.data['action'],
+    "params": json.loads(epoxy.data['params']) if 'params' in epoxy.data else []
+  }
+
+  
+  if data['method'] in ["save", "field", "fields", "set_metadata_property"]:
+    if request.user.is_staff:
+      data['params'].append('teacher')
+    else:
+      data['params'].append('student')
+
+  req = urllib2.Request(settings.BIBLIB_ENDPOINT, json.dumps(data))
+  response = urllib2.urlopen(req)
+  rs = '%s'%response.read()
+  print rs[:64]
+  # set the body
+  return HttpResponse(rs)
+
+  epoxy.meta('verbose', data)
+  epoxy.add('object', rs)
+  return epoxy.json()
+
+
+  # filter uifiled, requests action according to role
+  #result = Epoxy(request)
+  logger.info('proxy biblib')
+  # get request as an arbitrary object
+  r = '%s'%request.read()
+  data = json.loads(r)
+  
+  # inject role in request
+  if data['method'] in ["save", "field", "fields", "set_metadata_property"]:
+    if request.user.is_staff:
+      data['params'].append('teacher')
+    else:
+      data['params'].append('student')
+
+  if data['method'] == "save":
+      # todo: check if user has access
+      pass
+
+  logger.info('... params to be sent %s' % data['params'])
+  # return result.json()
+
+  req = urllib2.Request(settings.BIBLIB_ENDPOINT, json.dumps(data))
+  response = urllib2.urlopen(req)
+  rs = '%s'%response.read()
+  logger.info('... received %s' % rs[:64])
+  # set the body
+  return HttpResponse(rs)
+
+
+
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def oembed_proxy(request, provider):
   # handle oembed requests not supporting remote domains (isntead of using jsonp)

@@ -165,7 +165,8 @@ angular.module('walt.controllers', [])
       $scope.offset = $scope.default_offset;
       $scope.query = '';
 
-      $rootScope.controllerName = r.$$route.controller;
+      if(r.$$route)
+        $rootScope.controllerName = r.$$route.controller;
       $scope.$broadcast(CONTROLLER_ROUTE_UPDATED);      
     });
 
@@ -344,7 +345,7 @@ angular.module('walt.controllers', [])
     ===
 
   */
-  .controller('documentsCtrl', ['$scope', 'DocumentListFactory', function($scope, DocumentListFactory){
+  .controller('documentsCtrl', ['$scope', 'DocumentListFactory', 'ReferenceFactory', function($scope, DocumentListFactory, ReferenceFactory){
     $scope.setViewName('documents');
 
     $scope.sync = function() {
@@ -357,6 +358,8 @@ angular.module('walt.controllers', [])
         });
       });
     };
+
+    //ReferenceFactory.citation_by_rec_ids();
 
     $scope.$on(CONTROLLER_PARAMS_UPDATED, function(e, options) {
       if(options.controller != 'documentsCtrl')

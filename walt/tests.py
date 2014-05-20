@@ -182,3 +182,5 @@ class DocumentTest(TestCase):
     request.user = self.admin
     request.LANGUAGE_CODE = 'en-us'
     self.assertEqual(True, True)
+
+

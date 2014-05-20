@@ -56,7 +56,8 @@ api_urlpatterns = patterns('walt.api',
 
     url(r'biblib/$', 'biblib_proxy', name='walt_api_biblib_proxy'),
     url(r'biblib-safe/$', 'biblib_proxy_safe', name='walt_api_biblib_proxy_safe'), # user is not logged in! but requests are safe enough
-
+    url(r'biblib-proxy$', 'biblib_proxy_guess', name='walt_api_biblib_proxy_guess'), # user is not logged in! but requests are safe enough
+    
     url(r'oembed/(?P<provider>[a-z]+)/$', 'oembed_proxy', name='walt_api_oembed_proxy'),
 )
 
