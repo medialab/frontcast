@@ -43,16 +43,25 @@ def documents(request):
   '''
   Public domain Document objects getter
   '''
-  if request.user.is_staff:
-    queryset =   Document.objects.filter().distinct()
-  elif request.user.is_authenticated():
-    queryset =   Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)).distinct()
-  else:
-    queryset = Document.objects.filter(status=Document.PUBLIC).distinct()
-    
-  result = Epoxy(request).queryset(queryset)
-  result.meta('query', '%s' % result._queryset.query)
-  return result.json()
+  epoxy = Epoxy(request)
+  if epoxy.is_POST(): # staff only can add document via api
+    if not request.user.is_staff:
+      return epoxy.throw_error(error='', code=API_EXCEPTION_AUTH).json()
+
+    form = FullDocumentForm(epoxy.data)
+    if not form.is_valid():
+      return epoxy.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS).json()
+
+    doc = form.save(commit=False)
+    doc.owner = request.user
+
+    doc.save()
+    return epoxy.item(doc).json()
+
+  queryset = get_available_documents(request)
+  epoxy.queryset(queryset)
+  epoxy.meta('query', '%s' % epoxy._queryset.query)
+  return epoxy.json()
 
 
 
@@ -498,29 +507,37 @@ def graph_bipartite(request, model_name, m2m_name):
 
 @login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
 def document_attach_tags(request, pk):
-  result = Epoxy(request)
+  try:
+    d = get_available_document(request, pk)
+  except Document.DoesNotExist,e:
+    return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
 
-  # check validity first of all
-  form = DocumentTagsForm(request.REQUEST)
-  if form.is_valid():
-    try:
-      d = get_available_document(request, pk)
-    except Document.DoesNotExist,e:
-      return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
+  epoxy = Epoxy(request)
+ 
+  if epoxy.is_POST():
+    is_valid, result = helper_free_tag(instance=d, append=True, epoxy=epoxy)
+    if not is_valid:
+      return epoxy.throw_error(error=result, code=API_EXCEPTION_FORMERRORS).json()
 
-    # list of unique comma separated cleaned tags.
-    tags = list(set([t.strip() for t in form.cleaned_data['tags'].split(',')]))
+  epoxy.item(result, deep=True)
+  return epoxy.json()
 
-    for tag in tags:
-      t, created = Tag.objects.get_or_create(name=tag, type=Tag.KEYWORD)
-      t.save()
-      d.tags.add(t)
 
-    result.meta('tags', tags)
-    return result.item(d, deep=True).json()
 
-  else:
-    return result.throw_error(error='%s' % form.errors, code=API_EXCEPTION_FORMERRORS).json()
+@login_required(login_url=settings.GLUE_ACCESS_DENIED_URL)
+def document_detach_tags(request, pk, tag_pk):
+  try:
+    doc = get_available_document(request, pk)
+  except Document.DoesNotExist,e:
+    return result.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
+
+  epoxy = Epoxy(request)
+
+  t = Tag.objects.get(pk=tag_pk)
+  doc.tags.remove(t)
+  
+  epoxy.item(doc, deep=True)
+  return epoxy.json()
 
 
 

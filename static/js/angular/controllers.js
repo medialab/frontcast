@@ -370,7 +370,118 @@ angular.module('walt.controllers', [])
 
     console.log('%c documentsCtrl ', 'background: lime;');
   }])
+  /*
+    
+    Single Document controller.
+    ===
 
+  */
+  .controller('documentCtrl', ['$scope', '$route', '$routeParams', 'DocumentFactory', 'DocumentTagsFactory', 'DocumentDetachTagFactory', 'TagsFactory', '$location', function($scope, $route, $routeParams, DocumentFactory, DocumentTagsFactory, DocumentDetachTagFactory, TagsFactory, $location){
+    $scope.status = CONTROLLER_STATUS_AVAILABLE;
+    $scope.setViewName('documents');
+
+    $scope.DOCUMENT_TYPES = [
+      {value: 'ControversyWeb', text: 'ControversyWeb'},
+      {value: 'ControversyVideo', text: 'ControversyVideo'},
+      {value: 'Ebook', text: 'Ebook'}
+    ]; 
+
+    $scope.LANGUAGES = [
+      {value: 'en', text: 'English'},
+      {value: 'fr', text: 'French'},
+    ]; 
+
+    console.log('%c documentCtrl ', 'background: lime;', $routeParams.id, $routeParams);
+    
+    $scope.rate = function(){
+      console.log('todo')
+    }
+
+
+    $scope.save = function() {
+      if(!$scope.item)
+        return;
+      var params = angular.copy($scope.item);
+      params.abstract = params.abstract_raw; // raw is 
+     
+      if($scope.item.id) {
+        console.log('params', params);
+        DocumentFactory.save({id: $scope.item.id}, params, function(data) {
+          //$location.path("/doc/" + $scope.item.id);
+        });
+      } else {
+        DocumentFactory.save(params, function(data) {
+          console.log('hey', data);
+          $scope.item = data.object;
+          //redirect!
+          //$location.path("/tool/" + $scope.item.id);
+        });
+      };
+    };
+
+
+    $scope.attachTag = function(tag_type, tag, item) {
+      $scope.__tag_candidate = "";
+      DocumentTagsFactory.save({
+        id: item.id
+      }, {
+        tags: tag.name || tag,
+        type: tag_type
+      },function(data){
+        $scope.item = data.object;       
+      })
+      console.log(arguments, $scope.__tag_candidate);
+    };
+
+
+    $scope.detachTag = function(tag, item) {
+      console.log("detach tag?", tag.id);
+      DocumentDetachTagFactory.delete({
+        id: item.id,
+        tag_id: tag.id
+      }, function(data){
+        $scope.item = data.object;
+      })
+    }
+
+    $scope.sync = function() {
+      if($routeParams.id) // load before editing
+        DocumentFactory.get({id: $routeParams.id}, function(data){
+          $scope.item = data.object;
+          console.log('getting ', data);
+        });
+    };
+    
+
+    // attach a tag of type institution to a student work (aka document)
+    $scope.saveInstitution = function(tag) {
+      $scope.attachTag(tag.type, tag, $scope.item);
+    }
+
+
+    $scope.getInstitutions = function(val) {
+      var suggestions = TagsFactory.query({
+        limit:5,
+        filters: JSON.stringify({
+          type:'In'
+        }),
+        search: val
+      });
+      
+      return suggestions.$promise.then(function (result) {
+        console.log(result);
+        var titles = [];
+        angular.forEach(result.objects, function(item){
+          titles.push(item);
+        });
+        console.log(titles);
+        return titles;
+      });
+    };
+
+    $scope.sync();
+    console.log('%c documentProfileCtrl ', 'background: lime;');
+  }])
 
   .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory', 'DeviceFactory', 'DeviceListFactory', 'ReferenceFactory', function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory, DeviceFactory, DeviceListFactory, ReferenceFactory){
     $scope.setViewName('documents');
@@ -529,6 +640,8 @@ angular.module('walt.controllers', [])
 
 
     $scope.save = function() {
+      if(!$scope.item)
+        return;
       var params = angular.copy($scope.item);
       params.abstract = params.abstract_raw; // raw is 
      

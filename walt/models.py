@@ -176,7 +176,7 @@ class AbstractDocument(models.Model):
   title = models.CharField(max_length=160, default="")
   abstract = models.TextField(default="", blank=True, null=True)
   content = models.TextField(default="", blank=True, null=True)
-  language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES)
+  language =  models.CharField(max_length=2, default='en', choices=settings.LANGUAGES, blank=True, null=True)
   rating = models.PositiveSmallIntegerField(default=0, blank=True, null=True) # 0 to 10
 
   # TIME
@@ -421,24 +421,21 @@ class Document(AbstractDocument):
   )
   
   mimetype = models.CharField(max_length=255, default="", choices=MIMETYPES_CHOICES, blank=True, null=True) # according to type, if needed (like imagefile)
-
   # URL LOCATION
   local = models.FileField(upload_to='documents/%Y-%m/',  blank=True, null=True) # local stored file inside media folder (aka upload)
   remote = models.TextField(blank=True, null=True) # DEPRECATED local stored file inside storage folder. IT DOES NOT ALLOW UPLOAD! format: either http:/// or 
-
-
   # document friendship
   related = models.ManyToManyField("self", symmetrical=True, null=True, blank=True) # forkz!
   parent  = models.ForeignKey("self", null=True, blank=True, related_name="children") # comments
   status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DRAFT, blank=True, null=True)
   type = models.CharField(max_length=32, choices=TYPE_CHOICES, default=TEXT)
-
   # tags and metadata. Reference is thre Reference Manager ID field (external resource then)
   tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !
   reference = models.CharField(max_length=60, default=0, blank=True, null=True, unique=True)
 
   authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched
+
 
   @staticmethod
   def search(query):
@@ -451,28 +448,12 @@ class Document(AbstractDocument):
     ]
     return reduce(operator.or_, argument_list)
 
+
   def save(self, **kwargs):
-    self.date_last_modified = datetime.utcnow().replace(tzinfo=utc)  
-    #
-    #  slug
-    #  ----
-    if not self.slug:
-      max_length = 160 # associate it with slug field max length above
-      slug = slugify(self.title)[:max_length] # safe autolimiting
-      slug_base = slug
-      i = 1;
-
-      while self.__class__._default_manager.filter(slug=slug).count():
-        candidate = '%s-%s' % (slug_base, i)
-
-        if len(candidate) > max_length:
-          slug = slug[:max_length-len('-%s' % i)]
-
-        slug = re.sub('\-+','-',candidate)
-        i += 1
-
-      self.slug = slug
-
+    self.slug = helper_uuslug(model=Document, instance=self, value=self.title)
+    if self.pk is None and self.reference:
+      pass
+      # try to open a specific stuff here
     super(Document, self).save()
 
 
@@ -683,6 +664,26 @@ def uuslug(model, instance, value, max_length=128):
     if len(candidate) > max_length:
       slug = slug[:max_length-len('-%s' % i)]
 
+    slug = re.sub('\-+','-',candidate)
+    i += 1
+
+  return slug
+
+
+
+def helper_uuslug(model, instance, value, max_length=128):
+  '''
+  produce a unique slug for a given text string given a model and an instance.
+  If the instance has already a slug, just return the previous value.
+  '''
+  slug = slugify(value)[:max_length] # safe autolimiting
+  slug_base = slug
+  i = 1;
+
+  while model.objects.exclude(pk=instance.pk).filter(slug=slug).count():
+    candidate = '%s-%s' % (slug_base, i)
+    if len(candidate) > max_length:
+      slug = slug[:max_length-len('-%s' % i)]
     slug = re.sub('\-+','-',candidate)
     i += 1
 

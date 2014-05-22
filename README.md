@@ -1,7 +1,7 @@
 frontcast
 =========
 
-[![Build Status](https://travis-ci.org/medialab/frontcast.svg)](https://travis-ci.org/medialab/frontcast.svg)
+<!-- [![Build Status](https://travis-ci.org/medialab/frontcast.svg)](https://travis-ci.org/medialab/frontcast.svg)-->
 
 ### Mac & Unix installation
 
@@ -27,3 +27,11 @@ change permissions according to your system configuration.
   		$ mv frontcast/local_settings.sample.py frontcast/local_settings.py 
 
 We added sqlite folder because we will use a sqlite db. Make sure that apache user has the right to write the .db parent folder.
+
+### Biblib dependencies
+Frontcast uses BIBLIB as bib reference endpoint.
+However for security reason the biblib address should be reachable only via a proxy, specified 
+
+to obtain the list of available 
+http://localhost:8000/api/biblib-proxy?indent&action=types&params=[%22forccast%22,%22fr%22]
+

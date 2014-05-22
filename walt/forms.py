@@ -16,6 +16,7 @@ class LoginForm(forms.Form):
 class FullDocumentForm(ModelForm):
   class Meta:
     model = Document
+    exclude = ('owner', 'slug', )
 
 
 

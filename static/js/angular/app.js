@@ -59,6 +59,9 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   
   // documents
   $routeProvider.when('/docs', {templateUrl: '/frontcast/static/js/angular/partials/document.list.html', controller: 'documentsCtrl', reloadOnSearch:false});
+  $routeProvider.when('/documents/add', {templateUrl: '/frontcast/static/js/angular/partials/document.add.html', controller: 'documentCtrl'});
+  $routeProvider.when('/doc/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/document.edit.html', controller: 'documentCtrl'});
+  
   $routeProvider.when('/doc/:id/profile', {templateUrl: '/frontcast/static/js/angular/partials/document.profile.html', controller: 'documentProfileCtrl'});
   $routeProvider.when('/doc/:id/profile/edit', {templateUrl: '/frontcast/static/js/angular/partials/document.profile.edit.html', controller: 'documentProfileCtrl'});
 

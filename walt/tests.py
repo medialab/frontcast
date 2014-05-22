@@ -3,12 +3,14 @@
 import json
 
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import IntegrityError
 from django.test import TestCase
 from django.test.client import RequestFactory
 
 from walt.models import WorkingDocument, Document, Tag
 from walt import api
+from glue import API_EXCEPTION_AUTH
 
 
 
@@ -172,6 +174,51 @@ class DocumentTest(TestCase):
     self.admin = User.objects.create_user(
       username='jacob', email='jacob@…', password='top_secret')
     self.admin.is_staff = True
+    self.student = User.objects.create_user(
+      username='jean', email='jean@…', password='top_top_secret')
+    
+
+  def test_api_add_document(self):
+    '''
+    Cfr walt.api.documents.
+    Simulate an API request to create a document
+    '''
+    request = self.factory.post(reverse('walt_api_documents'),{
+      'title': 'a brand new document',
+      'type': Document.REFERENCE_CONTROVERSY_WEB
+    })
+    request.method='POST'
+    request.user = self.admin
+    request.LANGUAGE_CODE = 'en-us'
+
+    # admin is among owners
+    response = api.documents(request)
+    jresponse = json.loads(response.content)
+    
+    print jresponse
+    
+    self.assertEqual(jresponse['object']['title'], u'a brand new document')
+
+
+    #self.assertEqual('%s-%s-%s' % (jresponse['meta']['action'], jresponse['meta']['method'], jresponse['status']), 'corpus-DELETE-ok')
+
+  def test_api_failing_add_document(self):
+    '''
+    User is trying to create a document without the adequate permission.
+    '''
+    request = self.factory.post(reverse('walt_api_documents'),{
+      'title': 'a brand new document failing',
+      'type': Document.REFERENCE_CONTROVERSY_WEB
+    })
+    request.method='POST'
+    request.user = self.student # a simle user can't do this...
+    request.LANGUAGE_CODE = 'en-us'
+
+    response = api.documents(request)
+    jresponse = json.loads(response.content)
+    self.assertEqual(jresponse['status'], 'error') # not authorized
+    self.assertEqual(jresponse['code'], API_EXCEPTION_AUTH)
+
 
 
   def test_api_graph_bipartite(self):

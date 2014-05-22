@@ -13,6 +13,17 @@ angular.module('walt.services', ['ngResource'])
         attach_tags: { method: 'POST',  params: {id: '@id/attach-tags'} }
     });
   })
+  .factory('DocumentTagsFactory', function($resource) {
+    return $resource('/api/document/:id/attach-tags', {}, {
+      save: { method: 'POST',  params: {id: '@id'} },
+
+    });
+  })
+  .factory('DocumentDetachTagFactory', function($resource) {
+    return $resource('/api/document/:id/detach-tag/:tag_id', {}, {
+      delete: { method: 'POST',  params: {id: '@id', tag_id: '@tag_id'} },
+    });
+  })
   .factory('DocumentListFactory', function($resource) {
     return $resource('/api/document', {}, {
         query: { method: 'GET', isArray: false },
