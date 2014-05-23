@@ -1,0 +1,49 @@
+<div class="big-item">
+<h2>
+  {{item.title || "* untitled tool"}} {{item.id}}
+</h2>
+
+<form class="pure-form pure-form-stacked" name="editForm" ng-submit="save()">
+  <p>
+    <label class="required">title</label>
+    <input class="pure-input-1-2" required type="text" ng-model="item.title">
+  </p>
+
+  <p>
+    <label class="required">type</label>
+    <select required ng-model="item.type" ng-options="t.value as t.text for t in DOCUMENT_TYPES">
+
+    </select>
+  </p>
+  
+  <p>
+    <label class="required">language</label>
+    <select required ng-model="item.language" ng-options="t.value as t.text for t in LANGUAGES">
+
+    </select>
+  </p>
+
+  <!-- -->
+  <p>
+    <label>some words about it (markdown syntax)</label>
+    <textarea msd-elastic type="text" class="pure-input-1-2" ng-model="item.abstract_raw"></textarea>
+  </p>
+  <!-- -->
+  <p>
+    <label>url address (if provided)</label>
+    <input type="text" ng-model="item.permalink" class="pure-input-1-2" placeholder="http://">
+  </p>
+
+  <p>
+    <label>overall rating {{item.rating}}</label>
+    <input type="number" ng-model="item.rating" min="0" max="10" class="pure-input-1-2">
+    <!-- rating bind="item.rating" ng-model="item.rating" max="10" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating -->
+  </p>
+
+  <button ng-disabled="status != 'available'" class="pure-button" value="add">
+    <span ng-if="status == 'available'">save modifications</span>
+    <span ng-if="status == 'busy'">working...</span>
+  </button>
+  
+</form>
+</div>

@@ -466,9 +466,15 @@
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
     box-shadow: 0 1px 2px rgba(0,0,0,0.07);
     
+    overflow: hidden;
     .box{
       overflow: hidden;
        height: 300px;
+    }
+
+    img{
+      max-width: 100%;
+      max-heoght: 100%;
     }
   }
 
@@ -504,6 +510,10 @@
     color: @black;
   }
 
+  .discussion{
+    margin: @module*4;
+  }
+
   .reference{
     font: 1.3rem/24px 'Source Sans Pro';
     margin: 0 @module*4;
@@ -526,6 +536,11 @@
     margin: 0 @module*3 @module*2 @module*3;
     border-bottom: 1px solid fade(@black, 10%);
     padding-bottom: @module*2;
+
+    h4{
+      margin: 0;
+
+    }
   }
 
   
@@ -1079,6 +1094,44 @@ ul.dropdown-menu{
 }
 
 
-#disqus_thread p{
-  color: red !important;
+
+/*
+
+
+  Toast
+  ---
+
+*/
+/* #Toastmessage Plugin css
+================================================== */
+
+.toast-container{z-index:9999;}
+* html .toast-container{position:absolute;}
+.toast-item{
+  height:auto;
+  background:#181818;
+  opacity:.9;
+  border-radius: 2px;
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
+  color:white;
+  padding: 8px 12px;
+  display:block;
+  position:relative;
+  margin:0 0 12px 0;
 }
+.toast-item h1{
+  font-size:1.1rem;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: white;
+  text-align: center;
+  margin:0;
+}
+.toast-item p{text-align:left;margin-left:50px;}
+.toast-item-image{display:none}
+.toast-type-notice{color:white;}
+.toast-type-success{color:white;}
+.toast-type-warning{color:white;border-color:#FCBD57;}
+.toast-type-error{color:white;border-color:#B32B2B;}
+.toast-position-bottom-right{position:fixed;bottom:36px;right:18px;}

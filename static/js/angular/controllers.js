@@ -19,7 +19,30 @@ var CONTROLLER_STATUS_AVAILABLE = 'available',
           size++;
       };
       return size;
+    },
+    toast = function(message, title, options){
+      if(!options){
+        options={}
+      };
+      if(typeof title=="object"){
+        options=title;
+        title=undefined;
+      }
+      if(options.cleanup!=undefined)
+        $().toastmessage("cleanToast");
+
+      var settings=$.extend({
+        text: "<div>"+(!title?"<h1>"+message+"</h1>":"<h1>"+title+"</h1><p>"+message+"</p>")+"</div>",
+        type: "notice",
+        position: "bottom-right",
+        inEffectDuration: 200,
+        outEffectDuration: 200,
+        stayTime: 1900
+      },options);
+
+      $().toastmessage("showToast", settings);
     };
+
 
 
 
@@ -389,12 +412,18 @@ angular.module('walt.controllers', [])
     $scope.LANGUAGES = [
       {value: 'en', text: 'English'},
       {value: 'fr', text: 'French'},
-    ]; 
+    ];
+
+    $scope.enable = {};
 
     console.log('%c documentCtrl ', 'background: lime;', $routeParams.id, $routeParams);
     
     $scope.rate = function(){
       console.log('todo')
+    }
+
+    $scope.toggleEnable = function(key, toggle) {
+      $scope.enable[key] = toggle;
     }
 
 
@@ -455,6 +484,7 @@ angular.module('walt.controllers', [])
 
     // attach a tag of type institution to a student work (aka document)
     $scope.saveInstitution = function(tag) {
+      $scope.toggleEnable('institution_candindate', false);
       $scope.attachTag(tag.type, tag, $scope.item);
     }
 
@@ -480,7 +510,6 @@ angular.module('walt.controllers', [])
     };
 
     $scope.sync();
-    console.log('%c documentProfileCtrl ', 'background: lime;');
   }])
 
   .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory', 'DeviceFactory', 'DeviceListFactory', 'ReferenceFactory', function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory, DeviceFactory, DeviceListFactory, ReferenceFactory){

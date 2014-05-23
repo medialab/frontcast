@@ -1,4 +1,6 @@
 'use strict';
+/* global consts */
+window.disqus_shortname = "observerforccastfr";
 
 angular.module('d3', [])
   .factory('d3Service', ['$document', '$q', '$rootScope',
@@ -43,12 +45,14 @@ angular.module('walt', [
   'ngSanitize',
   'xeditable',
   'ui.bootstrap',
-  
+  'ngDisqus',
   'monospaced.elastic'
 ]).
-config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider, $cookies) {
+config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider, $cookies) {
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
   $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+
+  $locationProvider.hashPrefix('!');
 
   $routeProvider.when('/w/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.edit.html', controller: 'workingdocumentEditCtrl'});
   
@@ -60,8 +64,9 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
   // documents
   $routeProvider.when('/docs', {templateUrl: '/frontcast/static/js/angular/partials/document.list.html', controller: 'documentsCtrl', reloadOnSearch:false});
   $routeProvider.when('/documents/add', {templateUrl: '/frontcast/static/js/angular/partials/document.add.html', controller: 'documentCtrl'});
-  $routeProvider.when('/doc/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/document.edit.html', controller: 'documentCtrl'});
   
+  $routeProvider.when('/doc/:id', {templateUrl: '/frontcast/static/js/angular/partials/document.html', controller: 'documentCtrl'});
+  $routeProvider.when('/doc/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/document.edit.html', controller: 'documentCtrl'});
   $routeProvider.when('/doc/:id/profile', {templateUrl: '/frontcast/static/js/angular/partials/document.profile.html', controller: 'documentProfileCtrl'});
   $routeProvider.when('/doc/:id/profile/edit', {templateUrl: '/frontcast/static/js/angular/partials/document.profile.edit.html', controller: 'documentProfileCtrl'});
 

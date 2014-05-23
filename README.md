@@ -35,3 +35,9 @@ However for security reason the biblib address should be reachable only via a pr
 to obtain the list of available 
 http://localhost:8000/api/biblib-proxy?indent&action=types&params=[%22forccast%22,%22fr%22]
 
+
+### DISQUS integration (observer app)
+Disqus intetgration has been made via:
+
+<div disqus="'d' + item.id"></div>
+

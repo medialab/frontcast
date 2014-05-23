@@ -3,7 +3,7 @@
 <div class="list">
   <div class="doc item" ng-class="view_as_list? 'list-item' : ''" ng-repeat="item in items">
     <div class="inner">
-      <h4><a ng-href="#/doc/{{item.id}}/profile">#{{item.id}} {{item.title}}</a></h4>
+      <h4><a ng-href="#!/doc/{{item.id}}/profile">#{{item.id}} {{item.title}}</a></h4>
       
       <div class="tags">
         <span class="tag institution" ng-click="setProperty('tags__slug__REDUCE', tag.slug)" class="wd" ng-repeat="tag in item.tags.Institution">
