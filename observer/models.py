@@ -222,19 +222,30 @@ class DocumentProfile(models.Model):
 
     properties = [p.type for p in self.properties.all()]
 
+    #REPETITA IUVANT :D
     for t in Property.TYPE_CHOICES:
       d['properties'].append({
         'label':_(t[1]),
+        'name':t[0], # this should be the unique id.... @todo!
+        'value': t[0] in properties, # does this profile has that type ?
+        'question': _('question_%s' % t[0])
+      })
+
+    for t in Property.TYPE_INTERVIEW_CHOICES:
+      d['properties_interviews'].append({
+        'label':t[1],
         'name':t[0],
         'value': t[0] in properties,
         'question': _('question_%s' % t[0])
       })
 
-    for t in Property.TYPE_INTERVIEW_CHOICES:
-      d['properties_interviews'].append({'label':t[1], 'name':t[0], 'value': t[0] in properties})
-
     for t in Property.TYPE_METH_DETAILS_CHOICES:
-      d['properties_meth_detail'].append({'label':t[1], 'name':t[0], 'value': t[0] in properties})
+      d['properties_meth_detail'].append({
+        'label':t[1],
+        'name':t[0],
+        'value': t[0] in properties,
+        'question': _('question_%s' % t[0])
+      })
 
     for t in Device.TYPE_CHOICES:
       d['devices'].append({'label':t[1], 'name':t[0]})

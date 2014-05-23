@@ -67,8 +67,16 @@ angular.module('walt.services', ['ngResource'])
         attach_tags: { method: 'POST',  params: {id: '@id/attach-tags'} }
     });
   })
-
-
+  .factory('DocumentProfileAttachPropertyFactory', function($resource) {
+    return $resource('/observer/api/document-profile/:id/attach-property/:type', {}, {
+      save: { method: 'POST',  params: {id: '@id', type: '@type'} },
+    });
+  })
+  .factory('DocumentProfileDetachPropertyFactory', function($resource) {
+    return $resource('/observer/api/document-profile/:id/detach-property/:type', {}, {
+      delete: { method: 'POST',  params: {id: '@id', type: '@type'} },
+    });
+  })
 
 
   

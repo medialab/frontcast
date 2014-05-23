@@ -295,3 +295,55 @@ msgstr ""
 #: walt/forms.py:25 walt/forms.py:30
 msgid "tags"
 msgstr ""
+
+
+
+
+
+
+
+# questions
+msgid "question_actor_table"
+msgstr ""
+
+msgid "question_arg_tree"
+msgstr "Does it have an argument tree?"
+
+msgid "question_cosmography"
+msgstr "Does the analysis consider the broader scope of the controversy, such as meta-controversies?"
+
+msgid "question_diagram"
+msgstr "Does it feature schematic or simple process actor diagrams?"
+
+msgid "question_sc_lit"
+msgstr ""
+
+msgid "question_scientometri"
+msgstr ""
+
+msgid "question_tmethodology"
+msgstr ""
+
+msgid "question_qual_da"
+msgstr ""
+
+msgid "question_sources_deta"
+msgstr ""
+
+msgid "question_comments"
+msgstr ""
+
+msgid "question_animation"
+msgstr ""
+
+msgid "question_comic"
+msgstr ""
+
+msgid "question_glossary"
+msgstr ""
+
+msgid "question_viz_analogy"
+msgstr ""
+
+msgid "question_stats"
+msgstr ""

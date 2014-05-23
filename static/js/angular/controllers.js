@@ -512,7 +512,7 @@ angular.module('walt.controllers', [])
     $scope.sync();
   }])
 
-  .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory', 'DeviceFactory', 'DeviceListFactory', 'ReferenceFactory', function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory, DeviceFactory, DeviceListFactory, ReferenceFactory){
+  .controller('documentProfileCtrl', ['$http', '$scope', '$routeParams', 'DocumentFactory', 'WorkingDocumentFactory', 'DocumentProfileFactory', 'DeviceFactory', 'DeviceListFactory', 'ReferenceFactory', 'DocumentProfileAttachPropertyFactory', 'DocumentProfileDetachPropertyFactory', function($http, $scope, $routeParams, DocumentFactory, WorkingDocumentFactory, DocumentProfileFactory, DeviceFactory, DeviceListFactory, ReferenceFactory, DocumentProfileAttachPropertyFactory, DocumentProfileDetachPropertyFactory){
     $scope.setViewName('documents');
 
     $scope.document_types = [
@@ -528,7 +528,7 @@ angular.module('walt.controllers', [])
         console.log(data);
         // load biblib
         ReferenceFactory.citation_by_rec_ids(["forccast",[$scope.document.reference]]).success(function(data) {
-          $scope.document.bib = data.result[0];
+          $scope.document.bib = data.result? data.result[0] : '';
         })
       });
       DocumentProfileFactory.get({id: $routeParams.id}, function(data){
@@ -536,6 +536,28 @@ angular.module('walt.controllers', [])
         console.log(data);
       });
 
+    };
+
+
+    $scope.attachProperty = function(property_type, profile) {
+      DocumentProfileAttachPropertyFactory.save({
+        id: profile.id,
+        type: property_type
+      }, function(data){
+        $scope.profile = data.object;
+        toast('saved');
+      })
+    };
+
+
+    $scope.detachProperty = function(property_type, profile) {
+      DocumentProfileDetachPropertyFactory.delete({
+        id: profile.id,
+        type: property_type
+      }, function(data){
+        $scope.profile = data.object;
+        toast('saved');
+      })
     };
 
 
@@ -557,11 +579,10 @@ angular.module('walt.controllers', [])
         });
         $scope.sync();
       }
-      
     }
 
     $scope.saveDevice = function(device_type, doc) {
-      
+      debugger
       DeviceListFactory.save({}, {
         type: device_type,
         document: $routeParams.id,
@@ -586,13 +607,14 @@ angular.module('walt.controllers', [])
       return "";
     }
 
-    $scope.getLocation = function(val) {
+
+    $scope.getDevices = function(val) {
       var suggestions = WorkingDocumentFactory.query({
         limit:5,
         filters: JSON.stringify({
-          type:'T'
-        }),
-        search: val
+          type:'T',
+          title__icontains: val
+        })
       });
       
       return suggestions.$promise.then(function (result) {

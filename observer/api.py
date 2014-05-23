@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 
-from observer.models import DocumentProfile, Device
+from observer.models import DocumentProfile, Device, Property
 from observer.forms import DeviceForm
 from walt.models import Document
 
@@ -50,6 +50,45 @@ def document_profile(request, document_pk):
   epoxy.item(p)
   return epoxy.json()
 
+
+
+@staff_member_required
+def document_profile_attach_property(request, document_pk, property_type):
+  epoxy = Epoxy(request)
+  pro,created = DocumentProfile.objects.get_or_create(document__pk=document_pk, defaults={
+    'owner': request.user
+  })
+  if epoxy.is_POST():
+    try:
+      prop = Property.objects.get(type=property_type)
+    except Property.DoesNotExist, e:
+      return epoxy.throw_error(error='%s. I.E is not a valid property'%e, code=API_EXCEPTION_FORMERRORS).json()
+
+    pro.properties.add(prop)
+    pro.save()
+
+  epoxy.item(pro, deep=True)
+  return epoxy.json()
+
+
+
+@staff_member_required
+def document_profile_detach_property(request, document_pk, property_type):
+  epoxy = Epoxy(request)
+  pro, created = DocumentProfile.objects.get_or_create(document__pk=document_pk, defaults={
+    'owner': request.user
+  })
+  if epoxy.is_POST():
+    try:
+      prop = Property.objects.get(type=property_type)
+    except:
+      return epoxy.throw_error(error='%s is not a valid property', code=API_EXCEPTION_FORMERRORS).json()
+
+    pro.properties.remove(prop)
+    pro.save()
+
+  epoxy.item(pro, deep=True)
+  return epoxy.json()
 
 
 @staff_member_required

@@ -1,139 +1,112 @@
-<div class="big-item">
-  <h2>{{document.title}}</h2>
-  <h3>{{document.type}}</h3>
+<div class="big-item" ng-show="document">
+  <div class="menu" scroll-to-fixed margin-top="48">
+    
+    <h2>{{document.title}}</h2>
+    <h3>{{document.type}}</h3>
+
+  </div>
   
 
   <div class="pure-g">
 
-    <div class="pure-u-1-3">
-      <div class="cover">
-        <div class="box">
-          <img ng-src="{{document.attachments.thumb.src}}">
-        </div>
-      </div>
-      <div class="tags"  style="margin-top: 15px">
-        <a class="tag date" class="wd" ng-repeat="tag in document.tags.Date">
-            {{tag.name}}
-        </a>
-        <a class="tag institution" class="wd" ng-repeat="tag in document.tags.Institution">
-      {{tag.type}} {{tag.name}}
-        </a>
-      </div>
-      <div ng-if="document.abstract" class="abstract" onbeforesave="updateDocument('abstract', $data)" editable-textarea="document.abstract_raw" e-rows="7" e-cols="40" ng-bind-html="document.abstract">
-      </div>
-      <div class="abstract" editable-textarea="document.abstract" onbeforesave="updateDocument('abstract', $data)" ng-if="document.abstract == ''">
-        <i>empty abstract. click to edit</i>
-      </div>
-      <div class="notes">
-       <!-- {{profile.owner}} --><span  ng-bind-html="profile.notes || 'empty'"></span>
-      </div>
-    </div>
-
-    <div class="pure-u-1-3">
+    <div class="pure-u-2-3">
+      
+      
+   
       <form class="pure-form">
-        <label>Notes</label>
-        <textarea class="pure-input-1" rows="4" placehodlers="comments or something interesting about this document" ng-model="profile.notes"></textarea>
-
-        <table class="pure-table" style="width: 100%; margin-top:18px">
+        <div class="questions">
+        
+        <table class="question-table pure-table">
           <thead>
               <tr>
-                <th>#</th>
                 <th>question</th>
-                <th>value</th>
                 <th>Yes</th>
                 <th>No</th>
               </tr>
           </thead>
           <tbody>
             <tr ng-repeat="property in profile.properties">
-              <td></td>
-              <td>{{property.name}}</td>
-              <td>{{property.value}}</td>
-              <td>
-                <input type="radio" ng-model="property.value" ng-value="true"/>
+              <td>{{property.question}}</td>
+              <td class="radio">
+                <div tooltip="yes" ng-click="attachProperty(property.name, profile)">
+                  <input type="radio" ng-model="property.value" ng-value="true"/>
+                </div>
               </td>
-              <td>
-                <input type="radio" ng-model="property.value" ng-value="false" />
+              <td class="radio">
+                <div tooltip="no" ng-click="detachProperty(property.name, profile)">
+                  <input type="radio" ng-model="property.value" ng-value="false"/>
+                </div>
               </td>
             </tr>
           </tbody>
-
         </table>
-        
-        <table class="pure-table" style="width: 100%; margin-top:18px">
+
+        <table class="question-table pure-table">
           <thead>
               <tr>
-                <th>#</th>
                 <th>question</th>
-                <th>value</th>
                 <th>Yes</th>
                 <th>No</th>
               </tr>
           </thead>
           <tbody>
             <tr ng-repeat="property in profile.properties_interviews">
-              <td></td>
-              <td>{{property.name}}</td>
-              <td>{{property.value}}</td>
-              <td>
+              <td>{{property.question}}</td>
+              <td class="radio">
+                <div tooltip="yes" ng-click="attachProperty(property.name, profile)">
                 <input type="radio" ng-model="property.value" ng-value="true"/>
               </td>
-              <td>
+              <td class="radio">
+                <div tooltip="no" ng-click="detachProperty(property.name, profile)">
                 <input type="radio" ng-model="property.value" ng-value="false" />
               </td>
             </tr>
           </tbody>
-          
         </table>
 
-        <table class="pure-table" style="width: 100%; margin-top:18px">
+        <table class="question-table pure-table" style="width: 100%; margin-top:18px">
           <thead>
               <tr>
-                <th>#</th>
                 <th>question</th>
-                <th>value</th>
                 <th>Yes</th>
                 <th>No</th>
               </tr>
           </thead>
           <tbody>
             <tr ng-repeat="property in profile.properties_meth_detail">
-              <td></td>
-              <td>{{property.name}}</td>
-              <td>{{property.value}}</td>
-              <td>
+              <td>{{property.question}}</td>
+             <td class="radio">
+              <div tooltip="yes" ng-click="attachProperty(property.name, profile)">
                 <input type="radio" ng-model="property.value" ng-value="true"/>
               </td>
-              <td>
+              <td class="radio">
+                <div tooltip="no" ng-click="detachProperty(property.name, profile)">
                 <input type="radio" ng-model="property.value" ng-value="false" />
               </td>
             </tr>
           </tbody>
           
         </table>
+      
+        </div>
       </form>
     </div>
-
-    <div class="pure-u-1-3">
+    <div class="pure-u-1-3" >
       <div ng-repeat="device in profile.devices">
         <h4>{{device.label}} ({{document.devices[device.name].length || 0}})</h4>
         <div class="tags multi-input">
-          <form class="">
+          <form class="pure-form">
             <span class="tag" ng-repeat="dev in document.devices[device.name]">{{dev.title}}&nbsp;<span class="fa fa-times" tooltip="remove me" ng-click="removeDevice(dev.id)"></span></span>
 
 
-            <span class=" action add" ng-click=>
-              <label>add <i class="fa fa-plus"></i>
-              </label>
-              <input type="text" ng-model="__device_candidate"
-              typeahead-editable="false"
-              typeahead-loading="loadingLocations"
-              typeahead="item for item in getLocation($viewValue) | filter:$viewValue"
-              class="form-control typeahead-multi-input"
-              typeahead-on-select="saveDevice(device.name, __device_candidate)" typeahead-template-url="/frontcast/static/js/angular/partials/tool.typeahead.html"
-              typeahead-wait-ms="150">
-              <i ng-show="loadingLocations" class="fa fa-plus"></i>
-            </span>
+              <input type="text" autofocus ng-model="__device_candidate"
+                typeahead-editable="false"
+                typeahead-loading="loadingLocations"
+                typeahead="tag as tag.title for tag in getDevices($viewValue)"
+                class="form-control typeahead-multi-input"
+                typeahead-on-select="saveDevice(device.name, __device_candidate)"
+                typeahead-wait-ms="50">
+       
             
          
           </form>

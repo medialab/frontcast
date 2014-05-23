@@ -102,8 +102,12 @@
       border-color: darken(@blue, 10%);
     }
 
-    &:active, &:focus{
+    &:active{
       background-color: @red;
+      background-image: none;
+    }
+
+    &:focus{
       background-image: none;
     }
   }
@@ -512,6 +516,41 @@
 
   .discussion{
     margin: @module*4;
+  }
+
+  .questions{
+    margin: 0 @module*4;
+    
+    .question-table{
+      font: 1.3rem/24px 'Source Sans Pro';
+    
+      width: 100%;
+      border: none;
+
+      thead{
+        background: none;
+      }
+
+      tr:hover td{
+        background: @smoke;
+      }
+
+      th{
+        background: none;
+        border-left: none;
+      }
+
+      td{
+        border-left: none;
+        border-bottom: 1px solid fade(@black, 10%);
+       
+
+        &.radio{
+          width:32px;
+           text-align: center;
+        }
+      }
+    }
   }
 
   .reference{
@@ -997,7 +1036,8 @@ ul.dropdown-menu{
     padding:5px;
     font-size:11px;
     opacity:0;
-    filter:alpha(opacity=0)
+    filter:alpha(opacity=0);
+    pointer-events: none;
 }
 .tooltip.in{
     opacity:.8;
