@@ -489,8 +489,19 @@
 
 
 .big-item{
-  padding-top: @module*6;
-  font: 12px/24px 'Source Sans Pro';
+  padding-top: @module;
+  font: 13px/24px 'Source Sans Pro';
+
+  .permalink{
+    
+    a{
+      background: fade(@blue, 20%);
+    }
+    a:hover{
+      background: @blue;
+      color: white;
+    }
+  }
 
   .cover{
     height: 300px;
@@ -504,10 +515,13 @@
     box-shadow: 0 1px 2px rgba(0,0,0,0.07);
     
     overflow: hidden;
+    position:relative;
     .box{
       overflow: hidden;
-       height: 300px;
+      height: 100%;
     }
+
+
 
     img{
       max-width: 100%;

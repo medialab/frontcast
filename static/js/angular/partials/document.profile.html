@@ -1,7 +1,10 @@
 <div class="big-item">
   <div class="menu" scroll-to-fixed margin-top="48">
-    <h2>{{document.title}}</h2>
-    <h3>{{document.type}}</h3>
+    <h2>{{document.title}} <a ng-href="#!/doc/{{document.id}}/profile/edit">edit</a></h2>
+    <div ng-if="document.permalink" class="permalink">visit <b>{{document.type}}</b>
+          <a href="{{document.permalink}}" target="_blank">{{document.permalink|crop}}</a>
+    </div>
+
   </div>
   <div class="pure-g">
     <div class="pure-u-1-2">
@@ -9,14 +12,12 @@
         <div class="box">
           <img ng-src="{{document.attachments.thumb.src}}">
         </div>
+        
       </div>
+      
       <div class="tags"  style="margin-top: 15px">
-        <a class="tag date" class="wd" ng-repeat="tag in document.tags.Date">
-            {{tag.name}}
-        </a>
-        <a class="tag institution" class="wd" ng-repeat="tag in document.tags.Institution">
-      {{tag.type}} {{tag.name}}
-        </a>
+        <a class="tag date" class="wd" ng-repeat="tag in document.tags.Date">{{tag.name}}</a>
+        <a class="tag institution" class="wd" ng-repeat="tag in document.tags.Institution">{{tag.name}}</a>
       </div>
       <div class="reference" ng-bind-html="document.bib.mla"></div>
       <div ng-if="document.abstract" class="abstract" ng-bind-html="document.abstract">
@@ -29,10 +30,8 @@
       
     </div>
     <div class="pure-u-1-4">
-      <a class="pure-button" ng-href="#!/doc/{{document.id}}/profile/edit">edit</a>
-      <div class="property"  >
-        <i class="fa fa-globe" editable-text="document.permalink"></i><div class="value"><a ng-href="{{document.permalink}}" target="_blank">external link</a></div>
-      </div>
+      
+      
 
       <h4 ng-if="profile.properties_interviews.length">presence of interviews</h4>
         
