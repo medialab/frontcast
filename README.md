@@ -39,5 +39,5 @@ http://localhost:8000/api/biblib-proxy?indent&action=types&params=[%22forccast%2
 ### DISQUS integration (observer app)
 Disqus intetgration has been made via:
 
-<div disqus="'d' + item.id"></div>
+ 	<div disqus="'d' + item.id"></div>
 

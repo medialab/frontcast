@@ -60,7 +60,7 @@
       
       <div class="tags" ng-repeat="(type, devices) in document.devices">
         <h4>{{devices[0].type_label}}</h4>
-        <a class="tag" ng-repeat="thumb in devices">
+        <a class="tag" ng-href="#!/tool/{{tool.id}}" ng-repeat="thumb in devices">
           {{thumb.title}}
         </a>
       </div>

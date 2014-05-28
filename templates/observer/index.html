@@ -187,14 +187,14 @@
 
 
 
-<div id="layout" ng-controller="layoutCtrl">
+<div id="layout" ng-controller="layoutCtrl" >
     <!-- Menu toggle -->
     <a href="#menu" id="menuLink" class="menu-link">
         <!-- Hamburger icon -->
         <span></span>
     </a>
 
-    <div id="menu">
+    <div id="menu" watch-bounds>
         <div class="pure-menu pure-menu-open">
             <a class="pure-menu-heading" href="#"><img src="{{ STATIC_URL }}/img/forccast.svg"/></a>
 
@@ -212,21 +212,19 @@
                     <a href="#!/lessons">lessons</a>
                 </li>
                 <li><!-- space -->&nbsp;</li>
-                <li>
+
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+
+                <li class="{% if language.code == LANGUAGE_CODE %}pure-menu-selected {% endif %}">
                   <form action="{% url 'set_language' %}" method="post">
                     {% csrf_token %}
-                    <input name="next" type="hidden" value="{{ redirect_to }}" />
-                    <select name="language">
-                    {% get_language_info_list for LANGUAGES as languages %}
-                    {% for language in languages %}
-                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
-                        {{ language.name_local }} ({{ language.code }})
-                    </option>
-                    {% endfor %}
-                    </select>
-                    <button class="pure-button boo">{% trans "change"%}</button>
+                    <input name="next" type="hidden" value="{% url "observer_index"%}{% verbatim %}{{url}}{% endverbatim %}" />
+                    <input type="hidden" name="language" value="{{ language.code }}" />
+                    <button class="link">{{ language.name_local }}</button>
                   </form>
                 </li>
+                {% endfor %}
             </ul>
         </div>
     </div>

@@ -53,7 +53,7 @@ angular.module('walt.controllers', [])
     ===
 
   */
-  .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', '$http', function($scope, $rootScope, $location, $route, $http) {
+  .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', '$http', '$log', function($scope, $rootScope, $location, $route, $http, $log) {
     $scope.filters = {};
     $scope.howmanyfilters = 0;
     $scope.query = "";
@@ -174,12 +174,10 @@ angular.module('walt.controllers', [])
       $scope.$broadcast(CONTROLLER_PARAMS_UPDATED, options);
     };
 
-
     $rootScope.$on('$routeUpdate', function(e, r){
       console.log("%c route updated", STYLE_INFO);
       $scope.loadFilters({controller: $rootScope.controllerName}); // push current controllername
     });
-
 
     $rootScope.$on('$routeChangeSuccess', function(e, r){
       console.log("%c    route change success", STYLE_INFO);
@@ -187,13 +185,13 @@ angular.module('walt.controllers', [])
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;
       $scope.query = '';
+      $scope.url = String($location.url()).substring(1);
 
       if(r.$$route)
         $rootScope.controllerName = r.$$route.controller;
       $scope.$broadcast(CONTROLLER_ROUTE_UPDATED);      
     });
-
-
+    // cfr filtersCtrl
     $scope.$on(CONTROLLER_OVERALLFACETS_UPDATED, function() {
       $scope.loadFilters({controller: $rootScope.controllerName});
     });
@@ -202,6 +200,7 @@ angular.module('walt.controllers', [])
     $scope.setViewName = function(viewname) {
       $scope.viewname = viewname;
     };
+
 
     $scope.isStringProperty = function(value){
       return typeof value == "string";
@@ -278,24 +277,30 @@ angular.module('walt.controllers', [])
         console.log(res.data, addresses)
         return addresses;
       });
-      return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-        params: {
-          address: tag_val,
-          sensor: false
-        }
-      }).then(function(res){
-        var addresses = [];
-        angular.forEach(res.data.results, function(item){
-          addresses.push(item.formatted_address);
-        });
-        return addresses;
-      });
     }
 
 
-    console.log('%c layoutCtrl ', 'background: #151515; color: white', $scope.filters);
+
+
     //$scope.loadFilters();
 
+    /*
+      Every view controller can access this set of useful methods to get suggestions.
+      The result should be used through typeahead functions.
+    */  
+    $scope.suggest = function(serice, val, filters) {
+      var suggestions = service.query({
+        limit:5,
+        filters: JSON.stringify(filters),
+        search: val
+      });
+      return suggestions.$promise.then(function (result) {
+        return result.objects;
+      });
+    }
+
+    console.log('%c layoutCtrl ', 'background: #151515; color: white', $scope.filters);
+    
   }])
   /*
     
@@ -581,15 +586,15 @@ angular.module('walt.controllers', [])
       }
     }
 
+
     $scope.saveDevice = function(device_type, doc) {
-      debugger
       DeviceListFactory.save({}, {
         type: device_type,
         document: $routeParams.id,
         working_document: doc.id
       }, function(res){
-
         console.log(res, $scope.document.devices);
+        $scope.__device_candidate = undefined;
         var is_already_in_place = false;
         if($scope.document.devices[device_type]) {
           for (var d in $scope.document.devices[device_type]) {

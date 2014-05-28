@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic import RedirectView
 
 
 
@@ -13,7 +14,9 @@ apipatterns = patterns('observer.api',
   url(r'device/(?P<pk>\d+)$', 'device'), 
 )
 
+
 urlpatterns = patterns('observer.views',
-  url(r'^$', 'index'),
+  url(r'^$', 'index', name='observer_index'),
   url(r'^api/', include(apipatterns)),
+  url(r'^(?P<ajax_section>[\w\/]+)$', RedirectView.as_view(url='/observer/#!/%(ajax_section)s')), # use base root
 )

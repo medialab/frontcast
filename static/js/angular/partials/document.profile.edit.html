@@ -96,7 +96,7 @@
         <h4>{{device.label}} ({{document.devices[device.name].length || 0}})</h4>
         <div class="tags multi-input">
           <form class="pure-form">
-            <span class="tag" ng-repeat="dev in document.devices[device.name]">{{dev.title}}&nbsp;<span class="fa fa-times" tooltip="remove me" ng-click="removeDevice(dev.id)"></span></span>
+            <span class="tag" ng-repeat="dev in document.devices[device.name]"ng-click="follow('tool', dev.working_document_id)">{{dev.title}}&nbsp;<span class="fa fa-times" tooltip="remove me" ng-click="removeDevice(dev.id)"></span></span>
 
 
               <input type="text" autofocus ng-model="__device_candidate"

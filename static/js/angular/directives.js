@@ -10,6 +10,18 @@ angular.module('walt.directives', [])
     };
   }])
   /*
+   * Checks every $digest for height changes
+   */
+  .directive( 'watch-bounds', [function() {
+    return {
+      link: function( scope, elem, attrs ) {
+        scope.$watch(function() {
+          scope.__height = elem.height();
+        });
+      }
+    }
+  }])
+  /*
     handle columns resize
   */
   .directive('resizable', ['$window', function($window) {
