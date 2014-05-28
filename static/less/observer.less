@@ -267,11 +267,16 @@
     margin-top: 12px;
   }
   li.pure-menu-selected button.link{
-    background-color: rgba(124, 41, 39, 0.06);
+    color: #181818;
+  }
+
+  .pure-menu li button.link:hover, .pure-menu li button.link:focus {
+    background-color: #33cccc;
     color: #fff;
   }
+
   button.link{
-    color: lighten(@black, 40%);
+    color:fade(#181818, 30%);
     font: 1.3rem/1.618em 'Source Sans Pro', sans-serif;
     text-transform: lowercase;
     text-decoration: none;

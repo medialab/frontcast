@@ -216,12 +216,12 @@
                 {% get_language_info_list for LANGUAGES as languages %}
                 {% for language in languages %}
 
-                <li class="{% if language.code == LANGUAGE_CODE %}pure-menu-selected {% endif %}">
+                <li  class="{% if language.code == LANGUAGE_CODE %}pure-menu-selected {% endif %}">
                   <form action="{% url 'set_language' %}" method="post">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="{% url "observer_index"%}{% verbatim %}{{url}}{% endverbatim %}" />
                     <input type="hidden" name="language" value="{{ language.code }}" />
-                    <button class="link">{{ language.name_local }}</button>
+                    <button tooltip="view this page in {{ language.name_local }}" tooltip-placement="right" class="link">{{ language.name_local }}</button>
                   </form>
                 </li>
                 {% endfor %}
