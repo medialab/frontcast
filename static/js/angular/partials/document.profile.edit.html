@@ -1,10 +1,13 @@
 <div class="big-item" ng-show="document">
   <div class="menu" scroll-to-fixed margin-top="48">
-    
-    <h2>{{document.title}}</h2>
-    <h3>{{document.type}}</h3>
+    <h2><i>editing</i> {{document.title}} <a ng-href="#!/doc/{{document.id}}/profile">back</a></h2>
+    <div ng-if="document.permalink" class="permalink">visit <b>{{document.type}}</b>
+          <a href="{{document.permalink}}" target="_blank">{{document.permalink|crop}}</a>
+    </div>
 
   </div>
+
+  
   
 
   <div class="pure-g">

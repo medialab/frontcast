@@ -39,6 +39,8 @@
           <span class="fa fa-star" tooltip="rating: {{item.rating}}">{{item.rating}}</span>
         </div>
         <div class="pure-u-1-2">
+          <div ng-if="item.permalink"><a href="{{item.permalink}}" target="_blank">external link</a>
+          </div>
           <!-- span tooltip="unique reference id">{{item.reference}}</span -->
         </div>
       </div>
