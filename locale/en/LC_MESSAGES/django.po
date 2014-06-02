@@ -72,39 +72,39 @@ msgstr ""
 
 #: observer/models.py:73
 msgid "details_data"
-msgstr ""
+msgstr "Presence of dataset"
 
 #: observer/models.py:74
 msgid "details_inte"
-msgstr ""
+msgstr "Interviews"
 
 #: observer/models.py:75
 msgid "details_news"
-msgstr ""
+msgstr "Newspapers"
 
 #: observer/models.py:76
 msgid "details_soci"
-msgstr ""
+msgstr "Social networks"
 
 #: observer/models.py:77
 msgid "details_site"
-msgstr ""
+msgstr "Site Visit"
 
 #: observer/models.py:78
 msgid "details_surv"
-msgstr ""
+msgstr "Surveys"
 
 #: observer/models.py:87
 msgid "interview_vi"
-msgstr ""
+msgstr "Video Interviews"
 
 #: observer/models.py:88
 msgid "interview_au"
-msgstr ""
+msgstr "Audio recordings"
 
 #: observer/models.py:89
 msgid "interview_tr"
-msgstr ""
+msgstr "Interviews (Transcript)"
 
 #: observer/models.py:90
 msgid "interview_no"
@@ -135,9 +135,8 @@ msgid "sc_lit"
 msgstr "Analysis of scientific literature"
 
 #: observer/models.py:100
-#, fuzzy
 msgid "scientometri"
-msgstr "Scientometric maps"
+msgstr "Scientometrics"
 
 #: observer/models.py:101
 msgid "media_analys"
@@ -149,11 +148,11 @@ msgstr ""
 
 #: observer/models.py:103
 msgid "qual_da"
-msgstr ""
+msgstr "Qualitative or semantic data analysis"
 
 #: observer/models.py:104
 msgid "sources_deta"
-msgstr ""
+msgstr "Types of sources used"
 
 #: observer/models.py:105
 msgid "comments"
