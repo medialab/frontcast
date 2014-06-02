@@ -117,7 +117,7 @@ class Property(models.Model):
 
   def save(self, **kwargs):
     if self.pk is None:
-      self.slug = uuslug(model=Property, instance=self, value='-'.join([self.phase, self.type]))
+      self.slug = uuslug(model=Property, instance=self, value=self.type)
     super(Property, self).save()
 
 
@@ -131,7 +131,7 @@ class Property(models.Model):
 
 
   def __unicode__(self):
-    return "%s %s" % (self.phase, self.type)
+    return "%s" % self.type
 
 
   class Meta:

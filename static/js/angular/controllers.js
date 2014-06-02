@@ -579,7 +579,7 @@ angular.module('walt.controllers', [])
 
 
     $scope.removeDevice = function(device_id) {
-      if (confirm('are you really sure')){
+      if (confirm('are you really sure to detach it?')){
         DeviceFactory.delete({id: device_id}, function(res){
           console.log(res);
         });

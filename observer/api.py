@@ -59,11 +59,8 @@ def document_profile_attach_property(request, document_pk, property_type):
     'owner': request.user
   })
   if epoxy.is_POST():
-    try:
-      prop = Property.objects.get(type=property_type)
-    except Property.DoesNotExist, e:
-      return epoxy.throw_error(error='%s. I.E is not a valid property'%e, code=API_EXCEPTION_FORMERRORS).json()
-
+    prop, created = Property.objects.get_or_create(type=property_type)
+    
     pro.properties.add(prop)
     pro.save()
 
