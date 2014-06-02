@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-02 11:43+0200\n"
+"POT-Creation-Date: 2014-06-02 15:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,7 @@ msgstr ""
 
 #: observer/models.py:29
 msgid "methodology"
-msgstr ""
+msgstr "Methodology"
 
 #: observer/models.py:30
 msgid "participation"
@@ -52,490 +52,546 @@ msgstr ""
 
 #: observer/models.py:32
 msgid "sources"
-msgstr ""
+msgstr "Sources"
 
 #: observer/models.py:33
 msgid "statistics"
 msgstr ""
 
-#: observer/models.py:58
+#: observer/models.py:60
 msgid "actor_desc_t"
 msgstr ""
 
-#: observer/models.py:59
+#: observer/models.py:61
 msgid "actor_desc_c"
 msgstr ""
 
-#: observer/models.py:60
+#: observer/models.py:62
 msgid "actor_desc_f"
 msgstr ""
 
-#: observer/models.py:70
+#: observer/models.py:73
 msgid "details_data"
 msgstr ""
 
-#: observer/models.py:71
+#: observer/models.py:74
 msgid "details_inte"
 msgstr ""
 
-#: observer/models.py:72
+#: observer/models.py:75
 msgid "details_news"
 msgstr ""
 
-#: observer/models.py:73
+#: observer/models.py:76
 msgid "details_soci"
 msgstr ""
 
-#: observer/models.py:74
+#: observer/models.py:77
 msgid "details_site"
 msgstr ""
 
-#: observer/models.py:83
+#: observer/models.py:78
+msgid "details_surv"
+msgstr ""
+
+#: observer/models.py:87
 msgid "interview_vi"
 msgstr ""
 
-#: observer/models.py:84
+#: observer/models.py:88
 msgid "interview_au"
 msgstr ""
 
-#: observer/models.py:85
+#: observer/models.py:89
 msgid "interview_tr"
 msgstr ""
 
-#: observer/models.py:86
+#: observer/models.py:90
 msgid "interview_no"
 msgstr ""
 
-#: observer/models.py:90
+#: observer/models.py:94
 msgid "actor_table"
 msgstr ""
 
-#: observer/models.py:91
+#: observer/models.py:95
 msgid "arg_tree"
 msgstr "Argument Trees"
 
-#: observer/models.py:92
+#: observer/models.py:96
 msgid "cosmography"
-msgstr ""
+msgstr "Cosmography"
 
-#: observer/models.py:93
+#: observer/models.py:97
 msgid "diagram"
 msgstr ""
 
-#: observer/models.py:94
+#: observer/models.py:98
+msgid "ext_vid_cont"
+msgstr ""
+
+#: observer/models.py:99
 msgid "sc_lit"
 msgstr "Analysis of scientific literature"
 
-#: observer/models.py:95
+#: observer/models.py:100
 #, fuzzy
 msgid "scientometri"
 msgstr "Scientometric maps"
 
-#: observer/models.py:96
-msgid "tmethodology"
-msgstr ""
-
-#: observer/models.py:97
-msgid "qual_da"
-msgstr ""
-
-#: observer/models.py:98
-msgid "sources_deta"
-msgstr ""
-
-#: observer/models.py:99
-msgid "comments"
-msgstr ""
-
-#: observer/models.py:100
-msgid "animation"
-msgstr ""
-
 #: observer/models.py:101
-msgid "comic"
+msgid "media_analys"
 msgstr ""
 
 #: observer/models.py:102
-msgid "glossary"
+msgid "tmethodology"
 msgstr ""
 
 #: observer/models.py:103
-msgid "viz_analogy"
+msgid "qual_da"
 msgstr ""
 
 #: observer/models.py:104
+msgid "sources_deta"
+msgstr ""
+
+#: observer/models.py:105
+msgid "comments"
+msgstr ""
+
+#: observer/models.py:106
+msgid "animation"
+msgstr "Animation"
+
+#: observer/models.py:107
+msgid "comic"
+msgstr "Comics and cartoons"
+
+#: observer/models.py:108
+msgid "glossary"
+msgstr ""
+
+#: observer/models.py:109
+msgid "viz_analogy"
+msgstr ""
+
+#: observer/models.py:110
 msgid "stats"
 msgstr ""
 
-#: observer/models.py:160
+#: observer/models.py:166
 msgid "Databases"
 msgstr ""
 
-#: observer/models.py:161
+#: observer/models.py:167
 msgid "Actor diagrams"
 msgstr ""
 
-#: observer/models.py:162
+#: observer/models.py:168
 msgid "Specialised analysis Tools"
 msgstr ""
 
-#: observer/models.py:163
+#: observer/models.py:169
 msgid "Controversy Timeline"
 msgstr ""
 
-#: observer/models.py:164
+#: observer/models.py:170
 msgid "Web crawling maps"
 msgstr ""
 
-#: observer/models.py:165
+#: observer/models.py:171
 msgid "Specialised Search and Exploration Tools"
 msgstr ""
 
-#: observer/models.py:166
+#: observer/models.py:172
 msgid "Media and public opinion analysis"
 msgstr ""
 
-#: observer/models.py:167
+#: observer/models.py:173
 msgid "Presentation of the disagreement"
 msgstr ""
 
-#: observer/models.py:168
-msgid "External content"
-msgstr ""
-
-#: observer/models.py:169
+#: observer/models.py:174
 msgid "Geographical maps"
 msgstr ""
 
-#: observer/models.py:170
+#: observer/models.py:175
 msgid "Web-site building tools"
 msgstr ""
 
-#: observer/models.py:171
+#: observer/models.py:176
 msgid "Social Network Analysis Tools"
 msgstr ""
 
-#: observer/models.py:172
+#: observer/models.py:177
 msgid "Tag clouds"
 msgstr ""
 
-#: observer/models.py:173
+#: observer/models.py:178
 msgid "Textual analysis"
 msgstr ""
 
-#: observer/models.py:216
-msgid "question_actor_desc_t"
-msgstr ""
-
-#: observer/models.py:216
-msgid "description_actor_desc_t"
-msgstr ""
-
-#: observer/models.py:217
-msgid "question_actor_desc_c"
-msgstr ""
-
-#: observer/models.py:217
-msgid "description_actor_desc_c"
-msgstr ""
-
-#: observer/models.py:218
-msgid "question_actor_desc_f"
-msgstr ""
-
-#: observer/models.py:218
-msgid "description_actor_desc_f"
-msgstr ""
-
-#: observer/models.py:219
-msgid "question_arg_tree"
-msgstr "Does it have an argument tree?"
-
-#: observer/models.py:219
-msgid "description_arg_tree"
-msgstr "Ce diagramme vise à montrer comment aucun discours circulant dans une controverse ne constitue un énoncé isolé et autosuffisant. Dans une controverse, les discours sont toujours des actions et leur ‘agency’ s’exprime par le fait de appuyer et d’opposer d’autres discours. L’arbre des actions discursives déploie le travail de construction (et destruction) des débats socio-techniques en montrant quels énoncés construisent (ou détruisent) quels discours. (TV)"
-
-#: observer/models.py:220
-msgid "question_cosmography"
-msgstr ""
-
-#: observer/models.py:220
-msgid "description_cosmography"
-msgstr ""
+#: observer/models.py:221
+msgid "question_sources_deta"
+msgstr "Are all the sources provided?"
 
 #: observer/models.py:221
-msgid "question_diagram"
-msgstr ""
-
-#: observer/models.py:221
-msgid "description_diagram"
-msgstr ""
+msgid "description_sources_deta"
+msgstr "Are all the sources provided?"
 
 #: observer/models.py:222
-msgid "question_sc_lit"
-msgstr ""
-
-#: observer/models.py:222
-msgid "description_sc_lit"
-msgstr ""
-
-#: observer/models.py:223
-msgid "question_scientometri"
-msgstr ""
-
-#: observer/models.py:223
-msgid "description_scientometri"
-msgstr ""
-
-#: observer/models.py:229
 msgid "question_details_data"
-msgstr ""
+msgstr "Dataset"
 
-#: observer/models.py:229
+#: observer/models.py:222
 msgid "description_details_data"
-msgstr ""
+msgstr "Dataset"
 
-#: observer/models.py:230
+#: observer/models.py:223
 msgid "question_details_inte"
-msgstr ""
+msgstr "Interviews"
 
-#: observer/models.py:230
+#: observer/models.py:223
 msgid "description_details_inte"
 msgstr ""
 
-#: observer/models.py:231
+#: observer/models.py:224
 msgid "question_details_news"
-msgstr ""
+msgstr "Newspapers"
 
-#: observer/models.py:231
+#: observer/models.py:224
 msgid "description_details_news"
 msgstr ""
 
-#: observer/models.py:232
+#: observer/models.py:225
 msgid "question_details_soci"
-msgstr ""
+msgstr "Social networks"
 
-#: observer/models.py:232
+#: observer/models.py:225
 msgid "description_details_soci"
-msgstr ""
+msgstr "Social networks"
 
-#: observer/models.py:233
+#: observer/models.py:226
 msgid "question_details_site"
-msgstr ""
+msgstr "Site visit"
 
-#: observer/models.py:233
+#: observer/models.py:226
 msgid "description_details_site"
-msgstr ""
+msgstr "Site visit"
+
+#: observer/models.py:227
+msgid "question_details_surv"
+msgstr "Have they used surveys?"
+
+#: observer/models.py:227
+msgid "description_details_surv"
+msgstr "Have the students made a quantitative survey?"
+
+#: observer/models.py:228
+msgid "question_interview_tr"
+msgstr "Are the interview transcripts available?"
+
+#: observer/models.py:228
+msgid "description_interview_tr"
+msgstr "Are the interview transcripts available"
+
+#: observer/models.py:229
+msgid "question_interview_vi"
+msgstr "Did they publish the interview video?"
+
+#: observer/models.py:229
+msgid "description_interview_vi"
+msgstr "Did they publish the interview video?"
+
+#: observer/models.py:230
+msgid "question_interview_au"
+msgstr "Did they publish the audio recording of the interview?"
+
+#: observer/models.py:230
+msgid "description_interview_au"
+msgstr "Did they publish the audio recording of the interview?"
+
+#: observer/models.py:231
+msgid "question_interview_no"
+msgstr "Did they publish a summary of the interview?"
+
+#: observer/models.py:231
+msgid "description_interview_no"
+msgstr "Did they publish a summary of the interview?"
 
 #: observer/models.py:234
-msgid "question_tmethodology"
-msgstr ""
+msgid "question_sc_lit"
+msgstr "Does it contain an analysis of the relevant scientific literature?"
 
 #: observer/models.py:234
-msgid "description_tmethodology"
-msgstr ""
+msgid "description_sc_lit"
+msgstr "Has the controvery map looked at any scientific literature?"
 
 #: observer/models.py:235
 msgid "question_qual_da"
-msgstr ""
+msgstr "Has there been qualitative or semantic data analysis?"
 
 #: observer/models.py:235
 msgid "description_qual_da"
 msgstr ""
+"Has there been qualitative or semantic data analysis? (coding, semantic "
+"analysis, text analysis etc.)"
 
-#: observer/models.py:236
-msgid "question_sources_deta"
-msgstr ""
+#: observer/models.py:236 observer/models.py:272
+msgid "question_sna"
+msgstr "What social network analysis tools are used?"
 
-#: observer/models.py:236
-msgid "description_sources_deta"
-msgstr ""
+#: observer/models.py:236 observer/models.py:272
+msgid "description_sna"
+msgstr "What social network analysis tools are used?"
 
-#: observer/models.py:239
-msgid "question_comments"
-msgstr ""
-
-#: observer/models.py:239
-msgid "description_comments"
-msgstr ""
-
-#: observer/models.py:242
-msgid "question_animation"
-msgstr ""
-
-#: observer/models.py:242
-msgid "description_animation"
-msgstr ""
-
-#: observer/models.py:243
-msgid "question_comic"
-msgstr ""
-
-#: observer/models.py:243
-msgid "description_comic"
-msgstr ""
-
-#: observer/models.py:244
-msgid "question_glossary"
-msgstr ""
-
-#: observer/models.py:244
-msgid "description_glossary"
-msgstr ""
-
-#: observer/models.py:245
-msgid "question_viz_analogy"
-msgstr ""
-
-#: observer/models.py:245
-msgid "description_viz_analogy"
-msgstr ""
-
-#: observer/models.py:248
-msgid "question_interview_tr"
-msgstr ""
-
-#: observer/models.py:248
-msgid "description_interview_tr"
-msgstr ""
-
-#: observer/models.py:249
-msgid "question_interview_vi"
-msgstr ""
-
-#: observer/models.py:249
-msgid "description_interview_vi"
-msgstr ""
-
-#: observer/models.py:250
-msgid "question_interview_au"
-msgstr ""
-
-#: observer/models.py:250
-msgid "description_interview_au"
-msgstr ""
-
-#: observer/models.py:251
-msgid "question_interview_no"
-msgstr ""
-
-#: observer/models.py:251
-msgid "description_interview_no"
-msgstr ""
-
-#: observer/models.py:254
-msgid "question_stats"
-msgstr ""
-
-#: observer/models.py:254
-msgid "description_stats"
-msgstr ""
-
-#: observer/models.py:259
+#: observer/models.py:237
 msgid "question_database"
-msgstr ""
+msgstr "What databases, if any, have been used?"
 
-#: observer/models.py:259
+#: observer/models.py:237
 msgid "description_database"
-msgstr ""
+msgstr "What databases, if any, have been used?"
 
-#: observer/models.py:260
-msgid "question_analysis_spe"
-msgstr ""
-
-#: observer/models.py:260
-msgid "description_analysis_spe"
-msgstr ""
-
-#: observer/models.py:261
-msgid "question_chronology"
-msgstr ""
-
-#: observer/models.py:261
-msgid "description_chronology"
-msgstr ""
-
-#: observer/models.py:262
+#: observer/models.py:238 observer/models.py:269
 msgid "question_crawl"
-msgstr ""
+msgstr "Does it feature webcrawler maps?"
 
-#: observer/models.py:262
+#: observer/models.py:238 observer/models.py:269
 msgid "description_crawl"
-msgstr ""
+msgstr "Does it feature webcrawler maps?"
 
-#: observer/models.py:263
+#: observer/models.py:239
+msgid "question_scientometri"
+msgstr "Does it include scientometric analysis?"
+
+#: observer/models.py:239
+msgid "description_scientometri"
+msgstr "Does it include scientometric analysis?"
+
+#: observer/models.py:240
+msgid "question_analysis_spe"
+msgstr "What specialised data analysis tools have been used?"
+
+#: observer/models.py:240
+msgid "description_analysis_spe"
+msgstr "What specialised data analysis tools have been used?"
+
+#: observer/models.py:241
 msgid "question_explore_special"
-msgstr ""
+msgstr "Search Engine"
 
-#: observer/models.py:263
+#: observer/models.py:241
 msgid "description_explore_special"
 msgstr ""
 
-#: observer/models.py:264
+#: observer/models.py:242
+msgid "question_text_analysis"
+msgstr "What specialised text analysis tools have been used?"
+
+#: observer/models.py:242
+msgid "description_text_analysis"
+msgstr "What specialised text analysis tools have been used?"
+
+#: observer/models.py:243 observer/models.py:270
 msgid "question_media_analysis"
 msgstr ""
 
-#: observer/models.py:264
+#: observer/models.py:243 observer/models.py:270
 msgid "description_media_analysis"
 msgstr ""
 
-#: observer/models.py:265
-msgid "question_disagreement"
+#: observer/models.py:244
+msgid "question_stats"
+msgstr "Has relevant substantiated statistical data been presented?"
+
+#: observer/models.py:244
+msgid "description_stats"
+msgstr "Has relevant substantiated statistical data been presented?"
+
+#: observer/models.py:247
+msgid "question_tmethodology"
+msgstr ""
+"Is there a section describing the methodology for any analysis tools that "
+"have been used?"
+
+#: observer/models.py:247
+msgid "description_tmethodology"
+msgstr ""
+"Is there a section describing the methodology for any analysis tools that "
+"have been used?"
+
+#: observer/models.py:248
+msgid "question_actor_desc_t"
+msgstr "Are the actors displayed in a table?"
+
+#: observer/models.py:248
+msgid "description_actor_desc_t"
 msgstr ""
 
-#: observer/models.py:265
-msgid "description_disagreement"
+#: observer/models.py:249
+msgid "question_actor_desc_c"
+msgstr "Are the actors categorized in groups?"
+
+#: observer/models.py:249
+msgid "description_actor_desc_c"
 msgstr ""
 
-#: observer/models.py:266
-msgid "question_ext_content"
+#: observer/models.py:250
+msgid "question_actor_desc_f"
+msgstr "Are the actors just listed directly?"
+
+#: observer/models.py:250
+msgid "description_actor_desc_f"
 msgstr ""
 
-#: observer/models.py:266
-msgid "description_ext_content"
-msgstr ""
+#: observer/models.py:251
+msgid "question_arg_tree"
+msgstr "Does it have an argument tree?"
 
-#: observer/models.py:267
+#: observer/models.py:251
+msgid "description_arg_tree"
+msgstr ""
+"Ce diagramme vise à montrer comment aucun discours circulant dans une "
+"controverse ne constitue un énoncé isolé et autosuffisant. Dans une "
+"controverse, les discours sont toujours des actions et leur ‘agency’ "
+"s’exprime par le fait de appuyer et d’opposer d’autres discours. L’arbre des "
+"actions discursives déploie le travail de construction (et destruction) des "
+"débats socio-techniques en montrant quels énoncés construisent (ou "
+"détruisent) quels discours. (TV)"
+
+#: observer/models.py:252
+msgid "question_animation"
+msgstr "Have they created animations for their presentation?"
+
+#: observer/models.py:252
+msgid "description_animation"
+msgstr "Have they created animations for their presentation?"
+
+#: observer/models.py:253
+msgid "question_comic"
+msgstr "Have they used comics or cartoons in their presentation?"
+
+#: observer/models.py:253
+msgid "description_comic"
+msgstr "Have they used comics or cartoons in their presentation?"
+
+#: observer/models.py:254
 msgid "question_geolocation"
-msgstr ""
+msgstr "Did they use spatial maps to show the location of the controversy?"
 
-#: observer/models.py:267
+#: observer/models.py:254
 msgid "description_geolocation"
-msgstr ""
+msgstr "Did they use spatial maps to show the location of the controversy?"
 
-#: observer/models.py:268
-msgid "question_webtool"
-msgstr ""
+#: observer/models.py:255
+msgid "question_chronology"
+msgstr "What tools were used to create the chronology?"
 
-#: observer/models.py:268
-msgid "description_webtool"
-msgstr ""
+#: observer/models.py:255
+msgid "description_chronology"
+msgstr "What tools were used to create the chronology?"
 
-#: observer/models.py:269
-msgid "question_sna"
+#: observer/models.py:256
+msgid "question_cosmography"
 msgstr ""
+"Does the analysis consider the broader scope of the controversy, such as "
+"meta-controversies?"
 
-#: observer/models.py:269
-msgid "description_sna"
+#: observer/models.py:256
+msgid "description_cosmography"
 msgstr ""
+"S’appuyant sur le diagramme des acteurs ce diagramme vise à montrer comment "
+"l’interaction des forces d’association et de dissociation produit des "
+"dismogénéités de densité ou de style dans le plan de la controverses, des "
+"pleins et des vides, des reliefs et des creux. Même si un paysage reste plat "
+"(car il n’est fait par rien d’autre que des actions d’association et de "
+"dissociation), il est possible d’y repérer des frontières et donc des "
+"sphères. Ces sphères peuvent s’entrecroiser, mais aussi être incluses l’une "
+"dans l’autre dans une échelle faite des méta-controverses et sub-"
+"controverses."
 
-#: observer/models.py:270
+#: observer/models.py:257
+msgid "question_diagram"
+msgstr "Does it feature schematics or simple process actor diagrams?"
+
+#: observer/models.py:257
+msgid "description_diagram"
+msgstr ""
+"The use of simple flow or process diagrams to display the links between the "
+"actors"
+
+#: observer/models.py:258
+msgid "question_actor_diag"
+msgstr "What tools were used for the actor diagrams?"
+
+#: observer/models.py:258
+msgid "description_actor_diag"
+msgstr "What tools were used for the actor diagrams?"
+
+#: observer/models.py:259
+msgid "question_glossary"
+msgstr "Does it feature a glossary?"
+
+#: observer/models.py:259
+msgid "description_glossary"
+msgstr "Does it feature a glossary?"
+
+#: observer/models.py:260
+msgid "question_viz_analogy"
+msgstr ""
+"Does the controversy mapping feature use visual analogies as a design "
+"principle?"
+
+#: observer/models.py:260
+msgid "description_viz_analogy"
+msgstr ""
+"Does the controversy mapping feature use visual analogies as a design "
+"principle?"
+
+#: observer/models.py:261
 msgid "question_tagcloud"
-msgstr ""
+msgstr "Does it feature a tag or word cloud?"
 
-#: observer/models.py:270
+#: observer/models.py:261
 msgid "description_tagcloud"
+msgstr "Does it feature a tag or word cloud?"
+
+#: observer/models.py:262
+msgid "question_comments"
+msgstr "Does it invite comments from readers or offer an online forum?"
+
+#: observer/models.py:262
+msgid "description_comments"
+msgstr "Does it invite comments from readers or offer an online forum?"
+
+#: observer/models.py:263
+msgid "question_webtool"
+msgstr "If it is website, what tools were used to build it?"
+
+#: observer/models.py:263
+msgid "description_webtool"
+msgstr "If it is website, what tools were used to build it?"
+
+#: observer/models.py:264
+msgid "question_ext_vid_cont"
+msgstr "Is there external video content included or embedded in the mapping?"
+
+#: observer/models.py:264
+msgid "description_ext_vid_cont"
 msgstr ""
+"Is there external video content included or embedded in the mapping?"
 
 #: observer/models.py:271
-msgid "question_text_analysis"
-msgstr ""
+msgid "question_disagreement"
+msgstr "Does the analysis include a section considering the main source(s) of disagreement?"
 
 #: observer/models.py:271
-msgid "description_text_analysis"
-msgstr ""
+msgid "description_disagreement"
+msgstr "Does the analysis include a section considering the main source(s) of disagreement?"
 
-#: observer/models.py:317 observer/models.py:325 observer/models.py:333
+#: observer/models.py:312 observer/models.py:320 observer/models.py:328
+#: observer/models.py:336
 #, python-format
 msgid "question_%s"
 msgstr ""

@@ -23,20 +23,38 @@
 
           <thead>
               <tr>
-                <th>about {{q.label}}</th>
+                <th>{{q.label}}</th>
                 <th>Yes</th>
                 <th>No</th>
               </tr>
           </thead>
           <tbody>
             <tr ng-repeat="property in q.properties">
-              <td>{{property.question}}</td>
-              <td class="radio">
+              
+              <td ng-if="property.is_device" colspan="3">{{property.question}}
+                <div >
+                  <form class="pure-form">
+                    <span class="tag" ng-repeat="dev in document.devices[property.name]"><span ng-click="follow('tool', dev.working_document_id)">{{dev.title}}</span>&nbsp;<span class="fa fa-times" tooltip="remove me" ng-click="removeDevice(dev.id)"></span></span>
+                    <p>
+                    <input type="text" autofocus ng-model="__device_candidate"
+                typeahead-editable="false"
+                typeahead-loading="loadingLocations"
+                typeahead="tag as tag.title for tag in getDevices($viewValue)"
+                class="form-control typeahead-multi-input"
+                typeahead-on-select="saveDevice(property.name, __device_candidate)"
+                typeahead-wait-ms="50">
+                    </p>
+                  </form>
+                </div>
+              </td>
+              <td ng-if="!property.is_device"> {{property.question}}
+              </td>
+              <td ng-if="!property.is_device" class="radio">
                 <div tooltip="yes" ng-click="attachProperty(property.name, profile)">
                   <input type="radio" ng-model="property.value" ng-value="true"/>
                 </div>
               </td>
-              <td class="radio">
+              <td ng-if="!property.is_device" class="radio">
                 <div tooltip="no" ng-click="detachProperty(property.name, profile)">
                   <input type="radio" ng-model="property.value" ng-value="false"/>
                 </div>
@@ -48,27 +66,5 @@
         </div>
       </form>
     </div>
-    <div class="pure-u-1-3" >
-      <div ng-repeat="device in profile.devices">
-        <h4>{{device.label}} ({{document.devices[device.name].length || 0}})</h4>
-        <div class="tags multi-input">
-          <form class="pure-form">
-            <span class="tag" ng-repeat="dev in document.devices[device.name]"ng-click="follow('tool', dev.working_document_id)">{{dev.title}}&nbsp;<span class="fa fa-times" tooltip="remove me" ng-click="removeDevice(dev.id)"></span></span>
-
-
-              <input type="text" autofocus ng-model="__device_candidate"
-                typeahead-editable="false"
-                typeahead-loading="loadingLocations"
-                typeahead="tag as tag.title for tag in getDevices($viewValue)"
-                class="form-control typeahead-multi-input"
-                typeahead-on-select="saveDevice(device.name, __device_candidate)"
-                typeahead-wait-ms="50">
-       
-            
-         
-          </form>
-         </div>
-    </div>
-  
   </div>
 </div>
