@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-02 11:43+0200\n"
+"POT-Creation-Date: 2014-06-02 15:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,281 +59,282 @@ msgstr ""
 msgid "statistics"
 msgstr ""
 
-#: observer/models.py:58
+#: observer/models.py:60
 msgid "actor_desc_t"
 msgstr ""
 
-#: observer/models.py:59
+#: observer/models.py:61
 msgid "actor_desc_c"
 msgstr ""
 
-#: observer/models.py:60
+#: observer/models.py:62
 msgid "actor_desc_f"
 msgstr ""
 
-#: observer/models.py:70
+#: observer/models.py:73
 msgid "details_data"
 msgstr ""
 
-#: observer/models.py:71
+#: observer/models.py:74
 msgid "details_inte"
 msgstr ""
 
-#: observer/models.py:72
+#: observer/models.py:75
 msgid "details_news"
 msgstr ""
 
-#: observer/models.py:73
+#: observer/models.py:76
 msgid "details_soci"
 msgstr ""
 
-#: observer/models.py:74
+#: observer/models.py:77
 msgid "details_site"
 msgstr ""
 
-#: observer/models.py:83
+#: observer/models.py:78
+msgid "details_surv"
+msgstr ""
+
+#: observer/models.py:87
 msgid "interview_vi"
 msgstr ""
 
-#: observer/models.py:84
+#: observer/models.py:88
 msgid "interview_au"
 msgstr ""
 
-#: observer/models.py:85
+#: observer/models.py:89
 msgid "interview_tr"
 msgstr ""
 
-#: observer/models.py:86
+#: observer/models.py:90
 msgid "interview_no"
 msgstr ""
 
-#: observer/models.py:90
+#: observer/models.py:94
 msgid "actor_table"
 msgstr ""
 
-#: observer/models.py:91
+#: observer/models.py:95
 msgid "arg_tree"
 msgstr "Arbre de debat"
 
-#: observer/models.py:92
+#: observer/models.py:96
 msgid "cosmography"
 msgstr ""
 
-#: observer/models.py:93
+#: observer/models.py:97
 msgid "diagram"
 msgstr ""
 
-#: observer/models.py:94
+#: observer/models.py:98
+msgid "ext_vid_cont"
+msgstr ""
+
+#: observer/models.py:99
 msgid "sc_lit"
 msgstr "Analyse de la littérature scientifique"
 
-#: observer/models.py:95
+#: observer/models.py:100
 #, fuzzy
 msgid "scientometri"
 msgstr "Cartes de scientrometrie"
 
-#: observer/models.py:96
-msgid "tmethodology"
-msgstr ""
-
-#: observer/models.py:97
-msgid "qual_da"
-msgstr ""
-
-#: observer/models.py:98
-msgid "sources_deta"
-msgstr ""
-
-#: observer/models.py:99
-msgid "comments"
-msgstr ""
-
-#: observer/models.py:100
-msgid "animation"
-msgstr ""
-
 #: observer/models.py:101
-msgid "comic"
+msgid "media_analys"
 msgstr ""
 
 #: observer/models.py:102
-msgid "glossary"
+msgid "tmethodology"
 msgstr ""
 
 #: observer/models.py:103
-msgid "viz_analogy"
+msgid "qual_da"
 msgstr ""
 
 #: observer/models.py:104
+msgid "sources_deta"
+msgstr ""
+
+#: observer/models.py:105
+msgid "comments"
+msgstr ""
+
+#: observer/models.py:106
+msgid "animation"
+msgstr ""
+
+#: observer/models.py:107
+msgid "comic"
+msgstr ""
+
+#: observer/models.py:108
+msgid "glossary"
+msgstr ""
+
+#: observer/models.py:109
+msgid "viz_analogy"
+msgstr ""
+
+#: observer/models.py:110
 msgid "stats"
 msgstr ""
 
-#: observer/models.py:160
+#: observer/models.py:166
 msgid "Databases"
 msgstr ""
 
-#: observer/models.py:161
+#: observer/models.py:167
 msgid "Actor diagrams"
 msgstr ""
 
-#: observer/models.py:162
+#: observer/models.py:168
 msgid "Specialised analysis Tools"
 msgstr "Outils specialisés"
 
-#: observer/models.py:163
+#: observer/models.py:169
 msgid "Controversy Timeline"
 msgstr ""
 
-#: observer/models.py:164
+#: observer/models.py:170
 msgid "Web crawling maps"
 msgstr ""
 
-#: observer/models.py:165
+#: observer/models.py:171
 msgid "Specialised Search and Exploration Tools"
 msgstr ""
 
-#: observer/models.py:166
+#: observer/models.py:172
 msgid "Media and public opinion analysis"
 msgstr ""
 
-#: observer/models.py:167
+#: observer/models.py:173
 msgid "Presentation of the disagreement"
 msgstr ""
 
-#: observer/models.py:168
-msgid "External content"
-msgstr ""
-
-#: observer/models.py:169
+#: observer/models.py:174
 msgid "Geographical maps"
 msgstr ""
 
-#: observer/models.py:170
+#: observer/models.py:175
 msgid "Web-site building tools"
 msgstr ""
 
-#: observer/models.py:171
+#: observer/models.py:176
 msgid "Social Network Analysis Tools"
 msgstr ""
 
-#: observer/models.py:172
+#: observer/models.py:177
 msgid "Tag clouds"
 msgstr ""
 
-#: observer/models.py:173
+#: observer/models.py:178
 msgid "Textual analysis"
 msgstr ""
 
-#: observer/models.py:216
-msgid "question_actor_desc_t"
-msgstr ""
-
-#: observer/models.py:216
-msgid "description_actor_desc_t"
-msgstr ""
-
-#: observer/models.py:217
-msgid "question_actor_desc_c"
-msgstr ""
-
-#: observer/models.py:217
-msgid "description_actor_desc_c"
-msgstr ""
-
-#: observer/models.py:218
-msgid "question_actor_desc_f"
-msgstr ""
-
-#: observer/models.py:218
-msgid "description_actor_desc_f"
-msgstr ""
-
-#: observer/models.py:219
-msgid "question_arg_tree"
-msgstr "Y a-t-il un arbre du debat ?"
-
-#: observer/models.py:219
-msgid "description_arg_tree"
-msgstr "Ce diagramme vise à montrer comment aucun discours circulant dans une controverse ne constitue un énoncé isolé et autosuffisant. Dans une controverse, les discours sont toujours des actions et leur ‘agency’ s’exprime par le fait de appuyer et d’opposer d’autres discours. L’arbre des actions discursives déploie le travail de construction (et destruction) des débats socio-techniques en montrant quels énoncés construisent (ou détruisent) quels discours. (TV)"
-
-#: observer/models.py:220
-msgid "question_cosmography"
-msgstr ""
-
-#: observer/models.py:220
-msgid "description_cosmography"
+#: observer/models.py:221
+msgid "question_sources_deta"
 msgstr ""
 
 #: observer/models.py:221
-msgid "question_diagram"
-msgstr ""
-
-#: observer/models.py:221
-msgid "description_diagram"
+msgid "description_sources_deta"
 msgstr ""
 
 #: observer/models.py:222
-msgid "question_sc_lit"
-msgstr ""
-
-#: observer/models.py:222
-msgid "description_sc_lit"
-msgstr ""
-
-#: observer/models.py:223
-msgid "question_scientometri"
-msgstr ""
-
-#: observer/models.py:223
-msgid "description_scientometri"
-msgstr ""
-
-#: observer/models.py:229
 msgid "question_details_data"
 msgstr ""
 
-#: observer/models.py:229
+#: observer/models.py:222
 msgid "description_details_data"
 msgstr ""
 
-#: observer/models.py:230
+#: observer/models.py:223
 msgid "question_details_inte"
 msgstr ""
 
-#: observer/models.py:230
+#: observer/models.py:223
 msgid "description_details_inte"
 msgstr ""
 
-#: observer/models.py:231
+#: observer/models.py:224
 msgid "question_details_news"
 msgstr ""
 
-#: observer/models.py:231
+#: observer/models.py:224
 msgid "description_details_news"
 msgstr ""
 
-#: observer/models.py:232
+#: observer/models.py:225
 msgid "question_details_soci"
 msgstr ""
 
-#: observer/models.py:232
+#: observer/models.py:225
 msgid "description_details_soci"
 msgstr ""
 
-#: observer/models.py:233
+#: observer/models.py:226
 msgid "question_details_site"
 msgstr ""
 
-#: observer/models.py:233
+#: observer/models.py:226
 msgid "description_details_site"
 msgstr ""
 
-#: observer/models.py:234
-msgid "question_tmethodology"
+#: observer/models.py:227
+#, fuzzy
+msgid "question_details_surv"
+msgstr "Y a-t-il un arbre du debat ?"
+
+#: observer/models.py:227
+#, fuzzy
+msgid "description_details_surv"
+msgstr ""
+"Ce diagramme vise à montrer comment aucun discours circulant dans une "
+"controverse ne constitue un énoncé isolé et autosuffisant. Dans une "
+"controverse, les discours sont toujours des actions et leur ‘agency’ "
+"s’exprime par le fait de appuyer et d’opposer d’autres discours. L’arbre des "
+"actions discursives déploie le travail de construction (et destruction) des "
+"débats socio-techniques en montrant quels énoncés construisent (ou "
+"détruisent) quels discours. (TV)"
+
+#: observer/models.py:228
+msgid "question_interview_tr"
+msgstr ""
+
+#: observer/models.py:228
+msgid "description_interview_tr"
+msgstr ""
+
+#: observer/models.py:229
+msgid "question_interview_vi"
+msgstr ""
+
+#: observer/models.py:229
+msgid "description_interview_vi"
+msgstr ""
+
+#: observer/models.py:230
+msgid "question_interview_au"
+msgstr ""
+
+#: observer/models.py:230
+msgid "description_interview_au"
+msgstr ""
+
+#: observer/models.py:231
+msgid "question_interview_no"
+msgstr ""
+
+#: observer/models.py:231
+msgid "description_interview_no"
 msgstr ""
 
 #: observer/models.py:234
-msgid "description_tmethodology"
+msgid "question_sc_lit"
+msgstr ""
+
+#: observer/models.py:234
+msgid "description_sc_lit"
 msgstr ""
 
 #: observer/models.py:235
@@ -344,199 +345,257 @@ msgstr ""
 msgid "description_qual_da"
 msgstr ""
 
-#: observer/models.py:236
-msgid "question_sources_deta"
-msgstr ""
-
-#: observer/models.py:236
-msgid "description_sources_deta"
-msgstr ""
-
-#: observer/models.py:239
-msgid "question_comments"
-msgstr ""
-
-#: observer/models.py:239
-msgid "description_comments"
-msgstr ""
-
-#: observer/models.py:242
-msgid "question_animation"
-msgstr ""
-
-#: observer/models.py:242
-msgid "description_animation"
-msgstr ""
-
-#: observer/models.py:243
-msgid "question_comic"
-msgstr ""
-
-#: observer/models.py:243
-msgid "description_comic"
-msgstr ""
-
-#: observer/models.py:244
-msgid "question_glossary"
-msgstr ""
-
-#: observer/models.py:244
-msgid "description_glossary"
-msgstr ""
-
-#: observer/models.py:245
-msgid "question_viz_analogy"
-msgstr ""
-
-#: observer/models.py:245
-msgid "description_viz_analogy"
-msgstr ""
-
-#: observer/models.py:248
-msgid "question_interview_tr"
-msgstr ""
-
-#: observer/models.py:248
-msgid "description_interview_tr"
-msgstr ""
-
-#: observer/models.py:249
-msgid "question_interview_vi"
-msgstr ""
-
-#: observer/models.py:249
-msgid "description_interview_vi"
-msgstr ""
-
-#: observer/models.py:250
-msgid "question_interview_au"
-msgstr ""
-
-#: observer/models.py:250
-msgid "description_interview_au"
-msgstr ""
-
-#: observer/models.py:251
-msgid "question_interview_no"
-msgstr ""
-
-#: observer/models.py:251
-msgid "description_interview_no"
-msgstr ""
-
-#: observer/models.py:254
-msgid "question_stats"
-msgstr ""
-
-#: observer/models.py:254
-msgid "description_stats"
-msgstr ""
-
-#: observer/models.py:259
-msgid "question_database"
-msgstr ""
-
-#: observer/models.py:259
-msgid "description_database"
-msgstr ""
-
-#: observer/models.py:260
-msgid "question_analysis_spe"
-msgstr ""
-
-#: observer/models.py:260
-msgid "description_analysis_spe"
-msgstr ""
-
-#: observer/models.py:261
-msgid "question_chronology"
-msgstr ""
-
-#: observer/models.py:261
-msgid "description_chronology"
-msgstr ""
-
-#: observer/models.py:262
-msgid "question_crawl"
-msgstr ""
-
-#: observer/models.py:262
-msgid "description_crawl"
-msgstr ""
-
-#: observer/models.py:263
-msgid "question_explore_special"
-msgstr ""
-
-#: observer/models.py:263
-msgid "description_explore_special"
-msgstr ""
-
-#: observer/models.py:264
-msgid "question_media_analysis"
-msgstr ""
-
-#: observer/models.py:264
-msgid "description_media_analysis"
-msgstr ""
-
-#: observer/models.py:265
-msgid "question_disagreement"
-msgstr ""
-
-#: observer/models.py:265
-msgid "description_disagreement"
-msgstr ""
-
-#: observer/models.py:266
-msgid "question_ext_content"
-msgstr ""
-
-#: observer/models.py:266
-msgid "description_ext_content"
-msgstr ""
-
-#: observer/models.py:267
-msgid "question_geolocation"
-msgstr ""
-
-#: observer/models.py:267
-msgid "description_geolocation"
-msgstr ""
-
-#: observer/models.py:268
-msgid "question_webtool"
-msgstr ""
-
-#: observer/models.py:268
-msgid "description_webtool"
-msgstr ""
-
-#: observer/models.py:269
+#: observer/models.py:236 observer/models.py:272
 msgid "question_sna"
 msgstr ""
 
-#: observer/models.py:269
+#: observer/models.py:236 observer/models.py:272
 msgid "description_sna"
 msgstr ""
 
-#: observer/models.py:270
-msgid "question_tagcloud"
+#: observer/models.py:237
+msgid "question_database"
 msgstr ""
 
-#: observer/models.py:270
-msgid "description_tagcloud"
+#: observer/models.py:237
+msgid "description_database"
 msgstr ""
 
-#: observer/models.py:271
+#: observer/models.py:238 observer/models.py:269
+msgid "question_crawl"
+msgstr ""
+
+#: observer/models.py:238 observer/models.py:269
+msgid "description_crawl"
+msgstr ""
+
+#: observer/models.py:239
+msgid "question_scientometri"
+msgstr ""
+
+#: observer/models.py:239
+msgid "description_scientometri"
+msgstr ""
+
+#: observer/models.py:240
+msgid "question_analysis_spe"
+msgstr ""
+
+#: observer/models.py:240
+msgid "description_analysis_spe"
+msgstr ""
+
+#: observer/models.py:241
+msgid "question_explore_special"
+msgstr ""
+
+#: observer/models.py:241
+msgid "description_explore_special"
+msgstr ""
+
+#: observer/models.py:242
 msgid "question_text_analysis"
 msgstr ""
 
-#: observer/models.py:271
+#: observer/models.py:242
 msgid "description_text_analysis"
 msgstr ""
 
-#: observer/models.py:317 observer/models.py:325 observer/models.py:333
+#: observer/models.py:243 observer/models.py:270
+msgid "question_media_analysis"
+msgstr ""
+
+#: observer/models.py:243 observer/models.py:270
+msgid "description_media_analysis"
+msgstr ""
+
+#: observer/models.py:244
+msgid "question_stats"
+msgstr ""
+
+#: observer/models.py:244
+msgid "description_stats"
+msgstr ""
+
+#: observer/models.py:247
+msgid "question_tmethodology"
+msgstr ""
+
+#: observer/models.py:247
+msgid "description_tmethodology"
+msgstr ""
+
+#: observer/models.py:248
+msgid "question_actor_desc_t"
+msgstr ""
+
+#: observer/models.py:248
+msgid "description_actor_desc_t"
+msgstr ""
+
+#: observer/models.py:249
+msgid "question_actor_desc_c"
+msgstr ""
+
+#: observer/models.py:249
+msgid "description_actor_desc_c"
+msgstr ""
+
+#: observer/models.py:250
+msgid "question_actor_desc_f"
+msgstr ""
+
+#: observer/models.py:250
+msgid "description_actor_desc_f"
+msgstr ""
+
+#: observer/models.py:251
+msgid "question_arg_tree"
+msgstr "Y a-t-il un arbre du debat ?"
+
+#: observer/models.py:251
+msgid "description_arg_tree"
+msgstr ""
+"Ce diagramme vise à montrer comment aucun discours circulant dans une "
+"controverse ne constitue un énoncé isolé et autosuffisant. Dans une "
+"controverse, les discours sont toujours des actions et leur ‘agency’ "
+"s’exprime par le fait de appuyer et d’opposer d’autres discours. L’arbre des "
+"actions discursives déploie le travail de construction (et destruction) des "
+"débats socio-techniques en montrant quels énoncés construisent (ou "
+"détruisent) quels discours. (TV)"
+
+#: observer/models.py:252
+msgid "question_animation"
+msgstr ""
+
+#: observer/models.py:252
+msgid "description_animation"
+msgstr ""
+
+#: observer/models.py:253
+msgid "question_comic"
+msgstr ""
+
+#: observer/models.py:253
+msgid "description_comic"
+msgstr ""
+
+#: observer/models.py:254
+msgid "question_geolocation"
+msgstr ""
+
+#: observer/models.py:254
+msgid "description_geolocation"
+msgstr ""
+
+#: observer/models.py:255
+msgid "question_chronology"
+msgstr ""
+
+#: observer/models.py:255
+msgid "description_chronology"
+msgstr ""
+
+#: observer/models.py:256
+msgid "question_cosmography"
+msgstr ""
+
+#: observer/models.py:256
+msgid "description_cosmography"
+msgstr ""
+
+#: observer/models.py:257
+msgid "question_diagram"
+msgstr ""
+
+#: observer/models.py:257
+msgid "description_diagram"
+msgstr ""
+
+#: observer/models.py:258
+#, fuzzy
+msgid "question_actor_diag"
+msgstr "Y a-t-il un arbre du debat ?"
+
+#: observer/models.py:258
+#, fuzzy
+msgid "description_actor_diag"
+msgstr ""
+"Ce diagramme vise à montrer comment aucun discours circulant dans une "
+"controverse ne constitue un énoncé isolé et autosuffisant. Dans une "
+"controverse, les discours sont toujours des actions et leur ‘agency’ "
+"s’exprime par le fait de appuyer et d’opposer d’autres discours. L’arbre des "
+"actions discursives déploie le travail de construction (et destruction) des "
+"débats socio-techniques en montrant quels énoncés construisent (ou "
+"détruisent) quels discours. (TV)"
+
+#: observer/models.py:259
+msgid "question_glossary"
+msgstr ""
+
+#: observer/models.py:259
+msgid "description_glossary"
+msgstr ""
+
+#: observer/models.py:260
+msgid "question_viz_analogy"
+msgstr ""
+
+#: observer/models.py:260
+msgid "description_viz_analogy"
+msgstr ""
+
+#: observer/models.py:261
+msgid "question_tagcloud"
+msgstr ""
+
+#: observer/models.py:261
+msgid "description_tagcloud"
+msgstr ""
+
+#: observer/models.py:262
+msgid "question_comments"
+msgstr ""
+
+#: observer/models.py:262
+msgid "description_comments"
+msgstr ""
+
+#: observer/models.py:263
+msgid "question_webtool"
+msgstr ""
+
+#: observer/models.py:263
+msgid "description_webtool"
+msgstr ""
+
+#: observer/models.py:264
+#, fuzzy
+msgid "question_ext_vid_cont"
+msgstr "Y a-t-il un arbre du debat ?"
+
+#: observer/models.py:264
+#, fuzzy
+msgid "description_ext_vid_cont"
+msgstr ""
+"Ce diagramme vise à montrer comment aucun discours circulant dans une "
+"controverse ne constitue un énoncé isolé et autosuffisant. Dans une "
+"controverse, les discours sont toujours des actions et leur ‘agency’ "
+"s’exprime par le fait de appuyer et d’opposer d’autres discours. L’arbre des "
+"actions discursives déploie le travail de construction (et destruction) des "
+"débats socio-techniques en montrant quels énoncés construisent (ou "
+"détruisent) quels discours. (TV)"
+
+#: observer/models.py:271
+msgid "question_disagreement"
+msgstr ""
+
+#: observer/models.py:271
+msgid "description_disagreement"
+msgstr ""
+
+#: observer/models.py:312 observer/models.py:320 observer/models.py:328
+#: observer/models.py:336
 #, python-format
 msgid "question_%s"
 msgstr ""

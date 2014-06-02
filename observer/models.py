@@ -38,8 +38,10 @@ class Property(models.Model):
   ARG_TREE        = 'arg_tree'
   COSMOGRAPHY     = 'cosmography'
   DIAGRAM         = 'diagram'
+  EXT_VIDEO_CONTENT     = 'ext_vid_cont'
   SC_LIT          = 'sc_lit'
   SCIENTOMETRICS  = 'scientometri'
+  MEDIA_ANALYSIS  = 'media_analys'
   METHODOLOGY     = 'tmethodology'
   QUAL_DA         = 'qual_da'
   SOURCES_DETAILS = 'sources_deta'
@@ -65,6 +67,7 @@ class Property(models.Model):
   METH_DETAILS_NEWSPAPERS = 'details_news'
   METH_DETAILS_SOCIALNETW = 'details_soci'
   METH_DETAILS_SITEVISIT  = 'details_site'
+  METH_DETAILS_SURVEYS    = 'details_surv'
 
   TYPE_METH_DETAILS_CHOICES = ( # to be used as multiple choices inside the observer.forms.ProfileForm)
     (METH_DETAILS_DATASETS,   _('details_data')),
@@ -72,6 +75,7 @@ class Property(models.Model):
     (METH_DETAILS_NEWSPAPERS, _('details_news')),
     (METH_DETAILS_SOCIALNETW, _('details_soci')),
     (METH_DETAILS_SITEVISIT,  _('details_site')),
+    (METH_DETAILS_SURVEYS,    _('details_surv')),
   )
   
   INTERVIEW_VIDEO      = 'interview_vi'
@@ -91,8 +95,10 @@ class Property(models.Model):
     (ARG_TREE,        _('arg_tree')),
     (COSMOGRAPHY,     _('cosmography')),
     (DIAGRAM,         _('diagram')),
+    (EXT_VIDEO_CONTENT, _('ext_vid_cont')),
     (SC_LIT,          _('sc_lit')),
     (SCIENTOMETRICS,  _('scientometri')),
+    (MEDIA_ANALYSIS,  _('media_analys')),
     (METHODOLOGY,     _('tmethodology')),
     (QUAL_DA,         _('qual_da')),
     (SOURCES_DETAILS, _('sources_deta')),
@@ -149,9 +155,9 @@ class Device(models.Model):
   EXPLORE_SPECIAL = 'explore_special'
   MEDIA_ANALYSIS = 'media_analysis'
   DISAGREEMENT = 'disagreement'
-  EXT_CONTENT = 'ext_content'
   GEOLOCATION = 'geolocation'
   WEBTOOL = 'webtool'
+  SCIENTOMETRICS = 'scientometri'
   SNA = 'sna'
   TAGCLOUD = 'tagcloud'
   TEXT_ANALYSIS = 'text_analysis'
@@ -165,13 +171,14 @@ class Device(models.Model):
     (EXPLORE_SPECIAL, _('Specialised Search and Exploration Tools')),
     (MEDIA_ANALYSIS, _('Media and public opinion analysis')),
     (DISAGREEMENT, _('Presentation of the disagreement')),
-    (EXT_CONTENT, _('External content')),
     (GEOLOCATION, _('Geographical maps')),
     (WEBTOOL, _('Web-site building tools')),
     (SNA, _('Social Network Analysis Tools')),
     (TAGCLOUD, _('Tag clouds')),
     (TEXT_ANALYSIS, _('Textual analysis')),
   )
+
+  TYPE_CHOICES_DICT = dict(TYPE_CHOICES)
 
   working_document = models.ForeignKey(WorkingDocument, related_name="supports")
   document = models.ForeignKey(Document, related_name="devices") # directly through a document
@@ -212,63 +219,53 @@ class DocumentProfile(models.Model):
   STATISTICS    = 'statistics'
 
   QUESTIONS = ( # ex Property phase choices... keep them before changing their model.
-    (ANALYSIS, (
-      (Property.ACTOR_DESC_TABLE, _('question_actor_desc_t'), _('description_actor_desc_t')),
-      (Property.ACTOR_DESC_CLASSIF, _('question_actor_desc_c'), _('description_actor_desc_c')),
-      (Property.ACTOR_DESC_FLAT_LIST, _('question_actor_desc_f'), _('description_actor_desc_f')),
-      (Property.ARG_TREE, _('question_arg_tree'), _('description_arg_tree')),
-      (Property.COSMOGRAPHY, _('question_cosmography'), _('description_cosmography')),
-      (Property.DIAGRAM, _('question_diagram'), _('description_diagram')),
-      (Property.SC_LIT, _('question_sc_lit'), _('description_sc_lit')),
-      (Property.SCIENTOMETRICS, _('question_scientometri'), _('description_scientometri')),
-    )),
-    #(EXPLORATION, (
-    #
-    #)),
-    (METHODOLOGY, (
+    (SOURCES, (
+      (Property.SOURCES_DETAILS, _('question_sources_deta'), _('description_sources_deta')),
       (Property.METH_DETAILS_DATASETS   , _('question_details_data'), _('description_details_data')),
       (Property.METH_DETAILS_INTERVIEWS , _('question_details_inte'), _('description_details_inte')),
       (Property.METH_DETAILS_NEWSPAPERS , _('question_details_news'), _('description_details_news')),
       (Property.METH_DETAILS_SOCIALNETW , _('question_details_soci'), _('description_details_soci')),
       (Property.METH_DETAILS_SITEVISIT  , _('question_details_site'), _('description_details_site')),
-      (Property.METHODOLOGY, _('question_tmethodology'), _('description_tmethodology')),
-      (Property.QUAL_DA, _('question_qual_da'), _('description_qual_da')),
-      (Property.SOURCES_DETAILS, _('question_sources_deta'), _('description_sources_deta')),
-    )),
-    (PARTICIPATION, (
-      (Property.COMMENTS, _('question_comments'), _('description_comments')),
-    )),
-    (PRESENTATION, (
-      (Property.ANIMATION, _('question_animation'), _('description_animation')),
-      (Property.COMIC, _('question_comic'), _('description_comic')),
-      (Property.GLOSSARY, _('question_glossary'), _('description_glossary')),
-      (Property.VIZ_ANALOGY, _('question_viz_analogy'), _('description_viz_analogy')),
-    )),
-    (SOURCES, (
+      (Property.METH_DETAILS_SURVEYS  , _('question_details_surv'), _('description_details_surv')),
       (Property.INTERVIEW_TRANSCRIPT, _('question_interview_tr'), _('description_interview_tr')),
       (Property.INTERVIEW_VIDEO, _('question_interview_vi'), _('description_interview_vi')),
       (Property.INTERVIEW_AUDIO, _('question_interview_au'), _('description_interview_au')),
       (Property.INTERVIEW_NOTE, _('question_interview_no'), _('description_interview_no')),
     )),  
-    (STATISTICS, (
+    (METHODOLOGY, (
+      (Property.SC_LIT, _('question_sc_lit'), _('description_sc_lit')),
+      (Property.QUAL_DA, _('question_qual_da'), _('description_qual_da')),
+      (Device.SNA, _('question_sna'), _('description_sna')),
+      (Device.DATABASE, _('question_database'), _('description_database')),
+      (Device.CRAWL, _('question_crawl'), _('description_crawl')),
+      (Device.SCIENTOMETRICS, _('question_scientometri'), _('description_scientometri')),
+      (Device.ANALYSIS_SPECIAL, _('question_analysis_spe'), _('description_analysis_spe')),
+      (Device.EXPLORE_SPECIAL, _('question_explore_special'), _('description_explore_special')),
+      (Device.TEXT_ANALYSIS, _('question_text_analysis'), _('description_text_analysis')),
+      (Property.MEDIA_ANALYSIS, _('question_media_analysis'), _('description_media_analysis')),
       (Property.STATS, _('question_stats'), _('description_stats')),
     )),
-  )
-
-  QUESTION_DEVICES = (
-    (Device.DATABASE, _('question_database'), _('description_database')),
-    (Device.ANALYSIS_SPECIAL, _('question_analysis_spe'), _('description_analysis_spe')),
-    (Device.CHRONOLOGY, _('question_chronology'), _('description_chronology')),
-    (Device.CRAWL, _('question_crawl'), _('description_crawl')),
-    (Device.EXPLORE_SPECIAL, _('question_explore_special'), _('description_explore_special')),
-    (Device.MEDIA_ANALYSIS, _('question_media_analysis'), _('description_media_analysis')),
-    (Device.DISAGREEMENT, _('question_disagreement'), _('description_disagreement')),
-    (Device.EXT_CONTENT, _('question_ext_content'), _('description_ext_content')),
-    (Device.GEOLOCATION, _('question_geolocation'), _('description_geolocation')),
-    (Device.WEBTOOL, _('question_webtool'), _('description_webtool')),
-    (Device.SNA, _('question_sna'), _('description_sna')),
-    (Device.TAGCLOUD, _('question_tagcloud'), _('description_tagcloud')),
-    (Device.TEXT_ANALYSIS, _('question_text_analysis'), _('description_text_analysis')),
+    (PRESENTATION, (
+      (Property.METHODOLOGY, _('question_tmethodology'), _('description_tmethodology')),
+      (Property.ACTOR_DESC_TABLE, _('question_actor_desc_t'), _('description_actor_desc_t')),
+      (Property.ACTOR_DESC_CLASSIF, _('question_actor_desc_c'), _('description_actor_desc_c')),
+      (Property.ACTOR_DESC_FLAT_LIST, _('question_actor_desc_f'), _('description_actor_desc_f')),
+      (Property.ARG_TREE, _('question_arg_tree'), _('description_arg_tree')),
+      (Property.ANIMATION, _('question_animation'), _('description_animation')),
+      (Property.COMIC, _('question_comic'), _('description_comic')),
+      (Device.GEOLOCATION, _('question_geolocation'), _('description_geolocation')),
+      (Device.CHRONOLOGY, _('question_chronology'), _('description_chronology')),
+      (Property.COSMOGRAPHY, _('question_cosmography'), _('description_cosmography')),
+      (Property.DIAGRAM, _('question_diagram'), _('description_diagram')),
+      (Device.ACTOR_DIAG, _('question_actor_diag'), _('description_actor_diag')),
+      (Property.GLOSSARY, _('question_glossary'), _('description_glossary')),
+      (Property.VIZ_ANALOGY, _('question_viz_analogy'), _('description_viz_analogy')),
+      (Device.TAGCLOUD, _('question_tagcloud'), _('description_tagcloud')),
+      (Property.COMMENTS, _('question_comments'), _('description_comments')),
+      (Device.WEBTOOL, _('question_webtool'), _('description_webtool')),
+      (Property.EXT_VIDEO_CONTENT, _('question_ext_vid_cont'), _('description_ext_vid_cont')),
+      (Device.DISAGREEMENT, _('question_disagreement'), _('description_disagreement')),
+    )),
   )
 
   document = models.ForeignKey(Document, related_name="profile", unique=True)
@@ -306,8 +303,15 @@ class DocumentProfile(models.Model):
     for q in DocumentProfile.QUESTIONS:
       d['questions'].append({
         'section': q[0],
-        'label': _(q[0]),
-        'properties': [{'name':p[0], 'label': _(p[0]), 'question': _('question_%s' % p[0]), 'description': p[2], 'value': p[0] in properties} for p in q[1]]
+        'label': _(q[0]), 
+        'properties': [{
+          'name':p[0],
+          'label': _(p[0]),
+          'question': _('question_%s' % p[0]),
+          'description': p[2],
+          'value': p[0] in properties,
+          'is_device': p[0] in Device.TYPE_CHOICES_DICT,
+        } for p in q[1]]
       })
 
     for t in Property.TYPE_CHOICES:
