@@ -221,4 +221,4 @@ EMAIL_PORT = local_settings.EMAIL_PORT
 # ONly for nginx servers. Otherwise it must be false
 ENABLE_XACCEL = local_settings.ENABLE_XACCEL
 
-APPEND_SLASH=False
+APPEND_SLASH=True

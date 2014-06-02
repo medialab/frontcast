@@ -33,7 +33,7 @@ class Property(models.Model):
     (STATISTICS,    _('statistics')),
   )
   # 3. property type. to be coupled with the question!
-  
+  ACTOR_DESC      = 'actor_desc'
   ACTOR_TABLE     = 'actor_table'
   ARG_TREE        = 'arg_tree'
   COSMOGRAPHY     = 'cosmography'
@@ -49,6 +49,16 @@ class Property(models.Model):
   GLOSSARY        = 'glossary'
   VIZ_ANALOGY     = 'viz_analogy'
   STATS           = 'stats'
+
+  ACTOR_DESC_TABLE      = 'actor_desc_t'
+  ACTOR_DESC_CLASSIF    = 'actor_desc_c'
+  ACTOR_DESC_FLAT_LIST  = 'actor_desc_f'
+
+  TYPE_ACTOR_DESC_CHOICES = ( # to be used as multiple choices inside the observer.forms.ProfileForm)
+    (ACTOR_DESC_TABLE,   _('actor argument tables')),
+    (ACTOR_DESC_CLASSIF, _('actor classification')),
+    (ACTOR_DESC_FLAT_LIST, _('actor flat list')),
+  )
 
   METH_DETAILS_DATASETS   = 'details_data'
   METH_DETAILS_INTERVIEWS = 'details_inte'
@@ -94,7 +104,7 @@ class Property(models.Model):
     (STATS,           _('Statistics')),
   )
 
-  type     = models.CharField(max_length=12, choices=TYPE_CHOICES + TYPE_METH_DETAILS_CHOICES + TYPE_INTERVIEW_CHOICES, null=True, blank=True) # e.g. 'author' or 'institution'
+  type     = models.CharField(max_length=12, choices=TYPE_CHOICES + TYPE_METH_DETAILS_CHOICES + TYPE_INTERVIEW_CHOICES + TYPE_ACTOR_DESC_CHOICES, null=True, blank=True) # e.g. 'author' or 'institution'
   phase    = models.CharField(max_length=12, choices=PHASE_CHOICES, null=True, blank=True) 
   slug     = models.SlugField(max_length=128, unique=True) # a simple way to access integrated stuffs
 
@@ -193,6 +203,74 @@ class DocumentProfile(models.Model):
   document are given as foreign key and they share a number of properties.
   
   '''
+  ANALYSIS      = 'analysis'
+  EXPLORATION   = 'exploration'
+  METHODOLOGY   = 'methodology'
+  PARTICIPATION = 'participatio'
+  PRESENTATION  = 'presentation'
+  SOURCES       = 'sources'
+  STATISTICS    = 'statistics'
+
+  QUESTIONS = ( # ex Property phase choices... keep them before changing their model.
+    (ANALYSIS, (
+      (Property.ACTOR_DESC_TABLE, _('question_actor_desc_t'), _('description_actor_desc_t')),
+      (Property.ACTOR_DESC_CLASSIF, _('question_actor_desc_c'), _('description_actor_desc_c')),
+      (Property.ACTOR_DESC_FLAT_LIST, _('question_actor_desc_f'), _('description_actor_desc_f')),
+      (Property.ARG_TREE, _('question_arg_tree'), _('description_arg_tree')),
+      (Property.COSMOGRAPHY, _('question_cosmography'), _('description_cosmography')),
+      (Property.DIAGRAM, _('question_diagram'), _('description_diagram')),
+      (Property.SC_LIT, _('question_sc_lit'), _('description_sc_lit')),
+      (Property.SCIENTOMETRICS, _('question_scientometri'), _('description_scientometri')),
+    )),
+    #(EXPLORATION, (
+    #
+    #)),
+    (METHODOLOGY, (
+      (Property.METH_DETAILS_DATASETS   , _('question_details_data'), _('description_details_data')),
+      (Property.METH_DETAILS_INTERVIEWS , _('question_details_inte'), _('description_details_inte')),
+      (Property.METH_DETAILS_NEWSPAPERS , _('question_details_news'), _('description_details_news')),
+      (Property.METH_DETAILS_SOCIALNETW , _('question_details_soci'), _('description_details_soci')),
+      (Property.METH_DETAILS_SITEVISIT  , _('question_details_site'), _('description_details_site')),
+      (Property.METHODOLOGY, _('question_tmethodology'), _('description_tmethodology')),
+      (Property.QUAL_DA, _('question_qual_da'), _('description_qual_da')),
+      (Property.SOURCES_DETAILS, _('question_sources_deta'), _('description_sources_deta')),
+    )),
+    (PARTICIPATION, (
+      (Property.COMMENTS, _('question_comments'), _('description_comments')),
+    )),
+    (PRESENTATION, (
+      (Property.ANIMATION, _('question_animation'), _('description_animation')),
+      (Property.COMIC, _('question_comic'), _('description_comic')),
+      (Property.GLOSSARY, _('question_glossary'), _('description_glossary')),
+      (Property.VIZ_ANALOGY, _('question_viz_analogy'), _('description_viz_analogy')),
+    )),
+    (SOURCES, (
+      (Property.INTERVIEW_TRANSCRIPT, _('question_interview_tr'), _('description_interview_tr')),
+      (Property.INTERVIEW_VIDEO, _('question_interview_vi'), _('description_interview_vi')),
+      (Property.INTERVIEW_AUDIO, _('question_interview_au'), _('description_interview_au')),
+      (Property.INTERVIEW_NOTE, _('question_interview_no'), _('description_interview_no')),
+    )),  
+    (STATISTICS, (
+      (Property.STATS, _('question_stats'), _('description_stats')),
+    )),
+  )
+
+  QUESTION_DEVICES = (
+    (Device.DATABASE, _('question_database'), _('description_database')),
+    (Device.ANALYSIS_SPECIAL, _('question_analysis_spe'), _('description_analysis_spe')),
+    (Device.CHRONOLOGY, _('question_chronology'), _('description_chronology')),
+    (Device.CRAWL, _('question_crawl'), _('description_crawl')),
+    (Device.EXPLORE_SPECIAL, _('question_explore_special'), _('description_explore_special')),
+    (Device.MEDIA_ANALYSIS, _('question_media_analysis'), _('description_media_analysis')),
+    (Device.DISAGREEMENT, _('question_disagreement'), _('description_disagreement')),
+    (Device.EXT_CONTENT, _('question_ext_content'), _('description_ext_content')),
+    (Device.GEOLOCATION, _('question_geolocation'), _('description_geolocation')),
+    (Device.WEBTOOL, _('question_webtool'), _('description_webtool')),
+    (Device.SNA, _('question_sna'), _('description_sna')),
+    (Device.TAGCLOUD, _('question_tagcloud'), _('description_tagcloud')),
+    (Device.TEXT_ANALYSIS, _('question_text_analysis'), _('description_text_analysis')),
+  )
+
   document = models.ForeignKey(Document, related_name="profile", unique=True)
   owner = models.ForeignKey(User) # who has compiled it
 
@@ -215,6 +293,7 @@ class DocumentProfile(models.Model):
       'owner': self.owner.username
     }
 
+    d['questions'] = []
     d['properties'] = []
     d['properties_interviews'] = []
     d['properties_meth_detail'] = []
@@ -223,6 +302,13 @@ class DocumentProfile(models.Model):
     properties = [p.type for p in self.properties.all()]
 
     #REPETITA IUVANT :D
+    # start following questions
+    for q in DocumentProfile.QUESTIONS:
+      d['questions'].append({
+        'section': q[0],
+        'properties': [{'name':p[0], 'question': p[1], 'description': p[2], 'value': p[0] in properties} for p in q[1]]
+      })
+
     for t in Property.TYPE_CHOICES:
       d['properties'].append({
         'label':_(t[1]),

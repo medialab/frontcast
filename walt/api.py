@@ -161,7 +161,17 @@ def documents_filters(request):
           'expect': 'text'
         }
       ],
-    }
+    },
+    {
+      'field':'profile',
+      'options': [
+        {
+          'label' : 'has_property',
+          'value' : 'profile__properties__type__icontains',
+          'expect': 'text'
+        },
+      ],
+    },
   ]
   epoxy.meta('manager',querymanager)
   queryset = get_available_documents(request).filter(**epoxy.filters)

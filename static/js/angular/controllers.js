@@ -128,9 +128,10 @@ angular.module('walt.controllers', [])
     }
     
     $scope.search = function() {
-      console.log("%c search ", 'color:white; background-color:#383838', $scope.query);
+      console.log("%c search ", 'color:white; background-color:#383838', '"', $scope.query, '" at', $scope.viewname);
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;
+
       $location.search({
         'search': $scope.query
       });
@@ -441,7 +442,7 @@ angular.module('walt.controllers', [])
       if($scope.item.id) {
         console.log('params', params);
         DocumentFactory.save({id: $scope.item.id}, params, function(data) {
-          //$location.path("/doc/" + $scope.item.id);
+          $location.path("/doc/" + $scope.item.id + "/profile");
         });
       } else {
         DocumentFactory.save(params, function(data) {
@@ -878,6 +879,7 @@ angular.module('walt.controllers', [])
 
     $scope.search = function(){
       $rootScope.query = $scope.query;
+      console.log($scope.viewname);
       $location.search('search', $rootScope.query);
     }
   }])

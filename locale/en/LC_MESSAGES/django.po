@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-15 15:50+0200\n"
+"POT-Creation-Date: 2014-06-02 11:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,159 +30,511 @@ msgstr ""
 msgid "invalid credentials"
 msgstr ""
 
+#: observer/models.py:27
+msgid "analysis"
+msgstr ""
+
+#: observer/models.py:28
+msgid "exploration"
+msgstr ""
+
+#: observer/models.py:29
+msgid "methodology"
+msgstr ""
+
+#: observer/models.py:30
+msgid "participation"
+msgstr ""
+
+#: observer/models.py:31
+msgid "presentation"
+msgstr ""
+
+#: observer/models.py:32
+msgid "sources"
+msgstr ""
+
+#: observer/models.py:33
+msgid "statistics"
+msgstr ""
+
+#: observer/models.py:58
+msgid "actor argument tables"
+msgstr ""
+
+#: observer/models.py:59
+msgid "actor classification"
+msgstr ""
+
 #: observer/models.py:60
+msgid "actor flat list"
+msgstr ""
+
+#: observer/models.py:70
 msgid "they detail datasets"
 msgstr ""
 
-#: observer/models.py:61
+#: observer/models.py:71
 msgid "they detail interview"
 msgstr ""
 
-#: observer/models.py:62
+#: observer/models.py:72
 msgid "they detail newspapers"
 msgstr ""
 
-#: observer/models.py:63
+#: observer/models.py:73
 msgid "they detail social Network"
 msgstr ""
 
-#: observer/models.py:64
+#: observer/models.py:74
 msgid "they detail site visit"
 msgstr ""
 
-#: observer/models.py:73
+#: observer/models.py:83
 msgid "video interview"
 msgstr ""
 
-#: observer/models.py:74
+#: observer/models.py:84
 msgid "audio interview"
 msgstr ""
 
-#: observer/models.py:75
+#: observer/models.py:85
 msgid "interview transcripted"
 msgstr ""
 
-#: observer/models.py:76
+#: observer/models.py:86
 msgid "interview detailed notes"
 msgstr ""
 
-#: observer/models.py:80
+#: observer/models.py:90
 msgid "actor table"
 msgstr ""
 
-#: observer/models.py:81
+#: observer/models.py:91
 msgid "Argument Trees"
 msgstr ""
 
-#: observer/models.py:82
+#: observer/models.py:92
 msgid "cosmography"
 msgstr ""
 
-#: observer/models.py:83
+#: observer/models.py:93
 msgid "Schematic process diagrams"
 msgstr ""
 
-#: observer/models.py:84
+#: observer/models.py:94
 msgid "Analysis of scientific literature"
 msgstr "Analysis of scientific literature"
 
-#: observer/models.py:85
+#: observer/models.py:95
 msgid "Scientometric maps"
 msgstr "Scientometric maps"
 
-#: observer/models.py:86
+#: observer/models.py:96
 msgid "Methodology section"
 msgstr ""
 
-#: observer/models.py:87
+#: observer/models.py:97
 msgid "Qualitative data analysis"
 msgstr ""
 
-#: observer/models.py:88
+#: observer/models.py:98
 msgid "Index or list of sources"
 msgstr ""
 
-#: observer/models.py:89
+#: observer/models.py:99
 msgid "Debate space"
 msgstr ""
 
-#: observer/models.py:90
+#: observer/models.py:100
 msgid "animation"
 msgstr ""
 
-#: observer/models.py:91
+#: observer/models.py:101
 msgid "Comics and Vignettes"
 msgstr ""
 
-#: observer/models.py:92
+#: observer/models.py:102
 msgid "Glossary"
 msgstr ""
 
-#: observer/models.py:93
+#: observer/models.py:103
 msgid "Visual Analogies"
 msgstr ""
 
-#: observer/models.py:94
+#: observer/models.py:104
 msgid "Statistics"
 msgstr ""
 
-#: observer/models.py:150
+#: observer/models.py:160
 msgid "Databases"
 msgstr ""
 
-#: observer/models.py:151
+#: observer/models.py:161
 msgid "Actor diagrams"
 msgstr ""
 
-#: observer/models.py:152
+#: observer/models.py:162
 msgid "Specialised analysis Tools"
 msgstr ""
 
-#: observer/models.py:153
+#: observer/models.py:163
 msgid "Controversy Timeline"
 msgstr ""
 
-#: observer/models.py:154
+#: observer/models.py:164
 msgid "Web crawling maps"
 msgstr ""
 
-#: observer/models.py:155
+#: observer/models.py:165
 msgid "Specialised Search and Exploration Tools"
 msgstr ""
 
-#: observer/models.py:156
+#: observer/models.py:166
 msgid "Media and public opinion analysis"
 msgstr ""
 
-#: observer/models.py:157
+#: observer/models.py:167
 msgid "Presentation of the disagreement"
 msgstr ""
 
-#: observer/models.py:158
+#: observer/models.py:168
 msgid "External content"
 msgstr ""
 
-#: observer/models.py:159
+#: observer/models.py:169
 msgid "Geographical maps"
 msgstr ""
 
-#: observer/models.py:160
+#: observer/models.py:170
 msgid "Web-site building tools"
 msgstr ""
 
-#: observer/models.py:161
+#: observer/models.py:171
 msgid "Social Network Analysis Tools"
 msgstr ""
 
-#: observer/models.py:162
+#: observer/models.py:172
 msgid "Tag clouds"
 msgstr ""
 
-#: observer/models.py:163
+#: observer/models.py:173
 msgid "Textual analysis"
 msgstr ""
 
+#: observer/models.py:216
+msgid "question_actor_desc_t"
+msgstr ""
+
+#: observer/models.py:216
+msgid "description_actor_desc_t"
+msgstr ""
+
+#: observer/models.py:217
+msgid "question_actor_desc_c"
+msgstr ""
+
+#: observer/models.py:217
+msgid "description_actor_desc_c"
+msgstr ""
+
+#: observer/models.py:218
+msgid "question_actor_desc_f"
+msgstr ""
+
+#: observer/models.py:218
+msgid "description_actor_desc_f"
+msgstr ""
+
+#: observer/models.py:219
+msgid "question_arg_tree"
+msgstr ""
+
+#: observer/models.py:219
+msgid "description_arg_tree"
+msgstr ""
+
+#: observer/models.py:220
+msgid "question_cosmography"
+msgstr ""
+
+#: observer/models.py:220
+msgid "description_cosmography"
+msgstr ""
+
+#: observer/models.py:221
+msgid "question_diagram"
+msgstr ""
+
+#: observer/models.py:221
+msgid "description_diagram"
+msgstr ""
+
+#: observer/models.py:222
+msgid "question_sc_lit"
+msgstr ""
+
+#: observer/models.py:222
+msgid "description_sc_lit"
+msgstr ""
+
+#: observer/models.py:223
+msgid "question_scientometri"
+msgstr ""
+
+#: observer/models.py:223
+msgid "description_scientometri"
+msgstr ""
+
 #: observer/models.py:229
+msgid "question_details_data"
+msgstr ""
+
+#: observer/models.py:229
+msgid "description_details_data"
+msgstr ""
+
+#: observer/models.py:230
+msgid "question_details_inte"
+msgstr ""
+
+#: observer/models.py:230
+msgid "description_details_inte"
+msgstr ""
+
+#: observer/models.py:231
+msgid "question_details_news"
+msgstr ""
+
+#: observer/models.py:231
+msgid "description_details_news"
+msgstr ""
+
+#: observer/models.py:232
+msgid "question_details_soci"
+msgstr ""
+
+#: observer/models.py:232
+msgid "description_details_soci"
+msgstr ""
+
+#: observer/models.py:233
+msgid "question_details_site"
+msgstr ""
+
+#: observer/models.py:233
+msgid "description_details_site"
+msgstr ""
+
+#: observer/models.py:234
+msgid "question_tmethodology"
+msgstr ""
+
+#: observer/models.py:234
+msgid "description_tmethodology"
+msgstr ""
+
+#: observer/models.py:235
+msgid "question_qual_da"
+msgstr ""
+
+#: observer/models.py:235
+msgid "description_qual_da"
+msgstr ""
+
+#: observer/models.py:236
+msgid "question_sources_deta"
+msgstr ""
+
+#: observer/models.py:236
+msgid "description_sources_deta"
+msgstr ""
+
+#: observer/models.py:239
+msgid "question_comments"
+msgstr ""
+
+#: observer/models.py:239
+msgid "description_comments"
+msgstr ""
+
+#: observer/models.py:242
+msgid "question_animation"
+msgstr ""
+
+#: observer/models.py:242
+msgid "description_animation"
+msgstr ""
+
+#: observer/models.py:243
+msgid "question_comic"
+msgstr ""
+
+#: observer/models.py:243
+msgid "description_comic"
+msgstr ""
+
+#: observer/models.py:244
+msgid "question_glossary"
+msgstr ""
+
+#: observer/models.py:244
+msgid "description_glossary"
+msgstr ""
+
+#: observer/models.py:245
+msgid "question_viz_analogy"
+msgstr ""
+
+#: observer/models.py:245
+msgid "description_viz_analogy"
+msgstr ""
+
+#: observer/models.py:248
+msgid "question_interview_tr"
+msgstr ""
+
+#: observer/models.py:248
+msgid "description_interview_tr"
+msgstr ""
+
+#: observer/models.py:249
+msgid "question_interview_vi"
+msgstr ""
+
+#: observer/models.py:249
+msgid "description_interview_vi"
+msgstr ""
+
+#: observer/models.py:250
+msgid "question_interview_au"
+msgstr ""
+
+#: observer/models.py:250
+msgid "description_interview_au"
+msgstr ""
+
+#: observer/models.py:251
+msgid "question_interview_no"
+msgstr ""
+
+#: observer/models.py:251
+msgid "description_interview_no"
+msgstr ""
+
+#: observer/models.py:254
+msgid "question_stats"
+msgstr ""
+
+#: observer/models.py:254
+msgid "description_stats"
+msgstr ""
+
+#: observer/models.py:259
+msgid "question_database"
+msgstr ""
+
+#: observer/models.py:259
+msgid "description_database"
+msgstr ""
+
+#: observer/models.py:260
+msgid "question_analysis_spe"
+msgstr ""
+
+#: observer/models.py:260
+msgid "description_analysis_spe"
+msgstr ""
+
+#: observer/models.py:261
+msgid "question_chronology"
+msgstr ""
+
+#: observer/models.py:261
+msgid "description_chronology"
+msgstr ""
+
+#: observer/models.py:262
+msgid "question_crawl"
+msgstr ""
+
+#: observer/models.py:262
+msgid "description_crawl"
+msgstr ""
+
+#: observer/models.py:263
+msgid "question_explore_special"
+msgstr ""
+
+#: observer/models.py:263
+msgid "description_explore_special"
+msgstr ""
+
+#: observer/models.py:264
+msgid "question_media_analysis"
+msgstr ""
+
+#: observer/models.py:264
+msgid "description_media_analysis"
+msgstr ""
+
+#: observer/models.py:265
+msgid "question_disagreement"
+msgstr ""
+
+#: observer/models.py:265
+msgid "description_disagreement"
+msgstr ""
+
+#: observer/models.py:266
+msgid "question_ext_content"
+msgstr ""
+
+#: observer/models.py:266
+msgid "description_ext_content"
+msgstr ""
+
+#: observer/models.py:267
+msgid "question_geolocation"
+msgstr ""
+
+#: observer/models.py:267
+msgid "description_geolocation"
+msgstr ""
+
+#: observer/models.py:268
+msgid "question_webtool"
+msgstr ""
+
+#: observer/models.py:268
+msgid "description_webtool"
+msgstr ""
+
+#: observer/models.py:269
+msgid "question_sna"
+msgstr ""
+
+#: observer/models.py:269
+msgid "description_sna"
+msgstr ""
+
+#: observer/models.py:270
+msgid "question_tagcloud"
+msgstr ""
+
+#: observer/models.py:270
+msgid "description_tagcloud"
+msgstr ""
+
+#: observer/models.py:271
+msgid "question_text_analysis"
+msgstr ""
+
+#: observer/models.py:271
+msgid "description_text_analysis"
+msgstr ""
+
+#: observer/models.py:317 observer/models.py:325 observer/models.py:333
 #, python-format
 msgid "question_%s"
 msgstr ""
@@ -251,70 +603,14 @@ msgstr ""
 msgid "search"
 msgstr ""
 
-#: templates/observer/index.html:9 templates/observer/index.html.py:247
+#: templates/observer/index.html:9 templates/observer/index.html.py:245
 msgid "The Frontcast Observer"
 msgstr "The FORCCAST Observer"
-
-#: templates/observer/index.html:227
-msgid "change"
-msgstr ""
 
 #: templates/walt/tasks/middle.html:8 templates/walt_bkp/tasks/middle.html:8
 msgid "deliver task"
 msgstr ""
 
-#: walt/forms.py:24 walt/forms.py:29
+#: walt/forms.py:25 walt/forms.py:30
 msgid "tags"
 msgstr ""
-
-
-
-
-
-
-
-
-#~ msgid "question_actor_table"
-#~ msgstr ""
-
-#~ msgid "question_arg_tree"
-#~ msgstr ""
-
-#~ msgid "question_cosmography"
-#~ msgstr ""
-
-#~ msgid "question_diagram"
-#~ msgstr ""
-
-#~ msgid "question_sc_lit"
-#~ msgstr ""
-
-#~ msgid "question_scientometri"
-#~ msgstr ""
-
-#~ msgid "question_tmethodology"
-#~ msgstr ""
-
-#~ msgid "question_qual_da"
-#~ msgstr ""
-
-#~ msgid "question_sources_deta"
-#~ msgstr ""
-
-#~ msgid "question_comments"
-#~ msgstr ""
-
-#~ msgid "question_animation"
-#~ msgstr ""
-
-#~ msgid "question_comic"
-#~ msgstr ""
-
-#~ msgid "question_glossary"
-#~ msgstr ""
-
-#~ msgid "question_viz_analogy"
-#~ msgstr ""
-
-#~ msgid "question_stats"
-#~ msgstr ""
