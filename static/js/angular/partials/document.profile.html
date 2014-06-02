@@ -30,29 +30,14 @@
       
     </div>
     <div class="pure-u-1-4">
-      
-      
 
-      <h4 ng-if="profile.properties_interviews.length">presence of interviews</h4>
-        
-      <div class="tags" >
-        <a class="tag" class="wd" ng-if="tag.value" ng-repeat="tag in profile.properties_interviews">
-          {{tag.name}}
-        </a>
-      </div>
-
-      <h4 ng-hide="!profile.properties_meth_detail.length">presence of methodology detail </h4>
-        
-      <div class="tags" >
-        <a class="tag" class="wd" ng-if="tag.value" ng-repeat="tag in profile.properties_meth_detail">
-          {{tag.name}}
-        </a>
-      </div>
-
-      <h4>properties</h4>
-      <div class="property boolean" ng-repeat="property in profile.properties" ng-class="property.value ? 'has-value': ''">
+      <div ng-repeat="q in profile.questions">
+        <h4>{{q.section}}</h4>
+        <div ng-if="property.value" class="property boolean" ng-repeat="property in q.properties" ng-class="property.value ? 'has-value': ''">
         {{property.label}}<div class="value"></div>
       </div>
+      </div>
+      
     </div>
 
     <div class="pure-u-1-4">

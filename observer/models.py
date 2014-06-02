@@ -55,9 +55,9 @@ class Property(models.Model):
   ACTOR_DESC_FLAT_LIST  = 'actor_desc_f'
 
   TYPE_ACTOR_DESC_CHOICES = ( # to be used as multiple choices inside the observer.forms.ProfileForm)
-    (ACTOR_DESC_TABLE,   _('actor argument tables')),
-    (ACTOR_DESC_CLASSIF, _('actor classification')),
-    (ACTOR_DESC_FLAT_LIST, _('actor flat list')),
+    (ACTOR_DESC_TABLE,   _('actor_desc_t')),
+    (ACTOR_DESC_CLASSIF, _('actor_desc_c')),
+    (ACTOR_DESC_FLAT_LIST, _('actor_desc_f')),
   )
 
   METH_DETAILS_DATASETS   = 'details_data'
@@ -67,11 +67,11 @@ class Property(models.Model):
   METH_DETAILS_SITEVISIT  = 'details_site'
 
   TYPE_METH_DETAILS_CHOICES = ( # to be used as multiple choices inside the observer.forms.ProfileForm)
-    (METH_DETAILS_DATASETS,   _('they detail datasets')),
-    (METH_DETAILS_INTERVIEWS, _('they detail interview')),
-    (METH_DETAILS_NEWSPAPERS, _('they detail newspapers')),
-    (METH_DETAILS_SOCIALNETW, _('they detail social Network')),
-    (METH_DETAILS_SITEVISIT,  _('they detail site visit')),
+    (METH_DETAILS_DATASETS,   _('details_data')),
+    (METH_DETAILS_INTERVIEWS, _('details_inte')),
+    (METH_DETAILS_NEWSPAPERS, _('details_news')),
+    (METH_DETAILS_SOCIALNETW, _('details_soci')),
+    (METH_DETAILS_SITEVISIT,  _('details_site')),
   )
   
   INTERVIEW_VIDEO      = 'interview_vi'
@@ -80,28 +80,28 @@ class Property(models.Model):
   INTERVIEW_NOTE       = 'interview_no'
 
   TYPE_INTERVIEW_CHOICES = (
-    (INTERVIEW_VIDEO,      _('video interview')),
-    (INTERVIEW_AUDIO,      _('audio interview')),
-    (INTERVIEW_TRANSCRIPT, _('interview transcripted')),
-    (INTERVIEW_NOTE,       _('interview detailed notes')),
+    (INTERVIEW_VIDEO,      _('interview_vi')),
+    (INTERVIEW_AUDIO,      _('interview_au')),
+    (INTERVIEW_TRANSCRIPT, _('interview_tr')),
+    (INTERVIEW_NOTE,       _('interview_no')),
   )
 
   TYPE_CHOICES = (
-    (ACTOR_TABLE,     _('actor table')),
-    (ARG_TREE,        _('Argument Trees')),
+    (ACTOR_TABLE,     _('actor_table')),
+    (ARG_TREE,        _('arg_tree')),
     (COSMOGRAPHY,     _('cosmography')),
-    (DIAGRAM,         _('Schematic process diagrams')),
-    (SC_LIT,          _('Analysis of scientific literature')),
-    (SCIENTOMETRICS,  _('Scientometric maps')),
-    (METHODOLOGY,     _('Methodology section')),
-    (QUAL_DA,         _('Qualitative data analysis')),
-    (SOURCES_DETAILS, _('Index or list of sources')),
-    (COMMENTS,        _('Debate space')),
+    (DIAGRAM,         _('diagram')),
+    (SC_LIT,          _('sc_lit')),
+    (SCIENTOMETRICS,  _('scientometri')),
+    (METHODOLOGY,     _('tmethodology')),
+    (QUAL_DA,         _('qual_da')),
+    (SOURCES_DETAILS, _('sources_deta')),
+    (COMMENTS,        _('comments')),
     (ANIMATION,       _('animation')),
-    (COMIC,           _('Comics and Vignettes')),
-    (GLOSSARY,        _('Glossary')),
-    (VIZ_ANALOGY,     _('Visual Analogies')),
-    (STATS,           _('Statistics')),
+    (COMIC,           _('comic')),
+    (GLOSSARY,        _('glossary')),
+    (VIZ_ANALOGY,     _('viz_analogy')),
+    (STATS,           _('stats')),
   )
 
   type     = models.CharField(max_length=12, choices=TYPE_CHOICES + TYPE_METH_DETAILS_CHOICES + TYPE_INTERVIEW_CHOICES + TYPE_ACTOR_DESC_CHOICES, null=True, blank=True) # e.g. 'author' or 'institution'
@@ -306,7 +306,8 @@ class DocumentProfile(models.Model):
     for q in DocumentProfile.QUESTIONS:
       d['questions'].append({
         'section': q[0],
-        'properties': [{'name':p[0], 'question': p[1], 'description': p[2], 'value': p[0] in properties} for p in q[1]]
+        'label': _(q[0]),
+        'properties': [{'name':p[0], 'label': _(p[0]), 'question': _('question_%s' % p[0]), 'description': p[2], 'value': p[0] in properties} for p in q[1]]
       })
 
     for t in Property.TYPE_CHOICES:

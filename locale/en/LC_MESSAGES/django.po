@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-02 11:09+0200\n"
+"POT-Creation-Date: 2014-06-02 11:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,91 +59,92 @@ msgid "statistics"
 msgstr ""
 
 #: observer/models.py:58
-msgid "actor argument tables"
+msgid "actor_desc_t"
 msgstr ""
 
 #: observer/models.py:59
-msgid "actor classification"
+msgid "actor_desc_c"
 msgstr ""
 
 #: observer/models.py:60
-msgid "actor flat list"
+msgid "actor_desc_f"
 msgstr ""
 
 #: observer/models.py:70
-msgid "they detail datasets"
+msgid "details_data"
 msgstr ""
 
 #: observer/models.py:71
-msgid "they detail interview"
+msgid "details_inte"
 msgstr ""
 
 #: observer/models.py:72
-msgid "they detail newspapers"
+msgid "details_news"
 msgstr ""
 
 #: observer/models.py:73
-msgid "they detail social Network"
+msgid "details_soci"
 msgstr ""
 
 #: observer/models.py:74
-msgid "they detail site visit"
+msgid "details_site"
 msgstr ""
 
 #: observer/models.py:83
-msgid "video interview"
+msgid "interview_vi"
 msgstr ""
 
 #: observer/models.py:84
-msgid "audio interview"
+msgid "interview_au"
 msgstr ""
 
 #: observer/models.py:85
-msgid "interview transcripted"
+msgid "interview_tr"
 msgstr ""
 
 #: observer/models.py:86
-msgid "interview detailed notes"
+msgid "interview_no"
 msgstr ""
 
 #: observer/models.py:90
-msgid "actor table"
+msgid "actor_table"
 msgstr ""
 
 #: observer/models.py:91
-msgid "Argument Trees"
-msgstr ""
+msgid "arg_tree"
+msgstr "Argument Trees"
 
 #: observer/models.py:92
 msgid "cosmography"
 msgstr ""
 
 #: observer/models.py:93
-msgid "Schematic process diagrams"
+msgid "diagram"
 msgstr ""
 
 #: observer/models.py:94
-msgid "Analysis of scientific literature"
+msgid "sc_lit"
 msgstr "Analysis of scientific literature"
 
 #: observer/models.py:95
-msgid "Scientometric maps"
+#, fuzzy
+msgid "scientometri"
 msgstr "Scientometric maps"
 
 #: observer/models.py:96
-msgid "Methodology section"
+msgid "tmethodology"
 msgstr ""
 
 #: observer/models.py:97
-msgid "Qualitative data analysis"
+msgid "qual_da"
 msgstr ""
 
 #: observer/models.py:98
-msgid "Index or list of sources"
+msgid "sources_deta"
 msgstr ""
 
 #: observer/models.py:99
-msgid "Debate space"
+msgid "comments"
 msgstr ""
 
 #: observer/models.py:100
@@ -151,19 +152,19 @@ msgid "animation"
 msgstr ""
 
 #: observer/models.py:101
-msgid "Comics and Vignettes"
+msgid "comic"
 msgstr ""
 
 #: observer/models.py:102
-msgid "Glossary"
+msgid "glossary"
 msgstr ""
 
 #: observer/models.py:103
-msgid "Visual Analogies"
+msgid "viz_analogy"
 msgstr ""
 
 #: observer/models.py:104
-msgid "Statistics"
+msgid "stats"
 msgstr ""
 
 #: observer/models.py:160
@@ -248,11 +249,11 @@ msgstr ""
 
 #: observer/models.py:219
 msgid "question_arg_tree"
-msgstr ""
+msgstr "Does it have an argument tree?"
 
 #: observer/models.py:219
 msgid "description_arg_tree"
-msgstr ""
+msgstr "Ce diagramme vise à montrer comment aucun discours circulant dans une controverse ne constitue un énoncé isolé et autosuffisant. Dans une controverse, les discours sont toujours des actions et leur ‘agency’ s’exprime par le fait de appuyer et d’opposer d’autres discours. L’arbre des actions discursives déploie le travail de construction (et destruction) des débats socio-techniques en montrant quels énoncés construisent (ou détruisent) quels discours. (TV)"
 
 #: observer/models.py:220
 msgid "question_cosmography"
@@ -614,3 +615,6 @@ msgstr ""
 #: walt/forms.py:25 walt/forms.py:30
 msgid "tags"
 msgstr ""
+
+#~ msgid "Analysis of scientific literature"
+#~ msgstr "Analysis of scientific literature"

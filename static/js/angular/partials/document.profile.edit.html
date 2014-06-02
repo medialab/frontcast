@@ -19,16 +19,17 @@
       <form class="pure-form">
         <div class="questions">
         
-        <table class="question-table pure-table">
+        <table ng-repeat="q in profile.questions" class="question-table pure-table">
+
           <thead>
               <tr>
-                <th>question</th>
+                <th>about {{q.label}}</th>
                 <th>Yes</th>
                 <th>No</th>
               </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="property in profile.properties">
+            <tr ng-repeat="property in q.properties">
               <td>{{property.question}}</td>
               <td class="radio">
                 <div tooltip="yes" ng-click="attachProperty(property.name, profile)">
@@ -42,53 +43,6 @@
               </td>
             </tr>
           </tbody>
-        </table>
-
-        <table class="question-table pure-table">
-          <thead>
-              <tr>
-                <th>question</th>
-                <th>Yes</th>
-                <th>No</th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="property in profile.properties_interviews">
-              <td>{{property.question}}</td>
-              <td class="radio">
-                <div tooltip="yes" ng-click="attachProperty(property.name, profile)">
-                <input type="radio" ng-model="property.value" ng-value="true"/>
-              </td>
-              <td class="radio">
-                <div tooltip="no" ng-click="detachProperty(property.name, profile)">
-                <input type="radio" ng-model="property.value" ng-value="false" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table class="question-table pure-table" style="width: 100%; margin-top:18px">
-          <thead>
-              <tr>
-                <th>question</th>
-                <th>Yes</th>
-                <th>No</th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="property in profile.properties_meth_detail">
-              <td>{{property.question}}</td>
-             <td class="radio">
-              <div tooltip="yes" ng-click="attachProperty(property.name, profile)">
-                <input type="radio" ng-model="property.value" ng-value="true"/>
-              </td>
-              <td class="radio">
-                <div tooltip="no" ng-click="detachProperty(property.name, profile)">
-                <input type="radio" ng-model="property.value" ng-value="false" />
-              </td>
-            </tr>
-          </tbody>
-          
         </table>
       
         </div>
