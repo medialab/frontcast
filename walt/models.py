@@ -64,6 +64,16 @@ class Tag(models.Model):
   COPYRIGHT = 'CP' # open source, for working document
   REMOTE = 'RE' # is remote or local for working document
 
+  OEMBED_PROVIDER_NAME = 'OP' #tag specify an oembed field...
+  OEMBED_TITLE = 'OT' #tag specify an oembed field...
+  OEMBED_THUMBNAIL_URL = 'OH'
+
+  TYPE_OEMBED_CHOICES = (
+    (OEMBED_PROVIDER_NAME, 'oembed_provider_name'),
+    (OEMBED_TITLE, 'oembed_title'),
+    (OEMBED_THUMBNAIL_URL, 'oembed_thumbnail_url'),
+  )
+
   TYPE_CHOICES = (
     (FREE, 'no category'),
     (AUTHOR, 'AUTHOR'),
@@ -82,9 +92,11 @@ class Tag(models.Model):
     (REMOTE, 'local or remote?')
   )
 
+  
+
   name = models.CharField(max_length=128) # e.g. 'Mr. E. Smith'
   slug = models.SlugField(max_length=128) # e.g. 'mr-e-smith'
-  type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=FREE) # e.g. 'author' or 'institution'
+  type = models.CharField(max_length=2, choices=TYPE_CHOICES + TYPE_OEMBED_CHOICES, default=FREE) # e.g. 'author' or 'institution'
 
   # tag specification e.g. we want to specify an institution for a given author
   related = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
@@ -92,7 +104,7 @@ class Tag(models.Model):
 
   def save(self, **kwargs):
     if self.pk is None:
-      self.slug = uuslug(model=Tag, instance=self, value=self.name)
+      self.slug = uuslug(model=Tag, instance=self, value='%s-%s'% (self.type, self.name))
     super(Tag, self).save()
 
 
@@ -386,7 +398,7 @@ class Document(AbstractDocument):
     (SHARED, 'shared'), # allow watchers to view it, it remains private and it is not draft
     (DRAFT, 'draft'), # draft is viewable/editable by authors and owner only.
     (PRIVATE,'private'), # will not appears on drafts, but it is not published
- )
+  )
 
   LINK 	= 'B' # external link
   MEDIA   = 'I' # external iframe, image, audio or video
@@ -451,9 +463,26 @@ class Document(AbstractDocument):
 
   def save(self, **kwargs):
     self.slug = helper_uuslug(model=Document, instance=self, value=self.title)
-    if self.pk is None and self.reference:
-      pass
-      # try to open a specific stuff here
+    
+    if self.pk is None:
+      super(Document, self).save()
+
+    if self.permalink:
+      import micawber
+      mic = micawber.bootstrap_basic()
+
+      try:
+        oem = mic.request(self.permalink)
+      except micawber.exceptions.ProviderNotFoundException, e:
+        pass
+      else: # store as oembed tags
+        t1, created = Tag.objects.get_or_create(type=Tag.OEMBED_PROVIDER_NAME, name=oem['provider_name'])
+        t1, created = Tag.objects.get_or_create(type=Tag.OEMBED_TITLE, name=oem['title'])
+        t2, created = Tag.objects.get_or_create(type=Tag.OEMBED_THUMBNAIL_URL, name=oem['thumbnail_url'])
+        
+        self.tags.add(t1)
+        self.tags.add(t2)
+
     super(Document, self).save()
 
 
@@ -495,7 +524,7 @@ class Document(AbstractDocument):
       'pdf':[] #pdf attached (or other downloadable format)
     }
     
-    if not deep: # massive get
+    if not deep: # massive get, show thmbs only
       return attachments
 
     # get every file for the single reference
@@ -560,8 +589,6 @@ class Document(AbstractDocument):
       tags[t_type].append(t)
     return tags
 
-
-  
 
   def json(self, deep=False):
     # divide tags according to type

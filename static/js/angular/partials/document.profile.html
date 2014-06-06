@@ -10,6 +10,9 @@
     <div class="pure-u-1-2">
       <div class="cover">
         <div class="box">
+          <div ng-if="document.tags.oembed_title">
+            <img src="{{document.tags.oembed_thumbnail_url[0].name}}"/>
+          </div>
           <img ng-src="{{document.attachments.thumb.src}}">
         </div>
         

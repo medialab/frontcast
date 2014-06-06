@@ -220,7 +220,6 @@ class DocumentTest(TestCase):
     self.assertEqual(jresponse['code'], API_EXCEPTION_AUTH)
 
 
-
   def test_api_graph_bipartite(self):
     '''
     Test filters for view graph bipartite. Output should be a well formatted json
@@ -229,5 +228,32 @@ class DocumentTest(TestCase):
     request.user = self.admin
     request.LANGUAGE_CODE = 'en-us'
     self.assertEqual(True, True)
+
+
+  def test_oembed_services(self):
+    '''
+    A test various oembed services and a simple howto use micawber to discover oembed services (soundcloud, vimeo etc) from urls
+    Note: it doesn't work with ISSUU
+    '''
+    import micawber
+    mic = micawber.bootstrap_basic()
+    you = mic.request('https://www.youtube.com/watch?v=GGyLP6R4HTE') # youtube
+    vim = mic.request('http://vimeo.com/17081933') # vimeo
+    try:
+      nothing =  mic.request('http://en.wikipedia.org/wiki/The_Boat_Race_2000')
+    except micawber.exceptions.ProviderNotFoundException, e:
+      pass
+
+    self.assertEqual(you['provider_name'], u'YouTube')
+    self.assertEqual(vim['provider_name'], u'Vimeo')
+
+
+  def test_oembed(self):
+    doc = Document(owner=self.student, title=u"vimeo.com/17081933")
+    doc.permalink = u"http://vimeo.com/17081933"
+    doc.save()
+    print [t.json() for t in doc.tags.all()]
+    self.assertEqual(doc.tags.count(), 2)
+
 
 
