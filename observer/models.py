@@ -364,7 +364,3 @@ class DocumentProfile_Properties(models.Model):
 
   class Meta:
     unique_together = ["documentProfile", "property"]
-
-
-class FAKEFAKE(models.Model):
-  value = models.BooleanField(default=True)
