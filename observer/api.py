@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 
-from observer.models import DocumentProfile, Device, Property
+from observer.models import DocumentProfile, Device, Property, DocumentProfile_Properties
 from observer.forms import DeviceForm
 from walt.models import Document
 
@@ -60,9 +60,13 @@ def document_profile_attach_property(request, document_pk, property_type):
   })
   if epoxy.is_POST():
     prop, created = Property.objects.get_or_create(type=property_type)
-    
-    pro.properties.add(prop)
-    pro.save()
+    # manytomany documentProfile Property to set the boolean value
+    m, created = DocumentProfile_Properties.objects.get_or_create(documentProfile=pro, property=prop)
+    m.value = True
+    m.save()
+
+    #pro.properties.add(prop)
+    #pro.save()
 
   epoxy.item(pro, deep=True)
   return epoxy.json()
@@ -81,8 +85,9 @@ def document_profile_detach_property(request, document_pk, property_type):
     except:
       return epoxy.throw_error(error='%s is not a valid property', code=API_EXCEPTION_FORMERRORS).json()
 
-    pro.properties.remove(prop)
-    pro.save()
+    m, created = DocumentProfile_Properties.objects.get_or_create(documentProfile=pro, property=prop)
+    m.value = False
+    m.save()
 
   epoxy.item(pro, deep=True)
   return epoxy.json()

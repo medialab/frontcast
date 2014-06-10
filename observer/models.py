@@ -277,7 +277,7 @@ class DocumentProfile(models.Model):
 
   notes = models.TextField(blank=True) # free evaluation
 
-  properties = models.ManyToManyField(Property, null=True, blank=True)
+  properties = models.ManyToManyField(Property, null=True, blank=True, through='DocumentProfile_Properties')
   
 
   def json(self, deep=False):
@@ -296,7 +296,10 @@ class DocumentProfile(models.Model):
     d['properties_meth_detail'] = []
     d['devices'] = [] # just labels in order to fill the form
 
-    properties = [p.type for p in self.properties.all()]
+    properties = [(p.property.type, p.value) for p in DocumentProfile_Properties.objects.filter(documentProfile=self)]
+    available_types = [p[0] for p in properties]
+    #[(p.property.type, p.value) for p in DocumentProfile_Properties.objects.filter(documentProfile=pro)]
+    #properties = []#p.type for p in self.properties.filtersall()]
 
     #REPETITA IUVANT :D
     # start following questions
@@ -309,7 +312,7 @@ class DocumentProfile(models.Model):
           'label': _(p[0]),
           'question': _('question_%s' % p[0]),
           'description': p[2],
-          'value': p[0] in properties,
+          'value': [v for v in properties if v[0] == p[0]][0][1] if p[0] in available_types else None,
           'is_device': p[0] in Device.TYPE_CHOICES_DICT,
         } for p in q[1]]
       })
@@ -318,7 +321,7 @@ class DocumentProfile(models.Model):
       d['properties'].append({
         'label':_(t[1]),
         'name':t[0], # this should be the unique id.... @todo!
-        'value': t[0] in properties, # does this profile has that type ?
+        'value': t[0] in available_types, # does this profile has that type ?
         'question': _('question_%s' % t[0])
       })
 
@@ -326,7 +329,7 @@ class DocumentProfile(models.Model):
       d['properties_interviews'].append({
         'label':t[1],
         'name':t[0],
-        'value': t[0] in properties,
+        'value': t[0] in available_types,
         'question': _('question_%s' % t[0])
       })
 
@@ -334,7 +337,7 @@ class DocumentProfile(models.Model):
       d['properties_meth_detail'].append({
         'label':t[1],
         'name':t[0],
-        'value': t[0] in properties,
+        'value': t[0] in available_types,
         'question': _('question_%s' % t[0])
       })
 
@@ -351,3 +354,17 @@ class DocumentProfile(models.Model):
 
   class Meta:
     ordering = ["-date_last_modified"]
+
+
+
+class DocumentProfile_Properties(models.Model):
+  documentProfile = models.ForeignKey(DocumentProfile)
+  property = models.ForeignKey(Property)
+  value = models.BooleanField(default=True)
+
+  class Meta:
+    unique_together = ["documentProfile", "property"]
+
+
+class FAKEFAKE(models.Model):
+  value = models.BooleanField(default=True)

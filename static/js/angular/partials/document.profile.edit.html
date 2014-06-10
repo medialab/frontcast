@@ -47,7 +47,7 @@
                   </form>
                 </div>
               </td>
-              <td ng-if="!property.is_device"> {{property.question}}
+              <td ng-if="!property.is_device"> {{property.question}} {{property.value}}
               </td>
               <td ng-if="!property.is_device" class="radio">
                 <div tooltip="yes" ng-click="attachProperty(property.name, profile)">
