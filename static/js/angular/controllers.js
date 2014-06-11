@@ -53,7 +53,7 @@ angular.module('walt.controllers', [])
     ===
 
   */
-  .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', '$http', '$log', function($scope, $rootScope, $location, $route, $http, $log) {
+  .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', '$routeParams', '$http', '$log', function($scope, $rootScope, $location, $route, $routeParams, $http, $log) {
     $scope.filters = {};
     $scope.howmanyfilters = 0;
     $scope.query = "";
@@ -110,13 +110,17 @@ angular.module('walt.controllers', [])
         left = 0;
         right = +$scope.numofpages;
       } else{
-        right = Math.min($scope.numofpages, $scope.page<5?5:$scope.page + 3);
+        right = Math.min($scope.numofpages, $scope.page<5?5:$scope.page + 5);
         left = right - 5;
       }
 
       for(var i=left; i<right+1; i++)
         pages.push(i+1);
 
+      // check visibility of first page/last page
+      $scope.first_page = right > 5 ? 0:-1;
+      
+      $scope.last_page = left < $scope.numofpages - 5 ? $scope.numofpages :-1;
       $scope.pages = pages;
       console.log('%c layoutCtrl ', STYLE_INFO, '$scope.paginate', pages);
     }
@@ -181,16 +185,19 @@ angular.module('walt.controllers', [])
     });
 
     $rootScope.$on('$routeChangeSuccess', function(e, r){
-      console.log("%c    route change success", STYLE_INFO);
       $scope.filters = {};
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;
       $scope.query = '';
       $scope.url = String($location.url()).substring(1);
 
-      if(r.$$route)
+      if(r.$$route) {
         $rootScope.controllerName = r.$$route.controller;
-      $scope.$broadcast(CONTROLLER_ROUTE_UPDATED);      
+        $scope.setViewMenu(r.$$route);
+        $log.info("route change success", '- controller:',$rootScope.controllerName);
+      
+        $scope.$broadcast(CONTROLLER_ROUTE_UPDATED);     
+      } 
     });
     // cfr filtersCtrl
     $scope.$on(CONTROLLER_OVERALLFACETS_UPDATED, function() {
@@ -200,6 +207,63 @@ angular.module('walt.controllers', [])
 
     $scope.setViewName = function(viewname) {
       $scope.viewname = viewname;
+    };
+
+    /*
+      Set menu entries according to path
+    */
+    $scope.setViewMenu = function(route) {
+      $log.info("setting view sidebar menu", '- controller:', route.controller, route, $routeParams, $location.path());
+      
+      var viewmenu = {},
+          path = $location.path(),
+          is_selected = function(url){
+            console.log('selected', url, path, url == path)
+            return url == path;
+          };
+
+      switch(route.controller){
+        case "documentsCtrl":
+          viewmenu = [
+            {
+              url: '/documents/add',
+              label: 'add work',
+              selected: is_selected('/documents/add')
+            }
+          ];
+          break;
+        case "documentCtrl":
+        case "documentProfileCtrl":
+          if($routeParams.id) {
+            viewmenu = [
+              {
+                url: '/doc/'+ $routeParams.id +'/profile',
+                label: 'view work #' + $routeParams.id,
+                selected: is_selected('/doc/'+ $routeParams.id +'/profile')
+              },
+              {
+                url: '/doc/'+ $routeParams.id +'/edit',
+                label: 'edit work #' + $routeParams.id,
+                selected: is_selected('/doc/'+ $routeParams.id +'/edit')
+              },
+              {
+                url: '/doc/'+ $routeParams.id +'/profile/edit',
+                label: 'survey of work #' + $routeParams.id,
+                selected: is_selected('/doc/'+ $routeParams.id +'/profile/edit')
+              }
+            ];
+          } else {
+             viewmenu = [
+              {
+                url: '/documents/add',
+                label: 'add work',
+                selected: is_selected('/documents/add')
+              }
+            ];
+          }
+          break;
+      };
+      $scope.viewmenu = viewmenu;
     };
 
 
@@ -377,6 +441,7 @@ angular.module('walt.controllers', [])
   .controller('documentsCtrl', ['$scope', 'DocumentListFactory', 'ReferenceFactory', function($scope, DocumentListFactory, ReferenceFactory){
     $scope.setViewName('documents');
 
+
     $scope.sync = function() {
       console.log('%c documentsCtrl ', STYLE_INFO, '@sync');  
       DocumentListFactory.query({search: $scope.query, limit:$scope.limit, offset:$scope.offset, filters: $scope.filters}, function(data){
@@ -408,6 +473,7 @@ angular.module('walt.controllers', [])
   .controller('documentCtrl', ['$scope', '$route', '$routeParams', 'DocumentFactory', 'DocumentTagsFactory', 'DocumentDetachTagFactory', 'TagsFactory', '$location', function($scope, $route, $routeParams, DocumentFactory, DocumentTagsFactory, DocumentDetachTagFactory, TagsFactory, $location){
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
     $scope.setViewName('documents');
+    
 
     $scope.DOCUMENT_TYPES = [
       {value: 'ControversyWeb', text: 'ControversyWeb'},

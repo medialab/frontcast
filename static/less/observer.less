@@ -266,6 +266,16 @@
   ul{
     margin-top: 12px;
   }
+
+  .pure-menu-selected a{
+    color: #181818;
+  }
+
+  li.pure-menu-selected > a{
+    background-color: #ec5148;
+    color: #fff;
+  }
+
   li.pure-menu-selected button.link{
     color: #181818;
   }
@@ -285,6 +295,22 @@
     display: inline-block;
     border: none;
     background: none;
+  }
+
+  .submenu{
+    border-bottom: 1px solid @dust;
+    margin-left: @module*3;
+    margin-bottom: @module;
+    padding-bottom: 6px;
+    
+    a{
+      margin-left: @module*2;
+      color: rgba(24, 24, 24, 0.3);
+      
+    }
+    .selected a{
+      color: @black;
+    }
   }
 }
 

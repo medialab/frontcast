@@ -2,7 +2,16 @@
   <div class="prev"  ng-click="prevPage()">
     <i class="fa fa-angle-left"></i><div class="circle"></div>
   </div>
+  <div class="page" ng-show="first_page != -1" ng-click="pageto(first_page)">
+    <div class="number">{{first_page + 1}}</div><div class="circle"></div>
+  </div>
+  <span ng-show="first_page != -1">...</span>
   <div ng-repeat="i in pages" class="page" ng-class="page + 1 == i?'selected':''" ng-click="pageto(i-1)"><div class="number">{{i}}</div><div class="circle"></div></div>
+  <span ng-show="last_page != -1">...</span>
+  <div class="page" ng-show="last_page != -1" ng-click="pageto(last_page)">
+    <div class="number">{{last_page + 1}}</div><div class="circle"></div>
+
+  </div>
   <div class="next"  ng-click="nextPage()">
     <i class="fa fa-angle-right"></i><div class="circle"></div>
   </div>

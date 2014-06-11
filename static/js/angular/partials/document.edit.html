@@ -1,6 +1,6 @@
 <div class="big-item">
 <h2>
-  {{item.title}} {{item.id}}
+  {{item.title}}<!-- {{item.id}} -->
 </h2>
 
 <form class="pure-form pure-form-stacked" name="editForm" ng-submit="save()">
@@ -14,6 +14,12 @@
     <select required ng-model="item.type" ng-options="t.value as t.text for t in DOCUMENT_TYPES">
 
     </select>
+  </p>
+
+  <p>
+    <label class="required">year (delivered)</label>
+    <!-- ng-click="attachTag(tag, item)" -->
+    <input type="text" class="form-control" ng-model="item.tags.Date[0].name">
   </p>
   
   <p>

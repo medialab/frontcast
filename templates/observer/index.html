@@ -96,10 +96,7 @@
     
   }
 
-  #menu .pure-menu-selected a{
-    background-color: #ec5148;
-    color: #fff;
-  }
+
 
   #menu .pure-menu-heading{
     background-color: #fff;
@@ -200,7 +197,15 @@
 
             <ul>
                
-                <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''"><a href="#!/docs">student works</a></li>
+                <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''"><a href="#!/docs">student works</a>
+                  <div class="submenu" ng-if="viewname=='documents'" >
+                    {% verbatim %}
+                    <div ng-repeat="item in viewmenu" ng-class="item.selected ? 'selected': ''">
+                      <a href="#!{{item.url}}"> {{item.label}}</a>
+                    </div>
+                    {% endverbatim %}
+                  </div>
+                </li>
                 
                 <li ng-class="viewname=='tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#!/tools">tools</a>
