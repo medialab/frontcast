@@ -135,7 +135,7 @@ angular.module('walt.controllers', [])
       console.log("%c search ", 'color:white; background-color:#383838', '"', $scope.query, '" at', $scope.viewname);
       $scope.limit = $scope.default_limit;
       $scope.offset = $scope.default_offset;
-
+      $location.path()
       $location.search({
         'search': $scope.query
       });
@@ -218,13 +218,17 @@ angular.module('walt.controllers', [])
       var viewmenu = {},
           path = $location.path(),
           is_selected = function(url){
-            console.log('selected', url, path, url == path)
             return url == path;
           };
 
       switch(route.controller){
         case "documentsCtrl":
           viewmenu = [
+            {
+              url: '/docs',
+              label: 'index',
+              selected: is_selected('/docs')
+            },
             {
               url: '/documents/add',
               label: 'add work',
@@ -236,6 +240,16 @@ angular.module('walt.controllers', [])
         case "documentProfileCtrl":
           if($routeParams.id) {
             viewmenu = [
+              {
+                url: '/docs',
+                label: 'add work',
+                selected: is_selected('/docs')
+              },
+              {
+                url: '/documents/add',
+                label: 'add work',
+                selected: is_selected('/documents/add')
+              },
               {
                 url: '/doc/'+ $routeParams.id +'/profile',
                 label: 'view work #' + $routeParams.id,
@@ -255,12 +269,60 @@ angular.module('walt.controllers', [])
           } else {
              viewmenu = [
               {
+                url: '/docs',
+                label: 'index',
+                selected: is_selected('/docs')
+              },
+              {
                 url: '/documents/add',
                 label: 'add work',
                 selected: is_selected('/documents/add')
               }
             ];
           }
+          break;
+        case "toolsCtrl":
+          viewmenu = [
+            {
+              url: '/tools',
+              label: 'index',
+              selected: is_selected('/tools')
+            },
+            {
+              url: '/tools/add',
+              label: 'add tool',
+              selected: is_selected('/tools/add')
+            }
+          ];
+          break;
+        case "toolCtrl":
+          viewmenu = [
+            {
+              url: '/tools',
+              label: 'index',
+              selected: is_selected('/tools')
+            },
+            {
+              url: '/tools/add',
+              label: 'add tool',
+              selected: is_selected('/tools/add')
+            }
+          ];
+          break;
+        case "coursesCtrl":
+        case "courseCtrl":
+          viewmenu = [
+            {
+              url: '/courses',
+              label: 'index',
+              selected: is_selected('/courses')
+            },
+            {
+              url: '/courses/add',
+              label: 'add course',
+              selected: is_selected('/courses/add')
+            }
+          ];
           break;
       };
       $scope.viewmenu = viewmenu;
@@ -753,7 +815,7 @@ angular.module('walt.controllers', [])
       {value: 'ControversyWeb', text: 'ControversyWeb'},
       {value: 'ControversyVideo', text: 'ControversyVideo'},
       {value: 'Ebook', text: 'Ebook'}
-    ]; 
+    ];
 
     console.log('%c toolCtrl ', 'background: lime;', $routeParams.id, $routeParams);
     
@@ -927,17 +989,55 @@ angular.module('walt.controllers', [])
     $scope.setViewName('courses');
     console.log('%c courseCtrl ', 'background: lime;', $routeParams.id, $routeParams);
     
-    WorkingDocumentFactory.get({id: $routeParams.id}, function(data){
-      $scope.item = data.object;
-      console.log(data);
-    });
+    $scope.COURSE_TYPES = [
+      'course_secondary_school',
+      'course_master',
+      'course_phd'
+    ];
+
+    $scope.sync = function() {
+      WorkingDocumentFactory.get({id: $routeParams.id}, function(data){
+        $scope.item = data.object;
+        console.log(data);
+      });
+    }
+
+
+    $scope.update = function() {
+      var params = angular.copy($scope.item);
+      params.abstract = params.abstract_raw; // raw is 
+     
+        console.log('params', params);
+        WorkingDocumentFactory.save({id: $scope.item.id}, params, function(data) {
+          $location.path("/tool/" + $scope.item.id);
+        });
+    };
+
+
+    $scope.save = function() {
+      if($scope.item.id) {
+        $scope.update();
+      } else {
+        var params = angular.copy($scope.item);
+        params.rating = 1; // default sorry
+        WorkingDocumentFactory.save(params, function(data) {
+          console.log('helloooooo', data);
+          $scope.item = data.object;
+          //redirect!
+          // $location.path("/tool/" + $scope.item.id);
+        });
+      };
+    };
+
+    if($routeParams.id)
+      $scope.sync();
 
   }])
   /*
 
     Handle header search and menu enlightment
     ===
-
+    deprecated.
   */
   .controller('headerCtrl', ['$rootScope', '$scope', '$location', function($rootScope, $scope, $location){
     // $scope.$on('$locationChangeSuccess')
@@ -945,7 +1045,7 @@ angular.module('walt.controllers', [])
 
     $scope.search = function(){
       $rootScope.query = $scope.query;
-      console.log($scope.viewname);
+      console.log('headerCtrl search', $scope.viewname);
       $location.search('search', $rootScope.query);
     }
   }])

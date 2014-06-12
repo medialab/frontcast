@@ -66,20 +66,6 @@
   }
 
 
-  #menu a{
-    color: #181818;
-    font: 1.3rem/1.618em 'Source Sans Pro', sans-serif;
-    text-transform: lowercase;
-    text-decoration: none;
-    padding: 2px 6px 3px 6px;
-    margin: 3px 18px;
-    display: inline-block;
-  }
-
-  #menu .pure-menu li a:hover, #menu .pure-menu li a:focus{
-    background-color: #33cccc;
-    color: #fff;
-  }
 
   #menu a.pure-menu-heading{
     font: 1.4rem/1.618em 'Source Sans Pro', sans-serif;
@@ -209,9 +195,23 @@
                 
                 <li ng-class="viewname=='tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#!/tools">tools</a>
+                    <div class="submenu" ng-if="viewname=='tools'" >
+                      {% verbatim %}
+                      <div ng-repeat="item in viewmenu" ng-class="item.selected ? 'selected': ''">
+                        <a href="#!{{item.url}}"> {{item.label}}</a>
+                      </div>
+                      {% endverbatim %}
+                    </div>
                 </li>
                 <li ng-class="viewname=='courses' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#!/courses">courses</a>
+                    <div class="submenu" ng-if="viewname=='courses'" >
+                      {% verbatim %}
+                      <div ng-repeat="item in viewmenu" ng-class="item.selected ? 'selected': ''">
+                        <a href="#!{{item.url}}"> {{item.label}}</a>
+                      </div>
+                      {% endverbatim %}
+                    </div>
                 </li>
                 <li ng-class="viewname=='lessons' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#!/lessons">lessons</a>

@@ -72,6 +72,7 @@ config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeP
 
   // courses
   $routeProvider.when('/courses', {templateUrl: '/frontcast/static/js/angular/partials/course.list.html', controller: 'coursesCtrl', reloadOnSearch:false});
+  $routeProvider.when('/courses/add', {templateUrl: '/frontcast/static/js/angular/partials/course.add.html', controller: 'courseCtrl'});
   $routeProvider.when('/course/:id', {templateUrl: '/frontcast/static/js/angular/partials/course.html', controller: 'courseCtrl'});
   
   // seances

@@ -264,25 +264,100 @@
 */
 #menu{
   ul{
+    margin-top: @module*2;
+    margin-left:@module*2;
+  }
+
+  ul li.pure-menu-selected{
+
+    button.link, >a{
+      color: @black;
+      border-color: @black;       
+    }
+  }
+
+  .pure-menu li{
+
+    button.link:hover, a:hover, a:focus{
+      background: transparent;
+      border-color: @blue;
+      color: @black;
+    }
+  }
+
+  .submenu{
+    margin-left: @module*2;
+    
+    a{
+      color: fade(@black, 60%);
+    }
+
+    .selected {
+      a, a:hover, a:focus {
+        color: @black;
+        border-color: @red;
+      }
+    }
+  }
+
+  button.link, a{
+    color:fade(@black, 60%);
+    font: 1.3rem/1.618em 'Source Sans Pro', sans-serif;
+    text-transform: lowercase;
+    text-decoration: none;
+    padding: 2px 6px 3px 6px;
+    margin: 3px 0px;
+    display: inline-block;
+    border: none;
+    background: none;
+    border-bottom: 1px solid transparent;
+    .transition(all, .2s);
+  }
+
+  
+}
+
+#menruenruenr{
+  ul{
     margin-top: 12px;
   }
 
-  .pure-menu-selected a{
+  li.pure-menu-selected{
+    button.link{
+      background-color: fade(@blue, 30%);
+      color: @black;
+    }
+    & > a{
+      background-color: fade(#ec5148, 30%);
+      color: @black;
+    }
+    &:hover{
+      background-color: fade(#ec5148, 50%);
+      
+    }
+  }
+
+  li.pure-menu-selected 
+
+
+  a{
     color: #181818;
+    font: 1.3rem/1.618em 'Source Sans Pro', sans-serif;
+    text-transform: lowercase;
+    text-decoration: none;
+    padding: 1px 8px 2px 8px;
+    margin: 3px 18px;
+    display: inline-block;
   }
 
-  li.pure-menu-selected > a{
-    background-color: #ec5148;
-    color: #fff;
-  }
-
-  li.pure-menu-selected button.link{
+  .pure-menu li a:hover, .pure-menu li a:focus{
+    background-color: fade(@blue, 30%);
     color: #181818;
   }
 
   .pure-menu li button.link:hover, .pure-menu li button.link:focus {
-    background-color: #33cccc;
-    color: #fff;
+    background-color: fade(@blue, 30%);
+    color: #181818;
   }
 
   button.link{
@@ -310,6 +385,7 @@
     }
     .selected a{
       color: @black;
+      background-color: fade(@blue, 30%);
     }
   }
 }
