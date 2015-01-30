@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os, local_settings
+import os, local_settings, logging
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -36,6 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'glue',
+    'observer'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,3 +87,72 @@ LOCALE_PATHS = (
 TEMPLATE_DIRS = (
   os.path.join(BASE_DIR, 'client'),
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s.%(funcName)s(%(lineno)d) %(message)s'
+        },
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'glue':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/glue.log'),
+            'maxBytes': '16777216', # 16 megabytes
+            'formatter': 'verbose'
+        },
+        'ldap':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/ldap.log'),
+            'maxBytes': '16777216', # 16 megabytes
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django_auth_ldap': {
+            'handlers': ['ldap'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    }
+}
+
+
+
+# ldap
+#import ldap
+#from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+
+
+# Baseline configuration.
+AUTH_LDAP_SERVER_URI = local_settings.AUTH_LDAP_SERVER_URI
+AUTH_LDAP_USER_DN_TEMPLATE = local_settings.AUTH_LDAP_USER_DN_TEMPLATE # something like "uid=%(user)s,ou=<Users>,o=<domain name>,c=<fr>"
+
+# Keep ModelBackend around for per-user permissions and maybe a local
+# superuser.
+AUTHENTICATION_BACKENDS = (
+    'observer.ldap.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+logger = logging.getLogger('django_auth_ldap')
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.DEBUG)
