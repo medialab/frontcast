@@ -77,7 +77,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'client/dist')
+STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
 STATIC_URL = '/static/'
 
 LOCALE_PATHS = (
