@@ -9,6 +9,7 @@ local_settings.py
 bin/
 include/
 lib/
+dist/
 frontcast.wsgi
 
 sqlite/frontcast.db
