@@ -4,7 +4,7 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 
-from observer.models import Document, WorkingDocument, Tag
+from observer.models import Device, Document, WorkingDocument, Tag
 
 
 
@@ -24,3 +24,9 @@ class FullDocumentForm(ModelForm):
 class TagsForm(forms.Form):
   type = forms.ChoiceField(choices=Tag.TYPE_CHOICES)
   tags = forms.RegexField(regex=r'^[\=\.\?\:\/\s\w,\-\_\'\(\)]*$',label=_('tags') )
+
+
+
+class DeviceForm(forms.ModelForm):
+  class Meta:
+    model = Device

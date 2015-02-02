@@ -1,12 +1,35 @@
-"""
-Django settings for observer project.
+# //
+# //
+# //
+# //     ______     ______     ______     ______     ______     __   __   ______     ______    
+# //    /\  __ \   /\  == \   /\  ___\   /\  ___\   /\  == \   /\ \ / /  /\  ___\   /\  == \   
+# //    \ \ \/\ \  \ \  __<   \ \___  \  \ \  __\   \ \  __<   \ \ \'/   \ \  __\   \ \  __<   
+# //     \ \_____\  \ \_____\  \/\_____\  \ \_____\  \ \_\ \_\  \ \__|    \ \_____\  \ \_\ \_\ 
+# //      \/_____/   \/_____/   \/_____/   \/_____/   \/_/ /_/   \/_/      \/_____/   \/_/ /_/ 
+# //
+# //
+# //                                       *       +
+# //                            *     '                  |
+# //                              ()    .-.,-"``"-.    - o -
+# //                                    '=/_       \     |
+# //                                 *   |::'=._    ;      '
+# //                            '         \::.  `=./`,   '
+# //                              +    .   '-::..-'``'    *
+# //                          jgs   O    *     .       +  .
+# //                                   *     .       +
+# //
+# //
+# //  ---
+# //
+# """
+# Django settings for observer project.
 
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
+# For more information on this file, see
+# https://docs.djangoproject.com/en/1.7/topics/settings/
 
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
-"""
+# For the full list of settings and their values, see
+# https://docs.djangoproject.com/en/1.7/ref/settings/
+# """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os, local_settings, logging

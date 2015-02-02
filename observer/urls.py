@@ -9,8 +9,12 @@ from django.contrib import admin
 apipatterns = patterns('observer.api',
     url(r'^$', 'index'),
     #url(r'access-denied/$', 'access_denied'),
-
-    url(r'documents/$', 'documents'),
+    # REST for document side
+    url(r'document/$', 'documents', name='observer_documents'),
+    url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'document', name='observer_document'),
+    # REST for devices
+    url(r'device/$', 'devices', name='observer_devices'),
+    url(r'device/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'device', name='observer_device')
 )
 
 
