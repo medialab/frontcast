@@ -1,3 +1,8 @@
 body{
   font: 14px/25px 'Source Sans Pro', sans-serif;
 }
+
+#view{
+  width: 960px;
+  margin: 100px auto;
+}

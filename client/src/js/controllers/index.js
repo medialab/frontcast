@@ -10,4 +10,11 @@
 angular.module('frontcast')
   .controller('indexCtrl', function($scope, $log, $routeParams) {
     $log.debug('indexCtrl loaded.');
+
+    /*
+      Load documents
+    */
+    $scope.sync = function() {
+      
+    }
   });

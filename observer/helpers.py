@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 #
 #    Truncates a string after a given number of chars keeping whole words.
@@ -44,3 +45,15 @@ def uuslug(model, instance, value, max_length=128):
     i += 1
 
   return slug
+
+
+#
+#    DJANGO USER TO DICT
+#    ==============
+#
+def profiler(user):
+  return {
+    'id': user.id,
+    'username': user.username,
+    'staff': user.is_staff
+  }

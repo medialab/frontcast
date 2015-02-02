@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
+from markdown import markdown
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext as _
 
-from observer.helpers import uuslug
+from observer.helpers import uuslug, profiler
 
 
 
@@ -22,9 +25,6 @@ from observer.helpers import uuslug
 #  - last modification date
 #
 class AbstractDocument(models.Model):
-  '''
-  
-  '''
   # the text content
   slug = models.SlugField(max_length=160, unique=True)
   title = models.CharField(max_length=160, default="")
@@ -393,7 +393,7 @@ class Document(AbstractDocument):
 
 
   def save(self, **kwargs):
-    self.slug = helper_uuslug(model=Document, instance=self, value=self.title)
+    self.slug = uuslug(model=Document, instance=self, value=self.title)
     
     if self.pk is None:
       super(Document, self).save()
@@ -559,7 +559,7 @@ class Document(AbstractDocument):
       'mimetype': self.mimetype,
       'permalink': self.permalink,
       'reference': self.reference,
-      'owner': self.owner.username,
+      'owner': profiler(self.owner),
       'tags': tags,
       'devices': devices_by_type,
       'type': self.type,
