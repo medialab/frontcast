@@ -3,7 +3,10 @@
 var STATIC_URL = STATIC_URL || '';
 
 angular.module('frontcast', [
-  'ngRoute'
+  'ngRoute',
+  'ngResource',
+  'ui.bootstrap',
+  'hc.marked'
 ])
   .config(function ($routeProvider, $httpProvider) {
     $routeProvider

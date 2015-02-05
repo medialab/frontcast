@@ -278,8 +278,7 @@ class WorkingDocument(AbstractDocument):
       'type': self.type,
       'type_label': self.get_type_display(),
       'title': self.title,
-      'abstract_raw': self.abstract,
-      'abstract': markdown(self.abstract),
+      'abstract': self.abstract,
       'permalink': self.permalink,
       'owner': self.owner.username,
       'date': self.date.strftime('%Y-%m-%d') if self.date else None,
@@ -545,16 +544,13 @@ class Document(AbstractDocument):
     attachments = self.get_attachments(deep);
 
     
-    return{
+    d = {
       'id': self.id,
       'slug':self.slug,
       'rating':self.rating,
       'status': self.get_status_display(),
       'title': self.title,
-      'abstract': markdown(self.abstract),
-      'abstract_raw': self.abstract,
-      'content': markdown(self.content),
-      'content_raw': self.content,
+      'abstract': self.abstract,
       'language': self.language,
       'mimetype': self.mimetype,
       'permalink': self.permalink,
@@ -567,8 +563,9 @@ class Document(AbstractDocument):
       'remote': self.remote,
       'date_last_modified': self.date_last_modified.isoformat() if self.date_last_modified is not None else None,
       'authors': [a.username for a in self.authors.all()]
-
     }
+
+    return d
 
   def tojson(self):
     return json.dumps(self.json())

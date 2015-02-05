@@ -1,0 +1,24 @@
+
+
+
+
+<div>
+  <div ng-repeat="doc in items">
+    <h2>{{doc.title}}</h2>
+    <div class="abstract" marked="doc.abstract"></div>
+
+    
+    <div class="keywords">
+      <a class="tag" ng-repeat="tag in doc.tags.Institution">{{tag.name}}</a>
+      <a class="tag" ng-repeat="tag in doc.tags.Date">{{tag.name}}</a>
+      
+    </div>
+    
+    <div class="keywords">
+      <a class="tag" ng-repeat="tag in doc.tags.KEYWORD">{{tag.name}}</a>
+    </div>
+
+
+  </div>
+
+</div>
