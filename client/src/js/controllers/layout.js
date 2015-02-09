@@ -25,8 +25,8 @@ angular.module('frontcast')
     $scope.filters = {};
     $scope.filtersItems = {}; // the corresponding itesms, with full information available (id, slug, name etc...)
     $scope.facets = {};
-    
-    $scope.limit = 50;
+
+    $scope.limit = 15;
     $scope.page = 1;
 
     $scope.total = 0;// the number of toatl item in view
@@ -50,6 +50,11 @@ angular.module('frontcast')
     $scope.setPage = function() {
       $log.info('    setPage', $scope.page);
       $scope.$broadcast('API_PARAMS_CHANGED');
+    }
+
+    $scope.addPage = function() {
+      $scope.page+=1;
+      $log.info('    addPage', $scope.page);
     }
 
     $scope.setFacets = function(facets) {
@@ -78,6 +83,7 @@ angular.module('frontcast')
       $scope.filtersItems[key] = angular.extend({
         filter: filter
       }, item);
+      $scope.page = 1;
       $scope.$broadcast('API_PARAMS_CHANGED');
     };
 

@@ -6,7 +6,8 @@ angular.module('frontcast', [
   'ngRoute',
   'ngResource',
   'ui.bootstrap',
-  'hc.marked'
+  'hc.marked',
+  'infinite-scroll'
 ])
   .config(function ($routeProvider, $httpProvider) {
     $routeProvider
