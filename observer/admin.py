@@ -16,7 +16,7 @@ class TagAdmin(admin.ModelAdmin):
 
 class WorkingDocumentAdmin(admin.ModelAdmin):
   search_fields = ['title', 'slug']
-  fields = ['title', 'type', 'abstract', 'parent', 'dependencies', 'documents', 'owner', ]
+  fields = ['title', 'type', 'abstract', 'parent', 'dependencies', 'owner', ]
   list_filter = ('type',)
 
 

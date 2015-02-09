@@ -212,7 +212,8 @@ class WorkingDocument(AbstractDocument):
   dependencies = models.ManyToManyField("self", symmetrical=False, null=True, blank=True, related_name="dependents") # forkz! woring copies of the same pedagogical documents. A versioning likeLike related for documents
   copies = models.ManyToManyField("self", symmetrical=True, null=True, blank=True) # forkz! woring copies of the same pedagogical documents. A versioning likeLike related for documents
   tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !
-  documents = models.ManyToManyField('Document', null=True, blank=True) # internal links with existings documents
+
+  documents = models.ManyToManyField('Document', null=True, blank=True, through='Device', related_name='supportedby') # internal links with existings documents
 
   status  = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PRIVATE, blank=True, null=True)
   type = models.CharField(max_length=32, choices=TYPE_CHOICES + COURSE_TYPE_CHOICES + SESSION_TYPE_CHOICES)

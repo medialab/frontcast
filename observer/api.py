@@ -366,7 +366,9 @@ def documents_facets(req):
   facets['tools'] = [
     { 
       'count': d.count,
-      'title': d.title
+      'title': d.title,
+      'id': d.id,
+      'slug': d.slug
     } for d in WorkingDocument.objects.filter(supports__document__id__in=ids).annotate(count=Count('supports__document')).filter(count__gt=1)
   ]
 
