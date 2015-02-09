@@ -18,3 +18,8 @@ angular.module('frontcast')
         query: { method: 'GET', isArray: false }
     });
   })
+  .factory('DocumentsFacetsFactory', function($resource) {
+    return $resource('/api/document/facets', {}, {
+      query: { method: 'GET', isArray: false }
+    });
+  })

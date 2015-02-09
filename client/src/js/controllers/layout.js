@@ -40,6 +40,10 @@ angular.module('frontcast')
       $scope.$broadcast('API_PARAMS_CHANGED');
     }
 
+    $scope.setFiltersItems = function(filtersItems) {
+      $scope.filtersItems = filtersItems
+    }
+
     /*
       # function setFilter
 

@@ -16,7 +16,7 @@ apipatterns = patterns('observer.api',
     url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'workingDocument', name='observer_working_document'),
     
     # REST for document facets
-    url(r'document/facets/$', 'documents_facets', name='observer_documents_facets'),
+    url(r'document/facets$', 'documents_facets', name='observer_documents_facets'),
     
     # REST for document
     url(r'document/$', 'documents', name='observer_documents'),

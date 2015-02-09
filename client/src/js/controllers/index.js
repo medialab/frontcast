@@ -8,7 +8,7 @@
  * Controller of the frontcast layout.
  */
 angular.module('frontcast')
-  .controller('indexCtrl', function($scope, $log, $routeParams, DocumentsFactory) {
+  .controller('indexCtrl', function($scope, $log, $routeParams, DocumentsFactory, DocumentsFacetsFactory) {
     $log.debug('indexCtrl loaded.');
 
     $scope.setOrderbyChoices([
@@ -41,6 +41,9 @@ angular.module('frontcast')
       $log.info('indexCtrl.sync', $scope.getParams());
       DocumentsFactory.query($scope.getParams(), function(res) {
         $scope.items = res.objects;
+      });
+      DocumentsFacetsFactory.query($scope.getParams(), function(res) {
+        $scope.setFiltersItems(res.facets);
       });
     };
 
