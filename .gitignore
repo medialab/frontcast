@@ -22,3 +22,7 @@ frontcast_nginx.conf
 *.webm
 ._*
 node_modules/
+
+# we do not need bower
+bower.json
+bower_components

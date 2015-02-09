@@ -11,14 +11,22 @@ angular.module('frontcast')
   .controller('indexCtrl', function($scope, $log, $routeParams, DocumentsFactory) {
     $log.debug('indexCtrl loaded.');
 
-    $scope.setOrderby([
+    $scope.setOrderbyChoices([
       {
-        label: 'title',
+        label: 'title a-z',
+        value: 'title'
+      },
+      {
+        label: 'title z-a',
         value: '-title'
       },
       {
-        label: 'rating',
+        label: 'top rated',
         value: '-rating'
+      },
+      {
+        label: 'last added first',
+        value: '-id'
       }
     ],{
         label: 'last added',
@@ -30,12 +38,13 @@ angular.module('frontcast')
       Load documents
     */
     $scope.sync = function() {
-      $log.info('indexCtrl.sync');
-      DocumentsFactory.query({order_by:'["title"]'}, function(res) {
+      $log.info('indexCtrl.sync', $scope.getParams());
+      DocumentsFactory.query($scope.getParams(), function(res) {
         $scope.items = res.objects;
       });
     };
-    
 
+    $scope.$on('API_PARAMS_CHANGED', $scope.sync);
+    
     $scope.sync();
   });

@@ -30,3 +30,4 @@ class TagsForm(forms.Form):
 class DeviceForm(forms.ModelForm):
   class Meta:
     model = Device
+    exclude = ()

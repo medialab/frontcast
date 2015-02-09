@@ -9,7 +9,7 @@
 
     
     <div class="keywords">
-      <a class="tag" ng-repeat="tag in doc.tags.Institution">{{tag.name}}</a>
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.Institution">{{tag.name}}</a>
       <a class="tag" ng-repeat="tag in doc.tags.Date">{{tag.name}}</a>
       
     </div>

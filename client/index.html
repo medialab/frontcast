@@ -25,38 +25,42 @@
     }
     </style>
 
-    <header>
-      <img id="logo" src="{{STATIC_URL}}/src/images/forccast.svg">
-    </header>
-    {% verbatim %}
+   
+    
     <div id="wrapper" ng-controller="layoutCtrl">
-      
+      <header>
+        <div class="row">
+          <div class="col-md-4">
+            <img id="logo" src="{{STATIC_URL}}/src/images/forccast.svg">
+          </div>
+        </div>
+      </header>
 
       <div class="row">
-        
-        
-        
         <div id="view" ng-view class="col-md-8">
           
         </div>
+        {% verbatim %}
         <aside class="col-md-4">
           <div class="dropdown" dropdown on-toggle="toggled(open)">
 
             <a href class="dropdown-toggle btn btn-default" dropdown-toggle>
-              {{orderby.label}}
+              {{orderBy.label}}
             </a>
             <ul class="dropdown-menu">
-              <li ng-repeat="choice in orderbyChoices">
-                <a href>{{choice.label}}</a>
+              <li ng-repeat="choice in orderByChoices" ng-click="setOrderBy(choice)">
+                <a href >{{choice.label}}</a>
               </li>
             </ul>
           </div>
 
-
+          {{filtersItems}}
         </aside>
+        {% endverbatim %}
+        
       </div>
     </div>
-    {% endverbatim %}
+    
     <!--
 
         angular libraries

@@ -739,6 +739,8 @@ class Property(models.Model):
     unique_together = ("phase", "type")
     verbose_name_plural = "properties"
 
+
+
 class Device(models.Model):
   '''
   When A tool has been used for a specific document?
@@ -799,6 +801,7 @@ class Device(models.Model):
 
   class Meta:
     unique_together = ("working_document", "document", "type")
+
 
 
 #
