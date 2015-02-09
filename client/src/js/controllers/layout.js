@@ -24,9 +24,14 @@ angular.module('frontcast')
     $scope.orderBy = $scope.orderByChoices[0];
     $scope.filters = {};
     $scope.filtersItems = {}; // the corresponding itesms, with full information available (id, slug, name etc...)
+    $scope.facets = {};
+    
     $scope.limit = 50;
     $scope.page = 1;
+
     $scope.total = 0;// the number of toatl item in view
+    $scope.filtered = 0;// the number of available items in view (to be used with filters)
+
 
     // to be called from below
     $scope.setOrderbyChoices = function(choices, orderBy) {
@@ -47,12 +52,17 @@ angular.module('frontcast')
       $scope.$broadcast('API_PARAMS_CHANGED');
     }
 
-    $scope.setFiltersItems = function(filtersItems) {
-      $scope.filtersItems = filtersItems
+    $scope.setFacets = function(facets) {
+      $scope.facets = facets
     }
 
     $scope.setTotal = function(total) {
       $scope.total = total;
+    }
+
+    // set number of filtered items
+    $scope.setFiltered = function(filtered) {
+      $scope.filtered = filtered;
     }
 
     /*

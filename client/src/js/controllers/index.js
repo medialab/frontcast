@@ -41,10 +41,11 @@ angular.module('frontcast')
       $log.info('indexCtrl.sync', $scope.getParams());
       DocumentsFactory.query($scope.getParams(), function(res) {
         $scope.items = res.objects;
-        $scope.setTotal(res.meta.total_count);
+        $scope.setFiltered(res.meta.total_count);
       });
       DocumentsFacetsFactory.query($scope.getParams(), function(res) {
-        $scope.setFiltersItems(res.facets);
+        $scope.setFacets(res.facets);
+        $scope.setTotal(res.meta.total_count); // without filtering applied
       });
     };
 

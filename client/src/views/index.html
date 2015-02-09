@@ -3,23 +3,27 @@
 
 
 <div>
-  <div ng-repeat="doc in items">
+  <div ng-repeat="doc in items" class="item">
     <h2>{{doc.title}}</h2>
-    <div class="abstract" marked="doc.abstract"></div>
-
+    
     
     <div class="keywords">
       <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.Institution">{{tag.name}}</a>
-      <a class="tag" ng-repeat="tag in doc.tags.Date">{{tag.name}}</a>
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.Date">{{tag.name}}</a>
       
     </div>
     
     <div class="keywords">
-      <a class="tag" ng-repeat="tag in doc.tags.KEYWORD">{{tag.name}}</a>
-      <a class="tag" ng-repeat="tag in doc.tags.FREE">{{tag.name}}</a>
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.KEYWORD">{{tag.name}}</a>
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.FREE">{{tag.name}}</a>
     </div>
 
+    <div class="content">
 
+      <a ng-href="{{doc.permalink}}" class="permalink">{{doc.permalink}}</a> <span class="abstract" marked="doc.abstract"></span>
+    </div>
+
+    <div class="rating">{{doc.rating}}</div>
   </div>
 
 </div>

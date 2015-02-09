@@ -4,8 +4,8 @@ body{
 }
 
 h2{
-  font-size: 16px;
-  line-height: 25px;
+  font-size: 24px;
+  line-height: 36px;
 
 }
 
@@ -29,7 +29,76 @@ header #logo{
   margin: 80px 100px;
 }
 
+#wrapper aside{
+  position: fixed;
+  width: 320px;
+}
+
+#wrapper aside h3{
+  font-size: 18px;
+  line-height: 36px;
+  margin-top: 0;
+  color: rgb(170,170,170);
+}
+
+#wrapper aside h3 .number{
+  color: #1d1d1d;
+  font-size: 24px;
+}
+
+#wrapper aside .explaination{
+  margin-bottom: 40px;
+  
+}
+
+
+#view{
+  margin-left: 360px;
+}
+
 
 .tag{
-  margin: 2px 10px;
+  margin: 2px 10px 2px 0;
+  border-bottom: 1px solid #1d1d1d;
+  color: #1d1d1d;
+  
+}
+
+.tag:hover{
+  background: #33cccc;
+  color: white;
+}
+
+.content{
+}
+
+.abstract{
+  color: rgb(170, 170, 170);
+}
+
+.content .permalink{
+  color: rgb(70, 70, 70);
+  word-break: break-all;
+}
+
+.keywords{
+  margin-bottom: 20px;
+}
+
+.item{
+  margin: 20px 0px 60px 0px;
+
+  width: 420px;
+}
+
+
+ul.pagination li a{
+  border-width: 0px;
+  color: #1d1d1d;
+  background: transparent;
+}
+
+ul.pagination li.active a, ul.pagination li.active a:hover{
+  background: #EC5148;
+  color: white;
 }

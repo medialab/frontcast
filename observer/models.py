@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import json
+import json, operator
 from markdown import markdown
 
 from django import forms
@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Count, Q
 from django.utils.translation import ugettext as _
 
 from observer.helpers import uuslug, profiler
@@ -406,6 +407,7 @@ class Document(AbstractDocument):
       super(Document, self).save()
 
     if self.permalink:
+      print 'permalink', self.permalink
       import micawber
       mic = micawber.bootstrap_basic()
 

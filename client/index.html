@@ -36,16 +36,26 @@
         </div>
       </header>
 
-      <div class="row">
-        <div id="view" ng-view class="col-md-8">
-          
-        </div>
+      
         {% verbatim %}
-        <aside class="col-md-4">
+        <aside>
+          <div class="explaination">
+            <h3><span class="number">{{filtered}}</span> controversy mappings</h3>
+            <div ng-if="filtered != total">
+              over {{total}} matching: 
+            </div>
+            
+            <span class="tag" ng-repeat="(key, fil) in filtersItems">
+              {{fil.name}}
+              <span class="fa fa-plus" ng-click="removeFilter(key, fil.id)">[exclude]</span>
+            </span>
+          </div>
+
           <div class="dropdown" dropdown on-toggle="toggled(open)">
 
             <a href class="dropdown-toggle btn btn-default" dropdown-toggle>
               {{orderBy.label}}
+              <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <li ng-repeat="choice in orderByChoices" ng-click="setOrderBy(choice)">
@@ -54,11 +64,15 @@
             </ul>
           </div>
 
-          <pagination total-items="total" items-per-page="limit" ng-model="page" ng-change="setPage()"></pagination>
+          <!-- pagination total-items="total" items-per-page="limit" ng-model="page" ng-change="setPage()"></pagination -->
+
+          {{facets}}
 
         </aside>
         {% endverbatim %}
-        
+        <div id="view" ng-view>
+          
+        </div>
       </div>
     </div>
     

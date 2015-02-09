@@ -95,7 +95,7 @@ def get_available_documents(req, res):
       queryset = queryset.filter(r)
 
   if res.search:
-    queryset = queryset.filter( Document.search(epoxy.search))
+    queryset = queryset.filter( Document.search(res.search))
 
   return queryset
 
@@ -331,10 +331,12 @@ def documents_facets(req):
   }
 
   #load request filters and add them to the available queryset
-  queryset = get_available_documents(req=req, res=res).filter(**res.filters)
+  queryset = get_available_documents(req=req, res=res)
   
   c = queryset.count()
   res.meta('total_count', c)
+
+  queryset = queryset.filter(**res.filters)
 
   for t in queryset.order_by().values('type').annotate(count=Count('id')):
     facets['type'].append({
