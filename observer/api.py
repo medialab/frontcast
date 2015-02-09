@@ -55,7 +55,6 @@ def is_number(s):
 #  @param django.db.models.Q instance
 #  @return <observer.models.Dpcument> or raise exception
 # 
-@staff_member_required_for_POST
 def get_available_document(request, q):
   '''
   @param request
@@ -79,18 +78,25 @@ def get_available_document(request, q):
 #
 #  Return a queryset according to user auth level and document status
 #  
-#  @param request
+#  @param req HTTPRequest django
 #  @return django.model.Queryset
 # 
-@staff_member_required_for_POST
-def get_available_documents(request):
-  
-  if request.user.is_staff:
+def get_available_documents(req, res):
+  if req.user.is_staff:
     queryset = Document.objects.filter().distinct()
-  elif request.user.is_authenticated():
-    queryset = Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=request.user) | Q(authors=request.user)).distinct()
+  elif req.user.is_authenticated():
+    queryset = Document.objects.filter(Q(status=Document.PUBLIC) | Q(owner=req.user) | Q(authors=req.user)).distinct()
   else:
     queryset = Document.objects.filter(status=Document.PUBLIC).distinct()
+
+  # deal with 'reduce' and various search field
+  if res.reduce:
+    for r in res.reduce:
+      queryset = queryset.filter(r)
+
+  if res.search:
+    queryset = queryset.filter( Document.search(epoxy.search))
+
   return queryset
 
 
@@ -185,7 +191,7 @@ def documents(req):
     doc.save()
     return res.item(doc).json()
 
-  queryset = get_available_documents(req)
+  queryset = get_available_documents(req=req, res=res)
   res.queryset(queryset)
   res.meta('query', '%s' % res._queryset.query)
   return res.json()
@@ -198,7 +204,7 @@ def documents(req):
 #
 @staff_member_required_for_POST
 def document(req, pk):
-  res = Epoxy(request)
+  res = Epoxy(req)
 
   try:
     doc = get_available_document(req, Q(pk=pk) if is_number(pk) else Q(slug=pk))
@@ -308,4 +314,40 @@ def device(req, pk):
       doc.save()
   
   return res.item(doc, deep=True).json()
+
+
+
+#
+# api:/documents/facets
+# Get available filters for the given view. To be reviewed.
+def documents_facets(req):
+  res = Epoxy(req)
+
+  facets = {
+    'type'  : [],
+    'year'  : {},
+    'tags'  : {},
+    'tools' : [],
+  }
+
+  #load request filters and add them to the available queryset
+  queryset = get_available_documents(req=req, res=res).filter(**res.filters)
+  
+  c = queryset.count()
+  res.meta('total_count', c)
+
+  for t in queryset.order_by().values('type').annotate(count=Count('id')):
+    facets['type'].append({
+      'name': '%s'%t['type'],
+      'count': t['count']
+    })
+
+  for t in queryset.order_by().values('date').annotate(count=Count('id')):
+    facets['year']['%s'%t['date']] = {
+      'count': t['count']
+    }
+
+  res.add('facets', facets)
+
+  return res.json()
 
