@@ -26,6 +26,7 @@ angular.module('frontcast')
     $scope.filtersItems = {}; // the corresponding itesms, with full information available (id, slug, name etc...)
     $scope.limit = 50;
     $scope.page = 1;
+    $scope.total = 0;// the number of toatl item in view
 
     // to be called from below
     $scope.setOrderbyChoices = function(choices, orderBy) {
@@ -37,11 +38,21 @@ angular.module('frontcast')
     $scope.setOrderBy = function(choice) {
       $log.info('    setOrderby', choice);
       $scope.orderBy = choice;
+      $scope.page = 1;
+      $scope.$broadcast('API_PARAMS_CHANGED');
+    }
+
+    $scope.setPage = function() {
+      $log.info('    setPage', $scope.page);
       $scope.$broadcast('API_PARAMS_CHANGED');
     }
 
     $scope.setFiltersItems = function(filtersItems) {
       $scope.filtersItems = filtersItems
+    }
+
+    $scope.setTotal = function(total) {
+      $scope.total = total;
     }
 
     /*

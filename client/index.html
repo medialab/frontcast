@@ -54,7 +54,8 @@
             </ul>
           </div>
 
-          {{filtersItems}}
+          <pagination total-items="total" items-per-page="limit" ng-model="page" ng-change="setPage()"></pagination>
+
         </aside>
         {% endverbatim %}
         
