@@ -9,7 +9,7 @@ from django.http import HttpResponse
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 from observer.forms import DeviceForm, FullDocumentForm, LoginForm
-from observer.models import Device, Document, WorkingDocument
+from observer.models import Device, Document, WorkingDocument, Tag
 
 # 
 # decorator staff_member_required_for_POST
@@ -325,7 +325,7 @@ def documents_facets(req):
 
   facets = {
     'type'  : [],
-    'year'  : {},
+    'date'  : [],
     'tags'  : {},
     'tools' : [],
   }
@@ -343,9 +343,32 @@ def documents_facets(req):
     })
 
   for t in queryset.order_by().values('date').annotate(count=Count('id')):
-    facets['year']['%s'%t['date']] = {
+    facets['date'].append({
+      'name': '%s'%t['date'],
       'count': t['count']
-    }
+    })
+
+  ids = []
+  for d in queryset:
+    ids.append(d.id)
+  
+  # get keywords
+  for facet in Tag.TYPE_IN_FACETS:
+    facets['tags'][facet[0]] = [
+      {
+        'count': t.count,
+        'slug': t.slug,
+        'name': t.name,
+        'type': t.type,
+      } for t in Tag.objects.filter(document__id__in=ids, type=facet[0]).annotate(count=Count('document')).filter(count__gt=1)
+    ]
+
+  facets['tools'] = [
+    { 
+      'count': d.count,
+      'title': d.title
+    } for d in WorkingDocument.objects.filter(supports__document__id__in=ids).annotate(count=Count('supports__document')).filter(count__gt=1)
+  ]
 
   res.add('facets', facets)
 

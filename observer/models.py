@@ -81,6 +81,13 @@ class Tag(models.Model):
     (OEMBED_THUMBNAIL_URL, 'oembed_thumbnail_url'),
   )
 
+  TYPE_IN_FACETS = (
+    (FREE, 'no category'),
+    (AUTHOR, 'AUTHOR'),
+    (KEYWORD, 'KEYWORD'),
+    (INSTITUTION, 'Institution'),
+  )
+
   TYPE_CHOICES = (
     (FREE, 'no category'),
     (AUTHOR, 'AUTHOR'),
