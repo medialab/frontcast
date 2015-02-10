@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>frontcast</title>
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link href="{{STATIC_URL}}/src/css/style.css" rel='stylesheet' type='text/css'>
     </style>
@@ -29,40 +29,41 @@
     
     <div id="wrapper" ng-controller="layoutCtrl">
       <header>
-        <div class="row">
-          <div class="col-md-4">
-            <img id="logo" src="{{STATIC_URL}}/src/images/forccast.svg">
-          </div>
-        </div>
+        <img id="logo" src="{{STATIC_URL}}/src/images/forccast.svg">
+        <nav>
+          <ul>
+            <li class="active">c. mappings</li>
+            <li>the devices</li>
+          </ul>
+        </nav>
       </header>
 
       
         {% verbatim %}
         <aside>
           <div class="explaination">
-            <h3><span class="number">{{filtered}}</span> controversy mappings</h3>
-            <div ng-if="filtered != total">
-              over {{total}} matching: 
-            </div>
+            <h3><span class="number">{{filtered}}</span> c. mappings
+              <div class="dropdown" dropdown on-toggle="toggled(open)">
+                <a href class="dropdown-toggle btn btn-default" dropdown-toggle>
+                  {{orderBy.label}}
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="choice in orderByChoices" ng-click="setOrderBy(choice)">
+                    <a href >{{choice.label}}</a>
+                  </li>
+                </ul>
+              </div>
+            </h3>
+            
             
             <span class="tag" ng-repeat="(key, fil) in filtersItems">
-              {{fil.name}}
+              {{fil.name||fil.title}}
               <span class="fa fa-plus" ng-click="removeFilter(key, fil.id)">[exclude]</span>
             </span>
           </div>
 
-          <div class="dropdown" dropdown on-toggle="toggled(open)">
-
-            <a href class="dropdown-toggle btn btn-default" dropdown-toggle>
-              {{orderBy.label}}
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li ng-repeat="choice in orderByChoices" ng-click="setOrderBy(choice)">
-                <a href >{{choice.label}}</a>
-              </li>
-            </ul>
-          </div>
+          
 
           <!-- pagination total-items="total" items-per-page="limit" ng-model="page" ng-change="setPage()"></pagination -->
 

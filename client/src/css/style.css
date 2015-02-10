@@ -22,6 +22,33 @@ header{
 
 header #logo{
   padding: 13px 0;
+  float: left;
+}
+
+header nav{
+  margin-left: 360px;
+}
+
+header nav ul{
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  background: #e8e8e8;
+  width: 420px;
+}
+
+header nav li{
+  list-style-type: none;
+  float: left;
+  padding: 0 20px;
+  line-height: 50px;
+  
+}
+
+header nav li.active{
+  background: #EC5148;
+  color: white;
+  /*border-bottom:  1px solid  #EC5148;*/
 }
 
 
@@ -41,9 +68,19 @@ header #logo{
   color: rgb(170,170,170);
 }
 
+#wrapper aside h3 .dropdown{
+  display: inline-block;
+  margin-left: 20px;
+}
+
+#wrapper aside h3 .btn{
+  border: 1px solid rgb(170,170,170);
+}
+
 #wrapper aside h3 .number{
   color: #1d1d1d;
-  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Source Code Pro';
 }
 
 #wrapper aside .explaination{
@@ -56,20 +93,27 @@ header #logo{
   margin-left: 360px;
 }
 
+.item{
+  margin: 20px 0px 60px 0px;
+  width: 420px;
+  padding: 15px 20px;
+  background: #f5f5f5;
+}
+
+.item h2{
+  margin: 0;
+}
 
 .tag{
   margin: 2px 10px 2px 0;
   border-bottom: 1px solid #1d1d1d;
   color: #1d1d1d;
-  
+  font-family: 'Source Code Pro';
 }
 
 .tag:hover{
   background: #33cccc;
   color: white;
-}
-
-.content{
 }
 
 .abstract{
@@ -85,12 +129,17 @@ header #logo{
   margin-bottom: 20px;
 }
 
-.item{
-  margin: 20px 0px 60px 0px;
-
-  width: 420px;
+.metadata{
+  margin: 0;
 }
 
+.date.tag{
+  color: #EC5148;
+}
+
+.rating{
+  color: rgb(170, 170, 170);
+}
 
 ul.pagination li a{
   border-width: 0px;

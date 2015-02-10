@@ -97,6 +97,7 @@ angular.module('frontcast')
         delete $scope.filters[key];
         delete $scope.filtersItems[key];
       };
+      $scope.page = 1;
       $scope.$broadcast('API_PARAMS_CHANGED');
     };
 
