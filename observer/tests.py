@@ -12,12 +12,14 @@ from django.utils.translation import activate
 from observer.models import DocumentProfile
 from walt.models import Document, WorkingDocument
 
+from unittest import skipUnless
 import urllib2, json
 
 
 
 class BiblibTest(TestCase):
 
+  @skipUnless(settings.BIBLIB_ENDPOINT, 'BIBLIB_ENDPOINT setting not set.')
   def test_endpoint(self):
     '''
     Test biblib connection and settings stuff
