@@ -28,6 +28,8 @@ angular.module('frontcast')
     $scope.total = 0;// the number of toatl item in view
     $scope.filtered = 0;// the number of available items in view (to be used with filters)
 
+    $scope.user = {}; // the current user
+    
 
     // to be called from below
     $scope.setOrderbyChoices = function(choices, orderBy) {
@@ -67,6 +69,11 @@ angular.module('frontcast')
     $scope.setFiltered = function(filtered) {
       $scope.filtered = filtered;
     }
+
+    $scope.setUser = function(user) {
+      $log.info('    setUser', user);
+      $scope.user = user;
+    };
 
     /*
       # function setFilter

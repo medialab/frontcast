@@ -127,10 +127,14 @@ class Epoxy:
 
 
   def process(self, verbose=False):
+    print  
     self.response['meta'] = {}
     self.response['meta']['action'] = whosdaddy(3)
-    self.response['meta']['user'] = self.request.user.username
-
+    self.response['meta']['user'] = 'anonymous' if self.request.user.is_anonymous() else {
+      'username': self.request.user.username,
+      'is_staff': self.request.user.is_staff,
+      'first_name': self.request.user.first_name,
+    }
     self.response['meta']['language'] = self.request.LANGUAGE_CODE if 'LANGUAGE_CODE' in self.request else None
 
     try:

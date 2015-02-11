@@ -28,14 +28,21 @@
 
    
     
-    <div id="wrapper" ng-controller="layoutCtrl">
+    <div id="wrapper" ng-controller="layoutCtrl" class="ng-cloak">
       <header>
         <img id="logo" src="{{STATIC_URL}}/src/images/forccast.svg">
+        <div id="search">
+          <input type="text" placeholder="search" ng-model="query">
+          <button><i class="fa fa-search"></i></button>
+        </div>
         <nav>
           {% verbatim %}
           <ul>
             <li ng-class="ctrl == 'indexCtrl'? 'active': ''"><a href="#/d">c. mappings</a></li>
             <li ng-class="ctrl == 'toolsCtrl'? 'active': ''"><a href="#/t">the devices</a></li>
+            <li></li>
+            <li ng-if="user.username" class="user"><a ng-href="#/{{user.username}}">{{user.username}}</a></li>
+            <li ng-if="user == 'anonymous'" class="user"><a ng-href="/admin">login</a></li>
           </ul>
           {% endverbatim %}
         </nav>

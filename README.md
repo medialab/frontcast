@@ -27,7 +27,8 @@ mkvirtualenv observer
 pip install -r requirements.txt
 ```
 
-## configure and launch test
+### install db and launch test
+
 ```
 python manage.py migrate
 python manage.py test

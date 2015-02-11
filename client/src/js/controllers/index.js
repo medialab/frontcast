@@ -44,8 +44,10 @@ angular.module('frontcast')
       $scope.infiniteScrolling = 'DISABLED';
       DocumentsFactory.query($scope.getParams(), function(res) {
         $scope.items = res.objects;
-        $scope.setFiltered(res.meta.total_count);
         $scope.infiniteScrolling = 'ENABLED';
+
+        $scope.setUser(res.meta.user);
+        $scope.setFiltered(res.meta.total_count);
       });
       DocumentsFacetsFactory.query($scope.getParams(), function(res) {
         $scope.setFacets(res.facets);

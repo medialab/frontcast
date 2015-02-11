@@ -25,6 +25,24 @@ header #logo{
   float: left;
 }
 
+header #search{
+  float: left;
+  margin-left: 100px;
+  width: 180px;
+  height: 25px;
+  line-height: 25px;
+}
+
+header #search input{
+  padding: 0;
+  margin: 0;
+  border-width: 0px;
+  width: 120px;
+  height: 25px;
+  margin: 12px 10px 0 0;
+  padding: 0 0 0 5px;
+}
+
 header nav{
   margin-left: 360px;
 }
@@ -56,6 +74,10 @@ header nav li.active{
 
 header nav li.active a {
   color: white;
+}
+
+header nav li.user {
+  float: right;
 }
 
 #wrapper{
@@ -124,6 +146,10 @@ header nav li.active a {
 
 .abstract{
   color: rgb(170, 170, 170);
+}
+
+.abstract img{
+  min-width: 100%;
 }
 
 .content .permalink{
