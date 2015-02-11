@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json, operator
-from markdown import markdown
 
 from django import forms
 from django.conf import settings
