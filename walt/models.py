@@ -102,10 +102,10 @@ class Tag(models.Model):
   related = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
 
 
-  def save(self, **kwargs):
+  def save(self, *args, **kwargs):
     if self.pk is None:
       self.slug = uuslug(model=Tag, instance=self, value='%s-%s'% (self.type, self.name))
-    super(Tag, self).save()
+    super(Tag, self).save(*args, **kwargs)
 
 
   @staticmethod
@@ -310,7 +310,7 @@ class WorkingDocument(AbstractDocument):
     return reduce(operator.or_, argument_list)
 
 
-  def save(self, **kwargs):
+  def save(self, *args, **kwargs):
     # handle type-driven validation when parent is given. must we put this logic into the form? Nope because of parent stuff.
     created = self.pk is None
     self.slug = uuslug(model=WorkingDocument, instance=self, value=self.title)
@@ -328,7 +328,7 @@ class WorkingDocument(AbstractDocument):
       elif self.type == WorkingDocument.TOOL and self.parent.type not in [WorkingDocument.TASK, WorkingDocument.TOOL]:
         raise IntegrityError("WoringDocument of type TOOL must be below TASK or TOOL parent type")
 
-    super(WorkingDocument, self).save()
+    super(WorkingDocument, self).save(*args, **kwargs)
 
     if created and self.permalink:
       alias = WorkingDocument.objects.exclude(pk=self.pk).filter(permalink=self.permalink).order_by('id')
@@ -337,7 +337,7 @@ class WorkingDocument(AbstractDocument):
         self.type = WorkingDocument.COPY
         alias[0].copies.add(self) # save as a copy automatically
         alias[0].save()
-        super(WorkingDocument, self).save()
+        super(WorkingDocument, self).save(*args, **kwargs)
 
 
   def json(self, deep=False):
@@ -461,11 +461,11 @@ class Document(AbstractDocument):
     return reduce(operator.or_, argument_list)
 
 
-  def save(self, **kwargs):
+  def save(self, *args, **kwargs):
     self.slug = helper_uuslug(model=Document, instance=self, value=self.title)
     
     if self.pk is None:
-      super(Document, self).save()
+      super(Document, self).save(*args, **kwargs)
 
     if self.permalink:
       import micawber
