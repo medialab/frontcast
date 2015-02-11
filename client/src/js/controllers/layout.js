@@ -10,18 +10,14 @@
  * Use the dedicated function to modify layoutCtrl scope vars.
  */
 angular.module('frontcast')
-  .controller('layoutCtrl', function($scope, $log, $routeParams) {
-    $log.debug('layoutCtrl loaded');
-   
-
+  .controller('layoutCtrl', function($scope, $log, $routeParams, $route) {
+    $log.debug('layoutCtrl loaded', $route);
+  
     $scope.orderByChoices = [
-      {
-        label:'label',
-        value:'soortvalue'
-      }
+      
     ];
     
-    $scope.orderBy = $scope.orderByChoices[0];
+    $scope.orderBy = {};
     $scope.filters = {};
     $scope.filtersItems = {}; // the corresponding itesms, with full information available (id, slug, name etc...)
     $scope.facets = {};
@@ -47,7 +43,9 @@ angular.module('frontcast')
       $scope.$broadcast('API_PARAMS_CHANGED');
     }
 
-    $scope.setPage = function() {
+    $scope.setPage = function(page) {
+      if(page)
+        $scope.page = page;
       $log.info('    setPage', $scope.page);
       $scope.$broadcast('API_PARAMS_CHANGED');
     }
@@ -136,4 +134,19 @@ angular.module('frontcast')
         }
       }
     };
+
+
+
+    /*
+      Route support
+    */
+    $scope.$on('$routeChangeSuccess', function(location, route){
+      $scope.ctrl = $route.current.$$route.controller;
+    })
+
+
+
+
+
+
   });

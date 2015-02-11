@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>frontcast</title>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link href="{{STATIC_URL}}/src/css/style.css" rel='stylesheet' type='text/css'>
     </style>
@@ -31,10 +32,12 @@
       <header>
         <img id="logo" src="{{STATIC_URL}}/src/images/forccast.svg">
         <nav>
+          {% verbatim %}
           <ul>
-            <li class="active">c. mappings</li>
-            <li>the devices</li>
+            <li ng-class="ctrl == 'indexCtrl'? 'active': ''"><a href="#/d">c. mappings</a></li>
+            <li ng-class="ctrl == 'toolsCtrl'? 'active': ''"><a href="#/t">the devices</a></li>
           </ul>
+          {% endverbatim %}
         </nav>
       </header>
 
@@ -103,6 +106,7 @@
     <script type="text/javascript" src="{{STATIC_URL}}/src/js/services/workingdocuments.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}/src/js/controllers/layout.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}/src/js/controllers/index.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}/src/js/controllers/tools.js"></script>
 
   </body>
 </html>

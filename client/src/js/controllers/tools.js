@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc function
- * @name frontcast.controller:indexCtrl
+ * @name frontcast.controller:toolsCtrl
  * @description
- * # indexCtrl
+ * # toolsCtrl
  * Controller of the frontcast layout.
  */
 angular.module('frontcast')
-  .controller('indexCtrl', function($scope, $log, $routeParams, DocumentsFactory, DocumentsFacetsFactory) {
-    $log.debug('indexCtrl loaded.');
+  .controller('toolsCtrl', function($scope, $log, $routeParams, WorkingDocumentsFactory, WorkingDocumentsFacetsFactory) {
+    $log.debug('toolsCtrl loaded.');
     $scope.infiniteScrolling = 'DISABLED'; // do nothing now
     $scope.items = [];
 
@@ -40,14 +40,16 @@ angular.module('frontcast')
       Load documents
     */
     $scope.sync = function() {
-      $log.info('indexCtrl.sync', $scope.getParams());
+      $scope.$parent.filters.type = 'T';
+
+      $log.info('toolsCtrl.sync', $scope.getParams());
       $scope.infiniteScrolling = 'DISABLED';
-      DocumentsFactory.query($scope.getParams(), function(res) {
+      WorkingDocumentsFactory.query($scope.getParams(), function(res) {
         $scope.items = res.objects;
         $scope.setFiltered(res.meta.total_count);
         $scope.infiniteScrolling = 'ENABLED';
       });
-      DocumentsFacetsFactory.query($scope.getParams(), function(res) {
+      WorkingDocumentsFacetsFactory.query($scope.getParams(), function(res) {
         $scope.setFacets(res.facets);
         $scope.setFiltered(res.meta.total_count);
         $scope.setTotal(res.meta.total_count); // without filtering applied
@@ -56,18 +58,19 @@ angular.module('frontcast')
 
 
     $scope.infinite = function() {
-      $log.info('indexCtrl.infinite', $scope.infiniteScrolling, $scope.page);
+      $log.info('toolsCtrl.infinite', $scope.infiniteScrolling, $scope.page);
       if($scope.infiniteScrolling == 'DISABLED')
         return;
       $scope.infiniteScrolling = 'DISABLED';
       $scope.addPage();
-      $log.info('indexCtrl.infinite', $scope.getParams());
+      $log.info('toolsCtrl.infinite', $scope.getParams());
       
-      DocumentsFactory.query($scope.getParams(), function(res) {
+      WorkingDocumentsFactory.query($scope.getParams(), function(res) {
         for (var i = 0; i < res.objects.length; i++) {
           $scope.items.push(res.objects[i]);
         }
-        $scope.infiniteScrolling = 'ENABLED';
+        if(res.objects.length)
+          $scope.infiniteScrolling = 'ENABLED';
       });
     }
 

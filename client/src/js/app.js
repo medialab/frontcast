@@ -16,6 +16,11 @@ angular.module('frontcast', [
         controller: 'indexCtrl'
       })
 
+      .when('/t', {
+        templateUrl: STATIC_URL + 'src/views/tools.html',
+        controller: 'toolsCtrl'
+      })
+
       // view list, create, view, edit a "document"
       .when('/d', {
         templateUrl: STATIC_URL + 'src/views/index.html',

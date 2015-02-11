@@ -1,15 +1,16 @@
 # frontcast
 
-
+Frontcast is the django application dedicated to the controversy mapping archive. Frontcast exposes an internal rest API that works like any html python view and uses LDAP as authentication protocoll.
 
 observer/local_settings.py then
 
 
 
-configuration details are stored udner 
-##installation (Unix)
 
+##installation (Unix)
+Clone or fork the project, then under the hood of a virtualenv, proceed to install requirements with pip installer.
 ```
+mkvirtualenv observer
 pip install -r requirements.txt
 
 

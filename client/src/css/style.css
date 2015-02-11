@@ -45,12 +45,18 @@ header nav li{
   
 }
 
-header nav li.active{
-  background: #EC5148;
-  color: white;
-  /*border-bottom:  1px solid  #EC5148;*/
+header nav li a{
+  color: #1d1d1d;
+  display: block;
 }
 
+header nav li.active{
+  background: #EC5148;
+}
+
+header nav li.active a {
+  color: white;
+}
 
 #wrapper{
   margin: 80px 100px;
