@@ -11,8 +11,8 @@ DATABASES = {
 SECRET_KEY = 'secret very secret key for frontcast'
 
 # LDAP configuration
-AUTH_LDAP_SERVER_URI = "ldap://ldap.sciences-po.fr"
-AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s,ou=Users,o=sciences-po,c=fr"
+AUTH_LDAP_SERVER_URI = "ldap://<YOUR LDAP>"
+AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(XXX)s,ou=XXX,o=XXXXXX,c=XXX"
 
 # BIBLIB reference manager, if any. https://github.com/medialab/reference_manager
 BIBLIB_ENDPOINT = ''
