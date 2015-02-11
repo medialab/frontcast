@@ -1,6 +1,6 @@
+import os
 
-
-FRONTCAST_HOME = "/path/to/frontcast"
+FRONTCAST_HOME = os.path.dirname(os.path.dirname(__file__))
 
 DB_BACKEND	= 'django.db.backends.sqlite3'
 DB_NAME	= '%s/sqlite/frontcast.db' % FRONTCAST_HOME
@@ -17,6 +17,7 @@ AUTH_LDAP_USER_DN_TEMPLATE = ""
 MEDIA_ROOT = '%s/media' % FRONTCAST_HOME
 STORAGE_ROOT = '/external%s/storage/public' % FRONTCAST_HOME
 STORAGE_ROOT_PROTECTED = '/external%s/storage/protected' % FRONTCAST_HOME # available only for logged in sessions
+STORAGE_ROOT_PUBLIC = MEDIA_ROOT
 
 SECRET_KEY = 'secret very secret key'
 
@@ -70,7 +71,8 @@ WALT_ROLES = [
   }
 ]
 
-BIBLIB_ENDPOINT = "http://localhost:8080/"
+
+BIBLIB_ENDPOINT = None
 
 EMAIL_HOST = 'smtp.domain.com'
 EMAIL_PORT = 25

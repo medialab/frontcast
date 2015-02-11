@@ -1,7 +1,7 @@
 frontcast
 =========
 
-<!-- [![Build Status](https://travis-ci.org/medialab/frontcast.svg)](https://travis-ci.org/medialab/frontcast.svg)-->
+[![Build Status](https://travis-ci.org/medialab/frontcast.svg)](https://travis-ci.org/medialab/frontcast.svg)
 
 ### Mac & Unix installation
 
