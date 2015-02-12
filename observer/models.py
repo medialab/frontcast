@@ -115,10 +115,10 @@ class Property(models.Model):
   slug     = models.SlugField(max_length=128, unique=True) # a simple way to access integrated stuffs
 
 
-  def save(self, **kwargs):
+  def save(self, *args, **kwargs):
     if self.pk is None:
       self.slug = uuslug(model=Property, instance=self, value=self.type)
-    super(Property, self).save()
+    super(Property, self).save(*args, **kwargs)
 
 
   def json(self, deep=False):
