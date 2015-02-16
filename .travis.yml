@@ -1,0 +1,12 @@
+language: python
+python:
+  - "2.7"
+env:
+  - DJANGO=1.6.1
+install:
+  - pip install -r requirements.txt
+before_script:
+  - "cp $TRAVIS_BUILD_DIR/observer/local_settings.py.example $TRAVIS_BUILD_DIR/observer/local_settings.py"
+  - "mkdir -p $TRAVIS_BUILD_DIR/logs"
+script:
+  - python manage.py test
