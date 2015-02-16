@@ -184,3 +184,8 @@ AUTHENTICATION_BACKENDS = (
 logger = logging.getLogger('django_auth_ldap')
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

@@ -41,7 +41,7 @@ class WorkingDocumentTest(TestCase):
     w1 = WorkingDocument(title=u"Untitled - Hello, World!", owner=u)
     w1.save()
 
-    self.assertEqual('%s, %s' % (w.slug, w1.slug, w.owner.username), 'untitled-hello-world, untitled-hello-world-1')
+    self.assertEqual('%s, %s' % (w.slug, w1.slug), 'untitled-hello-world, untitled-hello-world-1')
     self.assertEqual(w.owner.username, 'Kollective')
 
 
