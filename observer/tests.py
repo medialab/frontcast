@@ -12,11 +12,37 @@ from django.utils.translation import activate
 
 from glue import Epoxy, API_EXCEPTION_AUTH
 
-from observer.models import WorkingDocument
+from observer.models import WorkingDocument, Document
 
 
 #
 # API test suite
+class DocumentTest(TestCase):
+  def setUp(self):
+    # Every test needs access to the request factory.
+    self.factory = RequestFactory()
+    self.admin = User.objects.create_user(
+      username='jacob', email='jacob@…', password='top_secret')
+    self.admin.is_staff = True   
+
+  def test_save(self):
+    '''
+    handle duplicates document and show how to create blank documents. Test UUslug indirectly.
+    '''
+    # creatin ownership
+    u = User(username='Kollective')
+    u.save()
+
+    w = Document(title=u"Untitled - Hello, World!", owner=u, reference="A")
+    w.save()
+
+    w1 = Document(title=u"Untitled - Hello, World!", owner=u, reference="B")
+    w1.save()
+
+    self.assertEqual('%s, %s' % (w.slug, w1.slug), 'untitled-hello-world, untitled-hello-world-1')
+    self.assertEqual(w.owner.username, 'Kollective')
+
+
 
 class WorkingDocumentTest(TestCase):
   def setUp(self):
@@ -41,7 +67,7 @@ class WorkingDocumentTest(TestCase):
     w1 = WorkingDocument(title=u"Untitled - Hello, World!", owner=u)
     w1.save()
 
-    self.assertEqual('%s, %s' % (w.slug, w1.slug, w.owner.username), 'untitled-hello-world, untitled-hello-world-1')
+    self.assertEqual('%s, %s' % (w.slug, w1.slug), 'untitled-hello-world, untitled-hello-world-1')
     self.assertEqual(w.owner.username, 'Kollective')
 
 
@@ -87,7 +113,7 @@ class AuthTest(TestCase):
     request.session = {}
 
     res = json.loads(observer.api.login_view(request).content)
-    print res
+    
     self.assertEqual(res['status'], 'error')
     # right code
     self.assertEqual(res['code'], API_EXCEPTION_AUTH)
