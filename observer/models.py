@@ -35,7 +35,7 @@ class AbstractDocument(models.Model):
 
   # TIME
   date = models.DateField(blank=True, null=True) # main date, manually added
-  date_last_modified = models.DateTimeField(auto_now_add=True) #cfr save() method
+  date_last_modified = models.DateTimeField(auto_now=True) #cfr save() method
 
   # who first created it.
   owner = models.ForeignKey(User) # the original owner
@@ -886,8 +886,8 @@ class DocumentProfile(models.Model):
   owner = models.ForeignKey(User) # who has compiled it
 
   date = models.DateField(blank=True, null=True) # main date, manually added
-  date_created = models.DateTimeField(auto_now=True)
-  date_last_modified = models.DateTimeField(auto_now_add=True)
+  date_created = models.DateTimeField(auto_now_add=True)
+  date_last_modified = models.DateTimeField(auto_now=True)
 
   notes = models.TextField(blank=True) # free evaluation
 

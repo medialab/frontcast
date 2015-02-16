@@ -56,5 +56,5 @@ def profiler(user):
   return {
     'id': user.id,
     'username': user.username,
-    'staff': user.is_staff
+    'is_staff': user.is_staff
   }
