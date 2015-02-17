@@ -1,15 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import json
+import json, logging
 
+from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout, authenticate
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Count, Q
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 from observer.forms import DeviceForm, FullDocumentForm, LoginForm
 from observer.models import Device, Document, WorkingDocument, Tag
+
+
+logger = logging.getLogger(__name__)
 
 # 
 # decorator staff_member_required_for_POST
@@ -378,3 +383,37 @@ def documents_facets(req):
 
   return res.json()
 
+
+@csrf_exempt
+def proxy_reference(request):
+  # it *should'nt* allow save/edit requests. User proxy_safe instead.
+  import urllib2, json
+
+  # filter uifiled, requests action according to role
+  #result = Epoxy(request)
+  logger.info('proxy biblib')
+  # get request as an arbitrary object
+  r = '%s'%request.read()
+  
+  data = json.loads(r)
+  
+  # inject role in request
+  if data['method'] in ["save", "field", "fields", "set_metadata_property"]:
+    if request.user.is_staff:
+      data['params'].append('teacher')
+    else:
+      data['params'].append('student')
+
+  if data['method'] == "save":
+      # todo: check if user has access
+      pass
+
+  logger.info('... params to be sent %s' % data['params'])
+  # return result.json()
+
+  req = urllib2.Request(settings.BIBLIB_ENDPOINT, json.dumps(data))
+  response = urllib2.urlopen(req)
+  rs = '%s'%response.read()
+  logger.info('... received %s' % rs[:64])
+  # set the body
+  return HttpResponse(rs)

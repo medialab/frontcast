@@ -5,7 +5,7 @@ from observer.models import Document, Tag, WorkingDocument, Profile
 
 class DocumentAdmin(admin.ModelAdmin):
   search_fields = ['title', 'reference', 'slug']
-  fields = ['title', 'type', 'abstract', 'owner', 'tags']
+  fields = ['title', 'type', 'abstract', 'owner', 'tags', 'reference']
 
 
 class TagAdmin(admin.ModelAdmin):

@@ -43,6 +43,25 @@ class DocumentTest(TestCase):
     self.assertEqual(w.owner.username, 'Kollective')
 
 
+#
+# API test biblib, if any
+class ProxyReferenceTest(TestCase):
+  def setUp(self):
+    # Every test needs access to the request factory.
+    self.factory = RequestFactory()
+    self.admin = User.objects.create_user(
+      username='jacob', email='jacob@…', password='top_secret')
+    self.admin.is_staff = True   
+
+  def test_service(self):
+    '''
+    testing biblib service, ifa any has been specified into the local_settings file.
+    '''
+    if settings.BIBLIB_ENDPOINT is not None:
+      request = self.factory.post(reverse('observer_proxy_reference', args=[]), '{"id":1,"jsonrpc":"2.0","method":"metadata_by_rec_ids","params":["forccast",["scpo-icom2040-2013-0004"]]}', content_type='application/json')
+
+      print observer.api.proxy_reference(request).content
+
 
 class WorkingDocumentTest(TestCase):
   def setUp(self):

@@ -15,7 +15,7 @@ AUTH_LDAP_SERVER_URI = "ldap://<YOUR LDAP>"
 AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(XXX)s,ou=XXX,o=XXXXXX,c=XXX"
 
 # BIBLIB reference manager, if any. https://github.com/medialab/reference_manager
-BIBLIB_ENDPOINT = ''
+BIBLIB_ENDPOINT = None
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

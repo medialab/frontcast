@@ -24,7 +24,10 @@ apipatterns = patterns('observer.api',
     
     # REST for devices (connector of document and working document)
     url(r'device/$', 'devices', name='observer_devices'),
-    url(r'device/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'device', name='observer_device')
+    url(r'device/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'device', name='observer_device'),
+
+    # REST for biblib references
+    url(r'proxy/reference/$', 'proxy_reference', name='observer_proxy_reference'),
 )
 
 

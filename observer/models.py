@@ -426,7 +426,7 @@ class Document(AbstractDocument):
 
 
   class Meta:
-    unique_together = ("slug", "reference")
+    unique_together = ("slug",)
     ordering = ('-rating',)
 
 

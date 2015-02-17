@@ -142,6 +142,13 @@ LOGGING = {
             'maxBytes': '16777216', # 16 megabytes
             'formatter': 'verbose'
         },
+        'api':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/api.log'),
+            'maxBytes': '16777216', # 16 megabytes
+            'formatter': 'verbose'
+        },
         'ldap':{
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -164,7 +171,8 @@ LOGGING = {
     }
 }
 
-
+# biblib
+BIBLIB_ENDPOINT = local_settings.BIBLIB_ENDPOINT
 
 # ldap
 #import ldap
@@ -184,6 +192,8 @@ AUTHENTICATION_BACKENDS = (
 logger = logging.getLogger('django_auth_ldap')
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
+
+
 
 try:
     from .local_settings import *
