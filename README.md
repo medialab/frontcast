@@ -1,5 +1,8 @@
 # frontcast
 
+[![Build Status](https://travis-ci.org/medialab/frontcast.svg)](https://travis-ci.org/medialab/frontcast.svg)
+
+
 Frontcast is the django application dedicated to the controversy mapping archive. Frontcast exposes an internal rest API that works like any html python view and uses LDAP as authentication protocoll.
 
 observer/local_settings.py then set your *default* database, a secret key and ldap configs.
