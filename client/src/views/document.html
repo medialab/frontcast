@@ -1,0 +1,53 @@
+<div class="item">
+    <h2>{{doc.title}}</h2>
+    <div class="metadata">
+      <a class="tag date" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.Date">{{tag.name}}</a>
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.Institution">{{tag.name}}</a>
+    </div>
+    
+    <div class="keywords">
+      
+      
+      
+    </div>
+    
+    <div class="keywords">
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.KEYWORD">{{tag.name}}</a>
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.FREE">{{tag.name}}</a>
+    </div>
+
+    <div class="content">
+
+      <a ng-href="{{doc.permalink}}" class="permalink">{{doc.permalink}}</a> <span class="abstract" marked="doc.abstract"></span>
+    </div>
+
+    <div class="rating">{{doc.rating}}</div>
+  </div>
+
+<div ng-repeat="(typology, devices) in doc.devices">
+  <div class="related-item item" ng-repeat="device in devices">
+    <h3><span class="typology">{{typology}}</span>{{device.title}}</h3>
+    <div class="metadata">
+      <a class="tag date" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in device.tags.Date">{{tag.name}}</a>
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in device.tags.Institution">{{tag.name}}</a>
+    </div>
+    
+    <div class="keywords">
+      
+      
+      
+    </div>
+    
+    <div class="keywords">
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in device.tags.KEYWORD">{{tag.name}}</a>
+      <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in device.tags.FREE">{{tag.name}}</a>
+    </div>
+
+    <div class="content">
+
+      <a ng-href="{{device.permalink}}" class="permalink">{{device.permalink}}</a> <span class="abstract" marked="device.abstract"></span>
+    </div>
+
+    <div class="rating">{{device.rating}}</div>
+  </div>
+</div>

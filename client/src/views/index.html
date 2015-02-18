@@ -4,7 +4,7 @@
 
 <div infinite-scroll="infinite()" infinite-scroll-distance="1">
   <div ng-repeat="doc in items" class="item">
-    <h2>{{doc.title}}</h2>
+    <h2><a ng-href="#/d/{{doc.id}}">{{doc.title}}</a></h2>
     <div class="metadata">
       <a class="tag date" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.Date">{{tag.name}}</a>
       <a class="tag" ng-click="setFilter('tags__id',tag.id, tag)" ng-repeat="tag in doc.tags.Institution">{{tag.name}}</a>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import json, operator
+import os, json, operator
 
 from django import forms
 from django.conf import settings

@@ -31,8 +31,8 @@ angular.module('frontcast', [
         controller: 'indexCtrl'
       })
       .when('/d/:id', {
-        templateUrl: STATIC_URL + 'src/views/index.html',
-        controller: 'indexCtrl'
+        templateUrl: STATIC_URL + 'src/views/document.html',
+        controller: 'documentCtrl'
       })
       .when('/d/:id/edit', {
         templateUrl: STATIC_URL + 'src/views/index.html',

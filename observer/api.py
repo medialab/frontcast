@@ -216,11 +216,14 @@ def document(req, pk):
   except Document.DoesNotExist, e:
     return res.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
   
-  if epoxy.is_POST():
+  if res.is_POST():
     is_valid, doc = edit_object(instance=doc, Form=FullDocumentForm, request=req, epoxy=res)
     if is_valid:
       doc.save()
 
+  if res.is_DELETE():
+    pass
+    
   return res.item(doc, deep=True).json()
 
 

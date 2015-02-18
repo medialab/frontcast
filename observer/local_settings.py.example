@@ -20,3 +20,7 @@ BIBLIB_ENDPOINT = None
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
+
+STORAGE_ROOT = '/path/to/storage/root'
+STORAGE_ROOT_PUBLIC = os.path.join(STORAGE_ROOT, 'public')
+STORAGE_ROOT_PROTECTED = os.path.join(STORAGE_ROOT, 'protected')

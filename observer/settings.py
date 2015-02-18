@@ -174,6 +174,8 @@ LOGGING = {
 # biblib
 BIBLIB_ENDPOINT = local_settings.BIBLIB_ENDPOINT
 
+
+
 # ldap
 #import ldap
 #from django_auth_ldap.config import LDAPSearch, GroupOfNamesType

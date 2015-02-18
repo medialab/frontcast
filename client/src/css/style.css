@@ -3,7 +3,7 @@ body{
   color: #1d1d1d;
 }
 
-h2{
+h2, h3, h4{
   font-size: 16px;
   line-height: 36px;
   font-weight: bold;
@@ -131,6 +131,16 @@ header nav li.user {
 .item h2{
   margin: 0;
 }
+
+.item h2 a{
+  text-decoration: none;
+  color: #1d1d1d;
+}
+.related-item{
+  background: white;
+
+}
+
 
 .tag{
   margin: 2px 10px 2px 0;
