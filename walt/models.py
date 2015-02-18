@@ -122,6 +122,7 @@ class Tag(models.Model):
 
 
   class Meta:
+    db_table = 'observer_tag'
     ordering = ["type", "id" ]
     unique_together = ("type", "name")
 
@@ -292,6 +293,7 @@ class WorkingDocument(AbstractDocument):
 
 
   class Meta:
+    db_table = 'observer_workingdocument'
     ordering = ('-type', '-rating', '-id',)
 
 
@@ -487,6 +489,8 @@ class Document(AbstractDocument):
 
 
   class Meta:
+    db_table = 'observer_document'
+    
     unique_together = ("slug", "reference")
     ordering = ('-rating',)
 

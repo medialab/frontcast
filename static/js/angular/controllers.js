@@ -46,14 +46,14 @@ var CONTROLLER_STATUS_AVAILABLE = 'available',
 
 
 
-angular.module('walt.controllers', [])
+angular.module('walt.controllers', ['ngAnimate'])
   /*
     
     The very main controller. Handle filters.
     ===
 
   */
-  .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', '$routeParams', '$http', '$log', function($scope, $rootScope, $location, $route, $routeParams, $http, $log) {
+  .controller('layoutCtrl', ['$scope', '$rootScope','$location', '$route', '$routeParams', '$http', '$log', 'WorkingDocumentTagsFactory', 'WorkingDocumentDetachTagFactory', function($scope, $rootScope, $location, $route, $routeParams, $http, $log, WorkingDocumentTagsFactory, WorkingDocumentDetachTagFactory) {
     $scope.filters = {};
     $scope.howmanyfilters = 0;
     $scope.query = "";
@@ -215,116 +215,31 @@ angular.module('walt.controllers', [])
     $scope.setViewMenu = function(route) {
       $log.info("setting view sidebar menu", '- controller:', route.controller, route, $routeParams, $location.path());
       
-      var viewmenu = {},
-          path = $location.path(),
+      var path = $location.path(),
+          viewmenu = {type: 'index', path: path},
           is_selected = function(url){
             return url == path;
           };
 
       switch(route.controller){
         case "documentsCtrl":
-          viewmenu = [
-            {
-              url: '/docs',
-              label: 'index',
-              selected: is_selected('/docs')
-            },
-            {
-              url: '/documents/add',
-              label: 'add work',
-              selected: is_selected('/documents/add')
-            }
-          ];
+        case "coursesCtrl":
+        case "toolsCtrl":
+        case "lessonsCtrl":
+          viewmenu.type = 'index';
           break;
+
         case "documentCtrl":
         case "documentProfileCtrl":
-          if($routeParams.id) {
-            viewmenu = [
-              {
-                url: '/docs',
-                label: 'add work',
-                selected: is_selected('/docs')
-              },
-              {
-                url: '/documents/add',
-                label: 'add work',
-                selected: is_selected('/documents/add')
-              },
-              {
-                url: '/doc/'+ $routeParams.id +'/profile',
-                label: 'view work #' + $routeParams.id,
-                selected: is_selected('/doc/'+ $routeParams.id +'/profile')
-              },
-              {
-                url: '/doc/'+ $routeParams.id +'/edit',
-                label: 'edit work #' + $routeParams.id,
-                selected: is_selected('/doc/'+ $routeParams.id +'/edit')
-              },
-              {
-                url: '/doc/'+ $routeParams.id +'/profile/edit',
-                label: 'survey of work #' + $routeParams.id,
-                selected: is_selected('/doc/'+ $routeParams.id +'/profile/edit')
-              }
-            ];
-          } else {
-             viewmenu = [
-              {
-                url: '/docs',
-                label: 'index',
-                selected: is_selected('/docs')
-              },
-              {
-                url: '/documents/add',
-                label: 'add work',
-                selected: is_selected('/documents/add')
-              }
-            ];
-          }
+          viewmenu.type = 'new';
+          if($routeParams.id){
+            viewmenu.type = 'single';
+            viewmenu.id  = $routeParams.id;
+          };
           break;
-        case "toolsCtrl":
-          viewmenu = [
-            {
-              url: '/tools',
-              label: 'index',
-              selected: is_selected('/tools')
-            },
-            {
-              url: '/tools/add',
-              label: 'add tool',
-              selected: is_selected('/tools/add')
-            }
-          ];
-          break;
-        case "toolCtrl":
-          viewmenu = [
-            {
-              url: '/tools',
-              label: 'index',
-              selected: is_selected('/tools')
-            },
-            {
-              url: '/tools/add',
-              label: 'add tool',
-              selected: is_selected('/tools/add')
-            }
-          ];
-          break;
-        case "coursesCtrl":
-        case "courseCtrl":
-          viewmenu = [
-            {
-              url: '/courses',
-              label: 'index',
-              selected: is_selected('/courses')
-            },
-            {
-              url: '/courses/add',
-              label: 'add course',
-              selected: is_selected('/courses/add')
-            }
-          ];
-          break;
+          
       };
+
       $scope.viewmenu = viewmenu;
     };
 
@@ -388,11 +303,12 @@ angular.module('walt.controllers', [])
     };
 
 
-    $scope.suggestTags = function(tag_type, tag_val) {
+    $scope.suggestTags = function(tag_type, tag_val, limit) {
       return $http.get('/api/tag', {
         params: {
-          filters:'{"type":"CA"}',
-          search:tag_val
+          filters:'{"type":"' + tag_type + '"}',
+          search:tag_val,
+          limit: limit||5
         }
       }).then(function(res) {
         return res.data.objects;
@@ -404,7 +320,7 @@ angular.module('walt.controllers', [])
         console.log(res.data, addresses)
         return addresses;
       });
-    }
+    };
 
 
 
@@ -425,6 +341,33 @@ angular.module('walt.controllers', [])
         return result.objects;
       });
     }
+
+
+    $scope.attachTag = function(tag_type, tag, item) {
+      console.log(tag);
+      debugger;
+      WorkingDocumentTagsFactory.save({
+        id: item.id
+      }, {
+        tags: tag.name || tag,
+        type: tag_type
+      },function(data){
+        tag = "";
+        item.tags = data.object.tags;       
+      });
+    };
+
+
+    $scope.detachTag = function(tag, item) {
+      console.log("detach tag: ", tag.id);
+      WorkingDocumentDetachTagFactory.delete({
+        id: item.id,
+        tag_id: tag.id
+      }, function(data){
+        item.tags = data.object.tags;
+      })
+    }
+
 
     console.log('%c layoutCtrl ', 'background: #151515; color: white', $scope.filters);
     
@@ -570,7 +513,8 @@ angular.module('walt.controllers', [])
       if($scope.item.id) {
         console.log('params', params);
         DocumentFactory.save({id: $scope.item.id}, params, function(data) {
-          $location.path("/doc/" + $scope.item.id + "/profile");
+          if(data.status == "ok")
+            $location.path("/doc/" + $scope.item.id + "/profile");
         });
       } else {
         DocumentFactory.save(params, function(data) {
@@ -848,29 +792,7 @@ angular.module('walt.controllers', [])
     };
 
 
-    $scope.attachTag = function(tag_type, tag, item) {
-      $scope.__tag_candidate = "";
-      WorkingDocumentTagsFactory.save({
-        id: item.id
-      }, {
-        tags: tag.name || tag,
-        type: tag_type
-      },function(data){
-        $scope.item = data.object;       
-      })
-      console.log(arguments, $scope.__tag_candidate);
-    };
-
-
-    $scope.detachTag = function(tag, item) {
-      console.log("detach tag?", tag.id);
-      WorkingDocumentDetachTagFactory.delete({
-        id: item.id,
-        tag_id: tag.id
-      }, function(data){
-        $scope.item = data.object;
-      })
-    }
+    
 
 
     if($routeParams.id) { // edit or view
@@ -954,7 +876,7 @@ angular.module('walt.controllers', [])
     ===
 
   */
-  .controller('coursesCtrl', ['$scope', 'WorkingDocumentListFactory', function($scope, WorkingDocumentListFactory){
+  .controller('coursesCtrl', ['$scope', 'WorkingDocumentListFactory', 'WorkingDocumentTagsFactory', function($scope, WorkingDocumentListFactory, WorkingDocumentTagsFactory){
     $scope.setViewName('courses');
 
     $scope.sync = function() {
@@ -984,15 +906,15 @@ angular.module('walt.controllers', [])
     console.log('%c coursesCtrl ', 'background: lime;');
     $scope.sync();
   }])
-  .controller('courseCtrl', ['$scope', '$route', '$routeParams', 'WorkingDocumentFactory',function($scope, $route, $routeParams, WorkingDocumentFactory){
+  .controller('courseCtrl', ['$scope', '$location', '$route', '$routeParams', 'WorkingDocumentFactory', 'WorkingDocumentTagsFactory', function($scope, $location, $route, $routeParams, WorkingDocumentFactory, WorkingDocumentTagsFactory){
     $scope.status = CONTROLLER_STATUS_AVAILABLE;
     $scope.setViewName('courses');
     console.log('%c courseCtrl ', 'background: lime;', $routeParams.id, $routeParams);
     
     $scope.COURSE_TYPES = [
-      'course_secondary_school',
-      'course_master',
-      'course_phd'
+      {text:'course secondary school', value:'course_secondary_school'},
+      {text:'course master', value:'course_secondary_school'},
+      {text:'course phd',  value:'course_php'}
     ];
 
     $scope.sync = function() {
@@ -1024,7 +946,7 @@ angular.module('walt.controllers', [])
           console.log('helloooooo', data);
           $scope.item = data.object;
           //redirect!
-          // $location.path("/tool/" + $scope.item.id);
+          $location.path("/course/" + $scope.item.id);
         });
       };
     };

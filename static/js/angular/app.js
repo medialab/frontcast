@@ -73,6 +73,8 @@ config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeP
   // courses
   $routeProvider.when('/courses', {templateUrl: '/frontcast/static/js/angular/partials/course.list.html', controller: 'coursesCtrl', reloadOnSearch:false});
   $routeProvider.when('/courses/add', {templateUrl: '/frontcast/static/js/angular/partials/course.add.html', controller: 'courseCtrl'});
+  $routeProvider.when('/courses/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/course.edit.html', controller: 'courseCtrl'});
+  
   $routeProvider.when('/course/:id', {templateUrl: '/frontcast/static/js/angular/partials/course.html', controller: 'courseCtrl'});
   
   // seances
@@ -86,6 +88,38 @@ config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeP
   $routeProvider.when('/tool/:id', {templateUrl: '/frontcast/static/js/angular/partials/tool.html', controller: 'toolCtrl'});
 
   $routeProvider.otherwise({redirectTo: '/docs'});
+
+  $httpProvider.responseInterceptors.push(['$q', function($q) {
+    return function(promise) {
+      return promise.then(function(response) {
+        response.data.extra = 'Interceptor strikes back';
+        if(response.data.status == "error" && response.data.code == "FormErrors"){
+          var errorMesssage = [];
+          for(var i in response.data.error){
+            errorMesssage.push("<b>" + i + "</b> : " + response.data.error[i])
+          }
+          toast(errorMesssage.join("<br>"),"error in your form",  {stayTime: 5000});
+          // or alert
+        }
+        if(response.data.meta && response.data.meta.warnings){ // form error from server!
+          // if(response.data.meta.warnings.invalid && response.data.meta.warnings.limit):
+          // exceute, but send a message
+          console.log('',response.data.meta.warnings);
+          // return $q.reject(response);
+        }
+        return response; 
+      }, function(response) { // The HTTP request was not successful.
+        if (response.status === 401) {
+          response.data = { 
+            status: 'error', 
+            description: 'Authentication required, or TIMEOUT session!'
+          };
+          return response;
+        }
+        return $q.reject(response);
+      });
+    };
+  }]);
 
   //$locationProvider.html5Mode(true);
 }]);

@@ -146,8 +146,8 @@ def get_document_filters(queryset):
     wd.title,
     od.type as devicetype
     FROM observer_device od
-    JOIN walt_workingdocument wd ON od.working_document_id = wd.id
-    JOIN walt_document d ON od.document_id = d.id
+    JOIN observer_workingdocument wd ON od.working_document_id = wd.id
+    JOIN observer_document d ON od.document_id = d.id
     WHERE d.id in (%s)
     GROUP BY working_document_id,od.type
     ORDER BY distribution DESC

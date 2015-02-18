@@ -1,9 +1,10 @@
 <div class="big-item">
-  <h2>{{item.title}}</h2>
+  <h2  ng-bind-html="item.abstract_raw"></h2>
   <h3>{{item.type_label}}</h3>
 
   <div class="pure-g">
     <div class="pure-u-1-2">
+      <h3>{{item.code}}</h3>
       {{item.children.length}}
       <div ng-repeat="thumb in item.children">
         <div ng-include src="'/frontcast/static/js/angular/partials/lesson.thumb.html'"></div>

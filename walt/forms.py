@@ -16,13 +16,13 @@ class LoginForm(forms.Form):
 class FullDocumentForm(ModelForm):
   class Meta:
     model = Document
-    exclude = ('owner', 'slug', )
+    exclude = ('owner', 'slug', 'tags', 'authors', 'status')
 
 
 
 class TagsForm(forms.Form):
   type = forms.ChoiceField(choices=Tag.TYPE_CHOICES)
-  tags = forms.RegexField(regex=r'^[\=\.\?\:\/\s\w,\-\_\']*$',label=_('tags') )
+  tags = forms.RegexField(regex=r'^[\=\.\?\:\/\s\w,\-\_\'\(\)]*$',label=_('tags') )
 
 
 

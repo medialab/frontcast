@@ -29,6 +29,8 @@
     
     <link rel="stylesheet" href="{{STATIC_URL}}css/fancy-select.css">
 
+    <link rel="stylesheet" href="{{STATIC_URL}}css/animate.css">
+
 
 <link rel="stylesheet/less" type="text/css" href="{{STATIC_URL}}less/observer.less">
 <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.7.0/less.min.js"></script>
@@ -183,35 +185,76 @@
 
             <ul>
                
-                <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''"><a href="#!/docs">student works</a>
-                  <div class="submenu" ng-if="viewname=='documents'" >
+                <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''">
+                  <a href="#!/docs">student works </a>
+                  <div class="submenu" ng-show="viewname=='documents'">
                     {% verbatim %}
-                    <div ng-repeat="item in viewmenu" ng-class="item.selected ? 'selected': ''">
-                      <a href="#!{{item.url}}"> {{item.label}}</a>
+                    <div class="submenu-item" ng-class="viewmenu.path == '/docs'? 'selected':''">
+                      <a href="#!/docs">index</a>
                     </div>
+                    <div class="submenu-item" ng-class="viewmenu.path == '/documents/add'? 'selected':''">
+                      <a href="#!/documents/add">add work</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/edit'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile/edit'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
+                    </div>
+                    <!-- div class="submenu-item" ng-repeat="item in viewmenu" ng-class="item.selected ? 'selected': ''">
+                      <a href="#!{{item.url}}"> {{item.label}}</a>
+                    </div -->
                     {% endverbatim %}
                   </div>
                 </li>
                 
                 <li ng-class="viewname=='tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
-                    <a href="#!/tools">tools</a>
-                    <div class="submenu" ng-if="viewname=='tools'" >
-                      {% verbatim %}
-                      <div ng-repeat="item in viewmenu" ng-class="item.selected ? 'selected': ''">
-                        <a href="#!{{item.url}}"> {{item.label}}</a>
-                      </div>
-                      {% endverbatim %}
+                  <a href="#!/tools">tools</a>
+                  <div class="submenu" ng-show="viewname=='tools'" >
+                    {% verbatim %}
+                    <div class="submenu-item" ng-class="viewmenu.path == '/docs'? 'selected':''">
+                      <a href="#!/docs">index</a>
                     </div>
+                    <div class="submenu-item" ng-class="viewmenu.path == '/tools/add'? 'selected':''">
+                      <a href="#!/tools/add">add tool</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/edit'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile/edit'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
+                    </div>
+                    {% endverbatim %}
+                  </div>
                 </li>
+
                 <li ng-class="viewname=='courses' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
-                    <a href="#!/courses">courses</a>
-                    <div class="submenu" ng-if="viewname=='courses'" >
+                  <a href="#!/courses">courses</a>
+                  <div class="submenu" ng-show="viewname=='courses'" >
                       {% verbatim %}
-                      <div ng-repeat="item in viewmenu" ng-class="item.selected ? 'selected': ''">
-                        <a href="#!{{item.url}}"> {{item.label}}</a>
-                      </div>
-                      {% endverbatim %}
+                    <div class="submenu-item" ng-class="viewmenu.path == '/docs'? 'selected':''">
+                      <a href="#!/docs">index</a>
                     </div>
+                    <div class="submenu-item" ng-class="viewmenu.path == '/documents/add'? 'selected':''">
+                      <a href="#!/documents/add">add work</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/edit'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
+                    </div>
+                    <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile/edit'? 'selected':''">
+                      <a href="#!/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
+                    </div>
+                    {% endverbatim %}
+                  </div>
                 </li>
                 <li ng-class="viewname=='lessons' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
                     <a href="#!/lessons">lessons</a>

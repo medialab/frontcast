@@ -65,6 +65,19 @@
 
 
 
+.submenu-item.ng-hide-add, .submenu-item.ng-hide-remove {
+  
+}
+
+.submenu-item.ng-hide-add.ng-hide-add-active,
+.submenu-item.ng-hide-remove {
+  animation: fadeOut 1s;
+}
+
+.submenu-item.ng-hide-add,
+.submenu-item.ng-hide-remove.ng-hide-remove-active {
+  animation: fadeIn 1s;
+}
 /*
 
   header
@@ -1310,14 +1323,17 @@ ul.dropdown-menu{
   margin:0 0 12px 0;
 }
 .toast-item h1{
-  font-size:1.1rem;
+  font-size:1.3rem;
   font-weight: normal;
   text-transform: uppercase;
   color: white;
   text-align: center;
   margin:0;
 }
-.toast-item p{text-align:left;margin-left:50px;}
+.toast-item p{
+  text-align:left;margin:0px;
+  font-size:1.2rem;
+}
 .toast-item-image{display:none}
 .toast-type-notice{color:white;}
 .toast-type-success{color:white;}
