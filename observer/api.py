@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
+from glue.api import edit_object
 from observer.forms import DeviceForm, FullDocumentForm, LoginForm
 from observer.models import Device, Document, WorkingDocument, Tag
 
@@ -217,9 +218,11 @@ def document(req, pk):
     return res.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
   
   if res.is_POST():
-    is_valid, doc = edit_object(instance=doc, Form=FullDocumentForm, request=req, epoxy=res)
-    if is_valid:
+    form, doc = edit_object(instance=doc, Form=FullDocumentForm, epoxy=res)
+    if form.is_valid():
       doc.save()
+    else:
+      return res.throw_error(error=form.errors, code=API_EXCEPTION_DOESNOTEXIST).json()
 
   if res.is_DELETE():
     pass

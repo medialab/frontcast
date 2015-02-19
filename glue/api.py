@@ -136,8 +136,8 @@ def edit_object(instance, Form, epoxy):
   '''
   data = model_to_dict(instance)
   data.update(epoxy.data)
-
+  
   form = Form(instance=instance, data=data)
   if form.is_valid():
     instance = form.save(commit=False)
-  return form
+  return form, instance

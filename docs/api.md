@@ -25,14 +25,39 @@ Basic Json response contains at least two properties: response `status`, basical
 
 ##  API and the Data Model: Routes
 
-Entrypoint
+This api emploies where possible on standard HTTP methods described in RESTful specs: GET, PUT, POST, and DELETE.
 
 `/api/`
 
-Retrieving document
+Retrieving a list of document:
 
-`/api/document/`
+`GET /api/document/`
+
+Retrieving a single document:
+
+`GET /api/document/<id>` or `GET /api/document/<slug>`
+where `<slug>` is the slugified version of the title of the document.
+
+To edit a document, provide the POST params
+
+```
+POST /api/document/<id>
+title=
+
+
+```
+
+
 
 
 ##  API params
-When applicable.
+`indent` is always disponible.
+
+### lists only
+With lists (`document/`, `tag/`, `workingdocument/` etc..) you can use several GET params
+`limit=n`, `offset=n`, `filter={...}`, `order_by=["", ...]`, `search=""`.
+
+E.g in order to retrieve a list of the first 10 documents whose tag id is 525:
+
+	/api/document/?filters={"tags__id":525}&limit=10&offset=0&order_by=["-id"]
+
