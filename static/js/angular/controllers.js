@@ -784,9 +784,12 @@ angular.module('walt.controllers', ['ngAnimate'])
         params.rating = params.rating || 1;
         WorkingDocumentFactory.save(params, function(data) {
           console.log('hey', data);
-          $scope.item = data.object;
-          //redirect!
-          $location.path("/tool/" + $scope.item.id);
+          if(data.status == 'ok') {
+            $scope.item = data.object;
+            //redirect!
+            $location.path("/tool/" + $scope.item.id);
+          }
+          
         });
       };
     };

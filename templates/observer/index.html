@@ -186,23 +186,23 @@
             <ul>
                
                 <li ng-class="viewname=='documents' ? 'pure-menu-selected': ''">
-                  <a href="#!/docs">student works </a>
+                  <a href="#/docs">student works </a>
                   <div class="submenu" ng-show="viewname=='documents'">
                     {% verbatim %}
                     <div class="submenu-item" ng-class="viewmenu.path == '/docs'? 'selected':''">
-                      <a href="#!/docs">index</a>
+                      <a href="#/docs">index</a>
                     </div>
                     <div class="submenu-item" ng-class="viewmenu.path == '/documents/add'? 'selected':''">
-                      <a href="#!/documents/add">add work</a>
+                      <a href="#/documents/add">add work</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/edit'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile/edit'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
                     </div>
                     <!-- div class="submenu-item" ng-repeat="item in viewmenu" ng-class="item.selected ? 'selected': ''">
                       <a href="#!{{item.url}}"> {{item.label}}</a>
@@ -212,52 +212,52 @@
                 </li>
                 
                 <li ng-class="viewname=='tools' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
-                  <a href="#!/tools">tools</a>
+                  <a href="#/tools">tools</a>
                   <div class="submenu" ng-show="viewname=='tools'" >
                     {% verbatim %}
                     <div class="submenu-item" ng-class="viewmenu.path == '/docs'? 'selected':''">
-                      <a href="#!/docs">index</a>
+                      <a href="#/docs">index</a>
                     </div>
                     <div class="submenu-item" ng-class="viewmenu.path == '/tools/add'? 'selected':''">
-                      <a href="#!/tools/add">add tool</a>
+                      <a href="#/tools/add">add tool</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/edit'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile/edit'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
                     </div>
                     {% endverbatim %}
                   </div>
                 </li>
 
                 <li ng-class="viewname=='courses' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
-                  <a href="#!/courses">courses</a>
+                  <a href="#/courses">courses</a>
                   <div class="submenu" ng-show="viewname=='courses'" >
                       {% verbatim %}
                     <div class="submenu-item" ng-class="viewmenu.path == '/docs'? 'selected':''">
-                      <a href="#!/docs">index</a>
+                      <a href="#/docs">index</a>
                     </div>
                     <div class="submenu-item" ng-class="viewmenu.path == '/documents/add'? 'selected':''">
-                      <a href="#!/documents/add">add work</a>
+                      <a href="#/documents/add">add work</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/profile">view work #{{viewmenu.id}}</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/edit'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/edit">edit work #{{viewmenu.id}}</a>
                     </div>
                     <div class="submenu-item" ng-show="viewmenu.type == 'single'" ng-class="viewmenu.path == '/doc/' + viewmenu.id + '/profile/edit'? 'selected':''">
-                      <a href="#!/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
+                      <a href="#/doc/{{viewmenu.id}}/profile/edit">edit survey of #{{viewmenu.id}}</a>
                     </div>
                     {% endverbatim %}
                   </div>
                 </li>
                 <li ng-class="viewname=='lessons' ? 'pure-menu-selected': ''"><!-- class="menu-item-divided pure-menu-selected" -->
-                    <a href="#!/lessons">lessons</a>
+                    <a href="#/lessons">lessons</a>
                 </li>
                 <li><!-- space -->&nbsp;</li>
 
@@ -454,12 +454,12 @@
     <script src="{{ STATIC_URL }}/js/libs/jquery.scrolltofixed.js"></script>
     <!-- api endpoints are hardcoded inside services.js -->
     <!-- In production use: -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-resource.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-sanitize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.13/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.13/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.13/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.13/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.13/angular-cookies.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.13/angular-sanitize.min.js"></script>
 
     <script src="{{ STATIC_URL }}js/libs/angular-toggle-switch.min.js"></script>
     <script src="{{ STATIC_URL }}js/libs/angular-xeditable.min.js"></script>

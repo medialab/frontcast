@@ -41,18 +41,18 @@ angular.module('walt', [
   'walt.directives',
   'walt.controllers',
   'd3',
-  'toggle-switch',
-  'ngSanitize',
-  'xeditable',
-  'ui.bootstrap',
-  'ngDisqus',
-  'monospaced.elastic'
+  // 'toggle-switch',
+  // 'ngSanitize',
+  // 'xeditable',
+  // 'ui.bootstrap',
+  // 'ngDisqus',
+  // 'monospaced.elastic'
 ]).
-config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider, $cookies) {
+config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {//'$locationProvider', '$cookies', function($routeProvider, $httpProvider, $locationProvider, $cookies) {
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
   $httpProvider.defaults.xsrfCookieName = 'csrftoken';
 
-  $locationProvider.hashPrefix('!');
+  //$locationProvider.hashPrefix('!');
 
   $routeProvider.when('/w/:id/edit', {templateUrl: '/frontcast/static/js/angular/partials/workingdocument.edit.html', controller: 'workingdocumentEditCtrl'});
   
@@ -88,8 +88,8 @@ config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeP
   $routeProvider.when('/tool/:id', {templateUrl: '/frontcast/static/js/angular/partials/tool.html', controller: 'toolCtrl'});
 
   $routeProvider.otherwise({redirectTo: '/docs'});
-
-  $httpProvider.responseInterceptors.push(['$q', function($q) {
+  return;// it does not work ...
+  $httpProvider.responseInterceptors.push(function($q) {
     return function(promise) {
       return promise.then(function(response) {
         response.data.extra = 'Interceptor strikes back';
@@ -119,7 +119,7 @@ config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeP
         return $q.reject(response);
       });
     };
-  }]);
+  });
 
   //$locationProvider.html5Mode(true);
 }]);
