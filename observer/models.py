@@ -381,7 +381,7 @@ class Document(AbstractDocument):
   type = models.CharField(max_length=32, choices=TYPE_CHOICES, default=TEXT)
   # tags and metadata. Reference is thre Reference Manager ID field (external resource then)
   tags = models.ManyToManyField(Tag, blank=True, null=True) # add tags !
-  reference = models.CharField(max_length=60, default=0, blank=True, null=True, unique=True)
+  reference = models.CharField(max_length=60, default=0, blank=True, null=True)
 
   authors = models.ManyToManyField(User, blank=True, null=True,  related_name="document_authored") # co-authors User.pin_authored
   watchers = models.ManyToManyField(User, blank=True, null=True, related_name="document_watched") # User.pin_watched

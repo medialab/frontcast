@@ -20,6 +20,11 @@ class FullDocumentForm(ModelForm):
     exclude = ('owner', 'slug', 'tags', 'authors', 'status')
 
 
+class TagForm(ModelForm):
+  class Meta:
+    model = Tag
+    exclude = ('slug',)
+
 
 class TagsForm(forms.Form):
   type = forms.ChoiceField(choices=Tag.TYPE_CHOICES)

@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from glue import Epoxy, API_EXCEPTION_AUTH, API_EXCEPTION_FORMERRORS, API_EXCEPTION_DOESNOTEXIST, API_EXCEPTION_HTTPERROR
 from glue.api import edit_object
-from observer.forms import DeviceForm, FullDocumentForm, LoginForm
+from observer.forms import DeviceForm, FullDocumentForm, LoginForm, TagForm
 from observer.models import Device, Document, WorkingDocument, Tag
 
 
@@ -177,7 +177,7 @@ def login_view(req):
 
 # 
 #  api:/document
-#  retrieve the requested documents and handle POST requests.
+#  return the requested documents and handle POST requests.
 #  At present, only staff can add documents.
 #
 @staff_member_required_for_POST
@@ -205,7 +205,7 @@ def documents(req):
 
 # 
 #  api:/document/(?P<pk>[:a-zA-Z\.\-\d]+)
-#  retrieve the requested document by numeric ID or by its SLUG field. and handle POST requests.
+#  return the requested document by numeric ID or by its SLUG field. and handle POST requests.
 #  At present, only staff can add documents.
 #
 @staff_member_required_for_POST
@@ -232,7 +232,7 @@ def document(req, pk):
 
 # 
 #  api:/working-document
-#  retrieve the requested documents and handle POST requests.
+#  return the requested documents and handle POST requests.
 #  At present, only staff can add documents.
 #
 @staff_member_required_for_POST
@@ -260,7 +260,7 @@ def workingDocuments(req):
 
 # 
 #  api:/working-document/(?P<pk>[:a-zA-Z\.\-\d]+)
-#  retrieve the requested working-document by numeric ID or by its SLUG field.
+#  return the requested working-document by numeric ID or by its SLUG field.
 #  At present, only staff can add new working-documents.
 #
 @staff_member_required_for_POST
@@ -294,9 +294,9 @@ def devices(req):
       return res.throw_error(error='', code=API_EXCEPTION_AUTH).json()
 
     form = DeviceForm(res.data)
-    if is_valid:
+    if form.is_valid():
       dev = form.save()
-      res.item(dev)
+      return res.item(dev).json()
     else:
       return res.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS).json()
   
@@ -317,15 +317,69 @@ def device(req, pk):
   except Device.DoesNotExist, e:
     return res.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
 
-  if req.user.is_staff and res.is_DELETE():
-    dev.delete()
-  if epoxy.is_POST():
-    is_valid, doc = edit_object(instance=doc, Form=FullDocumentForm, request=req, epoxy=res)
-    if is_valid:
-      doc.save()
-  
-  return res.item(doc, deep=True).json()
+  if res.is_POST():
+    form, dev = edit_object(instance=dev, Form=DeviceForm, epoxy=res)
+    if form.is_valid():
+      form.save()
+    else:
+      return res.throw_error(error=form.errors, code=API_EXCEPTION_DOESNOTEXIST).json()
 
+  if res.is_DELETE():
+    dev.delete()
+    return res.json()
+
+  return res.item(dev, deep=True).json()
+
+
+# 
+#  api:/tag
+#  return a collection of tags and handle POST request for tag creation.
+#  At present, only staff can add new tag.
+#
+@staff_member_required_for_POST
+def tags(req):
+  res = Epoxy(req)
+  if res.is_POST(): # staff only can add document via api
+    if not req.user.is_staff:
+      return res.throw_error(error='', code=API_EXCEPTION_AUTH).json()
+
+    form = TagForm(res.data)
+    if not form.is_valid():
+      return res.throw_error(error=form.errors, code=API_EXCEPTION_FORMERRORS).json()
+
+    t = form.save()
+
+    return res.item(t).json()
+
+  res.queryset(Tag.objects.filter())
+  return res.json()
+
+
+# 
+#  api:/document/(?P<pk>[:a-zA-Z\.\-\d]+)
+#  return the requested document by numeric ID or by its SLUG field. and handle POST requests.
+#  At present, only staff can add documents.
+#
+@staff_member_required_for_POST
+def tag(req, pk):
+  res = Epoxy(req)
+
+  try:
+    t = Tag.objects.get(Q(pk=pk) if is_number(pk) else Q(slug=pk))
+  except Tag.DoesNotExist, e:
+    return res.throw_error(error='%s' % e, code=API_EXCEPTION_DOESNOTEXIST).json()
+  
+  if res.is_POST():
+    form, t = edit_object(instance=t, Form=TagForm, epoxy=res)
+    if form.is_valid():
+      t.save()
+    else:
+      return res.throw_error(error=form.errors, code=API_EXCEPTION_DOESNOTEXIST).json()
+
+  if res.is_DELETE():
+    pass
+    
+  return res.item(t, deep=True).json()
 
 
 #
