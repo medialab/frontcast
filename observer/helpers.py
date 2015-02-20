@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import re
 from django.contrib.auth.models import User
+from django.db import transaction
 from django.utils.text import slugify
 
 #
@@ -58,3 +59,33 @@ def profiler(user):
     'username': user.username,
     'is_staff': user.is_staff
   }
+
+
+#
+#    Create some brand new tags and attach them wherever you wish.
+#    Multiple tags: spearate values field with comma.
+#    This helper will help you.
+#    Of course, instance's model should have `tags` as m2m property, and 
+#    the Tags form provided MUST have `type` and `tags` fields. 
+#    
+#    Return <form:TagForm>,<instance>
+#
+@transaction.atomic
+def smarttag(instance, epoxy, TagsForm, replace=False):
+  form = TagsForm(epoxy.data)
+
+  if form.is_valid():
+    tags = list(set([t.strip() for t in form.cleaned_data['tags'].split(',')]))# list of unique comma separated cleaned tags.
+    candidates = []
+    for tag in tags:
+      t, created = Tag.objects.get_or_create(name=tag, type=form.cleaned_data['type'])
+      if replace:
+        candidates.append(t)
+      else:
+        instance.tags.add(t)
+        
+
+    if replace:
+      instance.tags = candidates
+    
+  return form, instance

@@ -5,7 +5,9 @@ import json, logging
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout, authenticate
 from django.contrib.auth.decorators import user_passes_test
+from django.db import transaction
 from django.db.models import Count, Q
+from django.db.models.loading import get_model
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -204,6 +206,19 @@ def documents(req):
 
 
 # 
+#  api:/document/(?P<ids>[\d,]+)
+#  return the requested document by multiple ids.
+#  At present, only GET requests are available.
+#
+@staff_member_required_for_POST
+def documents_by_ids(req, ids):
+  res = Epoxy(req)
+  res.queryset(get_available_documents(req, res).filter(id__in=[x.strip() for x in ids.split(',')]))
+  return res.json()
+
+
+
+# 
 #  api:/document/(?P<pk>[:a-zA-Z\.\-\d]+)
 #  return the requested document by numeric ID or by its SLUG field. and handle POST requests.
 #  At present, only staff can add documents.
@@ -230,10 +245,14 @@ def document(req, pk):
   return res.item(doc, deep=True).json()
 
 
+
+
+
+
 # 
 #  api:/working-document
-#  return the requested documents and handle POST requests.
-#  At present, only staff can add documents.
+#  return a collection of working-documents and handle POST requests as working-document creation.
+#  At present, only staff can add working-document.
 #
 @staff_member_required_for_POST
 def workingDocuments(req):
@@ -255,6 +274,18 @@ def workingDocuments(req):
   queryset = get_available_working_documents(req)
   res.queryset(queryset)
   res.meta('query', '%s' % res._queryset.query)
+  return res.json()
+
+
+# 
+#  api:/working-document/(?P<ids>[\d]+,[\d]+)
+#  return the requested tags by multiple ids (at least two ids).
+#  At present, only GET requests are available.
+#
+@staff_member_required_for_POST
+def workingDocuments_by_ids(req, ids):
+  res = Epoxy(req)
+  res.queryset(get_available_working_documents(req).filter(id__in=[x.strip() for x in ids.split(',')]))
   return res.json()
 
 
@@ -356,8 +387,20 @@ def tags(req):
 
 
 # 
-#  api:/document/(?P<pk>[:a-zA-Z\.\-\d]+)
-#  return the requested document by numeric ID or by its SLUG field. and handle POST requests.
+#  api:/tag/(?P<ids>[\d,]+)
+#  return the requested tags by multiple ids.
+#  At present, only GET requests are available.
+#
+@staff_member_required_for_POST
+def tags_by_ids(req, ids):
+  res = Epoxy(req)
+  res.queryset(Tag.objects.filter(id__in=[x.strip() for x in ids.split(',')]))
+  return res.json()
+
+
+# 
+#  api:/tag/(?P<pk>[:a-zA-Z\.\-\d]+)
+#  return the requested tag by numeric ID or by its SLUG field. This method handles POST requests.
 #  At present, only staff can add documents.
 #
 @staff_member_required_for_POST
@@ -380,6 +423,37 @@ def tag(req, pk):
     pass
     
   return res.item(t, deep=True).json()
+
+
+
+# GET or create m2m links
+#
+@staff_member_required_for_POST
+def m2m_links(req, model_name, pk, m2m_name, ids):
+  res = Epoxy(req)
+  mod = get_model('observer', model_name)
+  
+
+  item = mod.objects.get(pk=pk)
+
+  #m2mf = getattr(mod, m2m_name)
+  m2m  = getattr(mod, m2m_name).field.rel.to
+
+  getattr(item, m2m_name).add(*[x.id for x in m2m.objects.filter(id__in=[x.strip() for x in ids.split(',')])])
+  
+  res.item(item)
+  #m2m = getattr(mod, m2m_name).field.rel.to
+  #print m2m, [(f.name, f.related.parent_model) for f in mod._meta.many_to_many]
+  #m2m = get_model('observer', m2m_name)
+  #print [(f.name, f.related.parent_model) for f in mod._meta.many_to_many], m2m.__name__
+  #print filter(lambda f: f == m2m, [f.related.parent_model for f in mod._meta.many_to_many])
+  #if m2m.__name__ not in 
+  #  return res.throw_error(error='%s is not related with %s' % (model_name, m2m_name), code=API_EXCEPTION_DOESNOTEXIST).json()
+  #getattr(mod, m2m_name)
+  # get related name
+  #m2m.objects.filter(id__in=[x.strip() for x in ids.split(',')]))
+  
+  return res.json()
 
 
 #
@@ -477,3 +551,65 @@ def proxy_reference(request):
   logger.info('... received %s' % rs[:64])
   # set the body
   return HttpResponse(rs)
+
+
+
+
+# 
+# api:/graph-bipartite/observer/document/tags
+@transaction.atomic
+def graph_bipartite(req, app_name, model_name, m2m_name):
+  res = Epoxy(req)
+  mod = get_model(app_name, model_name)
+  m2m = getattr(mod, m2m_name).field.rel.to
+
+  B = {};
+
+  res.queryset(m2m.objects.exclude(**{'%s__isnull' % model_name:True}).filter(**vfilters).annotate(w=Count(model_name)))
+
+  return res.json()
+  # # filter set a and set b....
+  # for v in :
+  #   node = {
+  #     'label': v.name if hasattr(v,'name') else '%s' % v
+  #     'weight': v.w,
+  #     'pk': v.pk
+  #   }
+    
+    
+  #   B.add_node('v%s' % v.id, attr_dict={'pk':v.id, 'color': '#ccc', 'slug': v.slug}, label=v.name if hasattr(v,'name') else '%s' % v, weight=v.w)
+  #   queryset = getattr(v, '%s_set' % model_name).filter(**result.filters)
+  #   if result.reduce is not None:
+  #     for r in result.reduce:
+  #       queryset = queryset.filter(r)
+  #       #queryset = queryset.filter(self.reduce)
+  #   queryset = queryset.distinct()
+
+  #   for u_in_v in queryset:
+  #     B.add_node('u%s' % u_in_v.id, attr_dict={'pk': u_in_v.id, 'color': '#ba3c3c'}, label=u_in_v.title if hasattr(u_in_v,'title') else '%s'% u_in_v)
+  #     B.add_edge('v%s' % v.id, 'u%s' % u_in_v.id)
+
+  #   B.append(node)
+     
+  # # computate spring layout position on n=50 iterations to have a valid stasrting point.
+  # data = json_graph.node_link_data(B)
+  # data.update(result.response)
+
+  # data['edges'] = []
+
+  # for link in data['links']:
+  #   data['edges'].append({
+  #     'source': data['nodes'][link['source']]['id'],
+  #     'target': data['nodes'][link['target']]['id']
+  #   })
+
+  # data.pop("links", None)
+
+  # positions = nx.spring_layout(B).values()
+
+  # for i, p in enumerate(positions):
+  #   data['nodes'][i]['x'] = p[0]
+  #   data['nodes'][i]['y'] = p[1]
+  # #//  result.item(obj)
+  # #  result.add('objects', [model_to_dict(i) for i in getattr(obj, m2m_name).all()])
+  # return HttpResponse(json.dumps(data, default=Epoxy.encoder, indent=2), content_type='application/json')

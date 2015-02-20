@@ -166,7 +166,7 @@ will change the relationship field labelled "type"
 
 
 ## API basics: extensions and helpers
-Frontcast API is a collection of JSON views handled by the special class glue.Epoxy. The `.json()` method of the class returns the proper `HTTPResponse` object.
+Frontcast API is a collection of JSON views handled by the special class `glue.Epoxy`. The `.json()` method of the class returns the proper `HTTPResponse` object.
 
 A basic api view is something like:
 
@@ -178,7 +178,7 @@ def index(req):
   return Epoxy(req).json()
 ```
 
-and it should have a valid url path in `urls.py`
+and it should have a valid url path in `urls.py` as a classic django view.
 	
 	```python
 	apipatterns = patterns('observer.api',

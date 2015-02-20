@@ -8,30 +8,41 @@ from django.contrib import admin
 #
 apipatterns = patterns('observer.api',
     url(r'^$', 'index'),
-    url(r'login/$', 'login_view', name='observer_login'),
-    url(r'access-denied/$', 'access_denied', name='observer_access_denied'),
+    url(r'^login/$', 'login_view', name='observer_login'),
+    url(r'^access-denied/$', 'access_denied', name='observer_access_denied'),
 
     # REST for working-documents
-    url(r'working-document/$', 'workingDocuments', name='observer_working_documents'),
-    url(r'working-document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'workingDocument', name='observer_working_document'),
+    url(r'^working-document/$', 'workingDocuments', name='observer_working_documents'),
+    url(r'^working-document/(?P<ids>[\d]+,[\d,]+)$', 'workingDocuments_by_ids', name='observer_workingDocuments_by_ids'),
+    url(r'^working-document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'workingDocument', name='observer_working_document'),
     
     # REST for document facets
-    url(r'document/facets$', 'documents_facets', name='observer_documents_facets'),
+    url(r'^document/facets$', 'documents_facets', name='observer_documents_facets'),
     
     # REST for document
-    url(r'document/$', 'documents', name='observer_documents'),
-    url(r'document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'document', name='observer_document'),
+    url(r'^document/$', 'documents', name='observer_documents'),
+    url(r'^document/(?P<ids>[\d]+,[\d,]+)$', 'documents_by_ids', name='observer_documents_by_ids'),
+    url(r'^document/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'document', name='observer_document'),
     
     # REST for devices (connector of document and working document)
-    url(r'device/$', 'devices', name='observer_devices'),
-    url(r'device/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'device', name='observer_device'),
+    url(r'^device/$', 'devices', name='observer_devices'),
+    url(r'^device/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'device', name='observer_device'),
 
     # REST for tags
-    url(r'tag/$', 'tags', name='observer_tags'),
-    url(r'tag/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'tag', name='observer_tag'),
+    url(r'^tag/$', 'tags', name='observer_tags'),
+    url(r'^tag/(?P<ids>[\d]+,[\d,]+)$', 'tags_by_ids', name='observer_tags_by_ids'),
+    url(r'^tag/(?P<pk>[:a-zA-Z\.\-\d]+)$', 'tag', name='observer_tag'),
     
+    ##
+    # SPECIAL FUNCTIONS BELOW
     # REST for biblib references
-    url(r'proxy/reference/$', 'proxy_reference', name='observer_proxy_reference'),
+    url(r'^proxy/reference/$', 'proxy_reference', name='observer_proxy_reference'),
+
+    # REST linking for m2m models
+    url(r'^(?P<model_name>[:a-zA-Z_\-]+)/(?P<pk>[\d]+)/links/(?P<m2m_name>[:a-zA-Z_]+)/(?P<ids>[\d,]+)$', 'm2m_links', name='observer_m2m_links'),
+
+    # graph bipartite for m2m relations
+    url(r'^graph-bipartite/(?P<app_name>[:a-zA-Z_\-]+)/(?P<model_name>[:a-zA-Z_\-]+)/(?P<m2m_name>[:a-zA-Z_]+)/$', 'graph_bipartite', name='observer_graph_bipartite'),
 )
 
 

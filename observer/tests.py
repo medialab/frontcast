@@ -43,6 +43,7 @@ class DocumentTest(TestCase):
     self.assertEqual(w.owner.username, 'Kollective')
 
 
+
 #
 # API test biblib, if any
 class ProxyReferenceTest(TestCase):
